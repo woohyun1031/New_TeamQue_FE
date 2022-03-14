@@ -39,32 +39,44 @@ const Calendar = () => {
 				<tbody>
 					<tr>
 						{arr.slice(0, 7).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 					<tr>
 						{arr.slice(7, 14).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 					<tr>
 						{arr.slice(14, 21).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 					<tr>
 						{arr.slice(21, 28).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 					<tr>
 						{arr.slice(28, 35).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 					<tr>
 						{arr.slice(35, 42).map((date) => (
-							<Td month={date.month}>{date.date}</Td>
+							<Td month={date.month} isToday={date.isToday}>
+								{date.date}
+							</Td>
 						))}
 					</tr>
 				</tbody>
@@ -77,8 +89,10 @@ export default Calendar;
 
 interface DateProps {
 	month: string;
+	isToday: boolean;
 }
 
 const Td = styled.td<DateProps>`
 	${(props) => props.month !== 'this' && 'color: #aaa'}
+	${(props) => props.isToday && 'border: 1px solid red; border-radius: 50%'}
 `;
