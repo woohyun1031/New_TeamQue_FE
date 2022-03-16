@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Calendar from '../components/Calendar';
+import Schedule from '../components/Schedule';
 import Welcome from '../components/Welcome';
 
 const Main = () => {
@@ -6,7 +8,7 @@ const Main = () => {
 		<>
 			<UpperContainer>
 				<Welcome name='김학생' verse='명언 혹은 자신을 위한 다짐[한마디 등]' />
-				<ScheduleBox />
+				<Schedule />
 				<Calendar />
 			</UpperContainer>
 			<LowerContainer>
@@ -34,22 +36,6 @@ const UpperContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
-`;
-
-const ScheduleBox = styled.div`
-	/* 사이즈 */
-	width: 270px;
-	height: 320px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
-
-const Calendar = styled.div`
-	/* 사이즈 */
-	width: 280px;
-	height: 320px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
 `;
 
 const LowerContainer = styled.div`

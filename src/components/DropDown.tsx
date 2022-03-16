@@ -33,7 +33,7 @@ const Name = styled.button`
 	background: none;
 	/* 임시 스타일 */
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: 900;
 `;
 
 interface MenuProps {

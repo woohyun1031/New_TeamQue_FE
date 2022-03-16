@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #FAFAFA;
     /* 폰트 설정 */
     font-family: "Roboto", sans-serif;
-    font-weight: bold;
+    font-weight: 900;
     color: #181B23;
   }
 `;
