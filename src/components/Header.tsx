@@ -4,10 +4,10 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import DropDown from './DropDown';
 
-interface Props {}
-
-const Header: React.FC<Props> = () => {
+const Header = () => {
+	const name = '김학생';
 	// 모달창 상태 관리
 	const [isSignInOpen, setisSignInOpen] = useState(false);
 	const [isSignUpOpen, setisSignUpOpen] = useState(false);
@@ -33,9 +33,7 @@ const Header: React.FC<Props> = () => {
 			<SignUp isOpen={isSignUpOpen} close={closeSignUp} />
 			<Container>
 				<Logo src={logo} to='/' />
-				<Name></Name>
-				{/* <button onClick={openSignIn}>Sign In</button>
-				<button onClick={openSignUp}>Sign Up</button> */}
+				<DropDown name='김학생' />
 			</Container>
 		</>
 	);
@@ -63,15 +61,4 @@ const Logo = styled(Link)<LogoType>`
 	height: 50px;
 	/* 임시 스타일 코드 */
 	${(props) => `background-image: url(${props.src});`}
-`;
-
-const Name = styled.button`
-	/* 사이즈 */
-	width: 80px;
-	height: 15px;
-	/* 스타일 */
-	border: none;
-	/* background: none; */
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
 `;

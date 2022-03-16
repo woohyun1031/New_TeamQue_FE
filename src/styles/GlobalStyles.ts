@@ -7,6 +7,10 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
+    background-color: #FAFAFA;
     /* 폰트 설정 */
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    color: #181B23;
   }
-`
+`;
