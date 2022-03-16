@@ -36,14 +36,6 @@ const UpperContainer = styled.div`
 	align-items: flex-end;
 `;
 
-const WelcomeBox = styled.div`
-	/* 사이즈 */
-	width: 580px;
-	height: 290px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
-
 const ScheduleBox = styled.div`
 	/* 사이즈 */
 	width: 270px;
