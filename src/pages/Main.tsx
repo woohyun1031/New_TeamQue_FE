@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import Welcome from '../components/Welcome';
 
 const Main = () => {
 	return (
 		<>
 			<UpperContainer>
-				<WelcomeBox />
+				<Welcome name='김학생' verse='명언 혹은 자신을 위한 다짐[한마디 등]' />
 				<ScheduleBox />
 				<Calendar />
 			</UpperContainer>

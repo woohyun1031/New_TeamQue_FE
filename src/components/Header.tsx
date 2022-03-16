@@ -2,11 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 interface Props {}
 
 const Header: React.FC<Props> = () => {
-  // 모달창 상태 관리
+	// 모달창 상태 관리
 	const [isSignInOpen, setisSignInOpen] = useState(false);
 	const [isSignUpOpen, setisSignUpOpen] = useState(false);
 	const openSignIn = () => {
@@ -30,13 +32,46 @@ const Header: React.FC<Props> = () => {
 			/>
 			<SignUp isOpen={isSignUpOpen} close={closeSignUp} />
 			<Container>
-				<h2>Header</h2>
-				<button onClick={openSignIn}>Sign In</button>
-				<button onClick={openSignUp}>Sign Up</button>
+				<Logo src={logo} to='/' />
+				<Name></Name>
+				{/* <button onClick={openSignIn}>Sign In</button>
+				<button onClick={openSignUp}>Sign Up</button> */}
 			</Container>
 		</>
 	);
 };
 export default Header;
 
-const Container = styled.div``;
+const Container = styled.div`
+	/* 사이즈 */
+	width: 1200px;
+	height: 100px;
+	/* 레이아웃 */
+	margin: 0 auto;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+`;
+
+type LogoType = {
+	src: string;
+};
+
+const Logo = styled(Link)<LogoType>`
+	/* 사이즈 */
+	width: 120px;
+	height: 50px;
+	/* 임시 스타일 코드 */
+	${(props) => `background-image: url(${props.src});`}
+`;
+
+const Name = styled.button`
+	/* 사이즈 */
+	width: 80px;
+	height: 15px;
+	/* 스타일 */
+	border: none;
+	/* background: none; */
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
