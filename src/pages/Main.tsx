@@ -1,68 +1,103 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import Calendar from '../components/Calendar';
 
 const Main = () => {
-	const [is, setIs] = useState(true);
-	const changeStudent = () => {
-		setIs(true);
-	};
-	const changeTeacher = () => {
-		setIs(false);
-	};
 	return (
-		<Container>
-			<Tab>
-				<TabMenu>
-					<TabButton selected={is} onClick={changeStudent}>
-						듣는 수업
-					</TabButton>
-					<TabButton selected={!is} onClick={changeTeacher}>
-						만든 수업
-					</TabButton>
-				</TabMenu>
-				<TabItem>
-					{is ? (
-						<div className='student'>student</div>
-					) : (
-						<div className='teacher'>teacher</div>
-					)}
-				</TabItem>
-			</Tab>
-			<div className='right'>
-				<h1>프로필</h1>
+		<>
+			<UpperContainer>
+				<WelcomeBox />
+				<ScheduleBox />
 				<Calendar />
-			</div>
-		</Container>
+			</UpperContainer>
+			<LowerContainer>
+				<CardBox>
+					<TabButtons />
+					<CardList />
+				</CardBox>
+				<AddCardBox />
+			</LowerContainer>
+		</>
 	);
 };
 
 export default Main;
 
-const Container = styled.div`
+// 사이즈 전체적으로 재조정 될 예정
+
+const UpperContainer = styled.div`
+	/* 사이즈 */
+	width: 1200px;
+	height: 320px;
+	/* 레이아웃 */
+	/* margin-top 임시 설정 */
+	margin: 100px auto 80px;
 	display: flex;
-`;
-const Tab = styled.div`
-	border: 1px solid black;
-`;
-
-const TabMenu = styled.div``;
-
-interface TabButtonProps {
-	selected: boolean;
-}
-
-const TabButton = styled.button<TabButtonProps>`
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 5px 15px;
-	margin-right: 30px;
-	background-color: ${(props) => (props.selected ? 'aliceblue' : '#ccc')};
+	justify-content: space-between;
+	align-items: flex-end;
 `;
 
-const TabItem = styled.div`
-	width: 500px;
-	height: 500px;
-	background-color: aliceblue;
+const WelcomeBox = styled.div`
+	/* 사이즈 */
+	width: 580px;
+	height: 290px;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
+
+const ScheduleBox = styled.div`
+	/* 사이즈 */
+	width: 270px;
+	height: 320px;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
+
+const Calendar = styled.div`
+	/* 사이즈 */
+	width: 280px;
+	height: 320px;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
+
+const LowerContainer = styled.div`
+	/* 사이즈 */
+	width: 1200px;
+	height: 450px;
+	/* 레이아웃 */
+	/* 상하 마진 임시 설정 */
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+`;
+
+const CardBox = styled.div`
+
+`;
+
+const TabButtons = styled.div`
+	/* 사이즈 */
+	width: 400px;
+	height: 40px;
+	/* 레이아웃 */
+	/* 상하 마진 임시 설정 */
+	margin-bottom: 15px;
+	display: flex;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
+
+const CardList = styled.div`
+	/* 사이즈 */
+	width: 850px;
+	height: 380px;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
+`;
+
+const AddCardBox = styled.div`
+	/* 사이즈 */
+	width: 300px;
+	height: 435px;
+	/* 임시 스타일 코드 */
+	background-color: #ccc;
 `;
