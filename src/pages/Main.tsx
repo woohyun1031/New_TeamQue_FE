@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
+import Card from '../components/Card';
+import CardList from '../components/CardList';
 import Schedule from '../components/Schedule';
 import Welcome from '../components/Welcome';
 
@@ -13,10 +15,17 @@ const Main = () => {
 			</UpperContainer>
 			<LowerContainer>
 				<CardBox>
-					<TabButtons />
+					<TabButtons>
+						<TabButton>배우고 있어요</TabButton>
+						<TabButton>알려주고 있어요</TabButton>
+
+					</TabButtons>
 					<CardList />
 				</CardBox>
-				<AddCardBox />
+				<AddCardBox>
+					<h1>+</h1>
+					<p>강의 개설하기</p>
+				</AddCardBox>
 			</LowerContainer>
 		</>
 	);
@@ -61,22 +70,43 @@ const TabButtons = styled.div`
 	/* 상하 마진 임시 설정 */
 	margin-bottom: 15px;
 	display: flex;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
+	justify-content: space-between;
 `;
 
-const CardList = styled.div`
-	/* 사이즈 */
-	width: 850px;
-	height: 380px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
+const TabButton = styled.button`
+	background: none;
+	border: none;
+	font-size: 25px;
+	font-weight: 900;
+	&:nth-child(2) {
+		color: #C4C4C4;
+	}
+`
+
+// const CardList = styled.div`
+// 	/* 사이즈 */
+// 	width: 850px;
+// 	height: 380px;
+// 	/* 임시 스타일 코드 */
+// 	background-color: #ccc;
+// `;
 
 const AddCardBox = styled.div`
 	/* 사이즈 */
 	width: 300px;
 	height: 435px;
 	/* 임시 스타일 코드 */
-	background-color: #ccc;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	color: #718AFF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	& h1 {
+		font-size: 30px;
+		font-weight: 300;
+		margin-bottom: 20px;
+	}
 `;
