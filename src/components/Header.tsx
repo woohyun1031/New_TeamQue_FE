@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -25,11 +24,6 @@ const Header = () => {
 	};
 	return (
 		<>
-			<SignIn
-				isOpen={isSignInOpen}
-				close={closeSignIn}
-				openSignUp={openSignUp}
-			/>
 			<SignUp isOpen={isSignUpOpen} close={closeSignUp} />
 			<Container>
 				<Logo src={logo} to='/' />
