@@ -30,8 +30,19 @@ const Title = styled.h2`
 
 const ScheduleBox = styled.ul`
 	/* 사이즈 */
-	width: 270px;
+	width: 285px;
 	height: 285px;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px; /*스크롤바의 너비*/
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: #ccc; /*스크롤바의 색상*/
+		border-radius: 10px;
+	}
+	&::-webkit-scrollbar-track {
+		/*   background-color: yellow; /*스크롤바 트랙 색상*/
+	}
 `;
 
 const ScheduleItem = styled.li`

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
-import Card from '../components/Card';
 import CardList from '../components/CardList';
 import Schedule from '../components/Schedule';
 import Welcome from '../components/Welcome';
@@ -9,7 +8,10 @@ const Main = () => {
 	return (
 		<>
 			<UpperContainer>
-				<Welcome name='김학생' verse='명언 혹은 자신을 위한 다짐[한마디 등]' />
+				<Welcome
+					name='김학생'
+					message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피'
+				/>
 				<Schedule />
 				<Calendar />
 			</UpperContainer>
@@ -18,7 +20,6 @@ const Main = () => {
 					<TabButtons>
 						<TabButton>배우고 있어요</TabButton>
 						<TabButton>알려주고 있어요</TabButton>
-
 					</TabButtons>
 					<CardList />
 				</CardBox>
@@ -55,16 +56,15 @@ const LowerContainer = styled.div`
 	/* 상하 마진 임시 설정 */
 	margin: 0 auto;
 	display: flex;
+	align-items: flex-end;
 	justify-content: space-between;
 `;
 
-const CardBox = styled.div`
-
-`;
+const CardBox = styled.div``;
 
 const TabButtons = styled.div`
 	/* 사이즈 */
-	width: 400px;
+	width: 360px;
 	height: 40px;
 	/* 레이아웃 */
 	/* 상하 마진 임시 설정 */
@@ -76,20 +76,12 @@ const TabButtons = styled.div`
 const TabButton = styled.button`
 	background: none;
 	border: none;
-	font-size: 25px;
-	font-weight: 900;
+	font-size: 27px;
+	font-weight: 700;
 	&:nth-child(2) {
-		color: #C4C4C4;
+		color: #c4c4c4;
 	}
-`
-
-// const CardList = styled.div`
-// 	/* 사이즈 */
-// 	width: 850px;
-// 	height: 380px;
-// 	/* 임시 스타일 코드 */
-// 	background-color: #ccc;
-// `;
+`;
 
 const AddCardBox = styled.div`
 	/* 사이즈 */

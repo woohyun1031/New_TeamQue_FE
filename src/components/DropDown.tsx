@@ -33,7 +33,7 @@ const Name = styled.button`
 	background: none;
 	/* 임시 스타일 */
 	font-size: 14px;
-	font-weight: 900;
+	font-weight: 600;
 `;
 
 interface MenuProps {
@@ -54,10 +54,11 @@ const Menu = styled.ul<MenuProps>`
 	font-weight: 400;
 	position: absolute;
 	bottom: -70px;
+	right: -10px;
 	font-size: 13px;
 	border-radius: 7px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-	transition: 0.2s;
+	transition: 0.1s;
 	& li:nth-child(2) {
 		color: #718aff;
 	}

@@ -3,7 +3,7 @@ import Header from './components/Header';
 import ClassHome from './pages/ClassHome';
 import ClassRoom from './pages/ClassRoom';
 import Main from './pages/Main';
-import { GlobalStyle } from './styles/GlobalStyles';
+import GlobalStyle from './styles/GlobalStyle';
 
 const App = () => {
 	return (

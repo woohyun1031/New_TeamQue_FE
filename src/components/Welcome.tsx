@@ -1,32 +1,29 @@
 import styled from 'styled-components';
 import character from '../assets/character1.png';
 
-
 interface Props {
 	name: string;
-	verse: string;
+	message: string;
 }
 
-const Welcome: React.FC<Props> = ({ name, verse }) => {
+const Welcome: React.FC<Props> = ({ name, message }) => {
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
-			<WelcomeMessage>{name} 님</WelcomeMessage>
-			<VerseBox>
-				<Verse>{verse}</Verse>
-				<VerseDecoration />
-			</VerseBox>
-			<Character src={character}/>
+			<Name>{name} 님</Name>
+			<MessageBox>
+				<Message>{message}</Message>
+				<MessageDecoration />
+			</MessageBox>
+			<Character src={character} />
 		</Container>
 	);
 };
 export default Welcome;
 
 const Container = styled.div`
-	/* 사이즈 */
 	width: 580px;
 	height: 290px;
-	/* 임시 스타일 코드 */
 	background-color: #fff;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 7px;
@@ -34,29 +31,36 @@ const Container = styled.div`
 	position: relative;
 `;
 
-const WelcomeMessage = styled.h2`
-	font-size: 26px;
-	margin-bottom: 10px;
+const WelcomeMessage = styled.p`
+	font-size: 30px;
+	font-weight: 700;
+	margin-bottom: -10px;
 `;
 
-const VerseBox = styled.div`
-	/* 사이즈 */
+const Name = styled.p`
+	font-size: 30px;
+	font-weight: 700;
+`;
+
+const MessageBox = styled.div`
 	width: 350px;
 	height: 85px;
 	position: relative;
 	background-color: #718aff;
 	color: #fff;
 	font-size: 18px;
+	font-weight: 500;
 	border-radius: 4px;
+	padding: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-top: 20px;
 `;
 
-const Verse = styled.p``;
+const Message = styled.p``;
 
-const VerseDecoration = styled.div`
+const MessageDecoration = styled.div`
 	position: absolute;
 	right: -40px;
 	bottom: 10px;
@@ -68,8 +72,8 @@ const VerseDecoration = styled.div`
 	border-right: 20px solid transparent;
 `;
 
-type CharacterProps = {
-	src : string;
+interface CharacterProps {
+	src: string;
 }
 
 const Character = styled.img<CharacterProps>`
