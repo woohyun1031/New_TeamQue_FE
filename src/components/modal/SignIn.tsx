@@ -1,15 +1,11 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-
-interface Props {
-	isOpen: boolean;
-	close: () => void;
-	openSignUp: () => void;
-}
+import { changeModal } from '../../store/modules/modal';
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
+
 	const [inputs, setInputs] = useState({
 		userEmail: '',
 		password: '',
@@ -27,6 +23,12 @@ const SignIn: React.FC = () => {
 		e.preventDefault();
 		console.log('로그인 정보 확인', inputs);
 	};
+
+	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		dispatch(changeModal('signUp'));
+	};
+
 	return (
 		<Form onSubmit={onSubmit}>
 			<h2>Sign Up</h2>
@@ -53,7 +55,7 @@ const SignIn: React.FC = () => {
 			<button>Sign in with Google</button>
 			<button>Login with Kakao</button>
 			<p>
-				Don't have an account? <button>Sign up</button>
+				Don't have an account? <button onClick={toSignUp}>Sign up</button>
 			</p>
 		</Form>
 	);

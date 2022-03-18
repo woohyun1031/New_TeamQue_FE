@@ -1,30 +1,11 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import SignUp from './SignUp';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import DropDown from './DropDown';
 
 const Header = () => {
-	const name = '김학생';
-	// 모달창 상태 관리
-	const [isSignInOpen, setisSignInOpen] = useState(false);
-	const [isSignUpOpen, setisSignUpOpen] = useState(false);
-	const openSignIn = () => {
-		setisSignInOpen(true);
-	};
-	const closeSignIn = () => {
-		setisSignInOpen(false);
-	};
-	const openSignUp = () => {
-		setisSignUpOpen(true);
-	};
-	const closeSignUp = () => {
-		setisSignUpOpen(false);
-	};
 	return (
 		<>
-			<SignUp isOpen={isSignUpOpen} close={closeSignUp} />
 			<Container>
 				<Logo src={logo} to='/' />
 				<DropDown name='김학생' />
