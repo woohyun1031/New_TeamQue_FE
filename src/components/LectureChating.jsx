@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 
-function LectureChating({openChat}) {
+function LectureChating() {
   const [chatMessage, setChatMessage] = useState(""); //input message
-
   const [chats, setChat] = useState([]); //chat 내용 모음
-
   const [check, setChecked] = useState({
     commonCheck:'',   
     questionCheck:'', 
@@ -15,103 +13,87 @@ function LectureChating({openChat}) {
   const [chatcheck, setChatChecked] = useState({
     queCheck:'',       
   });
-
+  const [isConnect, setConnect] = useState(false);
   const {commonCheck, questionCheck} = check;
   const {queCheck} = chatcheck;
-  //chat 내용 모음
-  const params = useParams(); //room id 값
-  const socket = useRef(); // {current: null};
-  //const socket = useRef(); // {current: null};
   
+  const params = useParams(); 
+  const socket = useRef();
+  //const socket = useRef();
   
-  const url = "ws://xpecter.shop"; //socket url
+  const url = "ws://xpecter.shop";
+  const roomName = params.roomName;
   
-  const roomName = params.roomName; //url 뒤에 있는 room id
-
-  //let nickname = sessionStorage.getItem("nickname"); //locat에서 userid 가져옴
-  //locat에 nickname, statusmsg, id 값이 있다
   let mynickname = "woohyun";
+  //let nickname = sessionStorage.getItem("nickname");
 
-
-  //강의실 접속시 발생 1. 소켓 연결 => joinroom =>
-  useEffect(() => {
-    socket.current = io(url); //소켓 연결 {current: io(url)}   
-    socket.current.emit("init",{nickname:mynickname});
-    socket.current.on("initOk",()=>{
-      socket.current.emit("joinRoom", {roomName}); //서버로 보내는 과정 joinroom    
-      console.log("initok!!")
-    });
-    
-    socket.current.on("receiveChatMessage",({nickname,chatMessage})=>{
-      console.log(nickname,chatMessage,"useEffect");  
-      console.log(chats,"useEffect chats");   
-      const newChat =[...chats, {nickname:nickname, chatMessage, check : "common"} ] 
-      console.log(newChat,"newChat");     
-      setChat(newChat);
-      console.log(chats,"입니다입니다");
-    })
-
-    socket.current.on("receiveQuestionMessage",({nickname,chatMessage})=>{
-      console.log(nickname,chatMessage,"useEffect 여기는 question")
-      setChat([...chats, { nickname, chatMessage, check : "question"  }]);
-      console.log(chats);
-    })
-    return () => {
-      console.log("disconnect")
-      socket.current.disconnect();
-    };
-  },[chats]); //chat값의 변경할 때 마다 useeffect 동작
-
-  const sendChat = () => {
-    console.log("sendcheat!!");
-    if (chatMessage !== "") { //chatMessage가 공백이 아니면 => emit sendChatMessage nickname, message, roomid
-      if(queCheck === true){
-        console.log(chatMessage," 질문일경우 chatMessage");
-        socket.current.emit("sendQuestionMessage", {chatMessage, roomName},(message)=>{
-          console.log(message,"sendChat")      
-          setChat([...chats, { nickname:mynickname, chatMessage:message, check : "question" }]);
-          console.log(chats);
+   useEffect(async () => {
+    if(isConnect === false){
+      socket.current = io(url);
+      socket.current.emit("init",{nickname:mynickname});
+      await socket.current.on("initOk",()=>{
+        socket.current.emit("joinRoom", {roomName});
         });
-        setChatMessage(""); //input 비워준다
-
-      }else{
-        console.log(chatMessage,"질문이 아닐경우chatMessage");
-        socket.current.emit("sendChatMessage", {chatMessage, roomName},(message)=>{
-          console.log(message,"sendChat")      
-          setChat([...chats, { nickname:mynickname, chatMessage:message, check : "common" }]);
-          console.log(chats,message,"보내고 다시 받는 콜백함수에 다 적혀있어야함");
-        });
-        setChatMessage(""); //input 비워준다
       }
+      setConnect(true);
+    
+      socket.current.on("receiveChatMessage",({nickname,chatMessage})=>{         
+        const newChat = [...chats, {nickname:nickname, chatMessage, check : "common"} ] 
+        setChat(newChat);})
+  
+      socket.current.on("receiveQuestionMessage",({nickname,chatMessage})=>{       
+        const newChat = [...chats, {nickname:nickname, chatMessage, check : "question"} ] 
+        setChat(newChat);})       
+
+    return () => {            
+      socket.current.disconnect();
+      setConnect(false);
+    };
+
+  },[chats]);
+
+  const sendChat = () => {        
+    if (chatMessage !== "") { 
+      if(queCheck === true){        
+        socket.current.emit(
+          "sendQuestionMessage",
+          {chatMessage, roomName},
+          (message)=>{          
+            setChat([...chats, { nickname:mynickname, chatMessage:message, check : "question" }]);          
+          });
+          setChatMessage("");
+      } else {        
+          socket.current.emit("sendChatMessage", {chatMessage, roomName},(message)=>{          
+            setChat([...chats, { nickname:mynickname, chatMessage:message, check : "common" }]);          
+          });
+          setChatMessage(""); //input 비워준다
+        }
     }
   };
 
-  const sendMessage = (e) => { //input message => chatMessage 값 변겨
-    setChatMessage(e.target.value);
-    console.log(chatMessage,"chatMessage");
-  };
-  const onChange = (e) => {
+  const sendMessage = useCallback((e) => {
+    setChatMessage(e.target.value);   
+  },[chatMessage]);
+
+  const onChange = useCallback((e) => {
     const {name, checked} = e.target
     setChecked({
       ...check, 
       [name]:checked,
     })
-    console.log(check,"onchange Checked");
-  }
+  },[check])
 
-  const onChat = (e) => {
+  const onChat = useCallback((e) => {
     const {name, checked} = e.target
     setChatChecked({
       ...chatcheck,
       [name]:checked,
     })
-    console.log(chatcheck,"chatcheck입니다")
-  }
+  },[chatcheck])
   
-  const renderChat = () => { //닉네임 + 내용
-    if(commonCheck === true){
-      console.log(chats,"render1")
-      return chats.filter(chat => chat.check === "common").map(({ nickname,chatMessage }, index) =>(
+  const renderChat = () => { //닉네임 + 내용    
+    if(commonCheck === true){      
+      return chats.filter(chat => chat.check === "common").map(({ nickname, chatMessage }, index) =>(
         <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
           {/* user nickname */}
           {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
@@ -122,52 +104,58 @@ function LectureChating({openChat}) {
         </div>
       ))
     } else if(questionCheck === true) {
-      console.log(chats,"render2")
       return chats.filter(chat => chat.check === "question").map(({ nickname, chatMessage }, index) =>(
-        <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
-          {/* user nickname */}
-          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : null}        
-          {/* message */}
-          <div className="chat_content">
-            <div className="chat_message">{chatMessage}</div>
-          </div>
-        </div>
-      ))
-    } 
-    
-    else {
-      console.log(chats,"render3")
-      const temp = chats.map(({ nickname,chatMessage }, index) => (      
-        //session storage에서 가져온 nickname과 user값이 같으면(내가 쓴 챗) chat from me
         <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
           {/* user nickname */}
           {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
           {/* message */}
           <div className="chat_content">
+             <h3>질문글</h3>
+            <div className="chat_message">{chatMessage}</div>            
+          </div>
+        </div>
+      ))
+    } else {
+      const temp = chats.map(({ nickname,chatMessage, check }, index) => (      
+        <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
+          {/* user nickname */}
+          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
+          {/* message */}
+          <div className="chat_content">
+            {check === "question" ? <h3>질문글</h3> : null}
             <div className="chat_message">{chatMessage}</div>
           </div>
         </div>
       ))
-      console.log(temp,chats,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
       return temp;
     }
 
   };
 
   return (
-    <>
+    <>    
       <ChatContainer>
         <p className="header_modal_title">
           채팅방입니다
+        </p>        
           <label>
-            <input className="header_modal_checkbox" name='commonCheck' type="checkbox" onChange={onChange}/>
+            <input 
+              className="header_modal_checkbox" 
+              name='commonCheck' 
+              type="checkbox" 
+              onChange={onChange}
+            />
             채팅
           </label>
           <label>
-            <input className="header_modal_checkbox" name='qestionCheck' type="checkbox" onChange={onChange}/>
+            <input 
+              className="header_modal_checkbox" 
+              name='questionCheck' 
+              type="checkbox" 
+              onChange={onChange}
+            />
             질문
           </label>
-        </p>        
         <div className="header_modal_hr"></div>
 
         <div className="group_chat_container">
@@ -175,10 +163,16 @@ function LectureChating({openChat}) {
           <div className="chat_render_oneChat">          
             {renderChat()}
           </div>
-
-          {/* 하단 메세지 작성 div block => inputbox + 전송버튼(span)*/}
+          
           <div>
-          <label><input type="checkbox" name="queCheck" onChange={onChat}/>질문</label>
+          <label>
+            <input 
+              type="checkbox" 
+              name="queCheck" 
+              onChange={onChat}
+            />
+            질문
+          </label>
           {/* <input type="password">질문</input> */}
           <div className="chat_textfield_container">
             <input
@@ -234,35 +228,12 @@ const ChatContainer = styled.div`
   .header_modal_title {
     margin: 3.07vh 18px 2.56vh;
   }
-`;
-
-const BlockChat = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: none;
-  text-align: center;
-  z-index: 1;
-
-  > .blockBG {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    opacity: 0.8;
-    border-radius: 16px;
+  .chat_from_me {
+    border:1px solid black;
+    border-radius: 10px;    
   }
-  > img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 4.17vw;
-    opacity: 1;
-    z-index: 1;
-  }
-
-  &&.focusTime {
-    display: block;
+  ."chat_from_friend"{
+    border:1px solid black;
+    border-radius: 10px; 
   }
 `;

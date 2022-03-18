@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-
 import LectureChating from './LectureChating';
+import LectureReact from './LectureReact';
 
 export default function LectureRoom() {
   return (
@@ -8,16 +8,14 @@ export default function LectureRoom() {
       <Wrap>
         <Container>
           {/* 콘텐츠 */}
-          <GroupCont>
+          <Group>
             {/* 메인컨텐츠 */}
-            <MainCont>              
-            </MainCont>
+            <MainCont/>                          
             {/* 서브컨텐츠 */}
-            <SubCont>
-            </SubCont>
-          </GroupCont>
+            <LectureReact/>            
+          </Group>
           {/* 채팅 */}
-          <LectureChating openChat={"test"} />
+          <LectureChating/>
         </Container>
       </Wrap>
     </>
@@ -25,24 +23,21 @@ export default function LectureRoom() {
 }
 
 const Wrap = styled.div`
-  padding-top: 50px;
+  padding-top: 20px;
   display: flex;  
+  justify-content: center;
+
 `;
 const Container = styled.div`
-  width: 100vw;
+  width: 80vw;
   height: auto;
   display: flex;
 `;
-const GroupCont = styled.div`
+const Group = styled.div`
   width: 70%;
 `;
 const MainCont = styled.div`
   height: 70%;
   position: relative;
   background-color:gray;
-`;
-const SubCont = styled.div`
-  height: 30%;
-  position: relative;
-  background-color:black;  
 `;
