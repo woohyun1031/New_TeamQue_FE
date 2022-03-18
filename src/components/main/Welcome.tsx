@@ -1,16 +1,19 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import character from '../assets/character1.png';
+import character from '../../assets/character1.png';
+import { RootState } from '../../store/configStore';
 
 interface Props {
-	name: string;
 	message: string;
 }
 
-const Welcome: React.FC<Props> = ({ name, message }) => {
+const Welcome: React.FC<Props> = ({ message }) => {
+	const user = useSelector((state: RootState) => state.user)
+
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
-			<Name>{name} 님</Name>
+			<Name>{user.user_info.nickname} 님</Name>
 			<MessageBox>
 				<Message>{message}</Message>
 				<MessageDecoration />

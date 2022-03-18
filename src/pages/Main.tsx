@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
-import CardList from '../components/CardList';
+import CardList from '../components/main/CardList';
 import Schedule from '../components/Schedule';
-import Welcome from '../components/Welcome';
+import Welcome from '../components/main/Welcome';
 
 const Main = () => {
 	return (
 		<>
 			<UpperContainer>
 				<Welcome
-					name='김학생'
 					message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피'
 				/>
 				<Schedule />
@@ -96,9 +95,14 @@ const AddCardBox = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	transition: .1s;
+	cursor: pointer;
 	& h1 {
 		font-size: 30px;
 		font-weight: 300;
 		margin-bottom: 20px;
+	}
+	&:hover {
+		transform: scale(1.05);
 	}
 `;

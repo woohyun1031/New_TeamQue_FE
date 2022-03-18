@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import DropDown from './DropDown';
+import { RootState } from '../store/configStore';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+	const user = useSelector((state: RootState) => state.user)
 	return (
 		<>
 			<Container>
 				<Logo src={logo} to='/' />
-				<DropDown name='김학생' />
+				<DropDown name={user.user_info.nickname} />
 			</Container>
 		</>
 	);
