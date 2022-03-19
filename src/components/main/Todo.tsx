@@ -10,22 +10,15 @@ const Todo = () => {
 	const todos = useSelector((state: RootState) => state.todo);
 	const user = useSelector((state: RootState) => state.user)
 	useEffect(() => {
-		if (user.is_login) {
-			dispatch(loadTodos());
-			console.log(todos)
-		}
-	}, [todos, dispatch, user.is_login]);
-
+		dispatch(loadTodos());
+	}, []);
 	const add = () => {
-		dispatch(addTodo('할일!'))
-	}
+		dispatch(addTodo('할일!'));
+	};
 	return (
 		<Container>
 			<Title>해야 할 일</Title>
 			<ScheduleBox>
-				{todos.map((todo: { todo: string }) => (
-					<li>{todo.todo}</li>
-				))}
 				<button onClick={add}>add</button>
 			</ScheduleBox>
 		</Container>
