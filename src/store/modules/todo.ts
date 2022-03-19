@@ -19,8 +19,8 @@ export const addTodo = createAsyncThunk(
 	'todo/addTodo',
 	async (data: string, thunkAPI) => {
 		try {
-			const response = await apis.addTodo(data);
-			console.log(response)
+			await apis.addTodo(data);
+			await thunkAPI.dispatch(loadTodos());
 			return;
 		} catch (err: any) {
 			return thunkAPI.rejectWithValue(err.response.message);
@@ -33,7 +33,9 @@ export const deleteTodo = createAsyncThunk(
 	async (id: string, thunkAPI) => {
 		try {
 			await apis.deleteTodo(id);
-			return;
+			// state만 따로 바꿀지 서버랑 동기화 할지 고민
+			// await thunkAPI.dispatch(loadTodos())
+			return id;
 		} catch (err: any) {
 			return thunkAPI.rejectWithValue(err.response.message);
 		}
@@ -45,7 +47,9 @@ export const toggleComplete = createAsyncThunk(
 	async (id: string, thunkAPI) => {
 		try {
 			await apis.updateTodo(id);
-			return;
+			// state만 따로 바꿀지 서버랑 동기화 할지 고민
+			// await thunkAPI.dispatch(loadTodos())
+			return id;
 		} catch (err: any) {
 			return thunkAPI.rejectWithValue(err.response.message);
 		}
@@ -60,6 +64,17 @@ export const todo = createSlice({
 		builder.addCase(loadTodos.fulfilled, (_, action) => {
 			return action.payload;
 		});
+		builder.addCase(deleteTodo.fulfilled, (state: { id: string }[], action) => {
+			const index = state.findIndex((state) => state.id === action.payload);
+			state.splice(index, 1);
+		});
+		builder.addCase(
+			toggleComplete.fulfilled,
+			(state: { id: string; isComplete: boolean }[], action) => {
+				const index = state.findIndex((state) => state.id === action.payload);
+				state[index].isComplete = !state[index].isComplete;
+			}
+		);
 	},
 });
 

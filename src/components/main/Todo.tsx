@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import apis from '../../api';
 import { RootState } from '../../store/configStore';
-import { addTodo, loadTodos } from '../../store/modules/todo';
+import {
+	addTodo,
+	deleteTodo,
+	loadTodos,
+	toggleComplete,
+} from '../../store/modules/todo';
 
 const Todo = () => {
 	const dispatch = useDispatch();
 	const todos = useSelector((state: RootState) => state.todo);
-	const user = useSelector((state: RootState) => state.user)
 	useEffect(() => {
 		dispatch(loadTodos());
 	}, []);
@@ -19,6 +22,11 @@ const Todo = () => {
 		<Container>
 			<Title>해야 할 일</Title>
 			<ScheduleBox>
+				{todos.map(
+					(todo: { id: string; content: string; isComplete: boolean }) => (
+						<TodoItem key={todo.id} {...todo} />
+					)
+				)}
 				<button onClick={add}>add</button>
 			</ScheduleBox>
 		</Container>
@@ -29,21 +37,25 @@ export default Todo;
 
 interface TodoItemProps {
 	id: string;
+	content: string;
+	isComplete: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ id, children }) => {
-	const deleteTodo = async () => {
-		await apis.deleteTodo(id);
+const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
+	const dispatch = useDispatch();
+	const deleteto = async () => {
+		dispatch(deleteTodo(id));
 	};
-	const toggleComplete = async () => {
-		await apis.updateTodo(id);
+	const toggle = async () => {
+		dispatch(toggleComplete(id));
 	};
 	return (
 		<>
 			<h1>id: {id}</h1>
-			<h1>내용 : {children}</h1>
-			<button onClick={toggleComplete}>완료</button>
-			<button onClick={deleteTodo}>삭제</button>
+			<h1>내용 : {content}</h1>
+			{isComplete ? '완료' : '실패'}
+			<button onClick={toggle}>완료</button>
+			<button onClick={deleteto}>삭제</button>
 		</>
 	);
 };
