@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
-import Schedule from '../components/Schedule';
+import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
 
 const Main = () => {
@@ -12,7 +12,7 @@ const Main = () => {
 					message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피'
 				/>
 				<Schedule />
-				<Calendar />
+				{/* <Calendar /> */}
 			</UpperContainer>
 			<LowerContainer>
 				<CardBox>

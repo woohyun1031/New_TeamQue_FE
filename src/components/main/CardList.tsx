@@ -1,7 +1,13 @@
 import styled from 'styled-components';
+import apis from '../../api';
 import Card from './Card';
 
 const CardList = () => {
+	const fetchData = async() => {
+		const response = await apis.loadClass()
+		console.log(response.data)
+	}
+	// fetchData()
 	return (
 		<Container>
 			<Card />

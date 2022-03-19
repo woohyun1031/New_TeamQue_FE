@@ -1,10 +1,21 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import home from '../../assets/home.png';
 
 const Card = () => {
+	const navigate = useNavigate();
+	const toClassRoom = () => {
+		navigate('/classroom');
+	};
+	const toClassHome = () => {
+		navigate('/classhome');
+	};
 	return (
 		<Container>
-			<Thumbnail src='https://media.vlpt.us/images/croco/post/c4ab8a56-a64f-4894-b2d8-9bb417034027/1522635669452_11.jpg' />
+			<Thumbnail
+				src='https://media.vlpt.us/images/croco/post/c4ab8a56-a64f-4894-b2d8-9bb417034027/1522635669452_11.jpg'
+				onClick={toClassRoom}
+			/>
 			<BadgeBox>
 				<Badge>진행중</Badge>
 				<Badge>방송중</Badge>
@@ -12,7 +23,7 @@ const Card = () => {
 			<Title>당신도 할 수 있다! C++ 포인터</Title>
 			<Teacher>김선생 님</Teacher>
 			<TimeTable>화 20:00 / 목 20:00</TimeTable>
-			<HomeButton src={home} />
+			<HomeButton src={home} onClick={toClassHome} />
 		</Container>
 	);
 };
@@ -28,12 +39,12 @@ const Container = styled.div`
 	background-color: #fff;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	position: relative;
-	transition: .1s;
+	transition: 0.2s;
 	& + & {
 		margin-left: 20px;
 	}
 	&:hover {
-		transform: scale(1.05);
+		transform: scale(1.025);
 	}
 `;
 
@@ -42,6 +53,7 @@ const Thumbnail = styled.img`
 	height: 172px;
 	border-radius: 7px;
 	margin-bottom: 10px;
+	cursor: pointer;
 `;
 
 const BadgeBox = styled.div`
@@ -90,4 +102,3 @@ const HomeButton = styled.img<HomeButtonProps>`
 	right: 10px;
 	cursor: pointer;
 `;
-

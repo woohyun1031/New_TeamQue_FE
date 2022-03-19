@@ -1,20 +1,18 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 const instance = axios.create({
-	baseURL: 'http://13.124.123.143:3000',
+	baseURL: 'http://noobpro.shop:3000/',
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 		Authorization: '',
 	},
 });
 
-
-
 instance.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
 		const accesssToken = sessionStorage.getItem('accessToken');
 		if (accesssToken) {
-      // 수정 필요
+			// 수정 필요
 			config.headers!.Authorization = `Bearer ${accesssToken}`;
 		}
 		return config;
@@ -41,11 +39,11 @@ instance.interceptors.response.use(
 				const refreshToken = sessionStorage.getItem('refreshToken');
 
 				//token refresh 요청
-        let accesssToken
-        if (refreshToken) {
-          const {data} = await apis.refresh(refreshToken);
-          accesssToken = data
-        }
+				let accesssToken;
+				if (refreshToken) {
+					const { data } = await apis.refresh(refreshToken);
+					accesssToken = data;
+				}
 
 				//new token
 				const { accessToken: newAccessToken } = accesssToken;
@@ -64,7 +62,7 @@ instance.interceptors.response.use(
 
 export const apis = {
 	//---- 유저  ----//
-  // 사용할지 잘 모름
+	// 사용할지 잘 모름
 	kakao: (authorization_code: string) =>
 		instance.get(`/api/auth/kakao/callback?code=${authorization_code}`), //카카오로그인
 	signUp: (userInfo: object) => instance.post('/auth/signup', userInfo), //회원가입
@@ -74,6 +72,16 @@ export const apis = {
 	setNick: (nickname: string) => instance.put('/auth/nickname', { nickname }), //초기 닉네임 등록
 	test: () => instance.get('/auth/test'),
 	//---- refresh  ----//
-	refresh: (refreshToken: string) => instance.post('/auth/refresh', refreshToken),
+	refresh: (refreshToken: string) =>
+		instance.post('/auth/refresh', refreshToken),
+
+	// 클래스
+	loadClass: () => instance.get('/class/student/class'),
+
+	// todo
+	loadTodo: () => instance.get('/boards/todo'),
+	addTodo: (todo: string) => instance.post('/boards/todo', { content: todo }),
+	deleteTodo: (todoid: string) => instance.delete(`/boards/todo/${todoid}`),
+	updateTodo: (todoid: string) => instance.put(`/boards/todo/${todoid}`, {}),
 };
 export default apis;

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import store from './store/configStore';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import store from './store/configStore';
 import App from './App';
 import GlobalStyle from './styles/GlobalStyle';
 
