@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Calendar from '../components/Calendar';
+import Board from '../components/classhome/Board';
 
 const ClassHome = () => {
 	return (
@@ -7,7 +9,7 @@ const ClassHome = () => {
 				<ClassInfo />
 				<Calendar />
 			</LeftBox>
-			<Forum />
+			<Board />
 		</Container>
 	);
 };
@@ -42,17 +44,11 @@ const ClassInfo = styled.div`
 	background-color: #ccc;
 `;
 
-const Calendar = styled.div`
-	/* 사이즈 */
-	width: 280px;
-	height: 290px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
-const Forum = styled.div`
-	/* 사이즈 */
-	width: 890px;
-	height: 850px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
+// const Calendar = styled.div`
+// 	/* 사이즈 */
+// 	width: 280px;
+// 	height: 290px;
+// 	/* 임시 스타일 코드 */
+// 	background-color: #ccc;
+// `;
+

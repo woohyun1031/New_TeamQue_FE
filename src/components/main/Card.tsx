@@ -44,7 +44,7 @@ const Container = styled.div`
 	border-radius: 10px;
 	padding: 16px 23px;
 	background-color: #fff;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	transition: 0.2s;
 	& + & {

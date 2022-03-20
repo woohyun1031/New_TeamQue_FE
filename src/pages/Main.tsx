@@ -6,13 +6,15 @@ import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
 
 const Main = () => {
-
 	return (
 		<>
 			<UpperContainer>
 				<Welcome message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피' />
 				<Schedule />
-				<Calendar />
+				<CalendarBox>
+					<SubTitle>이번 달 한눈에 보기</SubTitle>
+					<Calendar />
+				</CalendarBox>
 			</UpperContainer>
 			<LowerContainer>
 				<CardBox>
@@ -89,13 +91,13 @@ const AddCardBox = styled.div`
 	/* 임시 스타일 코드 */
 	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: #718AFF;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	color: #718aff;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	transition: .1s;
+	transition: 0.1s;
 	cursor: pointer;
 	& h1 {
 		font-size: 30px;
@@ -105,4 +107,18 @@ const AddCardBox = styled.div`
 	&:hover {
 		transform: scale(1.05);
 	}
+`;
+
+const CalendarBox = styled.div`
+	/* 사이즈 */
+	width: 280px;
+	height: 320px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`;
+
+const SubTitle = styled.h2`
+	font-size: 20px;
+	margin-bottom: 10px;
 `;

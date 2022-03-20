@@ -24,8 +24,6 @@ const Calendar = () => {
 	}
 
 	return (
-		<Container>
-			<Title>이번 달 한눈에 보기</Title>
 			<CalendarBox>
 				<Table>
 					<Caption>
@@ -57,22 +55,10 @@ const Calendar = () => {
 					</tbody>
 				</Table>
 			</CalendarBox>
-		</Container>
 	);
 };
 
 export default Calendar;
-
-const Container = styled.div`
-	/* 사이즈 */
-	width: 280px;
-	height: 320px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-`;
-
-const Title = styled.h2``;
 
 const CalendarBox = styled.div`
 	width: 280px;
@@ -82,7 +68,7 @@ const CalendarBox = styled.div`
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	padding: 20px;
 `;
 

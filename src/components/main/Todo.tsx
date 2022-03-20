@@ -141,7 +141,7 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 			text-decoration: line-through;
 		`};
 	padding: 20px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.1s;
 	&:hover {
 		transform: scale(1.025);

@@ -10,7 +10,6 @@ interface Props {
 
 const DropDown: React.FC<Props> = ({ name }) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleDropDown = () => {
 		setIsOpen((prevState) => !prevState);
@@ -70,6 +69,7 @@ const Menu = styled.ul<MenuProps>`
 	transition: 0.1s;
 	& li:nth-child(2) {
 		color: #718aff;
+		cursor: pointer;
 	}
 `;
 
