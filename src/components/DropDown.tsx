@@ -1,21 +1,30 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { signOut } from '../store/modules/user';
 
 interface Props {
 	name: string;
 }
 
 const DropDown: React.FC<Props> = ({ name }) => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleDropDown = () => {
 		setIsOpen((prevState) => !prevState);
+	};
+	const logout = () => {
+		dispatch(signOut());
+		location.reload();
 	};
 	return (
 		<Container>
 			<Name onClick={toggleDropDown}>{name} 님</Name>
 			<Menu isOpen={isOpen}>
 				<li>마이페이지</li>
-				<li>로그아웃</li>
+				<li onClick={logout}>로그아웃</li>
 				<Line />
 			</Menu>
 		</Container>

@@ -1,20 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import home from '../../assets/home.png';
+import home from '../../assets/homeOutline.png';
 
 interface CardProps {
+	id: string;
 	imageUrl: string;
 	teacher: string;
 	title: string;
 }
 
-const Card:React.FC<CardProps> = ({imageUrl, teacher, title }) => {
+const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title }) => {
 	const navigate = useNavigate();
 	const toClassRoom = () => {
-		navigate('/classroom');
+		navigate(`/classroom/${id}`);
 	};
 	const toClassHome = () => {
-		navigate('/classhome');
+		navigate(`/classhome/${id}`);
 	};
 	return (
 		<Container>

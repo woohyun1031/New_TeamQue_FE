@@ -21,10 +21,11 @@ const SignIn: React.FC = () => {
 		});
 	};
 
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log('로그인 정보 확인', inputs);
-		dispatch(signIn(inputs))
+		await dispatch(signIn(inputs));
+		location.reload();
 	};
 
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {

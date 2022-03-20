@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/configStore';
@@ -9,16 +9,25 @@ import {
 	toggleComplete,
 } from '../../store/modules/todo';
 import closeButton from '../../assets/closeButton.png';
-import addButton from '../../assets/addButton.png';
 
 const Todo = () => {
 	const dispatch = useDispatch();
+	const [isInput, setIsInput] = useState(false);
+	const [input, setInput] = useState('');
 	const todos = useSelector((state: RootState) => state.todo);
 	useEffect(() => {
 		dispatch(loadTodos());
 	}, []);
-	const add = () => {
-		dispatch(addTodo('할일!'));
+	const add = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		dispatch(addTodo(input));
+		setIsInput(false);
+	};
+	const focusOut = () => {
+		setIsInput(false);
+	};
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setInput(e.target.value);
 	};
 	return (
 		<Container>
@@ -29,7 +38,24 @@ const Todo = () => {
 						<TodoItem key={todo.id} {...todo} />
 					)
 				)}
-				<AddButton onClick={add}>+</AddButton>
+				<Form onSubmit={add}>
+					{isInput ? (
+						<InputBox
+							type='text'
+							onBlur={focusOut}
+							autoFocus
+							onChange={onChange}
+						/>
+					) : (
+						<AddButton
+							onClick={() => {
+								setIsInput(true);
+							}}
+						>
+							+
+						</AddButton>
+					)}
+				</Form>
 			</ScheduleBox>
 		</Container>
 	);
@@ -62,7 +88,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
 
 const Container = styled.div`
 	/* 사이즈 */
-	width: 270px;
+	width: 280px;
 	height: 320px;
 `;
 
@@ -101,6 +127,7 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	justify-content: center;
 	border-radius: 7px;
 	background-color: #718aff;
+	margin: 0 auto;
 	margin-bottom: 23px;
 	color: #fff;
 	position: relative;
@@ -115,6 +142,11 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 		`};
 	padding: 20px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	transition: 0.1s;
+	&:hover {
+		transform: scale(1.025);
+	}
+	cursor: pointer;
 `;
 
 const CloseButton = styled.img`
@@ -135,3 +167,22 @@ const AddButton = styled.button`
 	font-size: 30px;
 	margin-bottom: 10px;
 `;
+
+const InputBox = styled.input`
+	display: block;
+	width: 270px;
+	height: 80px;
+	border-radius: 7px;
+	background-color: #718aff;
+	border: none;
+	color: #fff;
+	text-align: center;
+	font-weight: 700;
+	font-size: 14px;
+	outline: none;
+	margin: 0 auto;
+	margin-bottom: 23px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const Form = styled.form``;
