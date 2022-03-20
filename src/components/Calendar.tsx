@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import getDateArrayOfMonth from '../utils/getDateArray';
 
 const Calendar = () => {
@@ -8,24 +8,30 @@ const Calendar = () => {
 	const nowYear = today.getFullYear();
 	const [month, setMonth] = useState(nowMonth);
 	const arr = getDateArrayOfMonth(nowYear, month);
-
 	const setPrevMonth = () => {
 		setMonth((prev) => (prev + 11) % 12);
 	};
-
 	const setNextMonth = () => {
 		setMonth((prev) => (prev + 1) % 12);
 	};
+	const calendar = [];
+	for (let i = 0; i < 6; i++) {
+		const week = [];
+		for (let j = 0; j < 7; j++) {
+			week.push(arr[i * 7 + j]);
+		}
+		calendar.push(week);
+	}
 
 	return (
 		<Container>
-			<h2>이번 달 한눈에 보기</h2>
+			<Title>이번 달 한눈에 보기</Title>
 			<CalendarBox>
 				<Table>
 					<Caption>
-						<Button onClick={setPrevMonth}>&lt;</Button>
+						<Button onClick={setPrevMonth}>{((month + 11) % 12) + 1}</Button>
 						{month + 1}
-						<Button onClick={setNextMonth}>&gt;</Button>
+						<Button onClick={setNextMonth}>{((month + 1) % 12) + 1}</Button>
 					</Caption>
 					<thead>
 						<tr>
@@ -39,48 +45,15 @@ const Calendar = () => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							{arr.slice(0, 7).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
-						<tr>
-							{arr.slice(7, 14).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
-						<tr>
-							{arr.slice(14, 21).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
-						<tr>
-							{arr.slice(21, 28).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
-						<tr>
-							{arr.slice(28, 35).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
-						<tr>
-							{arr.slice(35, 42).map((date) => (
-								<Td month={date.month} isToday={date.isToday}>
-									{date.date}
-								</Td>
-							))}
-						</tr>
+						{calendar.map((week, index) => (
+							<tr key={index}>
+								{week.map((date, index) => (
+									<Td month={date.month} isToday={date.isToday} key={index}>
+										{date.date}
+									</Td>
+								))}
+							</tr>
+						))}
 					</tbody>
 				</Table>
 			</CalendarBox>
@@ -98,6 +71,8 @@ const Container = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 `;
+
+const Title = styled.h2``;
 
 const CalendarBox = styled.div`
 	width: 280px;
@@ -140,7 +115,17 @@ interface TdProps {
 }
 
 const Td = styled.td<TdProps>`
-	${(props) => props.month !== 'this' && 'color: #aaa'}
-	${(props) => props.isToday && 'border: 1px solid red; border-radius: 20px'}
+	border: 1px solid black;
+	${(props) =>
+		props.month !== 'this' &&
+		css`
+			color: #aaa;
+		`};
+	${(props) =>
+		props.isToday &&
+		css`
+			border-radius: 50%;
+			border: 1px solid red;
+		`};
 `;
 

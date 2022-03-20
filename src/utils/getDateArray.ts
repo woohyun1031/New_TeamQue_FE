@@ -25,6 +25,7 @@ const getDateArrayOfMonth = (
 		const toDate = new Date().getDate();
 		days[toDate + thisMonthFirstDay].isToday = true;
 	}
+	
 	return days;
 };
 

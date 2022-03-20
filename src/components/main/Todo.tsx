@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { RootState } from '../../store/configStore';
 import {
 	addTodo,
@@ -8,6 +8,8 @@ import {
 	loadTodos,
 	toggleComplete,
 } from '../../store/modules/todo';
+import closeButton from '../../assets/closeButton.png';
+import addButton from '../../assets/addButton.png';
 
 const Todo = () => {
 	const dispatch = useDispatch();
@@ -27,7 +29,7 @@ const Todo = () => {
 						<TodoItem key={todo.id} {...todo} />
 					)
 				)}
-				<button onClick={add}>add</button>
+				<AddButton onClick={add}>+</AddButton>
 			</ScheduleBox>
 		</Container>
 	);
@@ -49,14 +51,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
 	const toggle = async () => {
 		dispatch(toggleComplete(id));
 	};
+
 	return (
-		<>
-			<h1>id: {id}</h1>
-			<h1>내용 : {content}</h1>
-			{isComplete ? '완료' : '실패'}
-			<button onClick={toggle}>완료</button>
-			<button onClick={deleteto}>삭제</button>
-		</>
+		<ScheduleItem isComplete={isComplete} onClick={toggle}>
+			{content}
+			<CloseButton onClick={deleteto} src={closeButton} />
+		</ScheduleItem>
 	);
 };
 
@@ -88,7 +88,11 @@ const ScheduleBox = styled.ul`
 	}
 `;
 
-const ScheduleItem = styled.li`
+interface ScheduleItemProps {
+	isComplete: boolean;
+}
+
+const ScheduleItem = styled.li<ScheduleItemProps>`
 	/* 사이즈 */
 	width: 270px;
 	height: 80px;
@@ -99,6 +103,35 @@ const ScheduleItem = styled.li`
 	background-color: #718aff;
 	margin-bottom: 23px;
 	color: #fff;
+	position: relative;
+	font-weight: 700;
+	font-size: 14px;
+	${(props) =>
+		props.isComplete &&
+		css`
+			color: #b7b7b7;
+			background-color: #fff;
+			text-decoration: line-through;
+		`};
 	padding: 20px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const CloseButton = styled.img`
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+`;
+
+const AddButton = styled.button`
+	width: 270px;
+	height: 80px;
+	background: none;
+	border: none;
+	border-radius: 7px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	color: #718aff;
+	font-size: 30px;
+	margin-bottom: 10px;
 `;

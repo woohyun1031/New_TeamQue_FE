@@ -2,7 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import home from '../../assets/home.png';
 
-const Card = () => {
+interface CardProps {
+	imageUrl: string;
+	teacher: string;
+	title: string;
+}
+
+const Card:React.FC<CardProps> = ({imageUrl, teacher, title }) => {
 	const navigate = useNavigate();
 	const toClassRoom = () => {
 		navigate('/classroom');
@@ -13,15 +19,15 @@ const Card = () => {
 	return (
 		<Container>
 			<Thumbnail
-				src='https://media.vlpt.us/images/croco/post/c4ab8a56-a64f-4894-b2d8-9bb417034027/1522635669452_11.jpg'
+				src={imageUrl}
 				onClick={toClassRoom}
 			/>
 			<BadgeBox>
 				<Badge>진행중</Badge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
-			<Title>당신도 할 수 있다! C++ 포인터</Title>
-			<Teacher>김선생 님</Teacher>
+			<Title>{title}</Title>
+			<Teacher>{teacher} 님</Teacher>
 			<TimeTable>화 20:00 / 목 20:00</TimeTable>
 			<HomeButton src={home} onClick={toClassHome} />
 		</Container>

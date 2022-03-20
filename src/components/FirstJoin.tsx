@@ -14,44 +14,43 @@ const FirstJoin: React.FC = () => {
 	const [isNick, setIsNick] = useState(false);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
- 		setNickname(e.target.value);
-		let userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
-    let NickRegex = userNickRegex.test(e.target.value);
+		setNickname(e.target.value);
+		const userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
+		const NickRegex = userNickRegex.test(e.target.value);
+		if (!NickRegex) {
+			setIsNick(false);
+		} else {
+			setIsNick(true);
+		}
+	};
 
-    if (!NickRegex) {
-      setIsNick(false);
-    } else {
-      setIsNick(true);
-    }
- 	};
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (isNick === true) {
+			dispatch(nicknameSet(nickname));
+			navigator('/');
+		} else {
+			window.alert('isNick == false');
+		}
+	};
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-  		e.preventDefault();  		
-      if(isNick === true){
-				dispatch(nicknameSet(nickname));
-				navigator("/");
-			}else{
-				window.alert("isNick == false");
-			}
-  };
-  
-  return (
-    <>
-		  <Background>
-		  	<Contents>
-          <Form onSubmit={onSubmit}>
- 		    	  <div>Hello</div>
-						 <hr/>
-               <Input                      
-                 placeholder="3글자 이상의 닉네임을 입력하세요."                   
-                 value={nickname} 
-                 onChange={onChange}
-               />
-            </Form>
-		  	</Contents>
-		  </Background>
-    </>
-  );
+	return (
+		<>
+			<Background>
+				<Contents>
+					<Form onSubmit={onSubmit}>
+						<div>Hello</div>
+						<hr />
+						<Input
+							placeholder='3글자 이상의 닉네임을 입력하세요.'
+							value={nickname}
+							onChange={onChange}
+						/>
+					</Form>
+				</Contents>
+			</Background>
+		</>
+	);
 }
 
 export default FirstJoin;

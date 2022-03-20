@@ -1,18 +1,18 @@
 import styled from 'styled-components';
+import apis from '../api';
 import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
 
 const Main = () => {
+
 	return (
 		<>
 			<UpperContainer>
-				<Welcome
-					message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피'
-				/>
+				<Welcome message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피' />
 				<Schedule />
-				{/* <Calendar /> */}
+				<Calendar />
 			</UpperContainer>
 			<LowerContainer>
 				<CardBox>

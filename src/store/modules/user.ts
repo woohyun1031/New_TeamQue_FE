@@ -10,7 +10,7 @@ const initialState = {
 
 export const signUp = createAsyncThunk(
 	'user/signup',
-	async (userInfo: {}, thunkAPI) => {
+	async (userInfo: any, thunkAPI) => {
 		try {
 			await apis
 				.signUp(userInfo)

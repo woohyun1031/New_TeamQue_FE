@@ -1,20 +1,27 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import apis from '../../api';
 import Card from './Card';
 
 const CardList = () => {
-	const fetchData = async() => {
-		const response = await apis.loadClass()
-		console.log(response.data)
-	}
-	// fetchData()
+	const [cards, setCards] = useState() as any;
+	const fetch = async () => {
+		const response = await apis.loadClass();
+		console.log(response);
+		setCards(response.data);
+	};
+	useEffect(() => {
+		fetch();
+	}, []);
+
+	useEffect(() => {
+		console.log(cards);
+	}, [cards]);
 	return (
 		<Container>
-			<Card />
-			<Card />
-			<Card />
-			<Card />
-			<Card />
+			{cards && cards.map((card: any) => (
+				<Card key={card.id} {...card}/>
+			))}
 		</Container>
 	);
 };

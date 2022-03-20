@@ -9,7 +9,7 @@ const Kakao = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
 	const [first, setFirst] = React.useState(false); //가입 시첨 체크
-	let authorization_code = new URL(window.location.href).searchParams.get(
+	const authorization_code = new URL(window.location.href).searchParams.get(
 		'code'
 	);
 

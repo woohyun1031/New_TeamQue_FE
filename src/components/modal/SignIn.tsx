@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
 			<button>Sign in with Google</button>
 			<button onClick={onKakaoClick}>Login with Kakao</button>
 			<p>
-				Don't have an account? <button onClick={toSignUp}>Sign up</button>
+				Don&apos;t have an account? <button onClick={toSignUp}>Sign up</button>
 			</p>
 		</Form>
 	);
