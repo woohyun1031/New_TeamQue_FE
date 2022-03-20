@@ -76,37 +76,44 @@ const Title = styled.h2``;
 
 const CalendarBox = styled.div`
 	width: 280px;
-	height: 290px;
+	height: 300px;
 	background-color: #fff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+	padding: 20px;
 `;
 
 const Table = styled.table`
-	width: 215px;
+	width: 230px;
 	height: 230px;
 	font-weight: 500;
 	font-size: 12px;
+	border-collapse: collapse;
 `;
 
 const Caption = styled.caption`
-	text-align: left;
+	text-align: center;
 	font-size: 30px;
 	font-weight: 900;
 	color: #5370f5;
+	margin-bottom: 10px;
 `;
 
 const Button = styled.button`
+	padding: 0 15px;
 	border: none;
 	background: none;
 	font-weight: 700;
+	font-size: 20px;
+	color: #ddd;
 `;
 
 const Th = styled.th`
-	text-align: left;
+	text-align: center;
+	height: 10px;
 `;
 
 interface TdProps {
@@ -115,17 +122,17 @@ interface TdProps {
 }
 
 const Td = styled.td<TdProps>`
-	border: 1px solid black;
 	${(props) =>
 		props.month !== 'this' &&
 		css`
-			color: #aaa;
+			color: #ddd;
 		`};
 	${(props) =>
 		props.isToday &&
 		css`
 			border-radius: 50%;
-			border: 1px solid red;
+			background-color: rgba(113, 138, 255, 0.4);
 		`};
+	text-align: center;
 `;
 

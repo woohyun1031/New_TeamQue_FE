@@ -7,7 +7,6 @@ const CardList = () => {
 	const [cards, setCards] = useState() as any;
 	const fetch = async () => {
 		const response = await apis.loadClass();
-		console.log(response);
 		setCards(response.data);
 	};
 	useEffect(() => {
