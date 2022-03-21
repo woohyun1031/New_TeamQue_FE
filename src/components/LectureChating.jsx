@@ -14,6 +14,7 @@ function LectureChating() {
     queCheck:'',       
   });
   const [isConnect, setConnect] = useState(false);
+  
   const {commonCheck, questionCheck} = check;
   const {queCheck} = chatcheck;
   
@@ -26,23 +27,23 @@ function LectureChating() {
   
   let mynickname = "woohyun";
   //let nickname = sessionStorage.getItem("nickname");
-
+  const accessToken = sessionStorage.getItem("accessToken");
    useEffect(async () => {
     if(isConnect === false){
       socket.current = io(url);
-      socket.current.emit("init",{nickname:mynickname});
+      socket.current.emit("init",{nickname:mynickname,accessToken});
       await socket.current.on("initOk",()=>{
-        socket.current.emit("joinRoom", {roomName});
+        socket.current.emit("joinRoom", {roomName:roomName});
         });
       }
       setConnect(true);
-    
+
       socket.current.on("receiveChatMessage",({nickname,chatMessage})=>{         
-        const newChat = [...chats, {nickname:nickname, chatMessage, check : "common"} ] 
+        const newChat = [...chats, {nickname, chatMessage, check : "common"}]       
         setChat(newChat);})
-  
-      socket.current.on("receiveQuestionMessage",({nickname,chatMessage})=>{       
-        const newChat = [...chats, {nickname:nickname, chatMessage, check : "question"} ] 
+
+      socket.current.on("receiveQuestionMessage",({nickname,chatMessage,id,solution})=>{       
+        const newChat = [...chats, {id, nickname, chatMessage, check : "question", solution} ] 
         setChat(newChat);})       
 
     return () => {            
@@ -58,57 +59,63 @@ function LectureChating() {
         socket.current.emit(
           "sendQuestionMessage",
           {chatMessage, roomName},
-          (message)=>{          
-            setChat([...chats, { nickname:mynickname, chatMessage:message, check : "question" }]);          
+          ({message,id})=>{          
+            setChat([...chats, {id, nickname:mynickname, chatMessage:message, check : "question", solution: false}]);          
           });
           setChatMessage("");
       } else {        
-          socket.current.emit("sendChatMessage", {chatMessage, roomName},(message)=>{          
-            setChat([...chats, { nickname:mynickname, chatMessage:message, check : "common" }]);          
+          socket.current.emit("sendChatMessage", {chatMessage, roomName},({message,id})=>{          
+            setChat([...chats, { nickname:mynickname, chatMessage:message, check : "common"}]);          
           });
           setChatMessage(""); //input 비워준다
         }
     }
   };
 
-  const sendMessage = useCallback((e) => {
+  const sendMessage = (e) => {
     setChatMessage(e.target.value);   
-  },[chatMessage]);
+  };
 
-  const onChange = useCallback((e) => {
+  const onChange = (e) => {
     const {name, checked} = e.target
     setChecked({
       ...check, 
       [name]:checked,
     })
-  },[check])
+  };
 
-  const onChat = useCallback((e) => {
+  const onChat = (e) => {
     const {name, checked} = e.target
     setChatChecked({
       ...chatcheck,
       [name]:checked,
     })
-  },[chatcheck])
+  }
+
+  const solveClick = (unique_id) => {
+    // /질문 속성에 해결을 했는지 안 했는지 o,x 추가
+    //"solveClick 하면 해당 질문 속성에 reder ox 추가 후"
+    console.log(unique_id,'unique_id 해결')
+    setChat([...chats, !unique_id.solution])
+  }
   
   const renderChat = () => { //닉네임 + 내용    
     if(commonCheck === true){      
-      return chats.filter(chat => chat.check === "common").map(({ nickname, chatMessage }, index) =>(
-        <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
-          {/* user nickname */}
-          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
-          {/* message */}
+      return chats.filter(chat => chat.check === "common").map(({nickname,chatMessage},index) =>(
+        <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}>           
+          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}                 
           <div className="chat_content">
             <div className="chat_message">{chatMessage}</div>
           </div>
         </div>
       ))
     } else if(questionCheck === true) {
-      return chats.filter(chat => chat.check === "question").map(({ nickname, chatMessage }, index) =>(
+      //chat에 "solution" data 추가
+      return chats.filter(chat => chat.check === "question").map(({nickname,chatMessage,id,solution},index) =>(
+        //{solution === ture ? <div className="solution tab">해결!!</div>:null}
         <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
-          {/* user nickname */}
-          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
-          {/* message */}
+          {mynickname === nickname ? <button onClick={() => solveClick(id)}>내가한질문해결버튼</button>: null}           
+          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}                  
           <div className="chat_content">
              <h3>질문글</h3>
             <div className="chat_message">{chatMessage}</div>            
@@ -116,24 +123,24 @@ function LectureChating() {
         </div>
       ))
     } else {
-      const temp = chats.map(({ nickname,chatMessage, check }, index) => (      
+      return chats.map(({nickname,chatMessage,id,solution},index) => (      
         <div key={index} className={mynickname === nickname ? "chat_from_me" : "chat_from_friend"}> 
-          {/* user nickname */}
-          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}        
-          {/* message */}
+          {check === "question" && mynickname === nickname ? <button onClick={() => solveClick(id)}>내가한질문해결버튼</button>: null}
+          {/* () => solveClick(여기에 해결 체크 변수 넣어준다)) solution 매개변수 추가   */}
+          {mynickname !== nickname ? <div className="chat_nick">{nickname}</div> : "null"}                  
           <div className="chat_content">
             {check === "question" ? <h3>질문글</h3> : null}
             <div className="chat_message">{chatMessage}</div>
           </div>
         </div>
-      ))
-      return temp;
+      ));      
     }
 
   };
 
   return (
     <>    
+    {console.log(chats)}
       <ChatContainer>
         <p className="header_modal_title">
           채팅방입니다
@@ -165,16 +172,16 @@ function LectureChating() {
           </div>
           
           <div>
+          {/* <input type="password">질문</input> */}
+          <div className="chat_textfield_container">
           <label>
+            질문
             <input 
               type="checkbox" 
               name="queCheck" 
               onChange={onChat}
             />
-            질문
           </label>
-          {/* <input type="password">질문</input> */}
-          <div className="chat_textfield_container">
             <input
               type="text"
               className="chat_textfield"
