@@ -109,9 +109,7 @@ const ScheduleBox = styled.ul`
 		background-color: #ccc; /*스크롤바의 색상*/
 		border-radius: 10px;
 	}
-	&::-webkit-scrollbar-track {
-		/*   background-color: yellow; /*스크롤바 트랙 색상*/
-	}
+
 `;
 
 interface ScheduleItemProps {
@@ -126,7 +124,7 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	align-items: center;
 	justify-content: center;
 	border-radius: 7px;
-	background-color: #718aff;
+	background-color: ${props => props.theme.color.main};
 	margin: 0 auto;
 	margin-bottom: 23px;
 	color: #fff;
