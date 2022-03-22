@@ -1,24 +1,66 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import apis from '../../api';
 
 const Board = () => {
+	const { classid } = useParams();
+	const [notice, setNotice] =
+		useState<
+			{ id: number; title: string; writer: string; createdAt: string }[]
+		>();
+	const [question, setQuestion] =
+		useState<
+			{ id: number; title: string; writer: string; createdAt: string }[]
+		>();
+	const fetch = async () => {
+		const response = await apis.loadClassBoards(classid as string);
+		setNotice(response.data.boardListNotice);
+		setQuestion(response.data.boardListquestion);
+		console.log(response.data);
+	};
+	useEffect(() => {
+		fetch();
+	}, []);
+
+	useEffect(() => {
+		console.log(question);
+	}, [question]);
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
 			<Table>
-				<tr>
-					<Th />
-					<Th>구분</Th>
-					<Th>글제목</Th>
-					<Th>작성자</Th>
-					<Th>작성일</Th>
-				</tr>
-				<tr>
-					<td>🎇</td>
-					<td>공지</td>
-					<td>포토샵 설치 관련 필독사항</td>
-					<td>김선생</td>
-					<td>20.01.07</td>
-				</tr>
+				<thead>
+					<tr>
+						<Th />
+						<Th>구분</Th>
+						<Th>글제목</Th>
+						<Th>작성자</Th>
+						<Th>작성일</Th>
+					</tr>
+				</thead>
+				<tbody>
+					{notice &&
+						notice.map((row) => (
+							<tr key={row.id}>
+								<td>🎇</td>
+								<td>공지</td>
+								<td>{row.title}</td>
+								<td>{row.writer}</td>
+								<td>{row.createdAt}</td>
+							</tr>
+						))}
+					{question &&
+						question.map((row) => (
+							<tr key={row.id}>
+								<td>.</td>
+								<td>질문</td>
+								<td>{row.title}</td>
+								<td>{row.writer}</td>
+								<td>{row.createdAt}</td>
+							</tr>
+						))}
+				</tbody>
 			</Table>
 			<Pagenation>
 				<button>1</button>
@@ -83,11 +125,11 @@ const AddButton = styled.button`
 	right: 50px;
 	width: 54px;
 	height: 54px;
-  line-height: 54px;
+	line-height: 54px;
 	font-size: 40px;
-  font-weight: 800;
+	font-weight: 800;
 	border-radius: 27px;
 	border: none;
-	background-color: #718AFF;
+	background-color: #718aff;
 	color: #fff;
 `;

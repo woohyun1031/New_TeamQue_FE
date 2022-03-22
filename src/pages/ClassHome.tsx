@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import Board from '../components/classhome/Board';
+import ClassInfo from '../components/classhome/ClassInfo';
 
 const ClassHome = () => {
 	return (
@@ -36,19 +37,4 @@ const LeftBox = styled.div`
 	justify-content: space-between;
 `;
 
-const ClassInfo = styled.div`
-	/* 사이즈 */
-	width: 280px;
-	height: 540px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
-`;
-
-// const Calendar = styled.div`
-// 	/* 사이즈 */
-// 	width: 280px;
-// 	height: 290px;
-// 	/* 임시 스타일 코드 */
-// 	background-color: #ccc;
-// `;
 

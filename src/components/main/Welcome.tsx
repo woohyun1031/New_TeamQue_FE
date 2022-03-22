@@ -1,21 +1,54 @@
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../store/configStore';
 import styled from 'styled-components';
 import character from '../../assets/character1.png';
-import { RootState } from '../../store/configStore';
 
-interface Props {
+interface WelcomeProps {
 	message: string;
 }
 
-const Welcome: React.FC<Props> = ({ message }) => {
-	const user = useSelector((state: RootState) => state.user)
+const Welcome: React.FC<WelcomeProps> = ({ message }) => {
+	const user = useSelector((state: RootState) => state.user);
+	const [isChanging, setIsChanging] = useState(false);
+	const [input, setInput] = useState('');
+
+	const onClick = () => {
+		setIsChanging(true);
+	};
+
+	const focusOut = () => {
+		setIsChanging(false);
+	};
+
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setInput(e.target.value);
+	};
+	
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		console.log(input);
+		setInput('')
+		setIsChanging(false);
+	};
 
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
 			<Name>{user.user_info.nickname} 님</Name>
 			<MessageBox>
-				<Message>{message}</Message>
+				{isChanging ? (
+					<form onSubmit={onSubmit}>
+						<Input
+							type='text'
+							autoFocus
+							onBlur={focusOut}
+							onChange={onChange}
+						/>
+					</form>
+				) : (
+					<Message onClick={onClick}>{message}</Message>
+				)}
 				<MessageDecoration />
 			</MessageBox>
 			<Character src={character} />
@@ -32,7 +65,7 @@ const Container = styled.div`
 	border-radius: 7px;
 	padding: 36px 40px;
 	position: relative;
-	transition: .1s;
+	transition: 0.1s;
 	&:hover {
 		transform: scale(1.025);
 	}
@@ -87,4 +120,12 @@ const Character = styled.img<CharacterProps>`
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
-`
+`;
+
+const Input = styled.input`
+	outline: none;
+	border: none;
+	background-color: #718aff;
+	color: #fff;
+	text-align: center;
+`;

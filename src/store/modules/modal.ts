@@ -17,7 +17,7 @@ const ModalSlice = createSlice({
 		},
 		changeModal(
 			state,
-			action: PayloadAction<'notSignIn' | 'signIn' | 'signUp'>
+			action: PayloadAction<'notSignIn' | 'signIn' | 'signUp' | 'addClass'>
 		) {
 			state.type = action.payload;
 		},

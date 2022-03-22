@@ -88,7 +88,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
 
 const Container = styled.div`
 	/* 사이즈 */
-	width: 280px;
+	width: 290px;
 	height: 320px;
 `;
 
@@ -99,7 +99,7 @@ const Title = styled.h2`
 
 const ScheduleBox = styled.ul`
 	/* 사이즈 */
-	width: 285px;
+	width: 290px;
 	height: 285px;
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
@@ -157,6 +157,7 @@ const CloseButton = styled.img`
 `;
 
 const AddButton = styled.button`
+	display: block;
 	width: 270px;
 	height: 80px;
 	background: none;
@@ -166,6 +167,10 @@ const AddButton = styled.button`
 	color: #718aff;
 	font-size: 30px;
 	margin-bottom: 10px;
+	transition: 0.1s;
+	&:hover {
+		transform: scale(1.025);
+	}
 `;
 
 const InputBox = styled.input`

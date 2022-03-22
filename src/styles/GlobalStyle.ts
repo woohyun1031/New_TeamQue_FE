@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   }
   img {
     /* 정확한 의미 찾기 */
-    vertical-align: top;
+    vertical-align: middle;
   }
   li {
     list-style: none;

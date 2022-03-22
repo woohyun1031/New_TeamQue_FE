@@ -76,7 +76,10 @@ export const apis = {
 		instance.post('/auth/refresh', refreshToken),
 
 	// 클래스
-	loadClass: () => instance.get('/class/student/class'),
+	loadLearnClass: () => instance.get('/class/student/class'),
+	loadTeachClass: () => instance.get('/class'),
+	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
+	loadClassBoards: (classId: string) => instance.get(`/boards/${classId}`),
 
 	// todo
 	loadTodo: () => instance.get('/boards/todo'),

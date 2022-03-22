@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
+import logo from '../../assets/smallLogo.png'
+
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
@@ -41,29 +43,23 @@ const SignIn: React.FC = () => {
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<h2>Sign Up</h2>
-			<label>
-				Email:
-				<input
+			<img src={logo}/>
+				<Input
 					type='email'
-					placeholder='Email'
+					placeholder='이메일'
 					name='userEmail'
 					onChange={onChange}
 				/>
-			</label>
-			<label>
-				Password:
-				<input
+				<Input
 					type='password'
 					name='password'
 					onChange={onChange}
-					placeholder='Password'
+					placeholder='비밀번호'
 				/>
-			</label>
-			<button>Sign In</button>
+			<Button>로그인</Button>
 			<p>or</p>
-			<button>Sign in with Google</button>
-			<button onClick={onKakaoClick}>Login with Kakao</button>
+			{/* <Button>Sign in with Google</Button> */}
+			<KakaoButton onClick={onKakaoClick}>카카오 로그인</KakaoButton>
 			<p>
 				Don&apos;t have an account? <button onClick={toSignUp}>Sign up</button>
 			</p>
@@ -77,4 +73,37 @@ const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
+	width: 500px;
+	height: 500px;
+	padding: 50px;
 `;
+
+const Input = styled.input`
+	width: 260px;
+	height: 40px;
+	border-radius: 7px;
+	border: none;
+	background-color: #F4F4F4;
+	font-size: 14px;
+	padding-left: 20px;
+	outline: none;
+	&::placeholder {
+		color: #D2D2D2
+	}
+`
+
+const Button = styled.button`
+	width: 260px;
+	height: 40px;
+	border-radius: 7px;
+	border: none;
+	background-color: #718AFF;
+	color: #fff;
+	font-size: 14px;
+`
+
+const KakaoButton = styled(Button)`
+	background-color: #FEE500;
+	color: #3C1E1E;
+`

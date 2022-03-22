@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/configStore';
 import { closeModal } from '../../store/modules/modal';
+import AddClass from './AddClass';
 import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -22,6 +23,9 @@ const Modal: React.FC = () => {
 			break
 		case 'signUp':
 			contents = <SignUp />;
+			break
+		case 'addClass':
+			contents = <AddClass />;
 			break
 		default:
 			contents = null;
@@ -56,7 +60,7 @@ const Background = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(5px);
 `;
 
@@ -66,10 +70,9 @@ const Contents = styled.div`
 	align-items: center;
 	justify-content: center;
 	/* style */
-	padding: 50px;
 	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 `;
 
 const CloseButton = styled.button`

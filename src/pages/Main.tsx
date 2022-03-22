@@ -1,15 +1,30 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import apis from '../api';
 import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
+import { changeModal, openModal } from '../store/modules/modal';
 
 const Main = () => {
+	const dispatch = useDispatch()
+	const openAddClassModal = () => {
+		dispatch(openModal());
+		dispatch(changeModal('addClass'))
+	}
+	const [tabState, setTabState] = useState(true)
+	const tabLearn = () => {
+		setTabState(true)
+	}
+	const tabTeach = () => {
+		setTabState(false)
+	}
+
 	return (
 		<>
 			<UpperContainer>
-				<Welcome message='무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피었습니다무궁화꽃이피' />
+				<Welcome message='반가워요 que!입니다' />
 				<Schedule />
 				<CalendarBox>
 					<SubTitle>이번 달 한눈에 보기</SubTitle>
@@ -19,12 +34,12 @@ const Main = () => {
 			<LowerContainer>
 				<CardBox>
 					<TabButtons>
-						<TabButton>배우고 있어요</TabButton>
-						<TabButton>알려주고 있어요</TabButton>
+						<TabButton onClick={tabLearn} isSelected={tabState}>배우고 있어요</TabButton>
+						<TabButton onClick={tabTeach} isSelected={!tabState}>알려주고 있어요</TabButton>
 					</TabButtons>
-					<CardList />
+					<CardList tabState={tabState}/>
 				</CardBox>
-				<AddCardBox>
+				<AddCardBox onClick={openAddClassModal}>
 					<h1>+</h1>
 					<p>강의 개설하기</p>
 				</AddCardBox>
@@ -63,6 +78,8 @@ const LowerContainer = styled.div`
 
 const CardBox = styled.div``;
 
+
+
 const TabButtons = styled.div`
 	/* 사이즈 */
 	width: 360px;
@@ -74,14 +91,17 @@ const TabButtons = styled.div`
 	justify-content: space-between;
 `;
 
-const TabButton = styled.button`
+interface TabButtonProps {
+	isSelected: boolean
+}
+
+const TabButton = styled.button<TabButtonProps>`
 	background: none;
 	border: none;
 	font-size: 27px;
 	font-weight: 700;
-	&:nth-child(2) {
-		color: #c4c4c4;
-	}
+	transition: .1s;
+	${props => !props.isSelected && 'color: #c4c4c4;'}
 `;
 
 const AddCardBox = styled.div`

@@ -3,24 +3,41 @@ import styled from 'styled-components';
 import apis from '../../api';
 import Card from './Card';
 
-const CardList = () => {
-	const [cards, setCards] = useState() as any;
-	const fetch = async () => {
-		const response = await apis.loadClass();
-		setCards(response.data);
+interface Props {
+	tabState: boolean;
+}
+
+const CardList: React.FC<Props> = ({ tabState }) => {
+	const [learnCards, setLearnCards] = useState() as any;
+	const [teachCards, setTeachCards] = useState() as any;
+	const fetch1 = async () => {
+		const response = await apis.loadLearnClass();
+		console.log(response.data)
+		setLearnCards(response.data);
 	};
-	useEffect(() => {
-		fetch();
-	}, []);
+	const fetch2 = async () => {
+		const response = await apis.loadTeachClass();
+		setTeachCards(response.data);
+	};
 
 	useEffect(() => {
-		console.log(cards);
-	}, [cards]);
+		fetch1();
+		fetch2();
+	}, []);
+
+  useEffect(()=> {
+
+    console.log(learnCards, teachCards)
+  },[learnCards, teachCards])
+
+
 	return (
 		<Container>
-			{cards && cards.map((card: any) => (
-				<Card key={card.id} {...card}/>
-			))}
+			{tabState
+				? learnCards &&
+					learnCards.map((card: any) => <Card key={card.id} {...card.__class__} />)
+				: teachCards &&
+					teachCards.map((card: any) => <Card key={card.id} {...card} />)}
 		</Container>
 	);
 };
@@ -28,21 +45,57 @@ const CardList = () => {
 export default CardList;
 
 const Container = styled.div`
-	/* 사이즈 */
 	width: 850px;
 	height: 400px;
 	overflow-x: scroll;
 	white-space: nowrap;
 	&::-webkit-scrollbar {
-		height: 5px; /*스크롤바의 너비*/
+		height: 5px;
 	}
-
 	&::-webkit-scrollbar-thumb {
-		background-color: #ccc; /*스크롤바의 색상*/
+		background-color: #ccc;
 		border-radius: 10px;
 	}
-
-	&::-webkit-scrollbar-track {
-		/*   background-color: yellow; /*스크롤바 트랙 색상*/
-	}
 `;
+
+
+[
+ {
+    id: '1',
+    createdAt: '2022-03-17T09:29:42.678Z',
+    updatedAt: '2022-03-17T09:29:42.678Z',
+    state: '',
+    userId: '11',
+    username: '',
+    classId: '1',
+    class :{
+      id: '1',
+      title: '야너두',
+      time: '매일 8시',
+      teacher: '안녕하세',
+      imageUrl: null,
+      userId: '11',
+      createdAt: '2022-03-17T09:14:42.213Z',
+      updatedAt: '2022-03-17T09:14:42.213Z'
+    }
+  },
+   {
+    id: 2,
+    createdAt: '2022-03-19T12:07:31.125Z',
+    updatedAt: '2022-03-19T12:07:31.125Z',
+    state: '',
+    userId: 11,
+    username: '안녕하세',
+    classId: 2,
+    class: {
+      id: 2,
+      title: 'url 없는 테스트',
+      time: '매일 6시',
+      teacher: '안녕하세',
+      imageUrl: null,
+      userId: 11,
+      createdAt: '2022-03-19T03:44:57.181Z',
+      updatedAt: '2022-03-19T03:44:57.181Z'
+    }
+  }
+]
