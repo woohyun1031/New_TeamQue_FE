@@ -12,7 +12,7 @@ export default function LectureRoom() {
             {/* 메인컨텐츠 */}
             <MainCont/>                          
             {/* 서브컨텐츠 */}
-            <LectureReact/>            
+            <LectureReact/>
           </Group>
           {/* 채팅 */}
           <LectureChating/>
