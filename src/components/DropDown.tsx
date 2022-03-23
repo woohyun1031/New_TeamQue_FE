@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from '../store/modules/user';
 
@@ -32,24 +31,22 @@ const DropDown: React.FC<Props> = ({ name }) => {
 
 export default DropDown;
 
-const Container = styled.div`
-	position: relative;
-`;
+// const Container = styled.div`
+// 	position: relative;
+// 	&:hover + ${Menu} {
+// 		display: flex;
+// 	}
+// `;
 
-const Name = styled.button`
-	border: none;
-	background: none;
-	/* 임시 스타일 */
-	font-size: 14px;
-	font-weight: 600;
-`;
+
 
 interface MenuProps {
 	isOpen: boolean;
 }
 
 const Menu = styled.ul<MenuProps>`
-	${(props) => !props.isOpen && 'opacity: 0;'}
+	/* ${(props) => !props.isOpen && 'opacity: 0;'} */
+	/* opacity: 0; */
 	/* 사이즈 */
 	width: 80px;
 	height: 65px;
@@ -70,6 +67,21 @@ const Menu = styled.ul<MenuProps>`
 	& li:nth-child(2) {
 		color: #718aff;
 		cursor: pointer;
+	}
+`;
+
+const Name = styled.button`
+	border: none;
+	background: none;
+	/* 임시 스타일 */
+	font-size: 14px;
+	font-weight: 600;
+`;
+
+const Container = styled.div`
+	position: relative;
+	&:hover ${Menu} {
+		display: flex;
 	}
 `;
 

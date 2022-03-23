@@ -2,7 +2,6 @@ import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/configStore';
-import { closeModal } from '../../store/modules/modal';
 import AddClass from './AddClass';
 import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
@@ -11,7 +10,6 @@ import SignUp from './SignUp';
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
 const Modal: React.FC = () => {
-	const dispatch = useDispatch()
 	const modal = useSelector((state: RootState) => state.modal);
 	let contents;
 	switch (modal.type) {
@@ -30,18 +28,11 @@ const Modal: React.FC = () => {
 		default:
 			contents = null;
 	}
-	const close = () => {
-		dispatch(closeModal())
-	}
+
 	if (!modal.isOpen) return null;
 	return createPortal(
 		<Background>
 			<Contents>
-				<CloseButton
-					onClick={close}
-				>
-					X
-				</CloseButton>
 				{contents}
 			</Contents>
 		</Background>,
@@ -73,13 +64,4 @@ const Contents = styled.div`
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
-`;
-
-const CloseButton = styled.button`
-	background: none;
-	border: none;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
 `;

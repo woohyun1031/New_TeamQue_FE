@@ -65,10 +65,6 @@ const Container = styled.div`
 	border-radius: 7px;
 	padding: 36px 40px;
 	position: relative;
-	transition: 0.1s;
-	&:hover {
-		transform: scale(1.025);
-	}
 `;
 
 const WelcomeMessage = styled.p`

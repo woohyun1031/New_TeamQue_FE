@@ -8,8 +8,26 @@ const colors = {
 	lightGray: '#F4F4F4',
 };
 
+const fontSizes = {
+  title: '20px',
+  welcome: '30px',
+}
+
+const commons = {
+  button: `
+    cursor: pointer;
+    border: none;
+  `,
+  input: `
+    
+  `
+}
+
 const theme = {
 	colors,
+  fontSizes,
+  commons
 };
+
 
 export default theme;

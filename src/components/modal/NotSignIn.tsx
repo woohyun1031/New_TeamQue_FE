@@ -33,34 +33,32 @@ export default NotSignIn;
 const Container = styled.div`
 	width: 550px;
 	height: 300px;
-	padding: 50px;
+	padding: 40px 50px;
 	position: relative;
 `;
 
 const Message = styled.h2`
-	font-size: 26px;
+	font-size: ${({ theme }) => theme.fontSizes.welcome};
 	color: ${({ theme }) => theme.colors.black};
 `;
 
 const Button = styled.button`
-	display: block;
 	width: 300px;
 	height: 50px;
 	border-radius: 7px;
-	border: none;
+	margin-top: 10px;
+	display: block;
+  border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.white};
 	font-size: 22px;
-	font-weight: bold;
-	margin-left: 0px;
-	margin-top: 10px;
-	cursor: pointer;
+  font-weight: 500;
+  cursor: pointer;
 `;
 
 const LightButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.brightMain};
 `
-
 
 const Character = styled.img`
 	position: absolute;

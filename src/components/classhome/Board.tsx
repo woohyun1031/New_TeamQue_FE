@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
+import star from '../../assets/star.png';
+import dot from '../../assets/dot.png';
 
 const Board = () => {
+	const navigate = useNavigate();
 	const { classid } = useParams();
 	const [notice, setNotice] =
 		useState<
@@ -13,6 +16,7 @@ const Board = () => {
 		useState<
 			{ id: number; title: string; writer: string; createdAt: string }[]
 		>();
+
 	const fetch = async () => {
 		const response = await apis.loadClassBoards(classid as string);
 		setNotice(response.data.boardListNotice);
@@ -26,6 +30,7 @@ const Board = () => {
 	useEffect(() => {
 		console.log(question);
 	}, [question]);
+
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
@@ -43,21 +48,37 @@ const Board = () => {
 					{notice &&
 						notice.map((row) => (
 							<tr key={row.id}>
-								<td>🎇</td>
+								<td>
+									<img src={star} />
+								</td>
 								<td>공지</td>
-								<td>{row.title}</td>
+								<td
+									onClick={() => {
+										navigate(`/classhome/${classid}/${row.id}`);
+									}}
+								>
+									{row.title}
+								</td>
 								<td>{row.writer}</td>
-								<td>{row.createdAt}</td>
+								<td>{row.createdAt.split('T')[0]}</td>
 							</tr>
 						))}
 					{question &&
 						question.map((row) => (
 							<tr key={row.id}>
-								<td>.</td>
+								<td>
+									<img src={dot} />
+								</td>
 								<td>질문</td>
-								<td>{row.title}</td>
+								<td
+									onClick={() => {
+										navigate(`/classhome/${classid}/${row.id}`);
+									}}
+								>
+									{row.title}
+								</td>
 								<td>{row.writer}</td>
-								<td>{row.createdAt}</td>
+								<td>{row.createdAt.split('T')[0]}</td>
 							</tr>
 						))}
 				</tbody>

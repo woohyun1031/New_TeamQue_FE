@@ -1,16 +1,23 @@
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import Board from '../components/classhome/Board';
 import ClassInfo from '../components/classhome/ClassInfo';
+import Detail from '../components/classhome/Detail';
 
 const ClassHome = () => {
+	const { postid } = useParams();
+	
+
+
 	return (
 		<Container>
 			<LeftBox>
 				<ClassInfo />
 				<Calendar />
 			</LeftBox>
-			<Board />
+			{postid ? <Detail /> : <Board />}
 		</Container>
 	);
 };
@@ -36,5 +43,3 @@ const LeftBox = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 `;
-
-

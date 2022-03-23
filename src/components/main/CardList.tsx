@@ -35,7 +35,7 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 		<Container>
 			{tabState
 				? learnCards &&
-					learnCards.map((card: any) => <Card key={card.id} {...card.__class__} />)
+					learnCards.map((card: any) => <Card key={card.id} state={card.state} {...card.class} />)
 				: teachCards &&
 					teachCards.map((card: any) => <Card key={card.id} {...card} />)}
 		</Container>

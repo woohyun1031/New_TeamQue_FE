@@ -7,9 +7,12 @@ interface CardProps {
 	imageUrl: string;
 	teacher: string;
 	title: string;
+	time: string;
+	state?: string;
 }
 
-const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title }) => {
+const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) => {
+	console.log(id, imageUrl, teacher, title, time, state)
 	const navigate = useNavigate();
 	const toClassRoom = () => {
 		navigate(`/classroom/${id}`);
@@ -24,12 +27,13 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title }) => {
 				onClick={toClassRoom}
 			/>
 			<BadgeBox>
+				{state && state}
 				<Badge>진행중</Badge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
 			<Title>{title}</Title>
 			<Teacher>{teacher} 님</Teacher>
-			<TimeTable>화 20:00 / 목 20:00</TimeTable>
+			<TimeTable>{time}</TimeTable>
 			<HomeButton src={home} onClick={toClassHome} />
 		</Container>
 	);

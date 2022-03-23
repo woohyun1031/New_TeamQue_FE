@@ -5,7 +5,7 @@ import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 import logo from '../../assets/smallLogo.png'
-
+import kakao from '../../assets/kakao.png';
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
@@ -35,33 +35,36 @@ const SignIn: React.FC = () => {
 		dispatch(changeModal('signUp'));
 	};
 
-	const onKakaoClick = (e : MouseEvent<HTMLButtonElement>) => {
+	const onKakaoClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		console.log('카카오 로그인');    
-    window.location.href = KAKAO_API_URL
-  }
+		console.log('카카오 로그인');
+		window.location.href = KAKAO_API_URL;
+	};
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<img src={logo}/>
-				<Input
-					type='email'
-					placeholder='이메일'
-					name='userEmail'
-					onChange={onChange}
-				/>
-				<Input
-					type='password'
-					name='password'
-					onChange={onChange}
-					placeholder='비밀번호'
-				/>
+			<img src={logo} />
+			<Input
+				type='email'
+				placeholder='이메일'
+				name='userEmail'
+				onChange={onChange}
+			/>
+			<Input
+				type='password'
+				name='password'
+				onChange={onChange}
+				placeholder='비밀번호'
+			/>
 			<Button>로그인</Button>
 			<p>or</p>
 			{/* <Button>Sign in with Google</Button> */}
-			<KakaoButton onClick={onKakaoClick}>카카오 로그인</KakaoButton>
+			<KakaoButton onClick={onKakaoClick}>
+				<img src={kakao} />
+				카카오 로그인
+			</KakaoButton>
 			<p>
-				Don&apos;t have an account? <button onClick={toSignUp}>Sign up</button>
+				Don&apos;t have an account?  <SignUp onClick={toSignUp}>Sign up</SignUp>
 			</p>
 		</Form>
 	);
@@ -84,26 +87,43 @@ const Input = styled.input`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #F4F4F4;
+	background-color: #f4f4f4;
 	font-size: 14px;
 	padding-left: 20px;
 	outline: none;
 	&::placeholder {
-		color: #D2D2D2
+		color: #d2d2d2;
 	}
-`
+`;
 
 const Button = styled.button`
 	width: 260px;
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #718AFF;
+	background-color: #718aff;
 	color: #fff;
 	font-size: 14px;
-`
+	font-weight: 600;
+	position: relative;
+	cursor: pointer;
+`;
 
 const KakaoButton = styled(Button)`
-	background-color: #FEE500;
-	color: #3C1E1E;
+	background-color: #fee500;
+	color: #3c1e1e;
+	& img {
+		position: absolute;
+		left: 20px;
+		top: 15px;
+	}
+`;
+
+const SignUp = styled.button`
+	border: none;
+	background: none;
+	color: #F73535;
+	text-decoration: underline;
+	font-size: 16px;
+	cursor: pointer;
 `

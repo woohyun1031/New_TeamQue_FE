@@ -124,7 +124,7 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	align-items: center;
 	justify-content: center;
 	border-radius: 7px;
-	background-color: ${props => props.theme.color.main};
+	background-color: ${props => props.theme.colors.main};
 	margin: 0 auto;
 	margin-bottom: 23px;
 	color: #fff;

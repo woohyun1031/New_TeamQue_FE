@@ -75,11 +75,19 @@ export const apis = {
 	refresh: (refreshToken: string) =>
 		instance.post('/auth/refresh', refreshToken),
 
+	withdrawal: () => instance.delete('auth/withdrawal'),
+
 	// 클래스
+	createClass: (classInfo: object) => instance.post('/class', classInfo),
 	loadLearnClass: () => instance.get('/class/student/class'),
 	loadTeachClass: () => instance.get('/class'),
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadClassBoards: (classId: string) => instance.get(`/boards/${classId}`),
+	loadStudents: (classId: string) => instance.get(`class/student/${classId}`),
+
+	// 게시판
+	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
+
 
 	// todo
 	loadTodo: () => instance.get('/boards/todo'),
