@@ -1,4 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
+import Chat from '../components/classroom/Chat';
+import Reaction from '../components/classroom/Reaction';
 
 const ClassRoom = () => {
 	return (
@@ -6,9 +9,9 @@ const ClassRoom = () => {
 			<LeftBox>
 				<ClassInfo />
 				<Screen />
-				<ReactionBox />
+				<Reaction />
 			</LeftBox>
-			<ChatBox />
+			<Chat />
 		</Container>
 	);
 };
