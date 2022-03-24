@@ -1,12 +1,9 @@
 import styled from 'styled-components';
-import logo from '../../assets/smallLogo.png'
-
-
 
 const SignUp: React.FC = () => {
 	return (
 		<Form>
-				<img src={logo} />
+				<img src='/images/smallLogo.png' />
 				<Input type='email' placeholder='이메일'/>
 				<Input type='text' placeholder='닉네임'/>
 				<Input type='password' placeholder='비밀번호'/>

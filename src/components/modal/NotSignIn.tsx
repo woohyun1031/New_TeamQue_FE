@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
-import logo from '../../assets/smallLogo.png';
 import character from '../../assets/character1.png';
 
 const NotSignIn = () => {
@@ -13,7 +12,7 @@ const NotSignIn = () => {
 		<Container>
 			<Message>환영합니다,</Message>
 			<Message>
-				<img src={logo} /> 입니다.
+				<img src='/images/smallLogo.png' /> 입니다.
 			</Message>
 			<Button onClick={toSignIn}>큐하러 가기</Button>
 			<LightButton

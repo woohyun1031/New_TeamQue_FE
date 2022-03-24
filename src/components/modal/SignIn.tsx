@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
-import logo from '../../assets/smallLogo.png'
 import kakao from '../../assets/kakao.png';
 
 const SignIn: React.FC = () => {
@@ -43,7 +42,7 @@ const SignIn: React.FC = () => {
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<img src={logo} />
+			<img src='/images/smallLogo.png' />
 			<Input
 				type='email'
 				placeholder='이메일'

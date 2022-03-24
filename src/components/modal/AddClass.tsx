@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import apis from '../../api';
+import ModalCloseButton from './ModalCloseButton';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -65,6 +66,7 @@ const AddClass = () => {
 
 	return (
 		<Form>
+			<ModalCloseButton />
 			<h1>클래스 이름</h1>
 			<input type='text' name='title' onChange={onChange} />
 			<h1>썸네일 URL</h1>

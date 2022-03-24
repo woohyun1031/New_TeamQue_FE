@@ -6,8 +6,6 @@ import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
 import { changeModal, openModal } from '../store/modules/modal';
-import character2 from '../assets/character2.png';
-import arm from '../assets/arm2.png';
 
 const Main = () => {
 	const dispatch = useDispatch();
@@ -48,8 +46,8 @@ const Main = () => {
 				<AddCardBox onClick={openAddClassModal}>
 					<h1>+</h1>
 					<p>강의 개설하기</p>
-					<Arm src={arm} />
-					<Character src={character2} alt='' />
+					<Arm src='/images/arm2.png' />
+					<Character src='/images/character2.png' alt='' />
 				</AddCardBox>
 			</LowerContainer>
 		</>

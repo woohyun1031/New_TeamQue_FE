@@ -8,7 +8,6 @@ import {
 	loadTodos,
 	toggleComplete,
 } from '../../store/modules/todo';
-import closeButton from '../../assets/closeButton.png';
 
 const Todo = () => {
 	const dispatch = useDispatch();
@@ -81,7 +80,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
 	return (
 		<ScheduleItem isComplete={isComplete} onClick={toggle}>
 			{content}
-			<CloseButton onClick={deleteto} src={closeButton} />
+			<CloseButton onClick={deleteto} src='/images/closeButton.png' />
 		</ScheduleItem>
 	);
 };

@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/configStore';
 import styled from 'styled-components';
-import character from '../../assets/character1.png';
 
 interface WelcomeProps {
 	message: string;
@@ -51,7 +50,7 @@ const Welcome: React.FC<WelcomeProps> = ({ message }) => {
 				)}
 				<MessageDecoration />
 			</MessageBox>
-			<Character src={character} />
+			<Character src='/images/character1.png' />
 		</Container>
 	);
 };

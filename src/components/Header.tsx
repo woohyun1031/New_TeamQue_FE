@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import DropDown from './DropDown';
 import { RootState } from '../store/configStore';
 import { useSelector } from 'react-redux';
@@ -10,7 +9,7 @@ const Header = () => {
 	return (
 		<>
 			<Container>
-				<Logo src={logo} to='/' />
+				<Logo src='/images/logo.png' to='/' />
 				<DropDown name={user.user_info.nickname} />
 			</Container>
 		</>
