@@ -34,7 +34,7 @@ const App = () => {
 			<Routes>
 				<Route path='/' element={<Main />} />
 				<Route path='/classroom/:classid' element={<ClassRoom />} />
-				<Route path='/classhome/:classid' element={<ClassHome />} />
+				<Route path='/classhome/:classid/:page' element={<ClassHome />} />
 				<Route path='/classhome/:classid/:postid' element={<ClassHome />} />
 				<Route path='/auth/kakao/callback' element={<Kakao />} />
 			</Routes>

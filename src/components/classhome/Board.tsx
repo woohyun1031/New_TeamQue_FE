@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
 import star from '../../assets/star.png';
@@ -7,7 +7,7 @@ import dot from '../../assets/dot.png';
 
 const Board = () => {
 	const navigate = useNavigate();
-	const { classid } = useParams();
+	const { classid, page } = useParams();
 	const [notice, setNotice] =
 		useState<
 			{ id: number; title: string; writer: string; createdAt: string }[]
@@ -17,15 +17,23 @@ const Board = () => {
 			{ id: number; title: string; writer: string; createdAt: string }[]
 		>();
 
+	const [pages, setPages] = useState<{ page: number; selected: boolean }[]>([]);
+
 	const fetch = async () => {
-		const response = await apis.loadClassBoards(classid as string);
+		const response = await apis.loadClassBoards(`${classid}?page=${page}` as string);
 		setNotice(response.data.boardListNotice);
 		setQuestion(response.data.boardListquestion);
+		const newPages = [];
+		for (let i = 1; i <= response.data.pages; i++) {
+			newPages.push({ page: i, selected: false });
+		}
+		newPages[0].selected = true
+		setPages(newPages);
 		console.log(response.data);
 	};
 	useEffect(() => {
 		fetch();
-	}, []);
+	}, [page]);
 
 	useEffect(() => {
 		console.log(question);
@@ -84,11 +92,11 @@ const Board = () => {
 				</tbody>
 			</Table>
 			<Pagenation>
-				<button>1</button>
-				<button>2</button>
-				<button>3</button>
-				<button>4</button>
-				<button>5</button>
+				{pages.map((page) => (
+					<Page key={page.page} selected={page.selected} onClick={() => {navigate(`/classhome/${classid}/${page.page}`)}}>
+						{page.page}
+					</Page>
+				))}
 			</Pagenation>
 			<AddButton>+</AddButton>
 		</Container>
@@ -129,15 +137,6 @@ const Pagenation = styled.div`
 	bottom: 50px;
 	right: 50%;
 	transform: translateX(50%);
-	& button {
-		border: none;
-		background: none;
-		margin: 0 8px;
-	}
-	& button:nth-child(1) {
-		color: #5370f5;
-		font-weight: 800;
-	}
 `;
 
 const AddButton = styled.button`
@@ -153,4 +152,15 @@ const AddButton = styled.button`
 	border: none;
 	background-color: #718aff;
 	color: #fff;
+`;
+
+interface PageProps {
+	selected: boolean;
+}
+
+const Page = styled.button<PageProps>`
+	border: none;
+	background: none;
+	margin: 0 8px;
+	${(props) => props.selected? 'color: #5370f5; font-weight: 700;': ''}
 `;

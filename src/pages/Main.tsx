@@ -6,20 +6,22 @@ import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
 import { changeModal, openModal } from '../store/modules/modal';
+import character2 from '../assets/character2.png';
+import arm from '../assets/arm2.png';
 
 const Main = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const openAddClassModal = () => {
 		dispatch(openModal());
-		dispatch(changeModal('addClass'))
-	}
-	const [tabState, setTabState] = useState(true)
+		dispatch(changeModal('addClass'));
+	};
+	const [tabState, setTabState] = useState(true);
 	const tabLearn = () => {
-		setTabState(true)
-	}
+		setTabState(true);
+	};
 	const tabTeach = () => {
-		setTabState(false)
-	}
+		setTabState(false);
+	};
 
 	return (
 		<>
@@ -34,14 +36,20 @@ const Main = () => {
 			<LowerContainer>
 				<CardBox>
 					<TabButtons>
-						<TabButton onClick={tabLearn} isSelected={tabState}>배우고 있어요</TabButton>
-						<TabButton onClick={tabTeach} isSelected={!tabState}>알려주고 있어요</TabButton>
+						<TabButton onClick={tabLearn} isSelected={tabState}>
+							배우고 있어요
+						</TabButton>
+						<TabButton onClick={tabTeach} isSelected={!tabState}>
+							알려주고 있어요
+						</TabButton>
 					</TabButtons>
-					<CardList tabState={tabState}/>
+					<CardList tabState={tabState} />
 				</CardBox>
 				<AddCardBox onClick={openAddClassModal}>
 					<h1>+</h1>
 					<p>강의 개설하기</p>
+					<Arm src={arm} />
+					<Character src={character2} alt='' />
 				</AddCardBox>
 			</LowerContainer>
 		</>
@@ -78,8 +86,6 @@ const LowerContainer = styled.div`
 
 const CardBox = styled.div``;
 
-
-
 const TabButtons = styled.div`
 	/* 사이즈 */
 	width: 360px;
@@ -92,7 +98,7 @@ const TabButtons = styled.div`
 `;
 
 interface TabButtonProps {
-	isSelected: boolean
+	isSelected: boolean;
 }
 
 const TabButton = styled.button<TabButtonProps>`
@@ -100,8 +106,8 @@ const TabButton = styled.button<TabButtonProps>`
 	border: none;
 	font-size: 27px;
 	font-weight: 700;
-	transition: .1s;
-	${props => !props.isSelected && 'color: #c4c4c4;'}
+	transition: 0.1s;
+	${(props) => !props.isSelected && 'color: #c4c4c4;'}
 `;
 
 const AddCardBox = styled.div`
@@ -119,13 +125,14 @@ const AddCardBox = styled.div`
 	justify-content: center;
 	transition: 0.1s;
 	cursor: pointer;
+	position: relative;
 	& h1 {
 		font-size: 30px;
 		font-weight: 300;
 		margin-bottom: 20px;
 	}
 	&:hover {
-		transform: scale(1.05);
+		background-color: #fdfdfd;
 	}
 `;
 
@@ -142,3 +149,16 @@ const SubTitle = styled.h2`
 	font-size: 20px;
 	margin-bottom: 10px;
 `;
+
+const Arm = styled.img`
+	position: absolute;
+	right: -15px;
+	bottom: 60px;
+`;
+
+const Character = styled.img`
+	position: absolute;
+	z-index: -1;
+	right: -200px;
+	bottom: 0px;
+`

@@ -18,7 +18,7 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 		navigate(`/classroom/${id}`);
 	};
 	const toClassHome = () => {
-		navigate(`/classhome/${id}`);
+		navigate(`/classhome/${id}/1`);
 	};
 	return (
 		<Container>
