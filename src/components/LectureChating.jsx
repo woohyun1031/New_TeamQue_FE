@@ -6,7 +6,6 @@ import io from 'socket.io-client';
 function LectureChating() {
 	const [chatMessage, setChatMessage] = useState(''); //input message
 	const [chats, setChat] = useState([]); //chat 내용 모음
-
 	const [check, setChecked] = useState({
 		commonCheck: '',
 		questionCheck: '',
@@ -40,7 +39,6 @@ function LectureChating() {
 			});
 		}
 		setConnect(true);
-
 		socket.current.on('recieveQuestionSolve', ({ chatId }) => {
 			setChat(
 				chats.map((chat) =>
@@ -55,7 +53,6 @@ function LectureChating() {
 			];
 			setChat(newChat);
 		});
-
 		socket.current.on(
 			'receiveQuestionMessage',
 			({ nickname, chatMessage, id, solution }) => {
@@ -66,7 +63,6 @@ function LectureChating() {
 				setChat(newChat);
 			}
 		);
-
 		return () => {
 			socket.current.disconnect();
 			setConnect(false);
@@ -134,6 +130,7 @@ function LectureChating() {
 			'sendQuestionSolve',
 			{ chatId: unique_id, classId },
 			() => {
+				console.log('callback solveclick');
 				setChat(
 					chats.map((chat) =>
 						chat.id === unique_id ? { ...chat, solution: !chat.solution } : chat

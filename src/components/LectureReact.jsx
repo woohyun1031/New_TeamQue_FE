@@ -11,12 +11,14 @@ function LectureReact() {
 	});
 	const [isConnect, setConnect] = useState(false);
 	const [studentReact, setStudent] = useState([]);
-	const url = 'ws://xpecter.shop';
 	const params = useParams();
 	const socket = useRef();
+
+	const url = 'ws://xpecter.shop';
 	const classId = params.classId;
-	//const [isConnect, setConnect] = useState(false);
+
 	const accessToken = sessionStorage.getItem('accessToken');
+
 	const checkEnum = {
 		disconnect: 1,
 		connect: 2,
