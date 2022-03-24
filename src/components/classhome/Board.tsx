@@ -5,29 +5,33 @@ import apis from '../../api';
 import star from '../../assets/star.png';
 import dot from '../../assets/dot.png';
 
+type postType = {
+	id: number;
+	title: string;
+	writer: string;
+	createdAt: string;
+};
+
 const Board = () => {
 	const navigate = useNavigate();
 	const { classid, page } = useParams();
-	const [notice, setNotice] =
-		useState<
-			{ id: number; title: string; writer: string; createdAt: string }[]
-		>();
-	const [question, setQuestion] =
-		useState<
-			{ id: number; title: string; writer: string; createdAt: string }[]
-		>();
-
+	const [notice, setNotice] = useState<postType[]>();
+	const [question, setQuestion] = useState<postType[]>();
 	const [pages, setPages] = useState<{ page: number; selected: boolean }[]>([]);
 
 	const fetch = async () => {
-		const response = await apis.loadClassBoards(`${classid}?page=${page}` as string);
+		const response = await apis.loadClassBoards(
+			`${classid}?page=${page}` as string
+		);
 		setNotice(response.data.boardListNotice);
 		setQuestion(response.data.boardListquestion);
 		const newPages = [];
 		for (let i = 1; i <= response.data.pages; i++) {
 			newPages.push({ page: i, selected: false });
 		}
-		newPages[0].selected = true
+		if (page) {
+			newPages[parseInt(page) - 1].selected = true;
+		}
 		setPages(newPages);
 		console.log(response.data);
 	};
@@ -78,13 +82,13 @@ const Board = () => {
 									<img src={dot} />
 								</td>
 								<td>질문</td>
-								<td
+								<PostTitle
 									onClick={() => {
-										navigate(`/classhome/${classid}/${row.id}`);
+										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
-								</td>
+								</PostTitle>
 								<td>{row.writer}</td>
 								<td>{row.createdAt.split('T')[0]}</td>
 							</tr>
@@ -93,7 +97,13 @@ const Board = () => {
 			</Table>
 			<Pagenation>
 				{pages.map((page) => (
-					<Page key={page.page} selected={page.selected} onClick={() => {navigate(`/classhome/${classid}/${page.page}`)}}>
+					<Page
+						key={page.page}
+						selected={page.selected}
+						onClick={() => {
+							navigate(`/classhome/${classid}/${page.page}`);
+						}}
+					>
 						{page.page}
 					</Page>
 				))}
@@ -162,5 +172,9 @@ const Page = styled.button<PageProps>`
 	border: none;
 	background: none;
 	margin: 0 8px;
-	${(props) => props.selected? 'color: #5370f5; font-weight: 700;': ''}
+	${(props) => (props.selected ? 'color: #5370f5; font-weight: 700;' : '')}
+`;
+
+const PostTitle = styled.td`
+	cursor: pointer;
 `;

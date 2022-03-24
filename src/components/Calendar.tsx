@@ -95,6 +95,7 @@ const Button = styled.button`
 	font-weight: 700;
 	font-size: 20px;
 	color: #ddd;
+	cursor: pointer;
 `;
 
 const Th = styled.th`
