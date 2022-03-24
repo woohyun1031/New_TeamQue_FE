@@ -22,7 +22,7 @@ const NotSignIn = () => {
 			>
 				큐 둘러보기
 			</LightButton>
-			<Character src={character} />
+			<Character src='/images/character1.png' />
 		</Container>
 	);
 };

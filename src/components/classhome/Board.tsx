@@ -61,7 +61,7 @@ const Board = () => {
 						notice.map((row) => (
 							<tr key={row.id}>
 								<td>
-									<img src={star} />
+									<img src='/image/star.png' />
 								</td>
 								<td>공지</td>
 								<td
@@ -79,7 +79,7 @@ const Board = () => {
 						question.map((row) => (
 							<tr key={row.id}>
 								<td>
-									<img src={dot} />
+									<img src='/image/dot.png' />
 								</td>
 								<td>질문</td>
 								<PostTitle

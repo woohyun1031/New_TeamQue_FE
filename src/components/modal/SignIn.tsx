@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
-import kakao from '../../assets/kakao.png';
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
@@ -59,7 +58,7 @@ const SignIn: React.FC = () => {
 			<p>or</p>
 			{/* <Button>Sign in with Google</Button> */}
 			<KakaoButton onClick={onKakaoClick}>
-				<img src={kakao} />
+				<img src='/images/kakao.png' />
 				카카오 로그인
 			</KakaoButton>
 			<p>
