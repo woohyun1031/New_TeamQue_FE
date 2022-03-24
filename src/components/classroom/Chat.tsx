@@ -33,10 +33,10 @@ function Chat() {
 	const url = 'ws://xpecter.shop';
 	const classId = params.classid;
 
-	const mynickname = '조상현';
-	//let nickname = sessionStorage.getItem("nickname");
-	const accessToken = 'dddd';
-	//const accessToken = sessionStorage.getItem("accessToken");
+	//const mynickname = '조상현';
+	const mynickname:any = sessionStorage.getItem("nickname");
+	//const accessToken = 'dddd';
+	const accessToken:any = sessionStorage.getItem("accessToken");
 
 	useEffect(() => {
 		const fetchData = () => {
