@@ -10,13 +10,13 @@ import Kakao from './pages/Kakao';
 import { changeModal, closeModal, openModal } from './store/modules/modal';
 import GlobalStyle from './styles/GlobalStyle';
 import { getUser } from './store/modules/user';
-import LectureRoom from './components/LectureRoom';
 
 const App = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	// redux 로직에 추가
 	const isToken = sessionStorage.getItem('accessToken') ? true : false;
+
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
@@ -38,7 +38,6 @@ const App = () => {
 				<Route path='/classhome/:classid/:page' element={<ClassHome />} />
 				<Route path='/classhome/:classid/post/:postid' element={<ClassHome />} />
 				<Route path='/auth/kakao/callback' element={<Kakao />} />
-				<Route path='/lecture/:classId' element={<LectureRoom />} />
 			</Routes>
 			<Modal />
 		</>

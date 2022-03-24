@@ -15,7 +15,7 @@ let socket: Socket;
 
 function Chat() {
 	const [chatMessage, setChatMessage] = useState(''); //input message
-	const [chats, setChat] = useState<chatType[]>(); //chat 내용 모음
+	const [chats, setChat] = useState<chatType[]>([]); //chat 내용 모음
 	const [check, setChecked] = useState({
 		commonCheck: false,
 		questionCheck: false,
@@ -31,9 +31,9 @@ function Chat() {
 	const params = useParams();
 
 	const url = 'ws://xpecter.shop';
-	const classId = params.classId;
+	const classId = params.classid;
 
-	const mynickname = '김우현';
+	const mynickname = '조상현';
 	//let nickname = sessionStorage.getItem("nickname");
 	const accessToken = 'dddd';
 	//const accessToken = sessionStorage.getItem("accessToken");
@@ -70,7 +70,6 @@ function Chat() {
 		socket.on(
 			'receiveChatMessage',
 			({ nickname, chatMessage, id }: chatType) => {
-				console.log('chat!!!!')
 				if (chats) {
 					const newChat: chatType[] = [
 						...chats,
@@ -98,7 +97,6 @@ function Chat() {
 	const sendChat = () => {
 		if (chatMessage !== '') {
 			if (queCheck === true) {
-				console.log('chat!!!!')
 				socket.emit(
 					'sendQuestionMessage',
 					{ chatMessage, classId },
@@ -155,10 +153,9 @@ function Chat() {
 			[name]: checked,
 		});
 	};
-
+	
 	const solveClick = (unique_id: string) => {
 		socket.emit('sendQuestionSolve', { chatId: unique_id, classId }, () => {
-			console.log('callback solveclick');
 			setChat(
 				chats &&
 					chats.map((chat) =>
@@ -319,8 +316,40 @@ function Chat() {
 export default Chat;
 
 const Container = styled.div`
-	width: 270px;
-	height: 850px;
-	border-radius: 10px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	position: relative;
+	height: 80vh;
+	margin: 0 4.17vw;
+	box-shadow: 0px 4px 35px 4px rgba(162, 162, 162, 0.25);
+	border-radius: 16px;
+	box-sizing: border-box;
+	width: 22%;
+
+	.group_chat_container {
+		padding: 18px;
+		height: calc(100% - 150px);
+	}
+	.chat_render_oneChat {
+		height: 100%;
+		overflow: auto;
+	}
+	.chat_textfield_container {
+		display: flex;
+		justify-content: space-between;
+		position: absolute;
+		bottom: 20px;
+		width: 92%;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.header_modal_title {
+		margin: 3.07vh 18px 2.56vh;
+	}
+	.chat_from_me {
+		border: 1px solid black;
+		border-radius: 10px;
+	}
+	.chat_from_friend {
+		border: 1px solid black;
+		border-radius: 10px;
+	}
 `;

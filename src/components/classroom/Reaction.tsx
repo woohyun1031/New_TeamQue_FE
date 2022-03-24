@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from "styled-components"
 import { useParams } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
 
@@ -37,7 +37,7 @@ function Reaction() {
 	const params = useParams();
 
 	const url = 'ws://xpecter.shop';
-	const classId = params.classId;
+	const classId = params.classid;
 
 	const accessToken = sessionStorage.getItem('accessToken');
 
@@ -49,7 +49,7 @@ function Reaction() {
 		question: 5,
 	};
 
-	const mynickname = '김우현';
+	const mynickname = '조상현';
 	const teacherNickname = '공정용';
 
 	useEffect(() => {
