@@ -4,7 +4,6 @@ const instance = axios.create({
 	baseURL: 'http://noobpro.shop:3000/',
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
-		Authorization: '',
 	},
 });
 
@@ -18,7 +17,7 @@ instance.interceptors.request.use(
 		return config;
 	},
 	(error) => {
-		alert(error + 'error');
+		alert(error + 'interceptors.request error');
 		console.log(error, 'request error');
 	}
 );

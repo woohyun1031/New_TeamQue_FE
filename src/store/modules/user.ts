@@ -21,7 +21,7 @@ export const signUp = createAsyncThunk(
 			);
 		} catch (err:any) {
 			thunkAPI.dispatch(user.actions.errorLog(err));
-			alert(err);
+			alert(err+"signUp err");
 			return thunkAPI.rejectWithValue(err.response.message);
 		}
 	}
@@ -79,7 +79,7 @@ export const nicknameSet = createAsyncThunk(
 					alert('닉네임 설정에 성공했습니다. 메인 페이지로 이동합니다.');
 				})
 		} catch (error:any){			
-			alert(error);
+			alert(error + "nicknameSet");
 			thunkAPI.dispatch(user.actions.errorLog(error));
 			return thunkAPI.rejectWithValue(error.response.message);
 		}

@@ -16,6 +16,7 @@ const App = () => {
 	const navigate = useNavigate();
 	// redux 로직에 추가
 	const isToken = sessionStorage.getItem('accessToken') ? true : false;
+
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
