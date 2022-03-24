@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import styled from "styled-components"
+import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
 
@@ -33,7 +33,7 @@ function Reaction() {
 		question: false,
 	});
 	const [isConnect, setConnect] = useState(false);
-	const [students, setStudents] = useState<studentType[]>();
+	const [students, setStudents] = useState<studentType[]>([]);
 	const params = useParams();
 
 	const url = 'ws://xpecter.shop';
@@ -49,7 +49,7 @@ function Reaction() {
 		question: 5,
 	};
 
-	const mynickname = sessionStorage.getItem("nickname");
+	const mynickname = sessionStorage.getItem('nickname');
 	const teacherNickname = '공정용';
 
 	useEffect(() => {
@@ -58,12 +58,15 @@ function Reaction() {
 			socket.emit('init', { accessToken, nickname: mynickname });
 
 			socket.on('initOk', () => {
+				console.log(isConnect, 'initOk start isConnect');
+				console.log('initOk only one');
 				socket.emit(
 					'joinRoom',
 					{ classId: Number(classId) },
 					(payload: { userList: { nickname: string; state: number }[] }) => {
 						console.log(payload, 'payload');
 						if (students) {
+							console.log(students, 'payload students');
 							setStudents(
 								Object.values(payload.userList).map((student) =>
 									student.nickname === mynickname
@@ -71,73 +74,45 @@ function Reaction() {
 										: student
 								)
 							);
+							console.log(isConnect, 'before setConnect isConnect');
 							setConnect(true);
-								setTimeout(() => {if (isConnect === true) {
-									socket.on('changeState', ({ nickname, state }) => {
-										if (students) {
-											const newStudents = students.map((student: studentType) =>
-												student.nickname === nickname
-													? { nickname: student.nickname, state }
-													: student
-											);
-											setStudents(newStudents);
-										}
-									});
-						
-									socket.on('joinUser', ({ nickname, state }) => {
-										console.log(nickname, state, 'joinUser');
-										console.log(students, 'in joinUser');
-										if (students) {
-											const newStudents = students.map((student: studentType) =>
-												student.nickname === nickname
-													? { nickname: nickname, state: state }
-													: student
-											);
-											setStudents(newStudents);
-										}
-									});
-								}}, 3000);							
+							console.log(isConnect, 'after setConnect isConnect');
+							console.log(isConnect, '인간적으로 실행되어야될 isConnect');
+							if (isConnect === true) {
+								console.log(isConnect, 'isConnect');
+								socket.on('changeState', ({ nickname, state }) => {
+									console.log('changeState!!');
+									if (students) {
+										const newStudents = students.map((student: studentType) =>
+											student.nickname === nickname
+												? { nickname: student.nickname, state }
+												: student
+										);
+										setStudents(newStudents);
+									}
+								});
+								console.log(isConnect, 'isConnect joinUser');
+								socket.on('joinUser', ({ nickname, state }) => {
+									console.log(nickname, state, 'joinUser');
+									console.log(students, 'in joinUser');
+									if (students) {
+										const newStudents = students.map((student: studentType) =>
+											student.nickname === nickname
+												? { nickname: nickname, state: state }
+												: student
+										);
+										setStudents(newStudents);
+									}
+								});
+							}
+							//setTimeout(() => {}, 1000);
 						}
 					}
 				);
 			});
 		};
-
 		fetchData();
-	}, []);
-
-	// useEffect(() => {
-	// 	console.log(isConnect, 'isConnect');
-	// 	if (isConnect === true) {
-	// 		socket.on('changeState', ({ nickname, state }) => {
-	// 			if (students) {
-	// 				const newStudents = students.map((student: studentType) =>
-	// 					student.nickname === nickname
-	// 						? { nickname: student.nickname, state }
-	// 						: student
-	// 				);
-	// 				setStudents(newStudents);
-	// 			}
-	// 		});
-
-	// 		socket.on('joinUser', ({ nickname, state }) => {
-	// 			console.log(nickname, state, 'joinUser');
-	// 			console.log(students, 'in joinUser');
-	// 			if (students) {
-	// 				const newStudents = students.map((student: studentType) =>
-	// 					student.nickname === nickname
-	// 						? { nickname: nickname, state: state }
-	// 						: student
-	// 				);
-	// 				setStudents(newStudents);
-	// 			}
-	// 		});
-	// 	}
-	// 	// return () => {
-	// 	// 	socket.current.disconnect();
-	// 	// 	setConnect(false);
-	// 	// };
-	// }, [isConnect]);
+	}, [isConnect]);
 
 	useEffect(() => {
 		console.log(students, 'student in useEffect');
@@ -215,7 +190,7 @@ function Reaction() {
 
 	const renderTeacher = () => {
 		//map을 돌릴 때 선생님과 nickname이 일치하면
-		console.log(students, 'teacher');
+		console.log(students, 'teacher render, students data');
 
 		const teacher =
 			students &&
@@ -230,8 +205,23 @@ function Reaction() {
 		) : (
 			<div className='reacton_container'>
 				<div className='reacton_nickname'>
-					<p>retry</p>
+					<p>reroad</p>
 				</div>
+			</div>
+		);
+	};
+
+	const renderImage = () => {
+		const stateImage =
+			students && students.find((student) => student.nickname === mynickname);
+		console.log(stateImage, 'stateImage');
+		return stateImage ? (
+			<div>
+				<p>{stateImage.state}</p>
+			</div>
+		) : (
+			<div>
+				<p>reroad</p>
 			</div>
 		);
 	};
@@ -271,7 +261,7 @@ function Reaction() {
 						/>
 						?
 					</label>
-					<div className='check_image'>render image</div>
+					<div className='check_image'>{renderImage()}</div>
 				</ReactCont>
 				<ShowCont>
 					<div className='teacher_react'>
