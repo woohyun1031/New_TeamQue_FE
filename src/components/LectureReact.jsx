@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
@@ -28,7 +28,7 @@ function LectureReact() {
 	};
 
 	let mynickname = '김우현';
-	let teacherNickname = '금수강산';
+	let teacherNickname = '공정용';
 
 	useEffect(() => {
 		const fetchData = () => {
@@ -161,24 +161,28 @@ function LectureReact() {
 		));
 	};
 
-	// const renderTeacher = () => {
-	//  //map을 돌릴 때 선생님과 nickname이 일치하면
-	//  const {nickname,state} = studentReact.find((student) => student.nickname === teacherNickname)
-	//  return (
-	//    <StateContainer>
-	//      <h3>슨생님</h3>
-	//      <div className="state_nickname">
-	//        <p>{nickname}</p>
-	//      </div>
-	//      <div className="state_contents">
-	//        {/* 추후 public 폴더에 저장된 이미지를 reaction 값에 맞게 불러와 사용 */}
-	//        {state}
-	//      </div>
-	//    </StateContainer>
-	//  )
-	// }
+	const renderTeacher = () => {
+		//map을 돌릴 때 선생님과 nickname이 일치하면
+		console.log(studentReact, 'teacher');
 
-	//let studentRender = renderStudent();
+		const teacher = studentReact.find(
+			(student) => student.nickname === teacherNickname
+		);
+
+		return teacher ? (
+			<div className='reacton_container'>
+				<div className='reacton_nickname'>
+					<p>{teacher.nickname}</p>
+				</div>
+			</div>
+		) : (
+			<div className='reacton_container'>
+				<div className='reacton_nickname'>
+					<p>retry</p>
+				</div>
+			</div>
+		);
+	};
 
 	return (
 		<>
@@ -215,12 +219,12 @@ function LectureReact() {
 						/>
 						?
 					</label>
-					<div className='check_image'>image</div>
+					<div className='check_image'>render image</div>
 				</ReactCont>
 				<ShowCont>
 					<div className='teacher_react'>
 						{/* 선생님렌더될곳 renderTeacher() */}
-						teacherReact
+						{renderTeacher()}
 					</div>
 					<div className='student_react'>{renderStudent()}</div>
 				</ShowCont>

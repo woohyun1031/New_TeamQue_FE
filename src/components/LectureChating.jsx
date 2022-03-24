@@ -30,15 +30,27 @@ function LectureChating() {
 	const accessToken = 'dddd';
 	//const accessToken = sessionStorage.getItem("accessToken");
 
-	useEffect(async () => {
-		if (isConnect === false) {
-			socket.current = io(url);
-			socket.current.emit('init', { nickname: mynickname, accessToken });
-			await socket.current.on('initOk', () => {
-				socket.current.emit('joinRoom', { classId });
-			});
-		}
-		setConnect(true);
+	useEffect(() => {
+		const fetchData = () => {
+			if (isConnect === false) {
+				socket.current = io(url);
+				socket.current.emit('init', { nickname: mynickname, accessToken });
+				socket.current.on('initOk', () => {
+					socket.current.emit('joinRoom', { classId });
+					setConnect(true);
+				});
+			}
+		};
+
+		fetchData();
+
+		return () => {
+			socket.current.disconnect();
+			setConnect(false);
+		};
+	}, []);
+
+	useEffect(() => {
 		socket.current.on('recieveQuestionSolve', ({ chatId }) => {
 			setChat(
 				chats.map((chat) =>
@@ -53,6 +65,7 @@ function LectureChating() {
 			];
 			setChat(newChat);
 		});
+
 		socket.current.on(
 			'receiveQuestionMessage',
 			({ nickname, chatMessage, id, solution }) => {
@@ -63,10 +76,6 @@ function LectureChating() {
 				setChat(newChat);
 			}
 		);
-		return () => {
-			socket.current.disconnect();
-			setConnect(false);
-		};
 	}, [chats]);
 
 	const sendChat = () => {
@@ -222,101 +231,67 @@ function LectureChating() {
 	};
 
 	return (
-		<>
-			<ChatContainer>
-				<p className='header_modal_title'>채팅방입니다</p>
-				<label>
-					<input
-						className='header_modal_checkbox'
-						name='commonCheck'
-						type='checkbox'
-						onChange={onChange}
-					/>
-					채팅
-				</label>
-				<label>
-					<input
-						className='header_modal_checkbox'
-						name='questionCheck'
-						type='checkbox'
-						onChange={onChange}
-					/>
-					질문
-				</label>
-				<div className='header_modal_hr'></div>
+		<Container>
+			<p className='header_modal_title'>채팅방입니다</p>
+			<label>
+				<input
+					className='header_modal_checkbox'
+					name='commonCheck'
+					type='checkbox'
+					onChange={onChange}
+				/>
+				채팅
+			</label>
+			<label>
+				<input
+					className='header_modal_checkbox'
+					name='questionCheck'
+					type='checkbox'
+					onChange={onChange}
+				/>
+				질문
+			</label>
+			<div className='header_modal_hr'></div>
 
-				<div className='group_chat_container'>
-					{/* 채팅container */}
-					<div className='chat_render_oneChat'>{renderChat()}</div>
+			<div className='group_chat_container'>
+				{/* 채팅container */}
+				<div className='chat_render_oneChat'>{renderChat()}</div>
 
-					<div>
-						{/* <input type="password">질문</input> */}
-						<div className='chat_textfield_container'>
-							<label>
-								질문
-								<input type='checkbox' name='queCheck' onChange={onChat} />
-							</label>
-							<input
-								type='text'
-								className='chat_textfield'
-								placeholder='메시지를 작성해주세요.'
-								name='oneChat'
-								value={chatMessage}
-								onChange={sendMessage}
-								onKeyPress={(e) => {
-									if (e.key === 'Enter') {
-										sendChat();
-									}
-								}}
-							/>
-							<button className='chat_send_btn' onClick={sendChat}>
-								+
-							</button>
-						</div>
+				<div>
+					{/* <input type="password">질문</input> */}
+					<div className='chat_textfield_container'>
+						<label>
+							질문
+							<input type='checkbox' name='queCheck' onChange={onChat} />
+						</label>
+						<input
+							type='text'
+							className='chat_textfield'
+							placeholder='메시지를 작성해주세요.'
+							name='oneChat'
+							value={chatMessage}
+							onChange={sendMessage}
+							onKeyPress={(e) => {
+								if (e.key === 'Enter') {
+									sendChat();
+								}
+							}}
+						/>
+						<button className='chat_send_btn' onClick={sendChat}>
+							+
+						</button>
 					</div>
 				</div>
-			</ChatContainer>
-		</>
+			</div>
+		</Container>
 	);
 }
 
 export default LectureChating;
 
-const ChatContainer = styled.div`
-	position: relative;
-	height: 80vh;
-	margin: 0 4.17vw;
-	box-shadow: 0px 4px 35px 4px rgba(162, 162, 162, 0.25);
-	border-radius: 16px;
-	box-sizing: border-box;
-	width: 22%;
-
-	.group_chat_container {
-		padding: 18px;
-		height: calc(100% - 150px);
-	}
-	.chat_render_oneChat {
-		height: 100%;
-		overflow: auto;
-	}
-	.chat_textfield_container {
-		display: flex;
-		justify-content: space-between;
-		position: absolute;
-		bottom: 20px;
-		width: 92%;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	.header_modal_title {
-		margin: 3.07vh 18px 2.56vh;
-	}
-	.chat_from_me {
-		border: 1px solid black;
-		border-radius: 10px;
-	}
-	.'chat_from_friend' {
-		border: 1px solid black;
-		border-radius: 10px;
-	}
+const Container = styled.div`
+	width: 270px;
+	height: 850px;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
