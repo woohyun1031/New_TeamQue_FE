@@ -14,8 +14,8 @@ type chatType = {
 let socket: Socket;
 
 function Chat() {
-	const [chatMessage, setChatMessage] = useState(''); //input message
-	const [chats, setChat] = useState<chatType[]>([]); //chat 내용 모음
+	const [chatMessage, setChatMessage] = useState('');
+	const [chats, setChat] = useState<chatType[]>([]);
 	const [check, setChecked] = useState({
 		commonCheck: false,
 		questionCheck: false,
@@ -33,10 +33,8 @@ function Chat() {
 	const url = 'ws://xpecter.shop';
 	const classId = params.classid;
 
-	//const mynickname = '조상현';
-	const mynickname:any = sessionStorage.getItem("nickname");
-	//const accessToken = 'dddd';
-	const accessToken:any = sessionStorage.getItem("accessToken");
+	const mynickname: any = sessionStorage.getItem('nickname');
+	const accessToken: any = sessionStorage.getItem('accessToken');
 
 	useEffect(() => {
 		const fetchData = () => {
@@ -129,7 +127,7 @@ function Chat() {
 						}
 					}
 				);
-				setChatMessage(''); //input 비워준다
+				setChatMessage('');
 			}
 		}
 	};
@@ -153,7 +151,7 @@ function Chat() {
 			[name]: checked,
 		});
 	};
-	
+
 	const solveClick = (unique_id: string) => {
 		socket.emit('sendQuestionSolve', { chatId: unique_id, classId }, () => {
 			setChat(
@@ -170,87 +168,54 @@ function Chat() {
 			if (chats) {
 				return chats
 					.filter((chat) => chat.check === 'common')
-					.map(({ nickname, chatMessage }, index) => (
-						<div
-							key={index}
-							className={
-								mynickname === nickname ? 'chat_from_me' : 'chat_from_friend'
-							}
-						>
-							{mynickname !== nickname ? (
-								<div className='chat_nick'>{nickname}</div>
-							) : (
-								mynickname
-							)}
-
-							<div className='chat_content'>
-								<div className='chat_message'>{chatMessage}</div>
-							</div>
-						</div>
+					.map(({ nickname, chatMessage, id }) => (
+						<ChatBox key={id} byMe={mynickname === nickname}>
+							<p>{nickname}</p>
+							<ChatMessage>{chatMessage}</ChatMessage>
+						</ChatBox>
 					));
 			}
 		} else if (questionCheck === true) {
 			if (chats) {
 				return chats
 					.filter((chat: any) => chat.check === 'question')
-					.map(({ nickname, chatMessage, id, solution }, index) => (
-						<div
-							key={index}
-							className={
-								mynickname === nickname ? 'chat_from_me' : 'chat_from_friend'
-							}
-						>
-							{solution === true ? (
-								<div className='solution_tab'>해결!!</div>
-							) : undefined}
+					.map(({ nickname, chatMessage, id, solution }) => (
+						<QuestionBox key={id} byMe={mynickname === nickname}>
+							{solution ? '해결' : ''}
 							{mynickname === nickname ? (
 								<button onClick={() => solveClick(id)}>
-									내가한질문해결버튼
+									이해됐어요!
 								</button>
 							) : null}
-							{mynickname !== nickname ? (
-								<div className='chat_nick'>{nickname}</div>
-							) : (
-								mynickname
-							)}
-
-							<div className='chat_content'>
-								<h3>질문글</h3>
-								<div className='chat_message'>{chatMessage}</div>
-							</div>
-						</div>
+							<p>질문 : {chatMessage}</p>
+						</QuestionBox>
 					));
 			}
 		} else {
 			if (chats) {
 				return chats.map(
-					({ nickname, chatMessage, id, solution, check }, index) => (
-						<div
-							key={index}
-							className={
-								mynickname === nickname ? 'chat_from_me' : 'chat_from_friend'
-							}
-						>
-							{solution === true ? (
-								<div className='solution tab'>해결!!</div>
-							) : undefined}
-							{check === 'question' && mynickname === nickname ? (
-								<button onClick={() => solveClick(id)}>
-									내가한질문해결버튼
-								</button>
-							) : null}
-							{mynickname !== nickname ? (
-								<div className='chat_nick'>{nickname}</div>
-							) : (
-								mynickname
-							)}
-
-							<div className='chat_content'>
-								{check === 'question' ? <h3>질문글</h3> : null}
-								<div className='chat_message'>{chatMessage}</div>
-							</div>
-						</div>
-					)
+					({ nickname, chatMessage, id, solution, check }) => {
+						if (check === 'common') {
+							return (
+								<ChatBox key={id} byMe={mynickname === nickname}>
+									<p>{nickname}</p>
+									<ChatMessage>{chatMessage}</ChatMessage>
+								</ChatBox>
+							);
+						} else {
+							return (
+								<QuestionBox key={id} byMe={mynickname === nickname}>
+									{solution ? '해결' : ''}
+									{mynickname === nickname ? (
+										<button onClick={() => solveClick(id)}>
+											이해됐어요!
+										</button>
+									) : null}
+									<p>질문 : {chatMessage}</p>
+								</QuestionBox>
+							);
+						}
+					}
 				);
 			}
 		}
@@ -258,7 +223,6 @@ function Chat() {
 
 	return (
 		<Container>
-			<p className='header_modal_title'>채팅방입니다</p>
 			<label>
 				<input
 					className='header_modal_checkbox'
@@ -280,34 +244,26 @@ function Chat() {
 			<div className='header_modal_hr' />
 
 			<div className='group_chat_container'>
-				{/* 채팅container */}
 				<div className='chat_render_oneChat'>{renderChat()}</div>
 
-				<div>
-					{/* <input type="password">질문</input> */}
-					<div className='chat_textfield_container'>
-						<label>
-							질문
-							<input type='checkbox' name='queCheck' onChange={onChat} />
-						</label>
-						<input
-							type='text'
-							className='chat_textfield'
-							placeholder='메시지를 작성해주세요.'
-							name='oneChat'
-							value={chatMessage}
-							onChange={sendMessage}
-							onKeyPress={(e) => {
-								if (e.key === 'Enter') {
-									sendChat();
-								}
-							}}
-						/>
-						<button className='chat_send_btn' onClick={sendChat}>
-							+
-						</button>
-					</div>
-				</div>
+				<InputBox>
+					<label>
+						질문
+						<input type='checkbox' name='queCheck' onChange={onChat} />
+					</label>
+					<Input
+						type='text'
+						name='oneChat'
+						value={chatMessage}
+						onChange={sendMessage}
+						onKeyPress={(e) => {
+							if (e.key === 'Enter') {
+								sendChat();
+							}
+						}}
+					/>
+					<SendButton onClick={sendChat}>전송</SendButton>
+				</InputBox>
 			</div>
 		</Container>
 	);
@@ -316,40 +272,75 @@ function Chat() {
 export default Chat;
 
 const Container = styled.div`
+	width: 270px;
+	height: 854px;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	overflow-y: scroll;
 	position: relative;
-	height: 80vh;
-	margin: 0 4.17vw;
-	box-shadow: 0px 4px 35px 4px rgba(162, 162, 162, 0.25);
-	border-radius: 16px;
-	box-sizing: border-box;
-	width: 22%;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: #ccc;
+		border-radius: 10px;
+	}
+`;
 
-	.group_chat_container {
-		padding: 18px;
-		height: calc(100% - 150px);
-	}
-	.chat_render_oneChat {
-		height: 100%;
-		overflow: auto;
-	}
-	.chat_textfield_container {
-		display: flex;
-		justify-content: space-between;
-		position: absolute;
-		bottom: 20px;
-		width: 92%;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	.header_modal_title {
-		margin: 3.07vh 18px 2.56vh;
-	}
-	.chat_from_me {
-		border: 1px solid black;
-		border-radius: 10px;
-	}
-	.chat_from_friend {
-		border: 1px solid black;
-		border-radius: 10px;
-	}
+interface QuestionBoxProps {
+	byMe: boolean;
+}
+
+const QuestionBox = styled.div<QuestionBoxProps>`
+	width: 250px;
+	padding: 20px;
+	background-color: #718aff;
+	border-radius: 7px;
+	width: 250px;
+	margin: 5px auto;
+	color: #fff;
+`;
+
+interface ChatBoxProps {
+	byMe: boolean;
+}
+
+const ChatBox = styled.div<ChatBoxProps>`
+	padding: 10px;
+`;
+
+const ChatNickname = styled.h3``;
+
+const ChatMessage = styled.p`
+	width: 250px;
+	border-radius: 7px;
+	background-color: #f4f4f4;
+	padding: 5px;
+`;
+
+const InputBox = styled.div`
+	position: absolute;
+	bottom: 10px;
+	right: 0;
+	margin: 0 auto;
+`
+
+const Input = styled.input`
+	width: 150px;
+	height: 30px;
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+	outline: none;
+	border: none;
+	background-color: #f4f4f4;
+`;
+
+const SendButton = styled.button`
+	width: 50px;
+	height: 30px;
+	background-color: #718aff;
+	color: #fff;
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+	border: none;
 `;

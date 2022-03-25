@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
-import character from '../../assets/character1.png';
 
 const NotSignIn = () => {
 	const dispatch = useDispatch();

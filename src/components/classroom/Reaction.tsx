@@ -2,6 +2,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/configStore';
 
 let socket: Socket;
 
@@ -27,6 +29,8 @@ type checkEnumType = {
 };
 
 function Reaction() {
+	const user = useSelector((state: RootState) => state.user);
+
 	const [ischeck, setChecked] = useState<checkType>({
 		correct: false,
 		incorrect: false,
@@ -48,6 +52,22 @@ function Reaction() {
 		incorrect: 4,
 		question: 5,
 	};
+
+	const myReaction = [
+		'',
+		'/images/myConnect.png',
+		'/images/myCorrect.png',
+		'/images/myIncorrect.png',
+		'/images/myQuestion.png',
+	];
+
+	const reaction = [
+		'/images/disconnect.png',
+		'/images/connect.png',
+		'/images/correct.png',
+		'/images/incorrect.png',
+		'/images/question.png',
+	];
 
 	const mynickname = sessionStorage.getItem('nickname');
 	const teacherNickname = '공정용';
@@ -105,7 +125,6 @@ function Reaction() {
 									}
 								});
 							}
-							//setTimeout(() => {}, 1000);
 						}
 					}
 				);
@@ -175,14 +194,15 @@ function Reaction() {
 	};
 
 	const renderStudent = () => {
-		console.log(students, 'student,renderStudent');
 		if (students) {
 			return students.map(({ nickname, state }, index) => (
 				<div key={index} className='reacton_container'>
 					<div className='reacton_nickname'>
 						<p>{nickname}</p>
 					</div>
-					<div className='reacton_contents'>{state}</div>
+					<div className='reacton_contents'>
+						<img src={reaction[state - 1]} />
+					</div>
 				</div>
 			));
 		}
@@ -214,10 +234,9 @@ function Reaction() {
 	const renderImage = () => {
 		const stateImage =
 			students && students.find((student) => student.nickname === mynickname);
-		console.log(stateImage, 'stateImage');
 		return stateImage ? (
 			<div>
-				<p>{stateImage.state}</p>
+				<MyReactionCharacter src={myReaction[stateImage.state - 1]} />
 			</div>
 		) : (
 			<div>
@@ -227,99 +246,120 @@ function Reaction() {
 	};
 
 	return (
-		<>
-			<Container>
-				<ReactCont>
-					<p className='header_modal_title'>이름들어갈곳</p>
-					<label>
-						<input
-							className='header_modal_checkbox'
+		<Container>
+			<MyReactionBox>
+				<p>{user.user_info.nickname}</p>
+				<ReactionButtons>
+					<ReactionLabel>
+						<ReactionInput
 							name='correct'
 							type='checkbox'
 							onChange={onChange}
 							checked={ischeck.correct}
 						/>
-						O
-					</label>
-					<label>
-						<input
-							className='header_modal_checkbox'
+						<ReactionButton src='/images/correct.png' />
+					</ReactionLabel>
+					<ReactionLabel>
+						<ReactionInput
 							name='incorrect'
 							type='checkbox'
 							onChange={onChange}
 							checked={ischeck.incorrect}
 						/>
-						X
-					</label>
-					<label>
-						<input
-							className='header_modal_checkbox'
+						<ReactionButton src='/images/incorrect.png' />
+					</ReactionLabel>
+					<ReactionLabel>
+						<ReactionInput
 							name='question'
 							type='checkbox'
 							onChange={onChange}
 							checked={ischeck.question}
 						/>
-						?
-					</label>
-					<div className='check_image'>{renderImage()}</div>
-				</ReactCont>
-				<ShowCont>
-					<div className='teacher_react'>
-						{/* 선생님렌더될곳 renderTeacher() */}
-						{renderTeacher()}
-					</div>
-					<div className='student_react'>{renderStudent()}</div>
-				</ShowCont>
-			</Container>
-		</>
+						<ReactionButton src='/images/question.png' />
+					</ReactionLabel>
+				</ReactionButtons>
+				<div className='check_image'>{renderImage()}</div>
+			</MyReactionBox>
+			<ReactionBox>
+				<TeacherBox>{renderTeacher()}</TeacherBox>
+				<StudentBox>{renderStudent()}</StudentBox>
+			</ReactionBox>
+		</Container>
 	);
 }
 export default Reaction;
 
 const Container = styled.div`
+	width: 890px;
+	height: 300px;
+	display: flex;
+	justify-content: space-between;
 	position: relative;
-	width: 100%;
-	height: 30%;
-	background-color: pink;
-	display: flex;
 `;
-const ReactCont = styled.div`
-	width: 50%;
-	margin: 10px;
-	background-color: red;
-	.check_image {
-		width: 100px;
-		height: auto;
-		background-color: white;
-	}
+
+const MyReactionBox = styled.div`
+	width: 500px;
+	position: relative;
 `;
-const ShowCont = styled.div`
-	width: 50%;
-	margin: 10px;
-	background-color: blue;
+
+const ReactionButtons = styled.div`
+	width: 260px;
+	position: absolute;
+	right: 20px;
+	top: 0;
 	display: flex;
-	flex-direction: column;
+	justify-content: space-between;
+`;
+
+const MyReactionCharacter = styled.img`
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+`;
+
+const ReactionBox = styled.div`
+	width: 380px;
+	height: 300px;
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+
+const ReactionLabel = styled.label`
+	display: flex;
 	align-items: center;
-	.teacher_react {
-		text-align: center;
-		width: 100%;
-		height: 30%;
-		background-color: white;
-	}
-	.student_react {
-		display: flex;
-		width: 100%;
-		height: 70%;
-		background-color: gray;
-	}
+	justify-content: center;
+	width: 70px;
+	height: 70px;
+	border-radius: 7px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
-const StateContainer = styled.div`
-	width: 40px;
-	height: 40px;
-	margin: 10px;
-	.reacton_contents {
-		width: 50px;
-		height: 50px;
-		background-color: white;
+
+const ReactionInput = styled.input`
+	display: none;
+`;
+
+const ReactionButton = styled.img`
+	flex: 0;
+`;
+
+const TeacherBox = styled.div`
+	height: 100px;
+`;
+
+const StudentBox = styled.div`
+	height: 200px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: #ccc;
+		border-radius: 10px;
 	}
 `;
