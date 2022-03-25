@@ -17,6 +17,7 @@ const commons = {
   button: `
     cursor: pointer;
     border: none;
+    border-radius: 7px;
   `,
   input: `
     

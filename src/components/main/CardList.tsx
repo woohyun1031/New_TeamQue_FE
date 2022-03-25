@@ -10,9 +10,10 @@ interface Props {
 const CardList: React.FC<Props> = ({ tabState }) => {
 	const [learnCards, setLearnCards] = useState() as any;
 	const [teachCards, setTeachCards] = useState() as any;
+	const isToken = sessionStorage.getItem('accessToken') ? true : false;
 	const fetch1 = async () => {
 		const response = await apis.loadLearnClass();
-		console.log(response.data)
+		console.log(response.data);
 		setLearnCards(response.data);
 	};
 	const fetch2 = async () => {
@@ -21,8 +22,10 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 	};
 
 	useEffect(() => {
-		fetch1();
-		fetch2();
+		if (isToken) {
+			fetch1();
+			fetch2();
+		}
 	}, []);
 
   useEffect(()=> {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled, { css } from 'styled-components';
 import getDateArrayOfMonth from '../utils/getDateArray';
 
@@ -7,21 +7,29 @@ const Calendar = () => {
 	const nowMonth = today.getMonth();
 	const nowYear = today.getFullYear();
 	const [month, setMonth] = useState(nowMonth);
-	const arr = getDateArrayOfMonth(nowYear, month);
+	const [calendar, setCalendar] = useState<any>()
+	const arr = useMemo(() => getDateArrayOfMonth(nowYear, month), [month]);
+	const makeCalendar = () => {
+		const arr = getDateArrayOfMonth(nowYear, month)
+		const calendarData: any = [];
+		for (let i = 0; i < 6; i++) {
+			const week: any = [];
+			for (let j = 0; j < 7; j++) {
+				week.push(arr[i * 7 + j]);
+			}
+			calendarData.push(week);
+		}
+		setCalendar(calendarData)
+	}
+	useEffect(()=> {
+		makeCalendar()
+	}, [month])
 	const setPrevMonth = () => {
 		setMonth((prev) => (prev + 11) % 12);
 	};
 	const setNextMonth = () => {
 		setMonth((prev) => (prev + 1) % 12);
 	};
-	const calendar = [];
-	for (let i = 0; i < 6; i++) {
-		const week = [];
-		for (let j = 0; j < 7; j++) {
-			week.push(arr[i * 7 + j]);
-		}
-		calendar.push(week);
-	}
 
 	return (
 			<CalendarBox>
@@ -43,9 +51,9 @@ const Calendar = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{calendar.map((week, index) => (
+						{calendar && calendar.map((week: any, index: number) => (
 							<tr key={index}>
-								{week.map((date, index) => (
+								{week.map((date: any, index: number) => (
 									<Td month={date.month} isToday={date.isToday} key={index}>
 										{date.date}
 									</Td>

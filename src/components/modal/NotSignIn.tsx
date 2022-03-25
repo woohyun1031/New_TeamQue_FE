@@ -46,12 +46,12 @@ const Button = styled.button`
 	border-radius: 7px;
 	margin-top: 10px;
 	display: block;
-  border: none;
+	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.white};
 	font-size: 22px;
-  font-weight: 500;
-  cursor: pointer;
+	font-weight: 500;
+	cursor: pointer;
 `;
 
 const LightButton = styled(Button)`

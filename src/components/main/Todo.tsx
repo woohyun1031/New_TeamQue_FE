@@ -14,8 +14,13 @@ const Todo = () => {
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
 	const todos = useSelector((state: RootState) => state.todo);
+	const isToken = sessionStorage.getItem('accessToken') ? true : false;
+
 	useEffect(() => {
-		dispatch(loadTodos());
+		if (isToken) {
+			dispatch(loadTodos());
+
+		}
 	}, []);
 	const add = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
