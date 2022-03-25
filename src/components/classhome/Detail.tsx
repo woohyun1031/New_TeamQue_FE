@@ -38,9 +38,14 @@ const Detail = () => {
 			<Contents>{data && data.board.description}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
+				<CommentInput type='text' />
+				<CommentButton>등록</CommentButton>
 				{data &&
 					data.board.__comments__.map((comment: any) => (
-						<li key={comment.boardId}>{comment.writer} {comment.description}</li>
+						<li key={comment.boardId}>
+							<p>{comment.writer}</p>
+							{comment.description}
+						</li>
 					))}
 			</Comments>
 		</Container>
@@ -90,22 +95,37 @@ const Date = styled.h3`
 
 const Contents = styled.p`
 	padding: 50px;
-	min-height: 300px;
+	min-height: 450px;
 `;
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
-`
+	margin-bottom: 20px;
+`;
 
 const Comments = styled.div`
 	background-color: #f5f5f5;
 	min-height: 300px;
 	padding: 50px;
-	&::-webkit-scrollbar {
-		width: 12px; /*스크롤바의 너비*/
-	}
-	&::-webkit-scrollbar-thumb {
-		background-color: #ccc; /*스크롤바의 색상*/
-		border-radius: 10px;
-	}
+	position: relative;
+`;
+
+const CommentInput = styled.input`
+	width: 800px;
+	height: 100px;
+	border: none;
+	border-radius: 10px;
+	margin-bottom: 10px;
+`;
+
+const CommentButton = styled.button`
+	width: 50px;
+	height: 25px;
+	border-radius: 5px;
+	background-color: #718aff;
+	color: #fff;
+	border: none;
+	position: absolute;
+	right: 50px;
+	top: 115px;
 `;

@@ -6,34 +6,32 @@ import apis from '../../api';
 const ClassInfo: React.FC = () => {
 	const { classid } = useParams();
 	console.log(classid);
-	const [students, setStudents] = useState<{name: string}[]>()
-	const [data, setData] =
-		useState<{
-			title: string;
-			teacher: string;
-			time: string;
-			imageUrl: string;
-		}>();
+	const [students, setStudents] = useState<{ name: string }[]>();
+	const [data, setData] = useState<{
+		title: string;
+		teacher: string;
+		time: string;
+		imageUrl: string;
+	}>();
 	const fetch = async () => {
 		const response = await apis.loadClassInfo(classid as string);
 		const response2 = await apis.loadStudents(classid as string);
 		setData(response.data);
-		setStudents(response2.data)
+		setStudents(response2.data);
 		console.log(response.data);
 		console.log(response2.data);
-
 	};
 	useEffect(() => {
 		fetch();
 	}, []);
 	return (
 		<Container>
-			<Image src={data && data.imageUrl}  />
+			<Image src={data && data.imageUrl} />
+			<Button src='/images/play.png' />
 			<Title>{data && data.title}</Title>
 			<Teacher>{data && data.teacher} 선생님</Teacher>
 			<Time>{data && data.time}</Time>
-			<Button>강의들으러 가기</Button>
-			{students && students.map((student: any, index: number) => <li key={index}>{student.username} {student.state}</li>)}
+			{/* {students && students.map((student: any, index: number) => <li key={index}>{student.username} {student.state}</li>)} */}
 		</Container>
 	);
 };
@@ -52,32 +50,33 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	padding: 20px;
+	position: relative;
 `;
-
 
 const Image = styled.img`
 	width: 230px;
 	height: 155px;
 	border-radius: 7px;
 	object-fit: cover;
-	border: 1px solid black
-`
+`;
 
 const Title = styled.h2`
 	font-size: 18px;
-`
+`;
 
 const Teacher = styled.p`
-	font-size: 12px;
-`
+	margin-top: 10px;
+	font-size: 14px;
+`;
 
 const Time = styled.p`
-	font-size: 12px;
-	color: #9B9B9B;
-`
+	margin-top: 10px;
+	font-size: 14px;
+	color: #9b9b9b;
+`;
 
-const Button = styled.button`
-	width: 100px;
-	height: 20px;
-	background-color: ${({ theme }) => theme.colors.main};
-`
+const Button = styled.img`
+	position: absolute;
+	top: 120px;
+	right: 40px;
+`;

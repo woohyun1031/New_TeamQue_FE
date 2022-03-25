@@ -247,10 +247,6 @@ function Chat() {
 				<div className='chat_render_oneChat'>{renderChat()}</div>
 
 				<InputBox>
-					<label>
-						질문
-						<input type='checkbox' name='queCheck' onChange={onChat} />
-					</label>
 					<Input
 						type='text'
 						name='oneChat'
@@ -263,6 +259,10 @@ function Chat() {
 						}}
 					/>
 					<SendButton onClick={sendChat}>전송</SendButton>
+					<label>
+						질문
+						<input type='checkbox' name='queCheck' onChange={onChat} />
+					</label>
 				</InputBox>
 			</div>
 		</Container>

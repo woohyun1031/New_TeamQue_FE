@@ -2,13 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import Chat from '../components/classroom/Chat';
 import Reaction from '../components/classroom/Reaction';
+import Stream from '../components/classroom/Stream';
 
 const ClassRoom = () => {
 	return (
 		<Container>
 			<LeftBox>
-				<ClassInfo />
-				<Screen />
+				<ClassInfo>
+					Xpecter의 Nest.js 강좌
+				</ClassInfo>
+				<Stream />
 				<Reaction />
 			</LeftBox>
 			<Chat />
@@ -34,12 +37,10 @@ const LeftBox = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 `;
-const ClassInfo = styled.div`
+const ClassInfo = styled.h2`
 	/* 사이즈 */
 	width: 360px;
 	height: 30px;
-	/* 임시 스타일 코드 */
-	background-color: #ccc;
 `;
 
 const Screen = styled.div`

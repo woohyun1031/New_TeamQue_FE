@@ -31,12 +31,6 @@ const DropDown: React.FC<Props> = ({ name }) => {
 
 export default DropDown;
 
-// const Container = styled.div`
-// 	position: relative;
-// 	&:hover + ${Menu} {
-// 		display: flex;
-// 	}
-// `;
 
 
 
@@ -68,6 +62,7 @@ const Menu = styled.ul<MenuProps>`
 		color: #718aff;
 		cursor: pointer;
 	}
+	display: none;
 `;
 
 const Name = styled.button`

@@ -30,8 +30,8 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 				<Badge>방송중</Badge>
 			</BadgeBox>
 			<Title>{title}</Title>
-			<Teacher>{teacher} 님</Teacher>
-			<TimeTable>{time}</TimeTable>
+			<Teacher>{teacher} 선생님</Teacher>
+			<TimeTable>{time.split('/')[0]}</TimeTable>
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
 		</Container>
 	);
@@ -53,7 +53,7 @@ const Container = styled.div`
 		margin-left: 20px;
 	}
 	&:hover {
-		transform: scale(1.025);
+		background-color: #fdfdfd;
 	}
 `;
 
@@ -66,7 +66,7 @@ const Thumbnail = styled.img`
 `;
 
 const BadgeBox = styled.div`
-	width: 112px;
+	width: 120px;
 	height: 18px;
 	display: flex;
 	justify-content: space-between;
@@ -74,8 +74,8 @@ const BadgeBox = styled.div`
 `;
 
 const Badge = styled.div`
-	width: 52px;
-	height: 18px;
+	width: 55px;
+	height: 20px;
 	background-color: #718aff;
 	border-radius: 7px;
 	color: #fff;
@@ -84,16 +84,20 @@ const Badge = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	&:nth-child(1) {
+		background-color: #BCC8FF;
+	}
 `;
 
 const Title = styled.h3`
-	font-weight: 900;
+	font-weight: 700;
 	font-size: 18px;
 	margin-bottom: 15px;
 `;
 
 const Teacher = styled.h4`
 	margin-bottom: 7px;
+	font-weight: 400;
 `;
 
 const TimeTable = styled.p`

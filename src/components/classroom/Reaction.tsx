@@ -196,32 +196,24 @@ function Reaction() {
 	const renderStudent = () => {
 		if (students) {
 			return students.map(({ nickname, state }, index) => (
-				<div key={index} className='reacton_container'>
-					<div className='reacton_nickname'>
-						<p>{nickname}</p>
-					</div>
-					<div className='reacton_contents'>
-						<img src={reaction[state - 1]} />
-					</div>
-				</div>
+				<Student key={index}>
+					<StudentNickname>{nickname}</StudentNickname>
+					<img src={reaction[state - 1]} />
+				</Student>
 			));
 		}
 	};
 
 	const renderTeacher = () => {
-		//map을 돌릴 때 선생님과 nickname이 일치하면
-		console.log(students, 'teacher render, students data');
-
 		const teacher =
 			students &&
 			students.find((student) => student.nickname === teacherNickname);
 
 		return teacher ? (
-			<div className='reacton_container'>
-				<div className='reacton_nickname'>
+			<TeacherBox className='reacton_container'>
 					<p>{teacher.nickname}</p>
-				</div>
-			</div>
+					<img src="/images/connect.png" />
+			</TeacherBox>
 		) : (
 			<div className='reacton_container'>
 				<div className='reacton_nickname'>
@@ -303,9 +295,10 @@ const MyReactionBox = styled.div`
 `;
 
 const MyNickname = styled.h2`
+	padding: 30px;
 	font-size: 20px;
 	font-weight: 700;
-`
+`;
 
 const ReactionButtons = styled.div`
 	width: 260px;
@@ -330,7 +323,6 @@ const ReactionBox = styled.div`
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
-
 const ReactionLabel = styled.label`
 	display: flex;
 	align-items: center;
@@ -351,6 +343,12 @@ const ReactionButton = styled.img`
 
 const TeacherBox = styled.div`
 	height: 100px;
+	padding-top: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
 `;
 
 const StudentBox = styled.div`
@@ -367,4 +365,17 @@ const StudentBox = styled.div`
 		background-color: #ccc;
 		border-radius: 10px;
 	}
+`;
+
+const Student = styled.div`
+	height: 75px;
+	font-weight: 700;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const StudentNickname = styled.h4`
+	font-size: 12px;
 `;

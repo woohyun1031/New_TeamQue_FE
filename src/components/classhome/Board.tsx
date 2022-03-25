@@ -106,7 +106,7 @@ const Board = () => {
 					</Page>
 				))}
 			</Pagenation>
-			<AddButton>+</AddButton>
+			<AddButton>새글작성</AddButton>
 		</Container>
 	);
 };
@@ -151,12 +151,12 @@ const AddButton = styled.button`
 	position: absolute;
 	bottom: 50px;
 	right: 50px;
-	width: 54px;
-	height: 54px;
+	width: 100px;
+	height: 100px;
 	line-height: 54px;
-	font-size: 40px;
-	font-weight: 800;
-	border-radius: 27px;
+	font-size: 15px;
+	border-radius: 50px;
+	font-weight: 600;
 	border: none;
 	background-color: #718aff;
 	color: #fff;
@@ -171,6 +171,7 @@ const Page = styled.button<PageProps>`
 	background: none;
 	margin: 0 8px;
 	${(props) => (props.selected ? 'color: #5370f5; font-weight: 700;' : '')}
+	cursor: pointer;
 `;
 
 const PostTitle = styled.td`
