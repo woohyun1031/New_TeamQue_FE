@@ -103,11 +103,14 @@ function Reaction() {
 								socket.on('changeState', ({ nickname, state }) => {
 									console.log('changeState!!');
 									if (students) {
+										console.log(students, 'changeState students');
+										console.log(nickname, state, 'changeState nickname, state');
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
 												? { nickname: student.nickname, state }
 												: student
 										);
+										console.log(newStudents, 'after changeState students');
 										setStudents(newStudents);
 									}
 								});
