@@ -24,7 +24,7 @@ const Main = () => {
 	return (
 		<>
 			<UpperContainer>
-				<Welcome message='반가워요 que!입니다' />
+				<Welcome message='반갑습니다 que!입니다' />
 				<Schedule />
 				<CalendarBox>
 					<SubTitle>이번 달 한눈에 보기</SubTitle>
