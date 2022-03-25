@@ -32,16 +32,14 @@ export const signIn = createAsyncThunk(
 	async (form: any, thunkAPI) => {
 		try {
 			console.log('signIn dispatch 확인')
-			const response = 
-			await apis
-				.signIn(form)
-				.then((res:any) => {
-					if (res.status === 200) {
-						alert('로그인에 성공했습니다. 메인 페이지로 이동합니다.');
-					}					
-					thunkAPI.dispatch(user.actions.setUserToSession(res))				
-					return res.data;
-				});			
+			const response = await apis.signIn(form).then((res: any) => {
+				console.log(res)
+				if (res.status === 200) {
+					alert('로그인에 성공했습니다. 메인 페이지로 이동합니다.');
+				}
+				thunkAPI.dispatch(user.actions.setUserToSession(res));
+				return res.data;
+			});			
 			return response;
 		} catch (err:any) {
 				alert(err + " signin err");

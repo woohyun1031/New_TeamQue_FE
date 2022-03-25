@@ -7,8 +7,6 @@ import Detail from '../components/classhome/Detail';
 
 const ClassHome = () => {
 	const { postid } = useParams();
-	
-
 
 	return (
 		<Container>

@@ -6,7 +6,6 @@ export const loadTodos = createAsyncThunk(
 	async (_, thunkAPI) => {
 		try {
 			const response = await apis.loadTodo();
-			console.log(response);
 			return response.data;
 		} catch (err: any) {
 			alert(err);

@@ -30,7 +30,7 @@ function Chat() {
 
 	const params = useParams();
 
-	const url = 'ws://xpecter.shop';
+	const url = 'ws://noobpro.shop';
 	const classId = params.classid;
 
 	const mynickname: any = sessionStorage.getItem('nickname');

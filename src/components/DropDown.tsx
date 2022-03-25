@@ -52,12 +52,12 @@ const Menu = styled.ul<MenuProps>`
 	/* 스타일 */
 	font-weight: 400;
 	position: absolute;
-	bottom: -70px;
-	right: -10px;
+	bottom: -60px;
+	right: -15px;
 	font-size: 13px;
 	border-radius: 7px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-	transition: 0.1s;
+	transition: 0.3s;
 	& li:nth-child(2) {
 		color: #718aff;
 		cursor: pointer;
@@ -75,6 +75,7 @@ const Name = styled.button`
 
 const Container = styled.div`
 	position: relative;
+	padding-bottom: 20px ;
 	&:hover ${Menu} {
 		display: flex;
 	}

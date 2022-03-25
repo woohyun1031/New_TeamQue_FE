@@ -93,7 +93,7 @@ const TabButtons = styled.div`
 	margin-bottom: 15px;
 	display: flex;
 	justify-content: space-between;
-`;
+	`;
 
 interface TabButtonProps {
 	isSelected: boolean;
@@ -106,6 +106,7 @@ const TabButton = styled.button<TabButtonProps>`
 	font-weight: 700;
 	transition: 0.1s;
 	${(props) => !props.isSelected && 'color: #c4c4c4;'}
+	cursor: pointer;
 `;
 
 const AddCardBox = styled.div`

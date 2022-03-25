@@ -40,7 +40,7 @@ function Reaction() {
 	const [students, setStudents] = useState<studentType[]>([]);
 	const params = useParams();
 
-	const url = 'ws://xpecter.shop';
+	const url = 'ws://noobpro.shop';
 	const classId = params.classid;
 
 	const accessToken = sessionStorage.getItem('accessToken');

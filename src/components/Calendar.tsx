@@ -8,7 +8,6 @@ const Calendar = () => {
 	const nowYear = today.getFullYear();
 	const [month, setMonth] = useState(nowMonth);
 	const [calendar, setCalendar] = useState<any>()
-	const arr = useMemo(() => getDateArrayOfMonth(nowYear, month), [month]);
 	const makeCalendar = () => {
 		const arr = getDateArrayOfMonth(nowYear, month)
 		const calendarData: any = [];

@@ -11,7 +11,6 @@ interface CardProps {
 }
 
 const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) => {
-	console.log(id, imageUrl, teacher, title, time, state)
 	const navigate = useNavigate();
 	const toClassRoom = () => {
 		navigate(`/classroom/${id}`);
