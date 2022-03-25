@@ -103,11 +103,14 @@ function Reaction() {
 								socket.on('changeState', ({ nickname, state }) => {
 									console.log('changeState!!');
 									if (students) {
+										console.log(students, 'changeState students');
+										console.log(nickname, state, 'changeState nickname, state');
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
 												? { nickname: student.nickname, state }
 												: student
 										);
+										console.log(newStudents, 'after changeState students');
 										setStudents(newStudents);
 									}
 								});
@@ -211,8 +214,8 @@ function Reaction() {
 
 		return teacher ? (
 			<TeacherBox className='reacton_container'>
-					<p>{teacher.nickname}</p>
-					<img src="/images/connect.png" />
+				<p>{teacher.nickname}</p>
+				<img src='/images/connect.png' />
 			</TeacherBox>
 		) : (
 			<div className='reacton_container'>
@@ -296,7 +299,7 @@ const MyReactionBox = styled.div`
 
 const MyNickname = styled.h2`
 	padding: 30px;
-	font-size: 20px;
+	font-size: ${({ theme }) => theme.fontSizes.xxlg};
 	font-weight: 700;
 `;
 

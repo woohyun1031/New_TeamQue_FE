@@ -1,7 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 const instance = axios.create({
+<<<<<<< HEAD
 	baseURL: 'https://noobpro.shop:3000/',
+=======
+	baseURL: 'https://noobpro.shop:3000',
+>>>>>>> 875c6b18f9cfeb62d875867676421e20b5222fc0
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 	},
