@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
-import star from '../../assets/star.png';
-import dot from '../../assets/dot.png';
 
 type postType = {
 	id: number;
@@ -61,12 +59,12 @@ const Board = () => {
 						notice.map((row) => (
 							<tr key={row.id}>
 								<td>
-									<img src='/image/star.png' />
+									<img src='/images/star.png' />
 								</td>
 								<td>공지</td>
 								<td
 									onClick={() => {
-										navigate(`/classhome/${classid}/${row.id}`);
+										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
@@ -79,7 +77,7 @@ const Board = () => {
 						question.map((row) => (
 							<tr key={row.id}>
 								<td>
-									<img src='/image/dot.png' />
+									<img src='/images/dot.png' />
 								</td>
 								<td>질문</td>
 								<PostTitle

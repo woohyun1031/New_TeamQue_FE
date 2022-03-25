@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import home from '../../assets/homeOutline.png';
 
 interface CardProps {
 	id: string;
@@ -27,7 +26,6 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 				onClick={toClassRoom}
 			/>
 			<BadgeBox>
-				{state && state}
 				<Badge>진행중</Badge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
