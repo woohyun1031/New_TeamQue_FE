@@ -33,7 +33,6 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 			<Teacher>{teacher} 님</Teacher>
 			<TimeTable>{time}</TimeTable>
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
-			{state && state}
 		</Container>
 	);
 };

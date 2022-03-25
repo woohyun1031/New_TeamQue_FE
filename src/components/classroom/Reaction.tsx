@@ -248,7 +248,7 @@ function Reaction() {
 	return (
 		<Container>
 			<MyReactionBox>
-				<p>{user.user_info.nickname}</p>
+				<MyNickname>{user.user_info.nickname}</MyNickname>
 				<ReactionButtons>
 					<ReactionLabel>
 						<ReactionInput
@@ -302,6 +302,11 @@ const MyReactionBox = styled.div`
 	position: relative;
 `;
 
+const MyNickname = styled.h2`
+	font-size: 20px;
+	font-weight: 700;
+`
+
 const ReactionButtons = styled.div`
 	width: 260px;
 	position: absolute;
@@ -313,8 +318,8 @@ const ReactionButtons = styled.div`
 
 const MyReactionCharacter = styled.img`
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
+	bottom: -20px;
+	left: 0px;
 `;
 
 const ReactionBox = styled.div`
