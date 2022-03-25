@@ -170,7 +170,7 @@ function Chat() {
 					.filter((chat) => chat.check === 'common')
 					.map(({ nickname, chatMessage, id }) => (
 						<ChatBox key={id} byMe={mynickname === nickname}>
-							<p>{nickname}</p>
+							<ChatName>{nickname}</ChatName>
 							<ChatMessage>{chatMessage}</ChatMessage>
 						</ChatBox>
 					));
@@ -183,9 +183,7 @@ function Chat() {
 						<QuestionBox key={id} byMe={mynickname === nickname}>
 							{solution ? '해결' : ''}
 							{mynickname === nickname ? (
-								<button onClick={() => solveClick(id)}>
-									이해됐어요!
-								</button>
+								<button onClick={() => solveClick(id)}>이해됐어요!</button>
 							) : null}
 							<p>질문 : {chatMessage}</p>
 						</QuestionBox>
@@ -193,37 +191,33 @@ function Chat() {
 			}
 		} else {
 			if (chats) {
-				return chats.map(
-					({ nickname, chatMessage, id, solution, check }) => {
-						if (check === 'common') {
-							return (
-								<ChatBox key={id} byMe={mynickname === nickname}>
-									<p>{nickname}</p>
-									<ChatMessage>{chatMessage}</ChatMessage>
-								</ChatBox>
-							);
-						} else {
-							return (
-								<QuestionBox key={id} byMe={mynickname === nickname}>
-									{solution ? '해결' : ''}
-									{mynickname === nickname ? (
-										<button onClick={() => solveClick(id)}>
-											이해됐어요!
-										</button>
-									) : null}
-									<p>질문 : {chatMessage}</p>
-								</QuestionBox>
-							);
-						}
+				return chats.map(({ nickname, chatMessage, id, solution, check }) => {
+					if (check === 'common') {
+						return (
+							<ChatBox key={id} byMe={mynickname === nickname}>
+								<ChatName>{nickname}</ChatName>
+								<ChatMessage>{chatMessage}</ChatMessage>
+							</ChatBox>
+						);
+					} else {
+						return (
+							<QuestionBox key={id} byMe={mynickname === nickname}>
+								{solution ? '해결' : ''}
+								{mynickname === nickname ? (
+									<button onClick={() => solveClick(id)}>이해됐어요!</button>
+								) : null}
+								<QueMessage>질문 : {chatMessage}</QueMessage>
+							</QuestionBox>
+						);
 					}
-				);
+				});
 			}
 		}
 	};
 
 	return (
 		<Container>
-			<label>
+			<Label>
 				<input
 					className='header_modal_checkbox'
 					name='commonCheck'
@@ -231,8 +225,8 @@ function Chat() {
 					onChange={onChange}
 				/>
 				채팅
-			</label>
-			<label>
+			</Label>
+			<Label>
 				<input
 					className='header_modal_checkbox'
 					name='questionCheck'
@@ -240,7 +234,7 @@ function Chat() {
 					onChange={onChange}
 				/>
 				질문
-			</label>
+			</Label>
 			<div className='header_modal_hr' />
 
 			<div className='group_chat_container'>
@@ -287,6 +281,13 @@ const Container = styled.div`
 	}
 `;
 
+const Label = styled.label`
+	font-size: ${({ theme }) => theme.fontSizes.large}; ;
+`;
+const ChatName = styled.p`
+	font-size: ${({ theme }) => theme.fontSizes.xs}; ;
+`;
+
 interface QuestionBoxProps {
 	byMe: boolean;
 }
@@ -309,13 +310,15 @@ const ChatBox = styled.div<ChatBoxProps>`
 	padding: 10px;
 `;
 
-const ChatNickname = styled.h3``;
-
 const ChatMessage = styled.p`
 	width: 250px;
 	border-radius: 7px;
 	background-color: #f4f4f4;
 	padding: 5px;
+	font-size: ${({ theme }) => theme.fontSizes.base};
+`;
+const QueMessage = styled.p`
+	font-size: ${({ theme }) => theme.fontSizes.base};
 `;
 
 const InputBox = styled.div`
@@ -323,7 +326,7 @@ const InputBox = styled.div`
 	bottom: 10px;
 	right: 0;
 	margin: 0 auto;
-`
+`;
 
 const Input = styled.input`
 	width: 150px;

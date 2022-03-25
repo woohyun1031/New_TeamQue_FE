@@ -211,8 +211,8 @@ function Reaction() {
 
 		return teacher ? (
 			<TeacherBox className='reacton_container'>
-					<p>{teacher.nickname}</p>
-					<img src="/images/connect.png" />
+				<p>{teacher.nickname}</p>
+				<img src='/images/connect.png' />
 			</TeacherBox>
 		) : (
 			<div className='reacton_container'>
@@ -296,7 +296,7 @@ const MyReactionBox = styled.div`
 
 const MyNickname = styled.h2`
 	padding: 30px;
-	font-size: 20px;
+	font-size: ${({ theme }) => theme.fontSizes.xxlg};
 	font-weight: 700;
 `;
 

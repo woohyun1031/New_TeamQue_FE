@@ -1,33 +1,40 @@
 const colors = {
-	black: '#181B23',
-	white: '#FFFFFF',
+	title: '#181B23',
 	main: '#718AFF',
-	brightMain: '#BFCBFF',
-	sub: '#EEB864',
-	gray: '#D2D2D2',
-	lightGray: '#F4F4F4',
+	sub: '#D2D2D2',
+	base: '#F4F4F4',
+	signUp: '#F73535',
+	mainSub: '#BCC8FF',
+	reject: '#D97E7E',
+	shadow: '#F4F4F4',
+  brightMain: '#BFCBFF',
+  white: '#FFFFFF',
 };
 
 const fontSizes = {
-  title: '20px',
-  welcome: '30px',
-}
+  titleSize:'30px',
+  xxxlg:'26px',
+  xxlg:'24px',
+  xlg:'20px',
+  large:'18px',
+  base:'14px',
+  small:'13px',
+  xs:'12px',
+};
 
-const commons = {
-  button: `
-    cursor: pointer;
-    border: none;
-    border-radius: 7px;
-  `,
-  input: `
-    
-  `
-}
+ const paddings = {
+  small: "10px",
+  base: "14px",
+  lg: "16px",
+  xl: "18px",
+  xxl: "20px",
+  xxxl: "23px",
+ };
 
 const theme = {
 	colors,
   fontSizes,
-  commons
+  paddings,
 };
 
 

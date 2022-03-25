@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
 
@@ -36,8 +36,8 @@ const Container = styled.div`
 `;
 
 const Message = styled.h2`
-	font-size: ${({ theme }) => theme.fontSizes.welcome};
-	color: ${({ theme }) => theme.colors.black};
+	font-size: ${({ theme }) => theme.fontSizes.titleSize};
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Button = styled.button`
@@ -56,7 +56,7 @@ const Button = styled.button`
 
 const LightButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.brightMain};
-`
+`;
 
 const Character = styled.img`
 	position: absolute;

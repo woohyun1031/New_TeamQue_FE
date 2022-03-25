@@ -8,9 +8,7 @@ const ClassRoom = () => {
 	return (
 		<Container>
 			<LeftBox>
-				<ClassInfo>
-					Xpecter의 Nest.js 강좌
-				</ClassInfo>
+				<ClassInfo>Xpecter의 Nest.js 강좌</ClassInfo>
 				<Stream />
 				<Reaction />
 			</LeftBox>
@@ -26,7 +24,7 @@ const Container = styled.div`
 	width: 1200px;
 	height: 850px;
 	/* 레이아웃 */
-  margin: 100px auto 0;
+	margin: 100px auto 0;
 	display: flex;
 	justify-content: space-between;
 `;
@@ -41,6 +39,7 @@ const ClassInfo = styled.h2`
 	/* 사이즈 */
 	width: 360px;
 	height: 30px;
+	font-size: ${({ theme }) => theme.fontSizes.xxxlg};
 `;
 
 const Screen = styled.div`
