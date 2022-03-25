@@ -31,9 +31,14 @@ instance.interceptors.response.use(
 			config,
 			response: { status },
 		} = error;
+		console.log(config,"error config")
+		console.log(error.response,"error response")
+		console.log(error.request,"error request")
+		console.log(error.message,"error message")
 		if (status === 401) {
 			console.log(error, '401 error');
 			if (error.response.data.message === 'TokenExpiredError') {
+				console.log("refresh error")
 				const originalRequest = config;
 				const refreshToken = sessionStorage.getItem('refreshToken');
 
@@ -55,7 +60,7 @@ instance.interceptors.response.use(
 				return axios(originalRequest);
 			}
 		}
-		return Promise.reject(error);
+		//return Promise.reject(error);
 	}
 );
 
