@@ -2,22 +2,20 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/configStore';
 import styled from 'styled-components';
 
-
 const Welcome = () => {
 	const user = useSelector((state: RootState) => state.user);
-
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
 			<Name>{user.user_info.nickname} 님</Name>
 			<MessageBox>
-					<Message>명언 랜덤으로 들어가는 공간</Message>
-				<MessageDecoration />
+				<Message>명언 랜덤으로 들어가는 공간</Message>
 			</MessageBox>
 			<Character src='/images/character1.png' />
 		</Container>
 	);
 };
+
 export default Welcome;
 
 const Container = styled.div`
@@ -59,32 +57,11 @@ const MessageBox = styled.div`
 
 const Message = styled.p``;
 
-const MessageDecoration = styled.div`
-	position: absolute;
-	right: -40px;
-	bottom: 10px;
-	width: 0;
-	height: 0;
-	border-bottom: 10px solid transparent;
-	border-top: 15px solid transparent;
-	border-left: 20px solid #718aff;
-	border-right: 20px solid transparent;
-`;
-
-interface CharacterProps {
-	src: string;
-}
-
-const Character = styled.img<CharacterProps>`
+const Character = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	width: 130px;
+	height: 150px;
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
-`;
-
-const Input = styled.input`
-	outline: none;
-	border: none;
-	background-color: #718aff;
-	color: #fff;
-	text-align: center;
 `;

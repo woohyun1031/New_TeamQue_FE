@@ -18,10 +18,8 @@ const Header = () => {
 export default Header;
 
 const Container = styled.div`
-	/* 사이즈 */
 	width: 1200px;
 	height: 100px;
-	/* 레이아웃 */
 	margin: 0 auto;
 	display: flex;
 	align-items: flex-end;
@@ -33,10 +31,8 @@ type LogoType = {
 };
 
 const Logo = styled(Link)<LogoType>`
-	/* 사이즈 */
 	width: 130px;
 	height: 50px;
 	background-repeat: no-repeat;
-	/* 임시 스타일 코드 */
 	${(props) => `background-image: url(${props.src});`}
 `;

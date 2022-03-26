@@ -11,7 +11,6 @@ instance.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
 		const accesssToken = sessionStorage.getItem('accessToken');
 		if (accesssToken) {
-			// 수정 필요
 			config.headers!.Authorization = `Bearer ${accesssToken}`;
 		}
 		return config;
@@ -31,14 +30,14 @@ instance.interceptors.response.use(
 			config,
 			response: { status },
 		} = error;
-		console.log(config,"error config")
-		console.log(error.response,"error response")
-		console.log(error.request,"error request")
-		console.log(error.message,"error message")
+		console.log(config, 'error config');
+		console.log(error.response, 'error response');
+		console.log(error.request, 'error request');
+		console.log(error.message, 'error message');
 		if (status === 401) {
 			console.log(error, '401 error');
 			if (error.response.data.message === 'TokenExpiredError') {
-				console.log("refresh error")
+				console.log('refresh error');
 				const originalRequest = config;
 				const refreshToken = sessionStorage.getItem('refreshToken');
 
@@ -92,11 +91,12 @@ export const apis = {
 	// 게시판
 	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
 
-
-	// todo
+	// Todo
 	loadTodo: () => instance.get('/boards/todo'),
 	addTodo: (todo: string) => instance.post('/boards/todo', { content: todo }),
 	deleteTodo: (todoid: string) => instance.delete(`/boards/todo/${todoid}`),
 	updateTodo: (todoid: string) => instance.put(`/boards/todo/${todoid}`, {}),
+	changeOrderTodo: (todoid1: string, todoid2: string) =>
+		instance.put(`/boards/todo/change/${todoid1}/${todoid2}`, {}),
 };
 export default apis;
