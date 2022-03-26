@@ -1,53 +1,17 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/configStore';
 import styled from 'styled-components';
 
-interface WelcomeProps {
-	message: string;
-}
 
-const Welcome: React.FC<WelcomeProps> = ({ message }) => {
+const Welcome = () => {
 	const user = useSelector((state: RootState) => state.user);
-	const [isChanging, setIsChanging] = useState(false);
-	const [input, setInput] = useState('');
-
-	const onClick = () => {
-		setIsChanging(true);
-	};
-
-	const focusOut = () => {
-		setIsChanging(false);
-	};
-
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setInput(e.target.value);
-	};
-	
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		console.log(input);
-		setInput('')
-		setIsChanging(false);
-	};
 
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
 			<Name>{user.user_info.nickname} 님</Name>
 			<MessageBox>
-				{isChanging ? (
-					<form onSubmit={onSubmit}>
-						<Input
-							type='text'
-							autoFocus
-							onBlur={focusOut}
-							onChange={onChange}
-						/>
-					</form>
-				) : (
-					<Message onClick={onClick}>{message}</Message>
-				)}
+					<Message>명언 랜덤으로 들어가는 공간</Message>
 				<MessageDecoration />
 			</MessageBox>
 			<Character src='/images/character1.png' />

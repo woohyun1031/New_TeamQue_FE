@@ -31,15 +31,10 @@ const Board = () => {
 			newPages[parseInt(page) - 1].selected = true;
 		}
 		setPages(newPages);
-		console.log(response.data);
 	};
 	useEffect(() => {
 		fetch();
 	}, [page]);
-
-	useEffect(() => {
-		console.log(question);
-	}, [question]);
 
 	return (
 		<Container>
@@ -94,7 +89,7 @@ const Board = () => {
 				</tbody>
 			</Table>
 			<Pagenation>
-				{pages.map((page) => (
+				{pages && pages.map((page) => (
 					<Page
 						key={page.page}
 						selected={page.selected}

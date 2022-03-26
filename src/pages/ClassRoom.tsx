@@ -20,13 +20,7 @@ const ClassRoom = () => {
 	return (
 		<Container>
 			<LeftBox>
-<<<<<<< HEAD
-				<ClassInfo>
-					{classInfo && classInfo.title}
-				</ClassInfo>
-=======
-				<ClassInfo>Xpecter의 Nest.js 강좌</ClassInfo>
->>>>>>> 875c6b18f9cfeb62d875867676421e20b5222fc0
+				<ClassInfo>{classInfo && classInfo.title}</ClassInfo>
 				<Stream />
 				<Reaction />
 			</LeftBox>
@@ -40,12 +34,7 @@ export default ClassRoom;
 const Container = styled.div`
 	width: 1200px;
 	height: 850px;
-<<<<<<< HEAD
   margin: 100px auto 0;
-=======
-	/* 레이아웃 */
-	margin: 100px auto 0;
->>>>>>> 875c6b18f9cfeb62d875867676421e20b5222fc0
 	display: flex;
 	justify-content: space-between;
 `;
