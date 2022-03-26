@@ -86,8 +86,9 @@ export const apis = {
 	loadTeachClass: () => instance.get('/class'),
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadClassBoards: (classId: string) => instance.get(`/boards/${classId}`),
-	loadStudents: (classId: string) => instance.get(`class/student/${classId}`),
-
+	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
+	loadAllCalendar: (year: number, month: number) =>
+		instance.get(`/class/date/all/${year}/${month}`),
 	// 게시판
 	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
 

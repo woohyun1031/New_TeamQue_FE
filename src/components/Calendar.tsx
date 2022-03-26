@@ -1,67 +1,153 @@
-import { useEffect, useMemo, useState } from 'react';
-import styled, { css } from 'styled-components';
-import getDateArrayOfMonth from '../utils/getDateArray';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import apis from '../api';
+
+type dateType = {
+	month: 'prev' | 'this' | 'next';
+	date: number;
+	event?: { title: string; time: string }[];
+};
+
+type weekType = dateType[];
+
+type calendarType = weekType[];
 
 const Calendar = () => {
 	const today = new Date();
-	const nowMonth = today.getMonth();
-	const nowYear = today.getFullYear();
-	const [month, setMonth] = useState(nowMonth);
-	const [calendar, setCalendar] = useState<any>()
-	const makeCalendar = () => {
-		const arr = getDateArrayOfMonth(nowYear, month)
-		const calendarData: any = [];
-		for (let i = 0; i < 6; i++) {
-			const week: any = [];
-			for (let j = 0; j < 7; j++) {
-				week.push(arr[i * 7 + j]);
-			}
-			calendarData.push(week);
+	const thisMonth = today.getMonth();
+	const thisYear = today.getFullYear();
+	const [year, setYear] = useState<number>(thisYear);
+	const [month, setMonth] = useState<number>(thisMonth);
+	const [calendar, setCalendar] = useState<calendarType>();
+
+	const makeCalendar = async () => {
+		const thisMonthFirstDay = new Date(year, month, 1).getDay();
+		const thisMonthLastDate = new Date(year, month + 1, 0).getDate();
+		const lastMonthLastDate = new Date(year, month, 0).getDate();
+		const lastMonthStartDate = lastMonthLastDate - thisMonthFirstDay + 1;
+		let totalDate = 42;
+		const allDate: dateType[] = [];
+		for (let i = lastMonthStartDate; i <= lastMonthLastDate; i++) {
+			allDate.push({ month: 'prev', date: i });
+			totalDate--;
 		}
-		setCalendar(calendarData)
-	}
-	useEffect(()=> {
-		makeCalendar()
-	}, [month])
+		for (let i = 1; i <= thisMonthLastDate; i++) {
+			allDate.push({ month: 'this', date: i });
+			totalDate--;
+		}
+		for (let i = 1; i <= totalDate; i++) {
+			allDate.push({ month: 'next', date: i });
+		}
+		console.log(allDate);
+
+		const response = await apis.loadAllCalendar(year, month + 1);
+		console.log(response.data);
+		for (const event of response.data) {
+			if (allDate[event.day + thisMonthFirstDay - 1].event) {
+				allDate[event.day + thisMonthFirstDay - 1].event?.push({
+					title: event.title,
+					time: `${event.startTime}~${event.endTime}`,
+				});
+			} else {
+				allDate[event.day + thisMonthFirstDay - 1].event = [
+					{
+						title: event.title,
+						time: `${event.startTime}~${event.endTime}`,
+					},
+				];
+			}
+		}
+		const newCalendar = [];
+		for (let i = 0; i < allDate.length; i += 7)
+			newCalendar.push(allDate.slice(i, i + 7));
+		console.log(newCalendar);
+		setCalendar(newCalendar);
+	};
+
+	useEffect(() => {
+		makeCalendar();
+	}, [month]);
+
 	const setPrevMonth = () => {
-		setMonth((prev) => (prev + 11) % 12);
+		let nextMonth = month - 1;
+		if (month === 0) {
+			nextMonth = 11;
+			setYear((state) => state - 1);
+		}
+		setMonth(nextMonth);
 	};
 	const setNextMonth = () => {
-		setMonth((prev) => (prev + 1) % 12);
+		let nextMonth = month + 1;
+		if (month === 11) {
+			nextMonth = 0;
+			setYear((state) => state + 1);
+		}
+		setMonth(nextMonth);
 	};
 
 	return (
-			<CalendarBox>
-				<Table>
-					<Caption>
-						<Button onClick={setPrevMonth}>{((month + 11) % 12) + 1}</Button>
-						{month + 1}
-						<Button onClick={setNextMonth}>{((month + 1) % 12) + 1}</Button>
-					</Caption>
-					<thead>
-						<tr>
-							<Th>S</Th>
-							<Th>M</Th>
-							<Th>T</Th>
-							<Th>W</Th>
-							<Th>T</Th>
-							<Th>F</Th>
-							<Th>S</Th>
-						</tr>
-					</thead>
-					<tbody>
-						{calendar && calendar.map((week: any, index: number) => (
+		<CalendarBox>
+			<Table>
+				<Caption>
+					<Button onClick={setPrevMonth}>{((month + 11) % 12) + 1}</Button>
+					{month + 1}
+					<Button onClick={setNextMonth}>{((month + 1) % 12) + 1}</Button>
+				</Caption>
+				<thead>
+					<tr>
+						<Th>
+							<DayBox>S</DayBox>
+						</Th>
+						<Th>
+							<DayBox>M</DayBox>
+						</Th>
+						<Th>
+							<DayBox>T</DayBox>
+						</Th>
+						<Th>
+							<DayBox>W</DayBox>
+						</Th>
+						<Th>
+							<DayBox>T</DayBox>
+						</Th>
+						<Th>
+							<DayBox>F</DayBox>
+						</Th>
+						<Th>
+							<DayBox>S</DayBox>
+						</Th>
+					</tr>
+				</thead>
+				<tbody>
+					{calendar &&
+						calendar.map((week: weekType, index: number) => (
 							<tr key={index}>
-								{week.map((date: any, index: number) => (
-									<Td month={date.month} isToday={date.isToday} key={index}>
-										{date.date}
+								{week.map((date: dateType, index: number) => (
+									<Td
+										isThisMonth={date.month === 'this'}
+										hasEvent={date.event ? true : false}
+										key={index}
+									>
+										<DateBox hasEvent={date.event ? true : false}>
+											{date.date}
+										</DateBox>
+										{date.event && (
+											<EventBox>
+												{date.event &&
+													date.event.map((event, index) => (
+														<p key={index}>
+															{event.title} {event.time}
+														</p>
+													))}
+											</EventBox>
+										)}
 									</Td>
 								))}
 							</tr>
 						))}
-					</tbody>
-				</Table>
-			</CalendarBox>
+				</tbody>
+			</Table>
+		</CalendarBox>
 	);
 };
 
@@ -111,22 +197,61 @@ const Th = styled.th`
 `;
 
 interface TdProps {
-	month: string;
-	isToday: boolean;
+	isThisMonth: boolean;
+	hasEvent: boolean;
 }
 
-const Td = styled.td<TdProps>`
-	${(props) =>
-		props.month !== 'this' &&
-		css`
-			color: #ddd;
-		`};
-	${(props) =>
-		props.isToday &&
-		css`
-			border-radius: 50%;
-			background-color: rgba(113, 138, 255, 0.4);
-		`};
-	text-align: center;
+const EventBox = styled.div`
+	width: 300px;
+	min-height: 80px;
+	padding: 10px;
+	display: none;
+	position: absolute;
+	bottom: 35px;
+	left: 15px;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	border-radius: 7px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	z-index: 100;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
 
+const Td = styled.td<TdProps>`
+	position: relative;
+	text-align: center;
+	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc;')};
+
+`;
+
+interface DateBoxProps {
+	hasEvent: boolean;
+}
+
+const DateBox = styled.div<DateBoxProps>`
+	width: 25px;
+	height: 25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	${({ hasEvent }) =>
+		hasEvent &&
+		`
+		background-color: rgba(113, 138, 255, 0.7); 
+		color:#fff;
+		border-radius: 50%;
+	`};
+	&:hover + ${EventBox} {
+		display: flex;
+	}
+`;
+
+const DayBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25px;
+	height: 25px;
+`;
