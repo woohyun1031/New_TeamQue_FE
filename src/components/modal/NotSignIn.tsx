@@ -48,7 +48,7 @@ const Button = styled.button`
 	display: block;
 	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 22px;
 	font-weight: 500;
 	cursor: pointer;
