@@ -10,8 +10,8 @@ type CardType = {
 	title: string;
 	teacher: string;
 	imageUrl: string;
-	time: string;
-	state?: 'wait' | 'accepted' | 'rejected';
+	time: string[];
+	state: 'wait' | 'accepted' | 'teach';
 };
 
 interface Props {
@@ -39,7 +39,7 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 			loadLearnClass();
 			loadTeachClass();
 		}
-	}, []);
+	}, [isLogin]);
 
 	console.log(learnCards)
 
@@ -61,6 +61,8 @@ const Container = styled.div`
 	height: 400px;
 	overflow-x: scroll;
 	white-space: nowrap;
+	display: flex;
+	padding-right: 10px;
 	&::-webkit-scrollbar {
 		height: 5px;
 	}

@@ -6,11 +6,18 @@ interface CardProps {
 	title: string;
 	teacher: string;
 	imageUrl: string;
-	time: string;
-	state?: 'wait' | 'accepted' | 'rejected';
+	time: string[];
+	state: 'wait' | 'accepted' | 'teach';
 }
 
-const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) => {
+const Card: React.FC<CardProps> = ({
+	id,
+	imageUrl,
+	teacher,
+	title,
+	time,
+	state,
+}) => {
 	const navigate = useNavigate();
 	const toClassRoom = () => {
 		navigate(`/classroom/${id}`);
@@ -18,19 +25,29 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 	const toClassHome = () => {
 		navigate(`/classhome/${id}/1`);
 	};
+	if (state == 'wait') {
+		return (
+			<>
+				<Container type={state}>
+					<Thumbnail src={imageUrl} />
+					<Title>{title}</Title>
+					<Teacher>{teacher} 선생님</Teacher>
+					{time.map((t) => <TimeTable key={t}>{t}</TimeTable>)}
+				</Container>
+			</>
+		);
+	}
+
 	return (
-		<Container>
-			<Thumbnail
-				src={imageUrl}
-				onClick={toClassRoom}
-			/>
+		<Container type={state}>
+			<Thumbnail src={imageUrl} onClick={toClassRoom} />
 			<BadgeBox>
-				<Badge>진행중</Badge>
+				<SubBadge>진행중</SubBadge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
 			<Title>{title}</Title>
 			<Teacher>{teacher} 선생님</Teacher>
-			<TimeTable>{time.split('/')[0]}</TimeTable>
+			{time.map((t) => <TimeTable key={t}>{t}</TimeTable>)}
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
 		</Container>
 	);
@@ -38,8 +55,7 @@ const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) 
 
 export default Card;
 
-const Container = styled.div`
-	display: inline-block;
+const Container = styled.div<{ type: 'wait' | 'accepted' | 'teach' }>`
 	width: 300px;
 	height: 380px;
 	border-radius: 10px;
@@ -54,10 +70,11 @@ const Container = styled.div`
 	&:hover {
 		background-color: #fcfcfc;
 	}
+	${({ type }) => type === 'wait' && 'background-color: #F4F4F4; color: black;'}
 `;
 
-const Thumbnail = styled.div<{src: string}>`
-	background-image: url(${({src}) => src});
+const Thumbnail = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
 	background-size: cover;
 	background-position: center center;
 	width: 255px;
@@ -74,7 +91,7 @@ const BadgeBox = styled.div`
 	margin-bottom: 10px;
 `;
 
-const Badge = styled.div`
+const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	width: 55px;
 	height: 20px;
 	background-color: #718aff;
@@ -85,12 +102,15 @@ const Badge = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	${({ type }) =>
+		type === 'wait' && 'background-color: #F4F4F4; color: #718AFF;'}
 	& + & {
 		margin-left: 5px;
 	}
-	&:nth-child(1) {
-		background-color: #BCC8FF;
-	}
+`;
+
+const SubBadge = styled(Badge)`
+	background-color: #bcc8ff;
 `;
 
 const Title = styled.h3`
@@ -100,8 +120,7 @@ const Title = styled.h3`
 `;
 
 const Teacher = styled.h4`
-	margin-bottom: 7px;
-	font-weight: 400;
+	font-weight: 700;
 `;
 
 const TimeTable = styled.p`
@@ -109,13 +128,18 @@ const TimeTable = styled.p`
 	font-weight: 500;
 `;
 
-interface HomeButtonProps {
-	src: string;
-}
-
-const HomeButton = styled.img<HomeButtonProps>`
+const HomeButton = styled.button<{ src: string }>`
+	width: 41px;
+	height: 41px;
+	border-radius: 50%;
+	border: none;
+	background-color: #718AFF;
+	background-image: url(${({ src }) => src});
+	background-position: center center;
+	background-repeat: no-repeat;
 	position: absolute;
 	bottom: 10px;
 	right: 10px;
 	cursor: pointer;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
