@@ -9,14 +9,21 @@ import { changeModal, openModal } from '../store/modules/modal';
 
 const Main = () => {
 	const dispatch = useDispatch();
-	const openAddClassModal = () => {
+	const [tabState, setTabState] = useState(true);
+
+	const openAddLearnClassModal = () => {
+		// 강의 참여 코드 넣을 수 있는 모달 오픈
+	}
+
+	const openAddTeachClassModal = () => {
 		dispatch(openModal());
 		dispatch(changeModal('addClass'));
 	};
-	const [tabState, setTabState] = useState(true);
+
 	const tabLearn = () => {
 		setTabState(true);
 	};
+
 	const tabTeach = () => {
 		setTabState(false);
 	};
@@ -43,12 +50,22 @@ const Main = () => {
 					</TabButtons>
 					<CardList tabState={tabState} />
 				</CardBox>
-				<AddCardBox onClick={openAddClassModal}>
-					<h1>+</h1>
-					<p>강의 개설하기</p>
-					<Arm src='/images/arm2.png' />
-					<Character src='/images/character2.png' alt='' />
-				</AddCardBox>
+				{/* 이미지 중복 로드, 수정 필요 */}
+				{tabState ? (
+					<AddCardBox onClick={openAddLearnClassModal}>
+						<h1>+</h1>
+						<p>새로운 강의 참가하기</p>
+						<Arm src='/images/arm2.png' />
+						<Character src='/images/character2.png' alt='' />
+					</AddCardBox>
+				) : (
+					<AddCardBox onClick={openAddTeachClassModal}>
+						<h1>+</h1>
+						<p>새로운 강의 개설하기</p>
+						<Arm src='/images/arm2.png' />
+						<Character src='/images/character2.png' alt='' />
+					</AddCardBox>
+				)}
 			</LowerContainer>
 		</>
 	);
@@ -56,14 +73,9 @@ const Main = () => {
 
 export default Main;
 
-// 사이즈 전체적으로 재조정 될 예정
-
 const UpperContainer = styled.div`
-	/* 사이즈 */
 	width: 1200px;
 	height: 320px;
-	/* 레이아웃 */
-	/* margin-top 임시 설정 */
 	margin: 100px auto 80px;
 	display: flex;
 	justify-content: space-between;
@@ -71,11 +83,8 @@ const UpperContainer = styled.div`
 `;
 
 const LowerContainer = styled.div`
-	/* 사이즈 */
 	width: 1200px;
 	height: 450px;
-	/* 레이아웃 */
-	/* 상하 마진 임시 설정 */
 	margin: 0 auto;
 	display: flex;
 	align-items: flex-end;
@@ -85,21 +94,15 @@ const LowerContainer = styled.div`
 const CardBox = styled.div``;
 
 const TabButtons = styled.div`
-	/* 사이즈 */
 	width: 360px;
 	height: 40px;
-	/* 레이아웃 */
-	/* 상하 마진 임시 설정 */
 	margin-bottom: 15px;
 	display: flex;
 	justify-content: space-between;
 	`;
 
-interface TabButtonProps {
-	isSelected: boolean;
-}
 
-const TabButton = styled.button<TabButtonProps>`
+const TabButton = styled.button<{isSelected: boolean}>`
 	background: none;
 	border: none;
 	font-size: 27px;
@@ -110,10 +113,8 @@ const TabButton = styled.button<TabButtonProps>`
 `;
 
 const AddCardBox = styled.div`
-	/* 사이즈 */
 	width: 300px;
 	height: 435px;
-	/* 임시 스타일 코드 */
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -125,8 +126,9 @@ const AddCardBox = styled.div`
 	transition: 0.1s;
 	cursor: pointer;
 	position: relative;
+	font-size: 18px;
 	& h1 {
-		font-size: 30px;
+		font-size: 50px;
 		font-weight: 300;
 		margin-bottom: 20px;
 	}
@@ -136,7 +138,6 @@ const AddCardBox = styled.div`
 `;
 
 const CalendarBox = styled.div`
-	/* 사이즈 */
 	width: 280px;
 	height: 320px;
 	display: flex;
