@@ -57,13 +57,13 @@ const Board = () => {
 									<img src='/images/star.png' />
 								</td>
 								<td>공지</td>
-								<td
+								<PostTitle
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
-								</td>
+								</PostTitle>
 								<td>{row.writer}</td>
 								<td>{row.createdAt.split('T')[0]}</td>
 							</tr>
@@ -129,10 +129,13 @@ const Table = styled.table`
 	padding: 30px;
 	width: 840px;
 	margin: 0 auto;
+	& td {
+		text-align: center;
+	}
 `;
 
 const Th = styled.th`
-	text-align: left;
+	text-align: center;
 `;
 
 const Pagenation = styled.div`

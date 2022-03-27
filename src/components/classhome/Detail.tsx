@@ -38,15 +38,15 @@ const Detail = () => {
 			<Contents>{data && data.board.description}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				<CommentInput type='text' />
-				<CommentButton>등록</CommentButton>
 				{data &&
 					data.board.__comments__.map((comment: any) => (
 						<li key={comment.boardId}>
-							<p>{comment.writer}</p>
-							{comment.description}
+							<CommentWriter>{comment.writer}</CommentWriter>
+							<Comment>{comment.description}</Comment>
 						</li>
 					))}
+				<CommentInput type='text' />
+				<CommentButton>등록</CommentButton>
 			</Comments>
 		</Container>
 	);
@@ -94,13 +94,23 @@ const Date = styled.h3`
 `;
 
 const Contents = styled.p`
-	padding: 50px;
-	min-height: 450px;
+	padding: 0 50px;
+	min-height: 310px;
 `;
+
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
 	margin-bottom: 20px;
+`;
+
+const CommentWriter = styled.h4`
+	font-size: 12px;
+	font-weight: 700;
+`;
+
+const Comment = styled.p`
+	font-size: 12px;
 `;
 
 const Comments = styled.div`
@@ -111,11 +121,11 @@ const Comments = styled.div`
 `;
 
 const CommentInput = styled.input`
+	margin-top: 40px;
 	width: 800px;
 	height: 100px;
 	border: none;
 	border-radius: 10px;
-	margin-bottom: 10px;
 `;
 
 const CommentButton = styled.button`
@@ -127,5 +137,5 @@ const CommentButton = styled.button`
 	border: none;
 	position: absolute;
 	right: 50px;
-	top: 115px;
+	bottom: 80px;
 `;

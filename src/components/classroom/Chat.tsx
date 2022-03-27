@@ -16,6 +16,7 @@ let socket: Socket;
 function Chat() {
 	const [chatMessage, setChatMessage] = useState('');
 	const [chats, setChat] = useState<chatType[]>([]);
+
 	const [check, setChecked] = useState({
 		commonCheck: false,
 		questionCheck: false,
@@ -23,6 +24,7 @@ function Chat() {
 	const [chatcheck, setChatChecked] = useState({
 		queCheck: false,
 	});
+
 	const [isConnect, setConnect] = useState(false);
 
 	const { commonCheck, questionCheck } = check;
@@ -163,58 +165,6 @@ function Chat() {
 		});
 	};
 
-	const renderChat = () => {
-		if (commonCheck === true) {
-			if (chats) {
-				return chats
-					.filter((chat) => chat.check === 'common')
-					.map(({ nickname, chatMessage, id }) => (
-						<ChatBox key={id} byMe={mynickname === nickname}>
-							<ChatName>{nickname}</ChatName>
-							<ChatMessage>{chatMessage}</ChatMessage>
-						</ChatBox>
-					));
-			}
-		} else if (questionCheck === true) {
-			if (chats) {
-				return chats
-					.filter((chat: any) => chat.check === 'question')
-					.map(({ nickname, chatMessage, id, solution }) => (
-						<QuestionBox key={id} byMe={mynickname === nickname}>
-							{solution ? '해결' : ''}
-							{mynickname === nickname ? (
-								<button onClick={() => solveClick(id)}>이해됐어요!</button>
-							) : null}
-							<p>질문 : {chatMessage}</p>
-						</QuestionBox>
-					));
-			}
-		} else {
-			if (chats) {
-				return chats.map(({ nickname, chatMessage, id, solution, check }) => {
-					if (check === 'common') {
-						return (
-							<ChatBox key={id} byMe={mynickname === nickname}>
-								<ChatName>{nickname}</ChatName>
-								<ChatMessage>{chatMessage}</ChatMessage>
-							</ChatBox>
-						);
-					} else {
-						return (
-							<QuestionBox key={id} byMe={mynickname === nickname}>
-								{solution ? '해결' : ''}
-								{mynickname === nickname ? (
-									<button onClick={() => solveClick(id)}>이해됐어요!</button>
-								) : null}
-								<QueMessage>질문 : {chatMessage}</QueMessage>
-							</QuestionBox>
-						);
-					}
-				});
-			}
-		}
-	};
-
 	return (
 		<Container>
 			<Label>
@@ -235,30 +185,48 @@ function Chat() {
 				/>
 				질문
 			</Label>
-			<div className='header_modal_hr' />
+			<>
+				{chats &&
+					chats.map(({ nickname, chatMessage, id, solution, check }) => {
+						if (check === 'common' && !commonCheck) {
+							return (
+								<ChatBox key={id} byMe={mynickname === nickname}>
+									<ChatName>{nickname}</ChatName>
+									<ChatMessage>{chatMessage}</ChatMessage>
+								</ChatBox>
+							);
+						} else if (check === 'question' && !questionCheck) {
+							return (
+								<QuestionBox key={id} byMe={mynickname === nickname}>
+									{solution ? '해결' : ''}
+									{mynickname === nickname ? (
+										<button onClick={() => solveClick(id)}>이해됐어요!</button>
+									) : null}
+									<QueMessage>질문 : {chatMessage}</QueMessage>
+								</QuestionBox>
+							);
+						}
+					})}
+			</>
 
-			<div className='group_chat_container'>
-				<div className='chat_render_oneChat'>{renderChat()}</div>
-
-				<InputBox>
-					<Input
-						type='text'
-						name='oneChat'
-						value={chatMessage}
-						onChange={sendMessage}
-						onKeyPress={(e) => {
-							if (e.key === 'Enter') {
-								sendChat();
-							}
-						}}
-					/>
-					<SendButton onClick={sendChat}>전송</SendButton>
-					<label>
-						질문
-						<input type='checkbox' name='queCheck' onChange={onChat} />
-					</label>
-				</InputBox>
-			</div>
+			<InputBox>
+				<Input
+					type='text'
+					name='oneChat'
+					value={chatMessage}
+					onChange={sendMessage}
+					onKeyPress={(e) => {
+						if (e.key === 'Enter') {
+							sendChat();
+						}
+					}}
+				/>
+				<SendButton onClick={sendChat}>전송</SendButton>
+				<label>
+					질문
+					<input type='checkbox' name='queCheck' onChange={onChat} />
+				</label>
+			</InputBox>
 		</Container>
 	);
 }
