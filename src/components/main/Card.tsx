@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface CardProps {
-	id: string;
-	imageUrl: string;
-	teacher: string;
+	id: number;
 	title: string;
+	teacher: string;
+	imageUrl: string;
 	time: string;
-	state?: string;
+	state?: 'wait' | 'accepted' | 'rejected';
 }
 
 const Card:React.FC<CardProps> = ({id, imageUrl, teacher, title, time, state }) => {
@@ -52,11 +52,14 @@ const Container = styled.div`
 		margin-left: 20px;
 	}
 	&:hover {
-		background-color: #fdfdfd;
+		background-color: #fcfcfc;
 	}
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled.div<{src: string}>`
+	background-image: url(${({src}) => src});
+	background-size: cover;
+	background-position: center center;
 	width: 255px;
 	height: 172px;
 	border-radius: 7px;
@@ -65,10 +68,9 @@ const Thumbnail = styled.img`
 `;
 
 const BadgeBox = styled.div`
-	width: 120px;
+	width: 100%;
 	height: 18px;
 	display: flex;
-	justify-content: space-between;
 	margin-bottom: 10px;
 `;
 
@@ -83,6 +85,9 @@ const Badge = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	& + & {
+		margin-left: 5px;
+	}
 	&:nth-child(1) {
 		background-color: #BCC8FF;
 	}

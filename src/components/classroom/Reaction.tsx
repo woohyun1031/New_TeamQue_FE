@@ -28,9 +28,8 @@ type checkEnumType = {
 	question: number;
 };
 
-function Reaction() {
+const Reaction = () => {
 	const user = useSelector((state: RootState) => state.user);
-
 	const [ischeck, setChecked] = useState<checkType>({
 		correct: false,
 		incorrect: false,
@@ -84,9 +83,7 @@ function Reaction() {
 					'joinRoom',
 					{ classId: Number(classId) },
 					(payload: { userList: { nickname: string; state: number }[] }) => {
-						console.log(payload, 'payload');
 						if (students) {
-							console.log(students, 'payload students');
 							setStudents(
 								Object.values(payload.userList).map((student) =>
 									student.nickname === mynickname
@@ -94,31 +91,21 @@ function Reaction() {
 										: student
 								)
 							);
-							console.log(isConnect, 'before setConnect isConnect');
 							setConnect(true);
-							console.log(isConnect, 'after setConnect isConnect');
-							console.log(isConnect, '인간적으로 실행되어야될 isConnect');
 							if (isConnect === true) {
-								console.log(isConnect, 'isConnect');
 								socket.on('changeState', ({ nickname, state }) => {
 									//내가 보냈는데 자꾸 changeState가 들어옴
 									console.log('changeState!!');
 									if (students) {
-										console.log(students, 'changeState students');
-										console.log(nickname, state, 'changeState nickname, state');
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
 												? { nickname: student.nickname, state }
 												: student
 										);
-										console.log(newStudents, 'after changeState students');
 										setStudents(newStudents);
 									}
 								});
-								console.log(isConnect, 'isConnect joinUser');
 								socket.on('joinUser', ({ nickname, state }) => {
-									console.log(nickname, state, 'joinUser');
-									console.log(students, 'in joinUser');
 									if (students) {
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
@@ -185,9 +172,6 @@ function Reaction() {
 	}, [ischeck]);
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		//name에는 내 nickname 넣어주기
-		console.log('onChange');
-		console.log(ischeck, 'ischeck');
 		const { name, checked } = e.target;
 		console.log(name, checked, 'before setChecked');
 		setChecked({
@@ -283,7 +267,7 @@ function Reaction() {
 			</ReactionBox>
 		</Container>
 	);
-}
+};
 export default Reaction;
 
 const Container = styled.div`

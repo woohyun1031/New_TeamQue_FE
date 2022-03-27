@@ -1,5 +1,6 @@
 const colors = {
 	title: '#181B23',
+  subTitle:'#9B9B9B',
 	main: '#718AFF',
 	sub: '#D2D2D2',
 	base: '#F4F4F4',

@@ -1,43 +1,55 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import apis from '../../api';
+import { RootState } from '../../store/configStore';
 import Card from './Card';
+
+type CardType = {
+	id: number;
+	title: string;
+	teacher: string;
+	imageUrl: string;
+	time: string;
+	state?: 'wait' | 'accepted' | 'rejected';
+};
 
 interface Props {
 	tabState: boolean;
 }
 
 const CardList: React.FC<Props> = ({ tabState }) => {
-	const [learnCards, setLearnCards] = useState() as any;
-	const [teachCards, setTeachCards] = useState() as any;
-	const isToken = sessionStorage.getItem('accessToken') ? true : false;
-	const fetch1 = async () => {
+	const [learnCards, setLearnCards] = useState<CardType[]>();
+	const [teachCards, setTeachCards] = useState<CardType[]>();
+
+	const isLogin = useSelector((state: RootState) => state.user.is_login);
+
+	const loadLearnClass = async () => {
 		const response = await apis.loadLearnClass();
 		setLearnCards(response.data);
 	};
-	const fetch2 = async () => {
+
+	const loadTeachClass = async () => {
 		const response = await apis.loadTeachClass();
 		setTeachCards(response.data);
 	};
 
 	useEffect(() => {
-		if (isToken) {
-			fetch1();
-			fetch2();
+		if (isLogin) {
+			loadLearnClass();
+			loadTeachClass();
 		}
 	}, []);
+
+	console.log(learnCards)
 
 	return (
 		<Container>
 			{tabState
 				? learnCards &&
-				  learnCards.map((card: any, index: number) => (
-						<Card key={index} state={card.state} {...card.class} />
-				  ))
+				  learnCards.map((card: CardType) => <Card key={card.id} {...card} />)
 				: teachCards &&
-				  teachCards.map((card: any, index: number) => (
-						<Card key={index} {...card} />
-				  ))}
+				  teachCards.map((card: CardType) => <Card key={card.id} {...card} />)}
 		</Container>
 	);
 };

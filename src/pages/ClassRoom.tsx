@@ -21,7 +21,6 @@ const ClassRoom = () => {
 		<Container>
 			<LeftBox>
 				<ClassInfo>{classInfo && classInfo.title}</ClassInfo>
-				<ClassInfo>Xpecter의 Nest.js 강좌</ClassInfo>
 				<Stream />
 				<Reaction />
 			</LeftBox>

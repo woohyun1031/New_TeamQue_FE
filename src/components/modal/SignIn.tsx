@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
 		e.preventDefault();
 		console.log('로그인 정보 확인', inputs);
 		await dispatch(signIn(inputs));
-		// location.reload();
+		location.reload();
 	};
 
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
