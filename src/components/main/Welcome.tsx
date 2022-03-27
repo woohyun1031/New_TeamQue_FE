@@ -4,12 +4,21 @@ import styled from 'styled-components';
 
 const Welcome = () => {
 	const user = useSelector((state: RootState) => state.user);
+	const lifeQuotes: string[] = [
+		"Don't dwell on the past",
+		'Believe in yourself.',
+		'Follow your heart.',
+		'Seize the day.',
+		'You only live once.',
+	];
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
 			<Name>{user.user_info.nickname} 님</Name>
 			<MessageBox>
-				<Message>명언 랜덤으로 들어가는 공간</Message>
+				<Message>
+					{lifeQuotes[Math.floor(Math.random() * lifeQuotes.length)]}
+				</Message>
 			</MessageBox>
 			<Character src='/images/character1.png' />
 		</Container>
