@@ -19,7 +19,6 @@ const Todo = () => {
 	useEffect(() => {
 		if (isToken) {
 			dispatch(loadTodos());
-
 		}
 	}, []);
 	const add = (e: FormEvent<HTMLFormElement>) => {
@@ -99,6 +98,7 @@ const Container = styled.div`
 const Title = styled.h2`
 	font-size: 20px;
 	margin-bottom: 10px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const ScheduleBox = styled.ul`
@@ -110,10 +110,9 @@ const ScheduleBox = styled.ul`
 		width: 5px; /*스크롤바의 너비*/
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: #ccc; /*스크롤바의 색상*/
+		background-color: ${({ theme }) => theme.colors.scroll}; /*스크롤바의 색상*/
 		border-radius: 10px;
 	}
-
 `;
 
 interface ScheduleItemProps {
@@ -128,18 +127,18 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	align-items: center;
 	justify-content: center;
 	border-radius: 7px;
-	background-color: ${props => props.theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.main};
 	margin: 0 auto;
 	margin-bottom: 23px;
-	color: #fff;
+	color: ${({ theme }) => theme.colors.background};
 	position: relative;
 	font-weight: 700;
 	font-size: 14px;
 	${(props) =>
 		props.isComplete &&
 		css`
-			color: #b7b7b7;
-			background-color: #fff;
+			color: ${({ theme }) => theme.colors.sub};
+			background-color: ${({ theme }) => theme.colors.background};
 			text-decoration: line-through;
 		`};
 	padding: 20px;
@@ -166,7 +165,7 @@ const AddButton = styled.button`
 	border: none;
 	border-radius: 7px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: #718aff;
+	color: ${({ theme }) => theme.colors.main};
 	font-size: 30px;
 	margin-bottom: 10px;
 	transition: 0.1s;
@@ -180,9 +179,9 @@ const InputBox = styled.input`
 	width: 270px;
 	height: 80px;
 	border-radius: 7px;
-	background-color: #718aff;
+	background-color: ${({ theme }) => theme.colors.main};
 	border: none;
-	color: #fff;
+	color: ${({ theme }) => theme.colors.background};
 	text-align: center;
 	font-weight: 700;
 	font-size: 14px;

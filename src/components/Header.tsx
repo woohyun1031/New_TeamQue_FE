@@ -5,7 +5,7 @@ import { RootState } from '../store/configStore';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
-	const user = useSelector((state: RootState) => state.user)
+	const user = useSelector((state: RootState) => state.user);
 	return (
 		<>
 			<Container>
@@ -24,6 +24,7 @@ const Container = styled.div`
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 type LogoType = {

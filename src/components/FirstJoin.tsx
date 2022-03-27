@@ -1,18 +1,17 @@
-import { useState,ChangeEvent,FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { nicknameSet } from '../store/modules/user';
 
-
 const FirstJoin: React.FC = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const navigator = useNavigate();
 
-  const [nickname, setNickname] = useState("");
+	const [nickname, setNickname] = useState('');
 	const [isNick, setIsNick] = useState(false);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setNickname(e.target.value);
 		const userNickRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
 		const NickRegex = userNickRegex.test(e.target.value);
@@ -50,7 +49,7 @@ const FirstJoin: React.FC = () => {
 			</Background>
 		</>
 	);
-}
+};
 
 export default FirstJoin;
 
@@ -63,7 +62,7 @@ const Background = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: ${({ theme }) => theme.colors.shadowColor};
 	backdrop-filter: blur(5px);
 `;
 
@@ -76,19 +75,19 @@ const Contents = styled.div`
 	padding: 50px;
 	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 5px 5px 5px ${({ theme }) => theme.colors.shadowColor};
 `;
 
 const Input = styled.input`
-  display: block;
-  height: 3vw;
-  color: #7A7D81; 
-  margin: 0.8vw 0; 
-  :checked + span {
-    background-color: #d8d8d8;
-    font-weight: bold;
-    font-size:0.9vw;
-  }
+	display: block;
+	height: 3vw;
+	color: #7a7d81;
+	margin: 0.8vw 0;
+	:checked + span {
+		background-color: ${({ theme }) => theme.colors.sub};
+		font-weight: bold;
+		font-size: 0.9vw;
+	}
 `;
 
 const Form = styled.form`

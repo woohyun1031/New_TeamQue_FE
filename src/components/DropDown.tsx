@@ -31,9 +31,6 @@ const DropDown: React.FC<Props> = ({ name }) => {
 
 export default DropDown;
 
-
-
-
 interface MenuProps {
 	isOpen: boolean;
 }
@@ -58,8 +55,9 @@ const Menu = styled.ul<MenuProps>`
 	border-radius: 7px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 	transition: 0.3s;
+	cursor: pointer;
 	& li:nth-child(2) {
-		color: #718aff;
+		color: ${({ theme }) => theme.colors.signOut};
 		cursor: pointer;
 	}
 	display: none;
@@ -75,7 +73,7 @@ const Name = styled.button`
 
 const Container = styled.div`
 	position: relative;
-	padding-bottom: 20px ;
+	padding-bottom: 20px;
 	&:hover ${Menu} {
 		display: flex;
 	}
@@ -84,6 +82,7 @@ const Container = styled.div`
 const Line = styled.div`
 	width: 70px;
 	height: 1px;
-	border-bottom: 1px solid #d2d2d2;
+	border-bottom: 1px solid ${({ theme }) => theme.colors.sub};
 	position: absolute;
+	cursor: default;
 `;

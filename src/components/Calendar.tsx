@@ -142,7 +142,7 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 `;
 
 const Table = styled.table`
@@ -195,7 +195,7 @@ const EventBox = styled.div`
 	background-color: ${({ theme }) => theme.colors.subBase};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	border-radius: 7px;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 	z-index: 100;
 	flex-direction: column;
 	justify-content: center;

@@ -4,17 +4,21 @@ const colors = {
   buttonTitle:"#FFFFFF",
 
 	main: '#718AFF',
-  brightMain: '#BFCBFF',
 	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
+  brightMain: '#BFCBFF',
 
 	base: '#F4F4F4',
+  hoverBase:'#F1F1F1',
   subBase: 'rgba(0, 0, 0, 0.7)',
+  shadowColor: 'rgba(0, 0, 0, 0.3)',
 
-	signUp: '#F73535',
+  boxShdow:'rgba(0, 0, 0, 0.25)',
+	signOut: '#F73535',
 	reject: '#D97E7E',
 	shadow: '#F4F4F4',
-  
+  scroll: '#cccccc',  
+
   background: '#FFFFFF',
 };
 

@@ -36,8 +36,8 @@ const Container = styled.div`
 	margin: 100px auto 0;
 	display: flex;
 	justify-content: space-between;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
-
 const LeftBox = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -47,4 +47,5 @@ const ClassInfo = styled.h2`
 	width: 360px;
 	height: 30px;
 	font-size: ${({ theme }) => theme.fontSizes.xxxlg};
+	color: ${({ theme }) => theme.colors.title};
 `;

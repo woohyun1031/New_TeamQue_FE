@@ -29,6 +29,7 @@ const Container = styled.div`
 	margin: 100px auto;
 	display: flex;
 	justify-content: space-between;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const LeftBox = styled.div`

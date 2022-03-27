@@ -13,7 +13,7 @@ const Main = () => {
 
 	const openAddLearnClassModal = () => {
 		// 강의 참여 코드 넣을 수 있는 모달 오픈
-	}
+	};
 
 	const openAddTeachClassModal = () => {
 		dispatch(openModal());
@@ -99,10 +99,9 @@ const TabButtons = styled.div`
 	margin-bottom: 15px;
 	display: flex;
 	justify-content: space-between;
-	`;
+`;
 
-
-const TabButton = styled.button<{isSelected: boolean}>`
+const TabButton = styled.button<{ isSelected: boolean }>`
 	background: none;
 	border: none;
 	font-size: 27px;
@@ -115,15 +114,15 @@ const TabButton = styled.button<{isSelected: boolean}>`
 const AddCardBox = styled.div`
 	width: 300px;
 	height: 435px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	color: #718aff;
+	color: ${({ theme }) => theme.colors.main};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	transition: 0.1s;
+	transition: 0.5s;
 	cursor: pointer;
 	position: relative;
 	font-size: 18px;
@@ -133,7 +132,7 @@ const AddCardBox = styled.div`
 		margin-bottom: 20px;
 	}
 	&:hover {
-		background-color: #fdfdfd;
+		background-color: ${({ theme }) => theme.colors.base};
 	}
 `;
 
@@ -161,4 +160,4 @@ const Character = styled.img`
 	z-index: -1;
 	right: -200px;
 	bottom: 0px;
-`
+`;
