@@ -137,7 +137,7 @@ const Container = styled.div`
 	width: 280px;
 	height: 300px;
 	padding: 20px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.Background};
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -157,7 +157,7 @@ const Caption = styled.caption`
 	text-align: center;
 	font-size: 30px;
 	font-weight: 900;
-	color: #5370f5;
+	color: ${({ theme }) => theme.colors.main};
 	margin-bottom: 10px;
 `;
 
@@ -167,13 +167,22 @@ const Button = styled.button`
 	background: none;
 	font-weight: 700;
 	font-size: 20px;
-	color: #ddd;
+	color: ${({ theme }) => theme.colors.base};
 	cursor: pointer;
 `;
 
 const Th = styled.th`
 	text-align: center;
 	height: 10px;
+`;
+
+const DayBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25px;
+	height: 25px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const EventBox = styled.div`
@@ -183,8 +192,8 @@ const EventBox = styled.div`
 	position: absolute;
 	bottom: 35px;
 	left: 15px;
-	background-color: rgba(0, 0, 0, 0.7);
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.subBase};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	border-radius: 7px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	z-index: 100;
@@ -216,12 +225,4 @@ const DateBox = styled.div<{ hasEvent: boolean }>`
 	&:hover + ${EventBox} {
 		display: flex;
 	}
-`;
-
-const DayBox = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 25px;
-	height: 25px;
 `;

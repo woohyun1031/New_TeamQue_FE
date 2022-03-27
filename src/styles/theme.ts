@@ -1,14 +1,20 @@
 const colors = {
-	title: '#181B23',
-  subTitle:'#9B9B9B',
+	title: '#000000',
+  subTitle:'#626262',
+  buttonTitle:"#FFFFFF",
+
 	main: '#718AFF',
+  brightMain: '#BFCBFF',
+	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
+
 	base: '#F4F4F4',
+  subBase: 'rgba(0, 0, 0, 0.7)',
+
 	signUp: '#F73535',
-	mainSub: '#BCC8FF',
 	reject: '#D97E7E',
 	shadow: '#F4F4F4',
-  brightMain: '#BFCBFF',
+  
   background: '#FFFFFF',
 };
 

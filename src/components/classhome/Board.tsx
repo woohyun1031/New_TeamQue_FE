@@ -56,16 +56,16 @@ const Board = () => {
 								<td>
 									<img src='/images/star.png' />
 								</td>
-								<td>공지</td>
-								<td
+								<Td>공지</Td>
+								<Td
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
-								</td>
-								<td>{row.writer}</td>
-								<td>{row.createdAt.split('T')[0]}</td>
+								</Td>
+								<Td>{row.writer}</Td>
+								<Td>{row.createdAt.split('T')[0]}</Td>
 							</tr>
 						))}
 					{question &&
@@ -74,7 +74,7 @@ const Board = () => {
 								<td>
 									<img src='/images/dot.png' />
 								</td>
-								<td>질문</td>
+								<Td>질문</Td>
 								<PostTitle
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
@@ -82,24 +82,25 @@ const Board = () => {
 								>
 									{row.title}
 								</PostTitle>
-								<td>{row.writer}</td>
-								<td>{row.createdAt.split('T')[0]}</td>
+								<Td>{row.writer}</Td>
+								<Td>{row.createdAt.split('T')[0]}</Td>
 							</tr>
 						))}
 				</tbody>
 			</Table>
 			<Pagenation>
-				{pages && pages.map((page) => (
-					<Page
-						key={page.page}
-						selected={page.selected}
-						onClick={() => {
-							navigate(`/classhome/${classid}/${page.page}`);
-						}}
-					>
-						{page.page}
-					</Page>
-				))}
+				{pages &&
+					pages.map((page) => (
+						<Page
+							key={page.page}
+							selected={page.selected}
+							onClick={() => {
+								navigate(`/classhome/${classid}/${page.page}`);
+							}}
+						>
+							{page.page}
+						</Page>
+					))}
 			</Pagenation>
 			<AddButton>새글작성</AddButton>
 		</Container>
@@ -133,6 +134,11 @@ const Table = styled.table`
 
 const Th = styled.th`
 	text-align: left;
+	color: ${({ theme }) => theme.colors.title};
+`;
+
+const Td = styled.td`
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Pagenation = styled.div`
@@ -154,7 +160,7 @@ const AddButton = styled.button`
 	font-weight: 600;
 	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
-	color: #fff;
+	color: ${({ theme }) => theme.colors.buttonTitle};
 `;
 
 interface PageProps {

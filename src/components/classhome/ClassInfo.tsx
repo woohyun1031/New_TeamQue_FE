@@ -45,7 +45,7 @@ const Container = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	/* 임시 스타일 코드 */
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -68,7 +68,7 @@ const Title = styled.h2`
 const Teacher = styled.p`
 	margin-top: 10px;
 	font-size: 14px;
-	color: ${({ theme }) => theme.colors.title};
+	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const Time = styled.p`

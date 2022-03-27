@@ -75,36 +75,39 @@ const PostHeader = styled.div`
 
 const PostType = styled.h3`
 	font-size: 10px;
-	color: #626262;
+	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const PostTitle = styled.h2`
 	font-size: 30px;
 	font-weight: 700;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Author = styled.h3`
 	font-size: 10px;
-	color: #626262;
+	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const Date = styled.h3`
 	font-size: 10px;
-	color: #626262;
+	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const Contents = styled.p`
 	padding: 50px;
 	min-height: 450px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
 	margin-bottom: 20px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Comments = styled.div`
-	background-color: #f5f5f5;
+	background-color: ${({ theme }) => theme.colors.base};
 	min-height: 300px;
 	padding: 50px;
 	position: relative;
@@ -116,14 +119,15 @@ const CommentInput = styled.input`
 	border: none;
 	border-radius: 10px;
 	margin-bottom: 10px;
+	background-color: ${({ theme }) => theme.colors.background}; ;
 `;
 
 const CommentButton = styled.button`
 	width: 50px;
 	height: 25px;
 	border-radius: 5px;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	border: none;
 	position: absolute;
 	right: 50px;
