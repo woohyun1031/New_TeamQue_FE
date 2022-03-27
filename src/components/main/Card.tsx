@@ -32,7 +32,9 @@ const Card: React.FC<CardProps> = ({
 					<Thumbnail src={imageUrl} />
 					<Title>{title}</Title>
 					<Teacher>{teacher} 선생님</Teacher>
-					{time.map((t) => <TimeTable key={t}>{t}</TimeTable>)}
+					{time.map((t) => (
+						<TimeTable key={t}>{t}</TimeTable>
+					))}
 				</Container>
 			</>
 		);
@@ -47,7 +49,9 @@ const Card: React.FC<CardProps> = ({
 			</BadgeBox>
 			<Title>{title}</Title>
 			<Teacher>{teacher} 선생님</Teacher>
-			{time.map((t) => <TimeTable key={t}>{t}</TimeTable>)}
+			{time.map((t) => (
+				<TimeTable key={t}>{t}</TimeTable>
+			))}
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
 		</Container>
 	);
@@ -60,7 +64,7 @@ const Container = styled.div<{ type: 'wait' | 'accepted' | 'teach' }>`
 	height: 380px;
 	border-radius: 10px;
 	padding: 16px 23px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	transition: 0.2s;
@@ -68,7 +72,7 @@ const Container = styled.div<{ type: 'wait' | 'accepted' | 'teach' }>`
 		margin-left: 20px;
 	}
 	&:hover {
-		background-color: #fcfcfc;
+		background-color: ${({ theme }) => theme.colors.hoverBase};
 	}
 	${({ type }) => type === 'wait' && 'background-color: #F4F4F4; color: black;'}
 `;
@@ -94,9 +98,9 @@ const BadgeBox = styled.div`
 const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	width: 55px;
 	height: 20px;
-	background-color: #718aff;
+	background-color: ${({ theme }) => theme.colors.main};
 	border-radius: 7px;
-	color: #fff;
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 10px;
 	font-weight: 400;
 	display: flex;
@@ -104,27 +108,31 @@ const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	align-items: center;
 	${({ type }) =>
 		type === 'wait' && 'background-color: #F4F4F4; color: #718AFF;'}
+
 	& + & {
 		margin-left: 5px;
 	}
 `;
 
 const SubBadge = styled(Badge)`
-	background-color: #bcc8ff;
+	background-color: ${({ theme }) => theme.colors.subMain};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 `;
 
 const Title = styled.h3`
 	font-weight: 700;
 	font-size: 18px;
 	margin-bottom: 15px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Teacher = styled.h4`
 	font-weight: 700;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
-const TimeTable = styled.p`
-	color: #aaa;
+const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
+	color: ${({ theme }) => theme.colors.sub};
 	font-weight: 500;
 `;
 
@@ -133,7 +141,7 @@ const HomeButton = styled.button<{ src: string }>`
 	height: 41px;
 	border-radius: 50%;
 	border: none;
-	background-color: #718AFF;
+	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url(${({ src }) => src});
 	background-position: center center;
 	background-repeat: no-repeat;

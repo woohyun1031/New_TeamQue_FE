@@ -23,7 +23,7 @@ const DropDown: React.FC<Props> = ({ name }) => {
 	return (
 		<Container>
 			<Name onClick={toggleDropDown}>
-				{name} 님 
+				{name} 님
 				<ArrowIcon
 					src={isOpen ? '/images/arrowUp.png' : '/images/arrowDown.png'}
 				/>
@@ -87,12 +87,11 @@ const Menu = styled.ul`
 	}
 	& li:nth-child(2) {
 		color: #718aff;
-		border-top: 1px solid #D2D2D2;
+		border-top: 1px solid #d2d2d2;
 	}
 	position: absolute;
 	z-index: 101;
 `;
-
 
 const BackGround = styled.div`
 	position: fixed;
@@ -102,4 +101,3 @@ const BackGround = styled.div`
 	top: 0;
 	z-index: 100;
 `;
-

@@ -30,7 +30,7 @@ export default Welcome;
 const Container = styled.div`
 	width: 580px;
 	height: 290px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 7px;
 	padding: 36px 40px;
@@ -52,8 +52,8 @@ const MessageBox = styled.div`
 	width: 350px;
 	height: 85px;
 	position: relative;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 18px;
 	font-weight: 500;
 	border-radius: 4px;

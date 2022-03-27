@@ -41,7 +41,7 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 		}
 	}, [isLogin]);
 
-	console.log(learnCards)
+	console.log(learnCards);
 
 	return (
 		<Container>
@@ -67,7 +67,7 @@ const Container = styled.div`
 		height: 5px;
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: #ccc;
+		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
 `;
