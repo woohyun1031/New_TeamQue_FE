@@ -62,17 +62,19 @@ const Image = styled.img`
 
 const Title = styled.h2`
 	font-size: 18px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Teacher = styled.p`
 	margin-top: 10px;
 	font-size: 14px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Time = styled.p`
 	margin-top: 10px;
 	font-size: 14px;
-	color: #9b9b9b;
+	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const Button = styled.img`

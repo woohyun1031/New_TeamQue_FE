@@ -15,16 +15,16 @@ const Modal: React.FC = () => {
 	switch (modal.type) {
 		case 'notSignIn':
 			contents = <NotSignIn />;
-			break
+			break;
 		case 'signIn':
 			contents = <SignIn />;
-			break
+			break;
 		case 'signUp':
 			contents = <SignUp />;
-			break
+			break;
 		case 'addClass':
 			contents = <AddClass />;
-			break
+			break;
 		default:
 			contents = null;
 	}
@@ -32,9 +32,7 @@ const Modal: React.FC = () => {
 	if (!modal.isOpen) return null;
 	return createPortal(
 		<Background>
-			<Contents>
-				{contents}
-			</Contents>
+			<Contents>{contents}</Contents>
 		</Background>,
 		modalRoot
 	);

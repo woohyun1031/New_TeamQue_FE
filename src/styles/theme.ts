@@ -8,7 +8,7 @@ const colors = {
 	reject: '#D97E7E',
 	shadow: '#F4F4F4',
   brightMain: '#BFCBFF',
-  white: '#FFFFFF',
+  background: '#FFFFFF',
 };
 
 const fontSizes = {

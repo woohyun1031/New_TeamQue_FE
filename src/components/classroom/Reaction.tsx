@@ -101,6 +101,7 @@ function Reaction() {
 							if (isConnect === true) {
 								console.log(isConnect, 'isConnect');
 								socket.on('changeState', ({ nickname, state }) => {
+									//내가 보냈는데 자꾸 changeState가 들어옴
 									console.log('changeState!!');
 									if (students) {
 										console.log(students, 'changeState students');
@@ -188,6 +189,7 @@ function Reaction() {
 		console.log('onChange');
 		console.log(ischeck, 'ischeck');
 		const { name, checked } = e.target;
+		console.log(name, checked, 'before setChecked');
 		setChecked({
 			correct: false,
 			incorrect: false,

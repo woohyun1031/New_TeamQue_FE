@@ -116,7 +116,7 @@ export default Board;
 const Container = styled.div`
 	width: 890px;
 	height: 850px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	padding: 30px;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -127,7 +127,7 @@ const Title = styled.h2`
 	padding: 10px;
 	font-size: 30px;
 	font-weight: 700;
-	border-bottom: 3px solid rgba(83, 112, 245, 0.3);
+	border-bottom: 3px solid ${({ theme }) => theme.colors.mainSub};
 `;
 
 const Table = styled.table`
@@ -158,7 +158,7 @@ const AddButton = styled.button`
 	border-radius: 50px;
 	font-weight: 600;
 	border: none;
-	background-color: #718aff;
+	background-color: ${({ theme }) => theme.colors.main};
 	color: #fff;
 `;
 
@@ -170,7 +170,7 @@ const Page = styled.button<PageProps>`
 	border: none;
 	background: none;
 	margin: 0 8px;
-	${(props) => (props.selected ? 'color: #5370f5; font-weight: 700;' : '')}
+	${(props) => (props.selected ? 'color: #718AFF; font-weight: 700;' : '')}
 	cursor: pointer;
 `;
 
