@@ -58,13 +58,13 @@ const Container = styled.div`
 	width: 890px;
 	height: 850px;
 	border-radius: 10px;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 12px; /*스크롤바의 너비*/
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: #ccc; /*스크롤바의 색상*/
+		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
 `;
@@ -99,7 +99,6 @@ const Contents = styled.p`
 	min-height: 450px;
 	color: ${({ theme }) => theme.colors.title};
 `;
-
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;

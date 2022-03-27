@@ -77,7 +77,7 @@ const Chat = () => {
 		});
 
 		socket.on('receiveLike', ({ chatId, nickname }) => {
-			console.log(chatId, nickname)
+			console.log(chatId, nickname);
 			setChats((prev) =>
 				prev.map((chat) =>
 					chat.id === chatId && chat.like
@@ -162,9 +162,13 @@ const Chat = () => {
 
 	const toggleResolve = (unique_id: string) => {
 		socket.emit('sendResolved', { chatId: unique_id, classId }, () => {
-			setChats((prev) => prev.map((chat) =>
-			chat.id === unique_id ? { ...chat, isResolved: !chat.isResolved } : chat
-		));
+			setChats((prev) =>
+				prev.map((chat) =>
+					chat.id === unique_id
+						? { ...chat, isResolved: !chat.isResolved }
+						: chat
+				)
+			);
 		});
 	};
 
@@ -263,18 +267,19 @@ const Container = styled.div`
 		width: 5px;
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: #ccc;
+		background-color: ${({ theme }) => theme.colors.boxShdow};
 		border-radius: 10px;
 	}
 `;
 
 const Toggle = styled.div`
 	margin-bottom: 20px;
-`
+`;
 
 const ToggleButton = styled.label<{ isSelect: boolean }>`
 	font-size: 18px;
 	font-weight: bold;
+	color: ${({ theme }) => theme.colors.title};
 	${({ isSelect }) => isSelect && 'color: #ccc;'}
 	& input {
 		display: none;
@@ -288,25 +293,23 @@ const ChatName = styled.p`
 	font-size: ${({ theme }) => theme.fontSizes.xs}; ;
 `;
 
-const QuestionBox = styled.div<{ byMe: boolean, isResolved?: boolean }>`
+const QuestionBox = styled.div<{ byMe: boolean; isResolved?: boolean }>`
 	width: 200px;
 	padding: 20px;
-	background-color: #718aff;
+	background-color: ${({ theme }) => theme.colors.main};
 	border-radius: 7px;
 	width: 250px;
 	margin: 5px auto;
-	color: #fff;
-	${({isResolved}) => isResolved && 'background-color: #BCC8FF; text-decoration: line-through'}
+	color: ${({ theme }) => theme.colors.buttonTitle};
+	${({ isResolved }) =>
+		isResolved && 'background-color: #BCC8FF; text-decoration: line-through'}
 `;
 
-const ChatBox = styled.div<{ byMe: boolean }>`
-`
-;
-
+const ChatBox = styled.div<{ byMe: boolean }>``;
 const ChatMessage = styled.p`
 	width: 250px;
 	border-radius: 7px;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	padding: 5px;
 	font-size: ${({ theme }) => theme.fontSizes.base};
 `;
@@ -328,14 +331,14 @@ const Input = styled.input`
 	border-bottom-left-radius: 7px;
 	outline: none;
 	border: none;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 `;
 
 const SendButton = styled.button`
 	width: 50px;
 	height: 30px;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	border-top-right-radius: 7px;
 	border-bottom-right-radius: 7px;
 	border: none;

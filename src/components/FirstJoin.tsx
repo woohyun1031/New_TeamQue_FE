@@ -62,7 +62,7 @@ const Background = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: ${({ theme }) => theme.colors.shadowColor};
+	background-color: ${({ theme }) => theme.colors.boxShdow};
 	backdrop-filter: blur(5px);
 `;
 
@@ -75,7 +75,7 @@ const Contents = styled.div`
 	padding: 50px;
 	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 5px 5px 5px ${({ theme }) => theme.colors.shadowColor};
+	box-shadow: 5px 5px 5px ${({ theme }) => theme.colors.boxShdow};
 `;
 
 const Input = styled.input`

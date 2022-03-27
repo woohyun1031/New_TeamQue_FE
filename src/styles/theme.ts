@@ -1,22 +1,24 @@
 const colors = {
+  //font
 	title: '#000000',
   subTitle:'#626262',
   buttonTitle:"#FFFFFF",
 
 	main: '#718AFF',
+  brightMain: '#BFCBFF',
+  darkerMain:'#5D72D2',
+
 	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
-  brightMain: '#BFCBFF',
 
 	base: '#F4F4F4',
   hoverBase:'#F1F1F1',
   subBase: 'rgba(0, 0, 0, 0.7)',
-  shadowColor: 'rgba(0, 0, 0, 0.3)',
 
   boxShdow:'rgba(0, 0, 0, 0.25)',
 	signOut: '#F73535',
 	reject: '#D97E7E',
-	shadow: '#F4F4F4',
+	shadow: '#F4F4F4',  
   scroll: '#cccccc',  
 
   background: '#FFFFFF',
@@ -34,12 +36,12 @@ const fontSizes = {
 };
 
  const paddings = {
-  small: "10px",
-  base: "14px",
-  lg: "16px",
-  xl: "18px",
-  xxl: "20px",
   xxxl: "23px",
+  xxl: "20px",
+  xl: "18px",
+  lg: "16px",
+  base: "14px",
+  small: "10px",
  };
 
 const theme = {

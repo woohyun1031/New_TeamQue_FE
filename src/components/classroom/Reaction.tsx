@@ -28,11 +28,7 @@ type checkEnumType = {
 	question: number;
 };
 
-interface ReactionProps {
-	teacher?: string;
-}
-
-const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
+const Reaction = () => {
 	const user = useSelector((state: RootState) => state.user);
 	const [ischeck, setChecked] = useState<checkType>({
 		correct: false,
@@ -73,7 +69,7 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 	];
 
 	const mynickname = sessionStorage.getItem('nickname');
-	const teacherNickname = teacher;
+	const teacherNickname = '공정용';
 
 	useEffect(() => {
 		const fetchData = () => {
@@ -81,6 +77,8 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 			socket.emit('init', { accessToken, nickname: mynickname });
 
 			socket.on('initOk', () => {
+				console.log(isConnect, 'initOk start isConnect');
+				console.log('initOk only one');
 				socket.emit(
 					'joinRoom',
 					{ classId: Number(classId) },
@@ -96,6 +94,8 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 							setConnect(true);
 							if (isConnect === true) {
 								socket.on('changeState', ({ nickname, state }) => {
+									//내가 보냈는데 자꾸 changeState가 들어옴
+									console.log('changeState!!');
 									if (students) {
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
@@ -125,15 +125,21 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 	}, [isConnect]);
 
 	useEffect(() => {
+		console.log(students, 'student in useEffect');
+	}, [students]);
+
+	useEffect(() => {
 		if (
 			ischeck.correct === false &&
 			ischeck.incorrect === false &&
 			ischeck.question === false
 		) {
+			console.log('all false!!');
 			socket.emit(
 				'changeMyState',
 				{ classId, state: checkEnum.connect },
 				() => {
+					console.log('callback student');
 					if (students) {
 						const newStudents = students.map((student: studentType) =>
 							student.nickname === mynickname
@@ -167,6 +173,7 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = e.target;
+		console.log(name, checked, 'before setChecked');
 		setChecked({
 			correct: false,
 			incorrect: false,
