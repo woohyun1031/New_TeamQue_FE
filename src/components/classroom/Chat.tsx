@@ -2,56 +2,73 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/configStore';
 
 type chatType = {
 	id: string;
 	nickname: string;
-	chatMessage: string;
-	check: string;
-	solution?: boolean;
+	message: string;
+	type: 'chat' | 'question';
+	isResolved?: boolean;
 };
 
 let socket: Socket;
 
-function Chat() {
-	const [chatMessage, setChatMessage] = useState('');
-	const [chats, setChat] = useState<chatType[]>([]);
+const Chat = () => {
+	const params = useParams();
+	const [message, setMessage] = useState('');
+	const [chats, setChats] = useState<chatType[]>([]);
 
 	const [check, setChecked] = useState({
 		commonCheck: false,
 		questionCheck: false,
 	});
-	const [chatcheck, setChatChecked] = useState({
-		queCheck: false,
-	});
+	const { commonCheck, questionCheck } = check;
 
+	const [isQuestion, setIsQuestion] = useState(false);
 	const [isConnect, setConnect] = useState(false);
 
-	const { commonCheck, questionCheck } = check;
-	const { queCheck } = chatcheck;
-
-	const params = useParams();
-
-	const url = 'ws://noobpro.shop';
+	const SOCKETSERVER = 'ws://noobpro.shop';
 	const classId = params.classid;
 
-	const mynickname: any = sessionStorage.getItem('nickname');
-	const accessToken: any = sessionStorage.getItem('accessToken');
+	const myNickname = useSelector(
+		(state: RootState) => state.user.user_info.nickname
+	);
+	const accessToken = sessionStorage.getItem('accessToken');
+
+	const socketInitiate = async () => {
+		socket = io(SOCKETSERVER);
+
+		socket.emit('init', { nickname: myNickname, accessToken });
+
+		socket.on('initOk', () => {
+			socket.emit('joinRoom', { classId });
+			setConnect(true);
+		});
+
+		socket.on('receiveResolved', ({ chatId }) => {
+			setChats((prev) => prev.map((chat) =>
+			chat.id === chatId ? { ...chat, isResolved: !chat.isResolved } : chat));
+		});
+
+		socket.on(
+			'receiveChat',
+			({ id, nickname, message }) => {
+				setChats((prev) => [...prev, { id, nickname, message, type: 'chat' }]);
+			}
+		);
+
+		socket.on('receiveQuestion', ({ id, message, nickname }) => {
+			setChats((prev) => [
+				...prev,
+				{ id, nickname, message, isResolved: false, type: 'question' },
+			]);
+		});
+	};
+
 
 	useEffect(() => {
-		const fetchData = () => {
-			if (isConnect === false) {
-				socket = io(url);
-				socket.emit('init', { nickname: mynickname, accessToken });
-				socket.on('initOk', () => {
-					socket.emit('joinRoom', { classId });
-					setConnect(true);
-				});
-			}
-		};
-
-		fetchData();
-
 		return () => {
 			socket.disconnect();
 			setConnect(false);
@@ -59,83 +76,55 @@ function Chat() {
 	}, []);
 
 	useEffect(() => {
-		socket.on('recieveQuestionSolve', ({ chatId }) => {
-			setChat(
-				chats &&
-					chats.map((chat) =>
-						chat.id === chatId ? { ...chat, solution: !chat.solution } : chat
-					)
-			);
-		});
-		socket.on(
-			'receiveChatMessage',
-			({ nickname, chatMessage, id }: chatType) => {
-				if (chats) {
-					const newChat: chatType[] = [
-						...chats,
-						{ id, nickname, chatMessage, check: 'common' },
-					];
-					setChat(newChat);
-				}
-			}
-		);
-
-		socket.on(
-			'receiveQuestionMessage',
-			({ nickname, chatMessage, id, solution }) => {
-				if (chats) {
-					const newChat = [
-						...chats,
-						{ id, nickname, chatMessage, check: 'question', solution },
-					];
-					setChat(newChat);
-				}
-			}
-		);
-	}, [chats]);
+		if (!isConnect) {
+			socketInitiate();
+		}
+	}, [isConnect]);
 
 	const sendChat = () => {
-		if (chatMessage !== '') {
-			if (queCheck === true) {
+		if (message) {
+			if (isQuestion) {
 				socket.emit(
-					'sendQuestionMessage',
-					{ chatMessage, classId },
-					({ chatMessage, id }: any) => {
-						if (chats) {
-							setChat([
-								...chats,
-								{
-									nickname: mynickname,
-									chatMessage,
-									check: 'question',
-									solution: false,
-									id,
-								},
-							]);
-						}
+					'sendQuestion',
+					{ message, classId },
+					({ id, message }: { id: string; message: string }) => {
+						setChats([
+							...chats,
+							{
+								id,
+								nickname: myNickname,
+								message,
+								type: 'question',
+								isResolved: false,
+							},
+						]);
 					}
 				);
-				setChatMessage('');
+				setMessage('');
 			} else {
+				console.log(message, classId)
 				socket.emit(
-					'sendChatMessage',
-					{ chatMessage, classId },
-					({ chatMessage, id }: any) => {
-						if (chats) {
-							setChat([
-								...chats,
-								{ nickname: mynickname, chatMessage, check: 'common', id },
-							]);
-						}
+					'sendChat',
+					{ message, classId },
+					({ id, message }: { id: string; message: string }) => {
+						setChats([
+							...chats,
+							{
+								id,
+								nickname: myNickname,
+								message,
+								type: 'chat',
+							},
+						]);
 					}
 				);
-				setChatMessage('');
+				setMessage('');
 			}
 		}
 	};
 
-	const sendMessage = (e: ChangeEvent<HTMLInputElement>) => {
-		setChatMessage(e.target.value);
+	const changeMessage = (e: ChangeEvent<HTMLInputElement>) => {
+		setMessage(e.target.value);
 	};
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -146,75 +135,58 @@ function Chat() {
 		});
 	};
 
-	const onChat = (e: ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = e.target;
-		setChatChecked({
-			...chatcheck,
-			[name]: checked,
-		});
+	const toggleChatType = (e: ChangeEvent<HTMLInputElement>) => {
+		const { checked } = e.target;
+		setIsQuestion(checked);
 	};
 
-	const solveClick = (unique_id: string) => {
-		socket.emit('sendQuestionSolve', { chatId: unique_id, classId }, () => {
-			setChat(
-				chats &&
-					chats.map((chat) =>
-						chat.id === unique_id ? { ...chat, solution: !chat.solution } : chat
-					)
+	const toggleResolve = (unique_id: string) => {
+		socket.emit('sendResolved', { chatId: unique_id, classId }, () => {
+			const newChats = chats.map((chat) =>
+				chat.id === unique_id ? { ...chat, isResolved: !chat.isResolved } : chat
 			);
+			setChats(newChats);
 		});
 	};
 
 	return (
 		<Container>
-			<Label>
-				<input
-					className='header_modal_checkbox'
-					name='commonCheck'
-					type='checkbox'
-					onChange={onChange}
-				/>
-				채팅
-			</Label>
-			<Label>
-				<input
-					className='header_modal_checkbox'
-					name='questionCheck'
-					type='checkbox'
-					onChange={onChange}
-				/>
-				질문
-			</Label>
-			<>
-				{chats &&
-					chats.map(({ nickname, chatMessage, id, solution, check }) => {
-						if (check === 'common' && !commonCheck) {
+			<Toggle>
+				<ToggleButton isSelect={commonCheck}>
+					<input name='commonCheck' type='checkbox' onChange={onChange} />
+					채팅
+				</ToggleButton>
+				<ToggleButton isSelect={questionCheck}>
+					<input name='questionCheck' type='checkbox' onChange={onChange} />
+					질문
+				</ToggleButton>
+			</Toggle>
+			{chats &&
+				chats.map(
+					({ nickname, message, id, isResolved, type }, index: number) => {
+						if (type === 'chat' && !commonCheck) {
 							return (
-								<ChatBox key={id} byMe={mynickname === nickname}>
+								<ChatBox key={index} byMe={nickname === myNickname}>
 									<ChatName>{nickname}</ChatName>
-									<ChatMessage>{chatMessage}</ChatMessage>
+									<ChatMessage>{message}</ChatMessage>
 								</ChatBox>
 							);
-						} else if (check === 'question' && !questionCheck) {
+						} else if (type === 'question' && !questionCheck) {
 							return (
-								<QuestionBox key={id} byMe={mynickname === nickname}>
-									{solution ? '해결' : ''}
-									{mynickname === nickname ? (
-										<button onClick={() => solveClick(id)}>이해됐어요!</button>
-									) : null}
-									<QueMessage>질문 : {chatMessage}</QueMessage>
+								<QuestionBox key={index} byMe={nickname === myNickname} isResolved={isResolved} onClick={() => toggleResolve(id)}>
+									{myNickname === nickname && '내 질문'}
+									<QueMessage>{message}</QueMessage>
 								</QuestionBox>
 							);
 						}
-					})}
-			</>
-
+					}
+				)}
 			<InputBox>
 				<Input
 					type='text'
 					name='oneChat'
-					value={chatMessage}
-					onChange={sendMessage}
+					value={message}
+					onChange={changeMessage}
 					onKeyPress={(e) => {
 						if (e.key === 'Enter') {
 							sendChat();
@@ -224,22 +196,23 @@ function Chat() {
 				<SendButton onClick={sendChat}>전송</SendButton>
 				<label>
 					질문
-					<input type='checkbox' name='queCheck' onChange={onChat} />
+					<input type='checkbox' name='queCheck' onChange={toggleChatType} />
 				</label>
 			</InputBox>
 		</Container>
 	);
-}
+};
 
 export default Chat;
 
 const Container = styled.div`
-	width: 270px;
+	width: 280px;
 	height: 854px;
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	overflow-y: scroll;
 	position: relative;
+	padding: 10px;
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
@@ -249,34 +222,40 @@ const Container = styled.div`
 	}
 `;
 
-const Label = styled.label`
-	font-size: ${({ theme }) => theme.fontSizes.large}; ;
+const Toggle = styled.div`
+	margin-bottom: 20px;
+`
+
+const ToggleButton = styled.label<{ isSelect: boolean }>`
+	font-size: 18px;
+	font-weight: bold;
+	${({ isSelect }) => isSelect && 'color: #ccc;'}
+	& input {
+		display: none;
+	}
+	& + & {
+		margin-left: 10px;
+	}
 `;
+
 const ChatName = styled.p`
 	font-size: ${({ theme }) => theme.fontSizes.xs}; ;
 `;
 
-interface QuestionBoxProps {
-	byMe: boolean;
-}
-
-const QuestionBox = styled.div<QuestionBoxProps>`
-	width: 250px;
+const QuestionBox = styled.div<{ byMe: boolean, isResolved?: boolean }>`
+	width: 200px;
 	padding: 20px;
 	background-color: #718aff;
 	border-radius: 7px;
 	width: 250px;
 	margin: 5px auto;
 	color: #fff;
+	${({isResolved}) => isResolved && 'background-color: #BCC8FF; text-decoration: line-through'}
 `;
 
-interface ChatBoxProps {
-	byMe: boolean;
-}
-
-const ChatBox = styled.div<ChatBoxProps>`
-	padding: 10px;
-`;
+const ChatBox = styled.div<{ byMe: boolean }>`
+`
+;
 
 const ChatMessage = styled.p`
 	width: 250px;

@@ -77,8 +77,6 @@ const Reaction = () => {
 			socket.emit('init', { accessToken, nickname: mynickname });
 
 			socket.on('initOk', () => {
-				console.log(isConnect, 'initOk start isConnect');
-				console.log('initOk only one');
 				socket.emit(
 					'joinRoom',
 					{ classId: Number(classId) },
@@ -124,9 +122,6 @@ const Reaction = () => {
 		fetchData();
 	}, [isConnect]);
 
-	useEffect(() => {
-		console.log(students, 'student in useEffect');
-	}, [students]);
 
 	useEffect(() => {
 		if (
@@ -134,12 +129,10 @@ const Reaction = () => {
 			ischeck.incorrect === false &&
 			ischeck.question === false
 		) {
-			console.log('all false!!');
 			socket.emit(
 				'changeMyState',
 				{ classId, state: checkEnum.connect },
 				() => {
-					console.log('callback student');
 					if (students) {
 						const newStudents = students.map((student: studentType) =>
 							student.nickname === mynickname

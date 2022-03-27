@@ -13,7 +13,6 @@ const ClassRoom = () => {
 		const response = await apis.loadClassInfo(classid as string);
 		setClassInfo(response.data);
 	};
-	console.log(classInfo);
 	useEffect(() => {
 		fetch();
 	}, []);
