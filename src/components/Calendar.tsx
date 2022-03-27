@@ -38,10 +38,9 @@ const Calendar = () => {
 		for (let i = 1; i <= totalDate; i++) {
 			allDate.push({ month: 'next', date: i });
 		}
-		console.log(allDate);
 
 		const response = await apis.loadAllCalendar(year, month + 1);
-		console.log(response.data);
+
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
 				allDate[event.day + thisMonthFirstDay - 1].event?.push({
@@ -60,7 +59,7 @@ const Calendar = () => {
 		const newCalendar = [];
 		for (let i = 0; i < allDate.length; i += 7)
 			newCalendar.push(allDate.slice(i, i + 7));
-		console.log(newCalendar);
+
 		setCalendar(newCalendar);
 	};
 
@@ -76,6 +75,7 @@ const Calendar = () => {
 		}
 		setMonth(nextMonth);
 	};
+
 	const setNextMonth = () => {
 		let nextMonth = month + 1;
 		if (month === 11) {
@@ -86,7 +86,7 @@ const Calendar = () => {
 	};
 
 	return (
-		<CalendarBox>
+		<Container>
 			<Table>
 				<Caption>
 					<Button onClick={setPrevMonth}>{((month + 11) % 12) + 1}</Button>
@@ -95,27 +95,11 @@ const Calendar = () => {
 				</Caption>
 				<thead>
 					<tr>
-						<Th>
-							<DayBox>S</DayBox>
-						</Th>
-						<Th>
-							<DayBox>M</DayBox>
-						</Th>
-						<Th>
-							<DayBox>T</DayBox>
-						</Th>
-						<Th>
-							<DayBox>W</DayBox>
-						</Th>
-						<Th>
-							<DayBox>T</DayBox>
-						</Th>
-						<Th>
-							<DayBox>F</DayBox>
-						</Th>
-						<Th>
-							<DayBox>S</DayBox>
-						</Th>
+						{['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+							<Th key={index}>
+								<DayBox>{day}</DayBox>
+							</Th>
+						))}
 					</tr>
 				</thead>
 				<tbody>
@@ -123,11 +107,7 @@ const Calendar = () => {
 						calendar.map((week: weekType, index: number) => (
 							<tr key={index}>
 								{week.map((date: dateType, index: number) => (
-									<Td
-										isThisMonth={date.month === 'this'}
-										hasEvent={date.event ? true : false}
-										key={index}
-									>
+									<Td isThisMonth={date.month === 'this'} key={index}>
 										<DateBox hasEvent={date.event ? true : false}>
 											{date.date}
 										</DateBox>
@@ -147,22 +127,22 @@ const Calendar = () => {
 						))}
 				</tbody>
 			</Table>
-		</CalendarBox>
+		</Container>
 	);
 };
 
 export default Calendar;
 
-const CalendarBox = styled.div`
+const Container = styled.div`
 	width: 280px;
 	height: 300px;
+	padding: 20px;
 	background-color: #fff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	padding: 20px;
 `;
 
 const Table = styled.table`
@@ -196,16 +176,10 @@ const Th = styled.th`
 	height: 10px;
 `;
 
-interface TdProps {
-	isThisMonth: boolean;
-	hasEvent: boolean;
-}
-
 const EventBox = styled.div`
 	width: 300px;
 	min-height: 80px;
 	padding: 10px;
-	display: none;
 	position: absolute;
 	bottom: 35px;
 	left: 15px;
@@ -217,20 +191,16 @@ const EventBox = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	display: none;
 `;
 
-const Td = styled.td<TdProps>`
+const Td = styled.td<{ isThisMonth: boolean }>`
 	position: relative;
 	text-align: center;
 	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc;')};
-
 `;
 
-interface DateBoxProps {
-	hasEvent: boolean;
-}
-
-const DateBox = styled.div<DateBoxProps>`
+const DateBox = styled.div<{ hasEvent: boolean }>`
 	width: 25px;
 	height: 25px;
 	display: flex;
