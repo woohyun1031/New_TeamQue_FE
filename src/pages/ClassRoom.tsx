@@ -7,21 +7,23 @@ import Reaction from '../components/classroom/Reaction';
 import Stream from '../components/classroom/Stream';
 
 const ClassRoom = () => {
-	const [classInfo, setClassInfo] = useState<{ title: string }>();
+	const [classInfo, setClassInfo] = useState<{ title: string, teacher: string }>();
 	const { classid } = useParams();
-	const fetch = async () => {
+	const loadClassInfo = async () => {
 		const response = await apis.loadClassInfo(classid as string);
 		setClassInfo(response.data);
 	};
+
 	useEffect(() => {
-		fetch();
+		loadClassInfo();
 	}, []);
+
 	return (
 		<Container>
 			<LeftBox>
-				<ClassInfo>{classInfo && classInfo.title}</ClassInfo>
+				<ClassInfo>{classInfo?.title}</ClassInfo>
 				<Stream />
-				<Reaction />
+				<Reaction teacher={classInfo?.teacher}/>
 			</LeftBox>
 			<Chat />
 		</Container>

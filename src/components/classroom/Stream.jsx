@@ -1,5 +1,4 @@
 import ReackHlsPlayer from 'react-hls-player';
-import styled from 'styled-components';
 
 const Stream = () => {
 	return (

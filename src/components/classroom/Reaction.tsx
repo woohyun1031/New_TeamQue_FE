@@ -28,7 +28,11 @@ type checkEnumType = {
 	question: number;
 };
 
-const Reaction = () => {
+interface ReactionProps {
+	teacher?: string;
+}
+
+const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 	const user = useSelector((state: RootState) => state.user);
 	const [ischeck, setChecked] = useState<checkType>({
 		correct: false,
@@ -69,7 +73,7 @@ const Reaction = () => {
 	];
 
 	const mynickname = sessionStorage.getItem('nickname');
-	const teacherNickname = '공정용';
+	const teacherNickname = teacher;
 
 	useEffect(() => {
 		const fetchData = () => {
@@ -92,8 +96,6 @@ const Reaction = () => {
 							setConnect(true);
 							if (isConnect === true) {
 								socket.on('changeState', ({ nickname, state }) => {
-									//내가 보냈는데 자꾸 changeState가 들어옴
-									console.log('changeState!!');
 									if (students) {
 										const newStudents = students.map((student: studentType) =>
 											student.nickname === nickname
@@ -121,7 +123,6 @@ const Reaction = () => {
 		};
 		fetchData();
 	}, [isConnect]);
-
 
 	useEffect(() => {
 		if (
@@ -166,7 +167,6 @@ const Reaction = () => {
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = e.target;
-		console.log(name, checked, 'before setChecked');
 		setChecked({
 			correct: false,
 			incorrect: false,
