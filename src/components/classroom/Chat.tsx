@@ -10,6 +10,7 @@ type chatType = {
 	nickname: string;
 	message: string;
 	type: 'chat' | 'question';
+	like?: string[];
 	isResolved?: boolean;
 };
 
@@ -29,7 +30,9 @@ const Chat = () => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [isConnect, setConnect] = useState(false);
 
-	const SOCKETSERVER = 'ws://noobpro.shop';
+	// const SOCKETSERVER = 'ws://noobpro.shop';
+	const SOCKETSERVER = 'ws://xpecter.shop';
+
 	const classId = params.classid;
 
 	const myNickname = useSelector(
@@ -48,25 +51,42 @@ const Chat = () => {
 		});
 
 		socket.on('receiveResolved', ({ chatId }) => {
-			setChats((prev) => prev.map((chat) =>
-			chat.id === chatId ? { ...chat, isResolved: !chat.isResolved } : chat));
+			setChats((prev) =>
+				prev.map((chat) =>
+					chat.id === chatId ? { ...chat, isResolved: !chat.isResolved } : chat
+				)
+			);
 		});
 
-		socket.on(
-			'receiveChat',
-			({ id, nickname, message }) => {
-				setChats((prev) => [...prev, { id, nickname, message, type: 'chat' }]);
-			}
-		);
+		socket.on('receiveChat', ({ id, nickname, message }) => {
+			setChats((prev) => [...prev, { id, nickname, message, type: 'chat' }]);
+		});
 
 		socket.on('receiveQuestion', ({ id, message, nickname }) => {
 			setChats((prev) => [
 				...prev,
-				{ id, nickname, message, isResolved: false, type: 'question' },
+				{
+					id,
+					nickname,
+					message,
+					isResolved: false,
+					like: [],
+					type: 'question',
+				},
 			]);
 		});
-	};
 
+		socket.on('receiveLike', ({ chatId, nickname }) => {
+			console.log(chatId, nickname)
+			setChats((prev) =>
+				prev.map((chat) =>
+					chat.id === chatId && chat.like
+						? { ...chat, like: [...chat.like, nickname] }
+						: chat
+				)
+			);
+		});
+	};
 
 	useEffect(() => {
 		return () => {
@@ -95,6 +115,7 @@ const Chat = () => {
 								nickname: myNickname,
 								message,
 								type: 'question',
+								like: [],
 								isResolved: false,
 							},
 						]);
@@ -102,7 +123,6 @@ const Chat = () => {
 				);
 				setMessage('');
 			} else {
-				console.log(message, classId)
 				socket.emit(
 					'sendChat',
 					{ message, classId },
@@ -142,10 +162,21 @@ const Chat = () => {
 
 	const toggleResolve = (unique_id: string) => {
 		socket.emit('sendResolved', { chatId: unique_id, classId }, () => {
-			const newChats = chats.map((chat) =>
-				chat.id === unique_id ? { ...chat, isResolved: !chat.isResolved } : chat
+			setChats((prev) => prev.map((chat) =>
+			chat.id === unique_id ? { ...chat, isResolved: !chat.isResolved } : chat
+		));
+		});
+	};
+
+	const likeQuestion = (unique_id: string) => {
+		socket.emit('sendLike', { chatId: unique_id, classId }, () => {
+			setChats((prev) =>
+				prev.map((chat) =>
+					chat.id === unique_id && chat.like
+						? { ...chat, like: [...chat.like, myNickname] }
+						: chat
+				)
 			);
-			setChats(newChats);
 		});
 	};
 
@@ -163,7 +194,10 @@ const Chat = () => {
 			</Toggle>
 			{chats &&
 				chats.map(
-					({ nickname, message, id, isResolved, type }, index: number) => {
+					(
+						{ nickname, message, id, isResolved, type, like },
+						index: number
+					) => {
 						if (type === 'chat' && !commonCheck) {
 							return (
 								<ChatBox key={index} byMe={nickname === myNickname}>
@@ -173,9 +207,21 @@ const Chat = () => {
 							);
 						} else if (type === 'question' && !questionCheck) {
 							return (
-								<QuestionBox key={index} byMe={nickname === myNickname} isResolved={isResolved} onClick={() => toggleResolve(id)}>
+								<QuestionBox
+									key={index}
+									byMe={nickname === myNickname}
+									isResolved={isResolved}
+								>
 									{myNickname === nickname && '내 질문'}
-									<QueMessage>{message}</QueMessage>
+									<QueMessage onClick={() => toggleResolve(id)}>
+										{message}
+									</QueMessage>
+									<button onClick={() => likeQuestion(id)}>추천</button>
+									<p>
+										{like?.map((student, index) => (
+											<li key={index}>{student}</li>
+										))}
+									</p>
 								</QuestionBox>
 							);
 						}
