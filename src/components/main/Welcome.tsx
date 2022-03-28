@@ -56,7 +56,7 @@ const MessageBox = styled.div`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 18px;
 	font-weight: 500;
-	border-radius: 4px;
+	border-radius: 10px;
 	padding: 20px;
 	display: flex;
 	align-items: center;
