@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DropDown from './DropDown';
 import { RootState } from '../store/configStore';
 import { useSelector } from 'react-redux';
@@ -38,6 +38,6 @@ const Logo = styled.button<{ src: string }>`
 	${(props) => `background-image: url(${props.src});`}
 	border: none;
 	width: 130px;
-	height: 70px;
+	height: 60px;
 	background-repeat: no-repeat;
 `;
