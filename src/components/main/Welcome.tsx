@@ -68,8 +68,8 @@ const Message = styled.p``;
 
 const Character = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
-	width: 130px;
-	height: 150px;
+	width: 154px;
+	height: 124px;
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
