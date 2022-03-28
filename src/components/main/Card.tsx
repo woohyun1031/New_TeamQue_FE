@@ -44,16 +44,19 @@ const Card: React.FC<CardProps> = ({
 
 	return (
 		<Container>
-			<Thumbnail src={imageUrl} onClick={toClassRoom} />
+			<Thumbnail src={imageUrl} />
+			<ThumbnailFilter src='/images/play.png' onClick={toClassRoom} />
 			<BadgeBox>
 				<SubBadge>진행중</SubBadge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
 			<Title>{title}</Title>
 			<Teacher>{teacher} 님</Teacher>
-			{time.map((t) => (
-				<TimeTable key={t}>{t}</TimeTable>
-			))}
+			<TimeTables>
+				{time.map((t) => (
+					<TimeTable key={t}>{t}</TimeTable>
+				))}
+			</TimeTables>
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
 		</Container>
 	);
@@ -75,6 +78,25 @@ const Container = styled.div`
 	}
 `;
 
+const ThumbnailFilter = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 255px;
+	height: 172px;
+	border-radius: 7px;
+	top: 16px;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.2);
+	opacity: 0;
+	z-index: 10;
+	transition: 0.2s;
+	cursor: pointer;
+	&:hover {
+		opacity: 1;
+	}
+`;
+
 const Thumbnail = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
 	background-size: cover;
@@ -82,20 +104,22 @@ const Thumbnail = styled.div<{ src: string }>`
 	width: 255px;
 	height: 172px;
 	border-radius: 7px;
-	margin-bottom: 10px;
-	cursor: pointer;
+	margin-bottom: 14px;
+	&:hover ${ThumbnailFilter} {
+		opacity: 1;
+	}
 `;
 
 const BadgeBox = styled.div`
 	width: 100%;
 	height: 18px;
 	display: flex;
-	margin-bottom: 10px;
+	margin-bottom: 13px;
 `;
 
 const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
-	width: 55px;
-	height: 20px;
+	width: 52px;
+	height: 18px;
 	background-color: ${({ theme }) => theme.colors.main};
 	border-radius: 7px;
 	color: ${({ theme }) => theme.colors.buttonTitle};
@@ -108,7 +132,7 @@ const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
 		type === 'wait' && 'background-color: #F4F4F4; color: #718AFF;'}
 
 	& + & {
-		margin-left: 5px;
+		margin-left: 8px;
 	}
 `;
 
@@ -125,6 +149,7 @@ const WaitBadge = styled(Badge)`
 const Title = styled.h3`
 	font-weight: 700;
 	font-size: 18px;
+	height: 40px;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
@@ -132,11 +157,35 @@ const Teacher = styled.h4`
 	font-size: 12px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.colors.title};
+	margin-bottom: 6px;
 `;
 
+const TimeTables = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	height: 47px;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
+`
+
 const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
-	color: ${({ theme }) => theme.colors.sub};
-	font-weight: 500;
+	color: ${({ theme }) => theme.colors.title};
+	background-color: ${({ theme }) => theme.colors.base};
+	font-size: 12px;
+	width: 105px;
+	height: 22px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 6px;
+	margin-bottom: 3px;
 `;
 
 const HomeButton = styled.button<{ src: string }>`
@@ -149,10 +198,11 @@ const HomeButton = styled.button<{ src: string }>`
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
+	bottom: 23px;
+	right: 23px;
 	cursor: pointer;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	/* hover 색상넣기 */
 `;
 
 const WaitThumbnail = styled.div<{ src: string }>`
@@ -166,3 +216,4 @@ const WaitThumbnail = styled.div<{ src: string }>`
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.5);
 `;
+
