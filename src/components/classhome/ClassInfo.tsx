@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { changeModal, openModal } from '../../store/modules/modal';
 import apis from '../../api';
 
 const ClassInfo: React.FC = () => {
+	const dispatch = useDispatch();
 	const { classid } = useParams();
 	console.log(classid);
 	const [students, setStudents] = useState<{ name: string }[]>();
@@ -24,6 +27,10 @@ const ClassInfo: React.FC = () => {
 	useEffect(() => {
 		fetch();
 	}, []);
+	const openInviteCode = () => {
+		dispatch(openModal());
+		dispatch(changeModal('inviteCode'));
+	};
 	return (
 		<Container>
 			<Image src={data && data.imageUrl} />
@@ -31,6 +38,7 @@ const ClassInfo: React.FC = () => {
 			<Title>{data && data.title}</Title>
 			<Teacher>{data && data.teacher} 선생님</Teacher>
 			<Time>{data && data.time}</Time>
+			<a onClick={openInviteCode}>초대하기</a>
 			{/* {students && students.map((student: any, index: number) => <li key={index}>{student.username} {student.state}</li>)} */}
 		</Container>
 	);

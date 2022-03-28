@@ -10,6 +10,7 @@ const InviteCode: React.FC = () => {
 
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		console.log('공유하기 클릭');
 	};
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
@@ -17,7 +18,7 @@ const InviteCode: React.FC = () => {
 		const content = uuid.current;
 		if (content) {
 			navigator.clipboard.writeText(content.value).then(() => {
-				console.log('복사');
+				alert('코드 복사');
 			});
 		}
 	};

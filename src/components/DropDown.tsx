@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { signOut } from '../store/modules/user';
-import { changeModal, openModal } from '../store/modules/modal';
 
 interface Props {
 	name: string;
@@ -21,10 +20,6 @@ const DropDown: React.FC<Props> = ({ name }) => {
 	const openMypage = () => {
 		alert('마이페이지 구현 중');
 	};
-	const openInviteCode = () => {
-		dispatch(openModal());
-		dispatch(changeModal('inviteCode'));
-	};
 	return (
 		<Container>
 			<Name onClick={toggleDropDown}>
@@ -38,7 +33,6 @@ const DropDown: React.FC<Props> = ({ name }) => {
 					<BackGround onClick={toggleDropDown} />
 					<Menu>
 						<li onClick={openMypage}>마이페이지</li>
-						<li onClick={openInviteCode}>초대하기</li>
 						<li onClick={logout}>로그아웃</li>
 					</Menu>
 				</>
