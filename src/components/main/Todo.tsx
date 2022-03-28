@@ -1,47 +1,97 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import apis from '../../api';
 import { RootState } from '../../store/configStore';
-import {
-	addTodo,
-	deleteTodo,
-	loadTodos,
-	toggleComplete,
-} from '../../store/modules/todo';
+
+type todoType = {
+	id: number;
+	content: string;
+	isComplete: boolean;
+	isOpen: boolean;
+};
 
 const Todo = () => {
-	const dispatch = useDispatch();
+	const isLogin = useSelector((state: RootState) => state.user.is_login);
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
-	const todos = useSelector((state: RootState) => state.todo);
-	const isLogin = useSelector((state: RootState) => state.user.is_login);
+	const [todos, setTodos] = useState<todoType[]>();
+	const [dropdown, setDropdown] = useState({
+		isOpen: false,
+		id: 0,
+	});
+	const closeDropDown = () => {
+		setDropdown((prev) => ({ ...prev, isOpen: false }));
+	};
+
+	const openDropDown = (id: number) => {
+		setDropdown({ id, isOpen: true });
+	};
+
+	const loadTodos = async () => {
+		const response = await apis.loadTodo();
+		setTodos(response.data);
+	};
+
+	const addTodo = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		await apis.addTodo(input);
+		setIsInput(false);
+		setInput('');
+		loadTodos();
+	};
+
+	const deleteTodo = async (id: number) => {
+		await apis.deleteTodo(id);
+		closeDropDown()
+		loadTodos();
+	};
+
+	const toggleComplete = async (id: number) => {
+		await apis.updateTodo(id);
+		closeDropDown()
+		loadTodos();
+	};
 
 	useEffect(() => {
 		if (isLogin) {
-			dispatch(loadTodos());
+			loadTodos();
 		}
 	}, [isLogin]);
-	const add = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		dispatch(addTodo(input));
-		setIsInput(false);
-	};
+
 	const focusOut = () => {
 		setIsInput(false);
 	};
+
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInput(e.target.value);
 	};
+
 	return (
 		<Container>
 			<Title>해야 할 일</Title>
 			<ScheduleBox>
-				{todos.map(
-					(todo: { id: string; content: string; isComplete: boolean }) => (
-						<TodoItem key={todo.id} {...todo} />
-					)
-				)}
-				<Form onSubmit={add}>
+				{dropdown.isOpen && <BackGround onClick={closeDropDown} />}
+				{todos &&
+					todos.map(({ id, content, isComplete }: todoType) => (
+						<ScheduleItem key={id} isComplete={isComplete}>
+							<p>{content}</p>
+							<DropdownButton
+								src='/images/toggleDropdown.png'
+								onClick={() => openDropDown(id)}
+							/>
+							{dropdown.id === id && dropdown.isOpen && (
+								<>
+									<Dropdown>
+										<li onClick={() => {console.log('추가 예정')}}>수정</li>
+										<li onClick={() => toggleComplete(id)}>완료</li>
+										<li onClick={() => deleteTodo(id)}>삭제</li>
+									</Dropdown>
+								</>
+							)}
+						</ScheduleItem>
+					))}
+				<Form onSubmit={addTodo}>
 					{isInput ? (
 						<InputBox
 							type='text'
@@ -66,70 +116,42 @@ const Todo = () => {
 
 export default Todo;
 
-interface TodoItemProps {
-	id: string;
-	content: string;
-	isComplete: boolean;
-}
-
-const TodoItem: React.FC<TodoItemProps> = ({ id, content, isComplete }) => {
-	const dispatch = useDispatch();
-	const deleteto = async () => {
-		dispatch(deleteTodo(id));
-	};
-	const toggle = async () => {
-		dispatch(toggleComplete(id));
-	};
-
-	return (
-		<ScheduleItem isComplete={isComplete} onClick={toggle}>
-			{content}
-			<CloseButton onClick={deleteto} src='/images/closeButton.png' />
-		</ScheduleItem>
-	);
-};
-
 const Container = styled.div`
-	/* 사이즈 */
 	width: 290px;
 	height: 320px;
 `;
 
 const Title = styled.h2`
 	font-size: 20px;
-	margin-bottom: 10px;
 	color: ${({ theme }) => theme.colors.title};
+	margin-bottom: 10px;
 `;
 
 const ScheduleBox = styled.ul`
-	/* 사이즈 */
 	width: 290px;
-	height: 285px;
+	height: 300px;
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
-		width: 5px; /*스크롤바의 너비*/
+		width: 5px;
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: ${({ theme }) => theme.colors.scroll}; /*스크롤바의 색상*/
+		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
 `;
 
-interface ScheduleItemProps {
-	isComplete: boolean;
-}
-
-const ScheduleItem = styled.li<ScheduleItemProps>`
-	/* 사이즈 */
+const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	width: 270px;
 	height: 80px;
+	border-radius: 7px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.main};
 	margin: 0 auto;
-	margin-bottom: 23px;
+	& + & {
+		margin-top: 10px;
+	}
 	color: ${({ theme }) => theme.colors.background};
 	position: relative;
 	font-weight: 700;
@@ -147,27 +169,19 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	&:hover {
 		/* hover 색상 추가 */
 	}
-	cursor: pointer;
-`;
-
-const CloseButton = styled.img`
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	cursor: pointer;
 `;
 
 const AddButton = styled.button`
-	display: block;
 	width: 270px;
 	height: 80px;
+	display: block;
 	background: none;
 	border: none;
 	border-radius: 7px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	color: ${({ theme }) => theme.colors.main};
 	font-size: 30px;
-	margin-bottom: 10px;
+	margin: 10px auto;
 	transition: 0.1s;
 	&:hover {
 		/* hover 색상 추가 */
@@ -176,9 +190,9 @@ const AddButton = styled.button`
 `;
 
 const InputBox = styled.input`
-	display: block;
 	width: 270px;
 	height: 80px;
+	display: block;
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.main};
 	border: none;
@@ -187,9 +201,56 @@ const InputBox = styled.input`
 	font-weight: 700;
 	font-size: 14px;
 	outline: none;
-	margin: 0 auto;
-	margin-bottom: 23px;
+	margin: 10px auto;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const Form = styled.form``;
+
+const DropdownButton = styled.button<{ src: string }>`
+	border: none;
+	background: none;
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 13px;
+	height: 3px;
+	padding: 5px;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	cursor: pointer;
+`;
+
+const Dropdown = styled.div`
+	width: 70px;
+	height: 85px;
+	padding: 3px;
+	border-radius: 7px;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	top: 30px;
+	right: -5px;
+	color: black;
+	z-index: 101;
+	font-weight: 400;
+	& li {
+		padding: 3px;
+		text-align: center;
+		cursor: pointer;
+		&:nth-child(2) {
+			border-top: 1px solid #D2D2D2;
+			border-bottom: 1px solid #D2D2D2;
+		}
+	}
+`;
+
+const BackGround = styled.div`
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	z-index: 100;
+`;

@@ -74,8 +74,8 @@ export const apis = {
 	// Todo
 	loadTodo: () => instance.get('/boards/todo'),
 	addTodo: (todo: string) => instance.post('/boards/todo', { content: todo }),
-	deleteTodo: (todoid: string) => instance.delete(`/boards/todo/${todoid}`),
-	updateTodo: (todoid: string) => instance.put(`/boards/todo/${todoid}`, {}),
+	deleteTodo: (todoid: number) => instance.delete(`/boards/todo/${todoid}`),
+	updateTodo: (todoid: number) => instance.put(`/boards/todo/${todoid}`, {}),
 	changeOrderTodo: (todoid1: string, todoid2: string) =>
 		instance.put(`/boards/todo/change/${todoid1}/${todoid2}`, {}),
 };
