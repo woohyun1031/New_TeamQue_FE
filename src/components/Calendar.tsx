@@ -17,6 +17,7 @@ type calendarType = weekType[];
 const Calendar = () => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const today = new Date();
+	const thisDate = today.getDate();
 	const thisMonth = today.getMonth();
 	const thisYear = today.getFullYear();
 	const [year, setYear] = useState<number>(thisYear);
@@ -111,7 +112,16 @@ const Calendar = () => {
 							<tr key={index}>
 								{week.map((date: dateType, index: number) => (
 									<Td isThisMonth={date.month === 'this'} key={index}>
-										<DateBox>{date.date}</DateBox>
+										<DateBox
+											isToday={
+												year === thisYear &&
+												month === thisMonth &&
+												date.date === thisDate &&
+												date.month === 'this'
+											}
+										>
+											{date.date}
+										</DateBox>
 										{date.event && (
 											<>
 												<EventPointer />
@@ -156,6 +166,14 @@ const Table = styled.table`
 	font-weight: 500;
 	font-size: 12px;
 	border-collapse: collapse;
+	& tr td:nth-child(1),
+	& tr th:nth-child(1) {
+		color: #d97e7e;
+	}
+	& tr td:nth-child(7),
+	& tr th:nth-child(7) {
+		color: #677bda;
+	}
 `;
 
 const Caption = styled.caption`
@@ -205,16 +223,18 @@ const EventBox = styled.div`
 const Td = styled.td<{ isThisMonth: boolean }>`
 	position: relative;
 	text-align: center;
-	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc;')};
-	
-
+	/* important 수정 필요 */
+	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc !important;')};
 `;
 
-const DateBox = styled.p`
+const DateBox = styled.p<{ isToday: boolean }>`
+	${({ isToday }) =>
+		isToday &&
+		'background-color: #718AFF; border-radius: 50%; width: 20px; height: 20px; margin: 0 auto; color: #fff;'}
 	&:hover ~ ${EventBox} {
 		display: flex;
 	}
-`
+`;
 
 const EventPointer = styled.div`
 	width: 4px;
