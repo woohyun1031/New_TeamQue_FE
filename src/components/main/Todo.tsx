@@ -43,13 +43,13 @@ const Todo = () => {
 
 	const deleteTodo = async (id: number) => {
 		await apis.deleteTodo(id);
-		closeDropDown()
+		closeDropDown();
 		loadTodos();
 	};
 
 	const toggleComplete = async (id: number) => {
 		await apis.completeTodo(id);
-		closeDropDown()
+		closeDropDown();
 		loadTodos();
 	};
 
@@ -77,13 +77,19 @@ const Todo = () => {
 						<ScheduleItem key={id} isComplete={isComplete}>
 							<p>{content}</p>
 							<DropdownButton
-								src='/images/toggleDropdown.png'
+								src='/images/menu_white_24dp.svg'
 								onClick={() => openDropDown(id)}
 							/>
 							{dropdown.id === id && dropdown.isOpen && (
 								<>
 									<Dropdown>
-										<li onClick={() => {console.log('추가 예정')}}>수정</li>
+										<li
+											onClick={() => {
+												console.log('추가 예정');
+											}}
+										>
+											수정
+										</li>
 										<li onClick={() => toggleComplete(id)}>완료</li>
 										<li onClick={() => deleteTodo(id)}>삭제</li>
 									</Dropdown>
@@ -214,12 +220,13 @@ const DropdownButton = styled.button<{ src: string }>`
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 13px;
-	height: 3px;
+	height: 13px;
 	padding: 5px;
 	position: absolute;
 	top: 5px;
 	right: 10px;
 	cursor: pointer;
+	object-fit: contain;
 `;
 
 const Dropdown = styled.div`
@@ -240,8 +247,8 @@ const Dropdown = styled.div`
 		text-align: center;
 		cursor: pointer;
 		&:nth-child(2) {
-			border-top: 1px solid #D2D2D2;
-			border-bottom: 1px solid #D2D2D2;
+			border-top: 1px solid #d2d2d2;
+			border-bottom: 1px solid #d2d2d2;
 		}
 	}
 `;
