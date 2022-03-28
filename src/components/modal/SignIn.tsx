@@ -62,7 +62,7 @@ const SignIn: React.FC = () => {
 				카카오 로그인
 			</KakaoButton>
 			<p>
-				Don&apos;t have an account?  <SignUp onClick={toSignUp}>Sign up</SignUp>
+				Don&apos;t have an account? <SignUp onClick={toSignUp}>Sign up</SignUp>
 			</p>
 		</Form>
 	);
@@ -85,12 +85,12 @@ const Input = styled.input`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
 	padding-left: 20px;
 	outline: none;
 	&::placeholder {
-		color: #d2d2d2;
+		color: ${({ theme }) => theme.colors.sub};
 	}
 `;
 
@@ -99,8 +99,8 @@ const Button = styled.button`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
@@ -108,8 +108,8 @@ const Button = styled.button`
 `;
 
 const KakaoButton = styled(Button)`
-	background-color: #fee500;
-	color: #3c1e1e;
+	background-color: ${({ theme }) => theme.colors.kakaoBg};
+	color: ${({ theme }) => theme.colors.kakaoTitle};
 	& img {
 		position: absolute;
 		left: 20px;
@@ -120,8 +120,8 @@ const KakaoButton = styled(Button)`
 const SignUp = styled.button`
 	border: none;
 	background: none;
-	color: #F73535;
+	color: ${({ theme }) => theme.colors.signOut};
 	text-decoration: underline;
 	font-size: 16px;
 	cursor: pointer;
-`
+`;

@@ -20,7 +20,8 @@ const colors = {
 	reject: '#D97E7E',
 	shadow: '#F4F4F4',  
   scroll: '#cccccc',  
-
+  kakaoBg:'#fee500;',
+  kakaoTitle:'#3c1e1e;',
   background: '#FFFFFF',
 };
 
