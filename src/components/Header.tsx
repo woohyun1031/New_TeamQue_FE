@@ -40,4 +40,5 @@ const Logo = styled.button<{ src: string }>`
 	width: 130px;
 	height: 60px;
 	background-repeat: no-repeat;
+	cursor: pointer;
 `;
