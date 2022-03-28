@@ -6,6 +6,7 @@ import AddClass from './AddClass';
 import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import InviteCode from './InviteCode';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -24,6 +25,9 @@ const Modal: React.FC = () => {
 			break;
 		case 'addClass':
 			contents = <AddClass />;
+			break;
+		case 'inviteCode':
+			contents = <InviteCode />;
 			break;
 		default:
 			contents = null;
