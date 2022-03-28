@@ -15,7 +15,7 @@ import { RootState } from './store/configStore';
 const App = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const isLogin = useSelector((state: RootState) => state.user.is_login);
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const isToken = sessionStorage.getItem('accessToken') ? true : false
 
 	useEffect(() => {

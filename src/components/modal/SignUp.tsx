@@ -1,13 +1,52 @@
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { signUp } from '../../store/modules/user';
 
 const SignUp: React.FC = () => {
+	const dispatch = useDispatch()
+	const [inputs, setInputs] = useState({
+		email: '',
+		name: '',
+		password: '',
+		confirmPassword: '',
+	});
+
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setInputs({
+			...inputs,
+			[name]: value,
+		});
+	};
+
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		dispatch(signUp(inputs));
+	};
+
 	return (
-		<Form>
+		<Form onSubmit={onSubmit}>
 			<img src='/images/smallLogo.png' />
-			<Input type='email' placeholder='이메일' />
-			<Input type='text' placeholder='닉네임' />
-			<Input type='password' placeholder='비밀번호' />
-			<Input type='password' placeholder='비밀번호 확인' />
+			<Input
+				type='email'
+				name='email'
+				placeholder='이메일'
+				onChange={onChange}
+			/>
+			<Input type='text' name='name' placeholder='이름' onChange={onChange} />
+			<Input
+				type='password'
+				name='password'
+				placeholder='비밀번호'
+				onChange={onChange}
+			/>
+			<Input
+				type='password'
+				name='confirmPassword'
+				placeholder='비밀번호 확인'
+				onChange={onChange}
+			/>
 			<Button>회원가입</Button>
 		</Form>
 	);

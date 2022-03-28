@@ -50,10 +50,11 @@ instance.interceptors.response.use(
 
 export const apis = {
 	// User
-	signUp: (userInfo: object) => instance.post('/auth/signup', userInfo),
-	signIn: (userInfo: object) => instance.post('/auth/signin', userInfo),
-	signOut: () => instance.post('/auth/signout', {}),
-	setNick: (nickname: string) => instance.put('/auth/nickname', { nickname }),
+	signUp: (userInfo: object) => instance.post('/user/signup', userInfo),
+	signIn: (signInInfo: { email: string; password: string }) =>
+		instance.post('/user/signin', signInInfo),
+	signOut: () => instance.post('/user/signout', {}),
+	setNick: (nickname: string) => instance.put('/user/nickname', { nickname }),
 	test: () => instance.get('/auth/test'),
 	refresh: (refreshToken: string) =>
 		instance.post('/auth/refresh', refreshToken),
@@ -66,17 +67,19 @@ export const apis = {
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadClassBoards: (classId: string) => instance.get(`/boards/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
-	loadAllCalendar: (year: number, month: number) =>
-		instance.get(`/class/date/all/${year}/${month}`),
 
 	// Post
 	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
+
+	// Main
+	loadMyCalendar: (year: number, month: number) =>
+		instance.get(`/class/date?year=${year}&month=${month}`),
+
 	// Todo
-	loadTodo: () => instance.get('/boards/todo'),
-	addTodo: (todo: string) => instance.post('/boards/todo', { content: todo }),
-	deleteTodo: (todoid: number) => instance.delete(`/boards/todo/${todoid}`),
-	updateTodo: (todoid: number) => instance.put(`/boards/todo/${todoid}`, {}),
-	changeOrderTodo: (todoid1: string, todoid2: string) =>
-		instance.put(`/boards/todo/change/${todoid1}/${todoid2}`, {}),
+	loadTodo: () => instance.get('/post/todo'),
+	addTodo: (content: string) => instance.post('/post/todo', { content: content }),
+	deleteTodo: (todoId: number) => instance.delete(`/post/todo/${todoId}`),
+	completeTodo: (todoId: number) =>
+		instance.put('/post/todo/complete', {id: todoId}),
 };
 export default apis;

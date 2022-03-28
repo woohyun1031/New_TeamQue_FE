@@ -15,7 +15,7 @@ type weekType = dateType[];
 type calendarType = weekType[];
 
 const Calendar = () => {
-	const isLogin = useSelector((state: RootState) => state.user.is_login);
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const today = new Date();
 	const thisMonth = today.getMonth();
 	const thisYear = today.getFullYear();
@@ -42,7 +42,8 @@ const Calendar = () => {
 			allDate.push({ month: 'next', date: i });
 		}
 
-		const response = await apis.loadAllCalendar(year, month + 1);
+		const response = await apis.loadMyCalendar(year, month + 1);
+		
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
 				allDate[event.day + thisMonthFirstDay - 1].event?.push({

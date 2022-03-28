@@ -36,7 +36,7 @@ const Chat = () => {
 	const classId = params.classid;
 
 	const myNickname = useSelector(
-		(state: RootState) => state.user.user_info.nickname
+		(state: RootState) => state.user.user_info.name
 	);
 	const accessToken = sessionStorage.getItem('accessToken');
 

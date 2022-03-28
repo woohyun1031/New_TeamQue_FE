@@ -15,7 +15,6 @@ const DropDown: React.FC<Props> = ({ name }) => {
 	};
 	const logout = () => {
 		dispatch(signOut());
-		location.reload();
 	};
 	const openMypage = () => {
 		alert('마이페이지 구현 중');
