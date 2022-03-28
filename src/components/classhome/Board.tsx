@@ -6,31 +6,32 @@ import apis from '../../api';
 type postType = {
 	id: number;
 	title: string;
-	writer: string;
+	author: string;
 	createdAt: string;
 };
 
 const Board = () => {
 	const navigate = useNavigate();
-	const { classid, page } = useParams();
+	const { classid, page } = useParams<string>();
 	const [notice, setNotice] = useState<postType[]>();
 	const [question, setQuestion] = useState<postType[]>();
 	const [pages, setPages] = useState<{ page: number; selected: boolean }[]>([]);
 
 	const fetch = async () => {
-		const response = await apis.loadClassBoards(
-			`${classid}?page=${page}` as string
-		);
-		setNotice(response.data.boardListNotice);
-		setQuestion(response.data.boardListquestion);
-		const newPages = [];
-		for (let i = 1; i <= response.data.pages; i++) {
-			newPages.push({ page: i, selected: false });
+		// 로직 다듬기, 에러 핸들링 추가
+		if (classid) {
+			const response = await apis.loadPosts(classid);
+			setNotice(response.data.postListNotice);
+			setQuestion(response.data.postListquestion);
+			const newPages = [];
+			for (let i = 1; i <= response.data.pages; i++) {
+				newPages.push({ page: i, selected: false });
+			}
+			if (page) {
+				newPages[parseInt(page) - 1].selected = true;
+			}
+			setPages(newPages);
 		}
-		if (page) {
-			newPages[parseInt(page) - 1].selected = true;
-		}
-		setPages(newPages);
 	};
 	useEffect(() => {
 		fetch();
@@ -64,7 +65,7 @@ const Board = () => {
 								>
 									{row.title}
 								</PostTitle>
-								<Td>{row.writer}</Td>
+								<Td>{row.author}</Td>
 								<Td>{row.createdAt.split('T')[0]}</Td>
 							</tr>
 						))}
@@ -82,7 +83,7 @@ const Board = () => {
 								>
 									{row.title}
 								</PostTitle>
-								<Td>{row.writer}</Td>
+								<Td>{row.author}</Td>
 								<Td>{row.createdAt.split('T')[0]}</Td>
 							</tr>
 						))}

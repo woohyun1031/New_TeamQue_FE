@@ -6,20 +6,21 @@ import apis from '../../api';
 const Detail = () => {
 	const { postid } = useParams<string>();
 	const [data, setData] = useState<{
-		board: {
-			boardType: string;
+			postType: string;
 			title: string;
-			writer: string;
+			author: string;
 			createdAt: string;
-			description: string;
+			content: string;
 			__comments__: [];
-		};
 	}>();
+	const [isByMe, setIsByMe] = useState()
 	const fetch = async () => {
 		if (postid) {
-			const response = await apis.loadDetail(postid);
+			console.log(postid)
+			const response = await apis.loadPost(postid);
+			setIsByMe(response.data.isByMe)
 			console.log(response.data);
-			setData(response.data);
+			setData(response.data.post);
 		}
 	};
 	useEffect(() => {
@@ -28,21 +29,21 @@ const Detail = () => {
 	return (
 		<Container>
 			<PostHeader>
-				<PostType>{data && data.board.boardType}</PostType>
-				<PostTitle>{data && data.board.title}</PostTitle>
-				<Author>{data && data.board.writer}</Author>
+				<PostType>{data && data.postType}</PostType>
+				<PostTitle>{data && data.title}</PostTitle>
+				<Author>{data && data.author}</Author>
 				<Date>
-					{data && data.board.createdAt.split('T')[0].replaceAll('-', '.')}
+					{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
 				</Date>
 			</PostHeader>
-			<Contents>{data && data.board.description}</Contents>
+			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
 				{data &&
-					data.board.__comments__.map((comment: any) => (
-						<li key={comment.boardId}>
-							<CommentWriter>{comment.writer}</CommentWriter>
-							<Comment>{comment.description}</Comment>
+					data.__comments__.map((comment: any) => (
+						<li key={comment.id}>
+							<CommentWriter>{comment.author}</CommentWriter>
+							<Comment>{comment.content}</Comment>
 						</li>
 					))}
 				<CommentInput type='text' />

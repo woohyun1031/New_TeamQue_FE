@@ -16,10 +16,13 @@ const ClassInfo: React.FC = () => {
 		imageUrl: string;
 	}>();
 	const fetch = async () => {
-		const response = await apis.loadClassInfo(classid as string);
-		const response2 = await apis.loadStudents(classid as string);
-		setData(response.data);
-		setStudents(response2.data);
+		// 로직 다듬기
+		if (classid) {
+			const response = await apis.loadClassInfo(classid);
+			const response2 = await apis.loadStudents(classid);
+			setData(response.data);
+			setStudents(response2.data);
+		}
 	};
 	useEffect(() => {
 		fetch();

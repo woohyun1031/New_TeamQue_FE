@@ -61,20 +61,20 @@ export const apis = {
 	withdrawal: () => instance.delete('auth/withdrawal'),
 
 	// Class
-	createClass: (classInfo: object) => instance.post('/class', classInfo),
-	loadLearnClass: () => instance.get('/class/student/class'),
-	loadTeachClass: () => instance.get('/class'),
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
-	loadClassBoards: (classId: string) => instance.get(`/boards/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
-
+	
 	// Post
-	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
+	loadPosts: (classId: string) => instance.get(`/post/${classId}`),
+	loadPost: (postId: string) => instance.get(`/post/detail/${postId}`),
 
 	// Main
+	loadLearnClass: () => instance.get('/class/learn'),
+	loadTeachClass: () => instance.get('/class/teach'),
 	loadMyCalendar: (year: number, month: number) =>
 		instance.get(`/class/date?year=${year}&month=${month}`),
-
+	// 강의참여하기 추가 예정
+	createClass: (classInfo: object) => instance.post('/class', classInfo),
 	// Todo
 	loadTodo: () => instance.get('/post/todo'),
 	addTodo: (content: string) => instance.post('/post/todo', { content: content }),
