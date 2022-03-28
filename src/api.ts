@@ -1,25 +1,15 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
-const instance = axios.create({
+export const instance = axios.create({
 	baseURL: 'https://noobpro.shop:3000/',
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 	},
 });
 
-instance.interceptors.request.use(
-	(config: AxiosRequestConfig) => {
-		const accesssToken = sessionStorage.getItem('accessToken');
-		if (accesssToken) {
-			config.headers!.Authorization = `Bearer ${accesssToken}`;
-		}
-		return config;
-	},
-	(error) => {
-		alert(error + 'interceptors.request error');
-		console.log(error, 'request error');
-	}
-);
+instance.defaults.headers.common[
+	'Authorization'
+] = `Bearer ${sessionStorage.getItem('accessToken')}`;
 
 instance.interceptors.response.use(
 	(response) => {
@@ -30,10 +20,6 @@ instance.interceptors.response.use(
 			config,
 			response: { status },
 		} = error;
-		console.log(config, 'error config');
-		console.log(error.response, 'error response');
-		console.log(error.request, 'error request');
-		console.log(error.message, 'error message');
 		if (status === 401) {
 			console.log(error, '401 error');
 			if (error.response.data.message === 'TokenExpiredError') {
@@ -51,7 +37,6 @@ instance.interceptors.response.use(
 				//new token
 				const { accessToken: newAccessToken } = accesssToken;
 				sessionStorage.setItem('accessToken', newAccessToken);
-				//sessionStorage.setItem('refreshToken', newRefreshToken);
 
 				axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
 				originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -59,7 +44,7 @@ instance.interceptors.response.use(
 				return axios(originalRequest);
 			}
 		}
-		//return Promise.reject(error);
+		return Promise.reject(error);
 	}
 );
 

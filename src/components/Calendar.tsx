@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import apis from '../api';
+import { RootState } from '../store/configStore';
 
 type dateType = {
 	month: 'prev' | 'this' | 'next';
@@ -13,6 +15,7 @@ type weekType = dateType[];
 type calendarType = weekType[];
 
 const Calendar = () => {
+	const isLogin = useSelector((state: RootState) => state.user.is_login);
 	const today = new Date();
 	const thisMonth = today.getMonth();
 	const thisYear = today.getFullYear();
@@ -40,7 +43,6 @@ const Calendar = () => {
 		}
 
 		const response = await apis.loadAllCalendar(year, month + 1);
-
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
 				allDate[event.day + thisMonthFirstDay - 1].event?.push({
@@ -64,8 +66,10 @@ const Calendar = () => {
 	};
 
 	useEffect(() => {
-		makeCalendar();
-	}, [month]);
+		if (isLogin) {
+			makeCalendar();
+		}
+	}, [month, isLogin]);
 
 	const setPrevMonth = () => {
 		let nextMonth = month - 1;

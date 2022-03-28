@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const url = 'http://13.124.123.143:3000';
 
