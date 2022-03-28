@@ -57,13 +57,13 @@ const Board = () => {
 									<img src='/images/star.png' />
 								</td>
 								<Td>공지</Td>
-								<Td
+								<PostTitle
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
-								</Td>
+								</PostTitle>
 								<Td>{row.writer}</Td>
 								<Td>{row.createdAt.split('T')[0]}</Td>
 							</tr>
@@ -136,7 +136,7 @@ const Table = styled.table`
 `;
 
 const Th = styled.th`
-	text-align: left;
+	text-align: center;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
@@ -164,13 +164,12 @@ const AddButton = styled.button`
 	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	/* hover active 추가 필요 */
 `;
 
-interface PageProps {
-	selected: boolean;
-}
-
-const Page = styled.button<PageProps>`
+const Page = styled.button<{selected: boolean}>`
 	border: none;
 	background: none;
 	margin: 0 8px;
