@@ -31,8 +31,8 @@ const Todo = () => {
 		setDropdown({
 			id,
 			isOpen: true,
-			positionX: e.screenX - 1760,
-			positionY: e.screenY - 100,
+			positionX: e.pageX - 35,
+			positionY: e.pageY + 15,
 		});
 	};
 
