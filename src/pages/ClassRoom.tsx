@@ -24,7 +24,7 @@ const ClassRoom = () => {
 			<LeftBox>
 				<ClassInfo>{classInfo?.title}</ClassInfo>
 				<Stream />
-				<Reaction teacher={classInfo?.teacher} />
+				<Reaction />
 			</LeftBox>
 			<Chat />
 		</Container>

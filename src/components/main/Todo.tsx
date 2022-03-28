@@ -14,13 +14,13 @@ const Todo = () => {
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
 	const todos = useSelector((state: RootState) => state.todo);
-	const isToken = sessionStorage.getItem('accessToken') ? true : false;
+	const isLogin = useSelector((state: RootState) => state.user.is_login);
 
 	useEffect(() => {
-		if (isToken) {
+		if (isLogin) {
 			dispatch(loadTodos());
 		}
-	}, []);
+	}, [isLogin]);
 	const add = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(addTodo(input));
@@ -145,7 +145,7 @@ const ScheduleItem = styled.li<ScheduleItemProps>`
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.1s;
 	&:hover {
-		transform: scale(1.025);
+		/* hover 색상 추가 */
 	}
 	cursor: pointer;
 `;
@@ -170,8 +170,9 @@ const AddButton = styled.button`
 	margin-bottom: 10px;
 	transition: 0.1s;
 	&:hover {
-		transform: scale(1.025);
+		/* hover 색상 추가 */
 	}
+	cursor: pointer;
 `;
 
 const InputBox = styled.input`

@@ -8,7 +8,6 @@ export const loadTodos = createAsyncThunk(
 			const response = await apis.loadTodo();
 			return response.data;
 		} catch (err: any) {
-			alert(err);
 			return thunkAPI.rejectWithValue(err.response.message);
 		}
 	}

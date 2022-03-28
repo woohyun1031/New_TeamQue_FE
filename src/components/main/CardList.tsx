@@ -41,8 +41,6 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 		}
 	}, [isLogin]);
 
-	console.log(learnCards);
-
 	return (
 		<Container>
 			{tabState
