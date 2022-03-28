@@ -28,27 +28,29 @@ const Card: React.FC<CardProps> = ({
 	if (state == 'wait') {
 		return (
 			<>
-				<Container type={state}>
+				<Container>
 					<Thumbnail src={imageUrl} />
+					<WaitThumbnail src='/images/wait.png' />
+					<BadgeBox>
+						<WaitBadge>대기중</WaitBadge>
+						<Badge>방송중</Badge>
+					</BadgeBox>
 					<Title>{title}</Title>
 					<Teacher>{teacher} 선생님</Teacher>
-					{time.map((t) => (
-						<TimeTable key={t}>{t}</TimeTable>
-					))}
 				</Container>
 			</>
 		);
 	}
 
 	return (
-		<Container type={state}>
+		<Container>
 			<Thumbnail src={imageUrl} onClick={toClassRoom} />
 			<BadgeBox>
 				<SubBadge>진행중</SubBadge>
 				<Badge>방송중</Badge>
 			</BadgeBox>
 			<Title>{title}</Title>
-			<Teacher>{teacher} 선생님</Teacher>
+			<Teacher>{teacher} 님</Teacher>
 			{time.map((t) => (
 				<TimeTable key={t}>{t}</TimeTable>
 			))}
@@ -59,7 +61,7 @@ const Card: React.FC<CardProps> = ({
 
 export default Card;
 
-const Container = styled.div<{ type: 'wait' | 'accepted' | 'teach' }>`
+const Container = styled.div`
 	width: 300px;
 	height: 380px;
 	border-radius: 10px;
@@ -71,10 +73,6 @@ const Container = styled.div<{ type: 'wait' | 'accepted' | 'teach' }>`
 	& + & {
 		margin-left: 20px;
 	}
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.hoverBase};
-	}
-	${({ type }) => type === 'wait' && 'background-color: #F4F4F4; color: black;'}
 `;
 
 const Thumbnail = styled.div<{ src: string }>`
@@ -119,14 +117,19 @@ const SubBadge = styled(Badge)`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 `;
 
+const WaitBadge = styled(Badge)`
+	background-color: ${({ theme }) => theme.colors.base};
+	color: ${({ theme }) => theme.colors.main};
+`;
+
 const Title = styled.h3`
 	font-weight: 700;
 	font-size: 18px;
-	margin-bottom: 15px;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Teacher = styled.h4`
+	font-size: 12px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.colors.title};
 `;
@@ -150,4 +153,16 @@ const HomeButton = styled.button<{ src: string }>`
 	right: 10px;
 	cursor: pointer;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const WaitThumbnail = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 255px;
+	height: 172px;
+	border-radius: 7px;
+	top: 16px;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.5);
 `;
