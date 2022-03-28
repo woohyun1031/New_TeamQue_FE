@@ -131,17 +131,18 @@ const Table = styled.table`
 	width: 840px;
 	margin: 0 auto;
 	& td {
-		text-align: center;
+		text-align: left;
 	}
 `;
 
 const Th = styled.th`
-	text-align: center;
+	text-align: left;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Td = styled.td`
 	color: ${({ theme }) => theme.colors.title};
+	text-align: left;
 `;
 
 const Pagenation = styled.div`
