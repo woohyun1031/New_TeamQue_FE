@@ -7,7 +7,8 @@ import Reaction from '../components/classroom/Reaction';
 import Stream from '../components/classroom/Stream';
 
 const ClassRoom = () => {
-	const [classInfo, setClassInfo] = useState<{ title: string, teacher: string }>();
+	const [classInfo, setClassInfo] =
+		useState<{ title: string; teacher: string }>();
 	const { classid } = useParams();
 	const loadClassInfo = async () => {
 		const response = await apis.loadClassInfo(classid as string);

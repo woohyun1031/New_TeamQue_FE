@@ -123,7 +123,7 @@ const Title = styled.h2`
 	padding: 10px;
 	font-size: 30px;
 	font-weight: 700;
-	border-bottom: 3px solid ${({ theme }) => theme.colors.mainSub};
+	border-bottom: 3px solid ${({ theme }) => theme.colors.subMain};
 `;
 
 const Table = styled.table`

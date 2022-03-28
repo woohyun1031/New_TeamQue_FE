@@ -3,11 +3,11 @@ import styled from 'styled-components';
 const SignUp: React.FC = () => {
 	return (
 		<Form>
-				<img src='/images/smallLogo.png' />
-				<Input type='email' placeholder='이메일'/>
-				<Input type='text' placeholder='닉네임'/>
-				<Input type='password' placeholder='비밀번호'/>
-				<Input type='password' placeholder='비밀번호 확인'/>
+			<img src='/images/smallLogo.png' />
+			<Input type='email' placeholder='이메일' />
+			<Input type='text' placeholder='닉네임' />
+			<Input type='password' placeholder='비밀번호' />
+			<Input type='password' placeholder='비밀번호 확인' />
 			<Button>회원가입</Button>
 		</Form>
 	);
@@ -30,12 +30,12 @@ const Input = styled.input`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
 	padding-left: 20px;
 	outline: none;
 	&::placeholder {
-		color: #d2d2d2;
+		color: ${({ theme }) => theme.colors.sub};
 	}
 `;
 
@@ -44,8 +44,8 @@ const Button = styled.button`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
