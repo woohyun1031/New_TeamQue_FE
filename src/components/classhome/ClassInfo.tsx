@@ -38,7 +38,7 @@ const ClassInfo: React.FC = () => {
 			<Title>{data && data.title}</Title>
 			<Teacher>{data && data.teacher} 선생님</Teacher>
 			<Time>{data && data.time}</Time>
-			<a onClick={openInviteCode}>초대하기</a>
+			<Invitation onClick={openInviteCode}>초대하기</Invitation>
 			{/* {students && students.map((student: any, index: number) => <li key={index}>{student.username} {student.state}</li>)} */}
 		</Container>
 	);
@@ -83,6 +83,10 @@ const Time = styled.p`
 	margin-top: 10px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
+`;
+const Invitation = styled.a`
+	color: ${({ theme }) => theme.colors.main};
+	cursor: pointer;
 `;
 
 const Button = styled.img`

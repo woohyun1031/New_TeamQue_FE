@@ -6,6 +6,7 @@ import AddClass from './AddClass';
 import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import Tutorial from './Tutorial';
 import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
@@ -13,18 +14,18 @@ import { useEffect } from 'react';
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
 const Modal: React.FC = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const modal = useSelector((state: RootState) => state.modal);
 	let contents;
- 
-	let isCanClose = false
+
+	let isCanClose = false;
 	useEffect(() => {
-		if (['notSignIn', 'signIn', 'signUp'].includes(modal.type)) {
-			isCanClose = false
+		if (['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(modal.type)) {
+			isCanClose = false;
 		} else {
-			isCanClose = true
+			isCanClose = true;
 		}
-	}, [modal.type, modal.isOpen])
+	}, [modal.type, modal.isOpen]);
 
 	switch (modal.type) {
 		case 'notSignIn':
@@ -42,13 +43,23 @@ const Modal: React.FC = () => {
 		case 'inviteCode':
 			contents = <InviteCode />;
 			break;
+		case 'tutorial':
+			contents = <Tutorial />;
+			break;
+
 		default:
 			contents = null;
 	}
 
 	if (!modal.isOpen) return null;
 	return createPortal(
-		<Background onClick={() => {if (isCanClose) {dispatch(closeModal())}}}>
+		<Background
+			onClick={() => {
+				if (isCanClose) {
+					dispatch(closeModal());
+				}
+			}}
+		>
 			<Contents>{contents}</Contents>
 		</Background>,
 		modalRoot
