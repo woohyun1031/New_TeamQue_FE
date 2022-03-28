@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://13.124.123.143:3000';
+const url = 'https://noobpro.shop';
 
 //api instance 생성
 export const api = axios.create({
