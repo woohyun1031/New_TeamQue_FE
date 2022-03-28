@@ -49,23 +49,17 @@ instance.interceptors.response.use(
 );
 
 export const apis = {
-	//---- 유저  ----//
-	// 사용할지 잘 모름
-	kakao: (authorization_code: string) =>
-		instance.get(`/api/auth/kakao/callback?code=${authorization_code}`), //카카오로그인
-	signUp: (userInfo: object) => instance.post('/auth/signup', userInfo), //회원가입
-	signIn: (userInfo: object) => instance.post('/auth/signin', userInfo), //로그인
-	signOut: () => instance.post('/auth/signout', {}), //로그아웃
-	//---- 유저 정보 등록 ----//
-	setNick: (nickname: string) => instance.put('/auth/nickname', { nickname }), //초기 닉네임 등록
+	// User
+	signUp: (userInfo: object) => instance.post('/auth/signup', userInfo),
+	signIn: (userInfo: object) => instance.post('/auth/signin', userInfo),
+	signOut: () => instance.post('/auth/signout', {}),
+	setNick: (nickname: string) => instance.put('/auth/nickname', { nickname }),
 	test: () => instance.get('/auth/test'),
-	//---- refresh  ----//
 	refresh: (refreshToken: string) =>
 		instance.post('/auth/refresh', refreshToken),
-
 	withdrawal: () => instance.delete('auth/withdrawal'),
 
-	// 클래스
+	// Class
 	createClass: (classInfo: object) => instance.post('/class', classInfo),
 	loadLearnClass: () => instance.get('/class/student/class'),
 	loadTeachClass: () => instance.get('/class'),
@@ -74,9 +68,9 @@ export const apis = {
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
 	loadAllCalendar: (year: number, month: number) =>
 		instance.get(`/class/date/all/${year}/${month}`),
-	// 게시판
-	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
 
+	// Post
+	loadDetail: (boardId: string) => instance.get(`/boards/board/${boardId}`),
 	// Todo
 	loadTodo: () => instance.get('/boards/todo'),
 	addTodo: (todo: string) => instance.post('/boards/todo', { content: todo }),

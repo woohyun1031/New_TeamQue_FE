@@ -27,7 +27,7 @@ const App = () => {
 			dispatch(openModal());
 			dispatch(changeModal('notSignIn'));
 		}
-	}, [dispatch, isLogin, navigate]);
+	}, [isLogin, navigate]);
 
 	return (
 		<>
@@ -42,7 +42,6 @@ const App = () => {
 					element={<ClassHome />}
 				/>
 				<Route path='/auth/kakao/callback' element={<Kakao />} />
-				<Route path='/welcome' element={<Main />} />
 			</Routes>
 			<Modal />
 		</>
