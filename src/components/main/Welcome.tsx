@@ -56,7 +56,7 @@ const MessageBox = styled.div`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 18px;
 	font-weight: 500;
-	border-radius: 4px;
+	border-radius: 10px;
 	padding: 20px;
 	display: flex;
 	align-items: center;
@@ -68,8 +68,8 @@ const Message = styled.p``;
 
 const Character = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
-	width: 130px;
-	height: 150px;
+	width: 154px;
+	height: 124px;
 	position: absolute;
 	bottom: 10px;
 	right: 20px;

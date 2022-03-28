@@ -54,6 +54,7 @@ const Name = styled.button`
 	cursor: pointer;
 	position: relative;
 	z-index: 101;
+	padding: 10px;
 `;
 
 const ArrowIcon = styled.div<{ src: string }>`
@@ -73,8 +74,8 @@ const Menu = styled.ul`
 	padding: 5px;
 	font-size: 13px;
 	font-weight: 400;
-	bottom: -70px;
-	left: -6px;
+	bottom: -60px;
+	left: 5px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 	background-color: #fff;
 	& li {

@@ -17,6 +17,7 @@ type calendarType = weekType[];
 const Calendar = () => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const today = new Date();
+	const thisDate = today.getDate();
 	const thisMonth = today.getMonth();
 	const thisYear = today.getFullYear();
 	const [year, setYear] = useState<number>(thisYear);
@@ -43,7 +44,7 @@ const Calendar = () => {
 		}
 
 		const response = await apis.loadMyCalendar(year, month + 1);
-		
+
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
 				allDate[event.day + thisMonthFirstDay - 1].event?.push({
@@ -101,9 +102,7 @@ const Calendar = () => {
 				<thead>
 					<tr>
 						{['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
-							<Th key={index}>
-								<DayBox>{day}</DayBox>
-							</Th>
+							<Th key={index}>{day}</Th>
 						))}
 					</tr>
 				</thead>
@@ -113,18 +112,35 @@ const Calendar = () => {
 							<tr key={index}>
 								{week.map((date: dateType, index: number) => (
 									<Td isThisMonth={date.month === 'this'} key={index}>
-										<DateBox hasEvent={date.event ? true : false}>
+										{/* 오늘 찾기 로직 중복 제거 및 최적화 필요 */}
+										<DateBox
+											isToday={
+												date.date === thisDate &&
+												month === thisMonth &&
+												year === thisYear &&
+												date.month === 'this'
+											}
+										>
+											{date.date === thisDate &&
+												month === thisMonth &&
+												year === thisYear &&
+												date.month === 'this' && <TodayUnderline />}
 											{date.date}
 										</DateBox>
+
 										{date.event && (
-											<EventBox>
-												{date.event &&
-													date.event.map((event, index) => (
-														<p key={index}>
-															{event.title} {event.time}
-														</p>
-													))}
-											</EventBox>
+											<>
+												<EventPointer />
+												<EventBox>
+													{date.event &&
+														date.event.map((event, index) => (
+															<p key={index}>
+																<Pointer />
+																{event.title} {event.time}
+															</p>
+														))}
+												</EventBox>
+											</>
 										)}
 									</Td>
 								))}
@@ -156,6 +172,14 @@ const Table = styled.table`
 	font-weight: 500;
 	font-size: 12px;
 	border-collapse: collapse;
+	& tr td:nth-child(1),
+	& tr th:nth-child(1) {
+		color: #d97e7e;
+	}
+	& tr td:nth-child(7),
+	& tr th:nth-child(7) {
+		color: #677bda;
+	}
 `;
 
 const Caption = styled.caption`
@@ -181,53 +205,68 @@ const Th = styled.th`
 	height: 10px;
 `;
 
-const DayBox = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 25px;
-	height: 25px;
-	color: ${({ theme }) => theme.colors.title};
-`;
-
 const EventBox = styled.div`
-	width: 300px;
-	min-height: 80px;
-	padding: 10px;
+	padding: 5px 10px;
 	position: absolute;
-	bottom: 35px;
-	left: 15px;
-	background-color: ${({ theme }) => theme.colors.subBase};
+	top: 20px;
+	left: 20px;
+	background-color: rgba(0, 0, 0, 0.5);
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	border-radius: 7px;
 	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 	z-index: 100;
+	font-weight: bold;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	display: none;
+	white-space: nowrap;
+	&:hover {
+		display: flex;
+	}
 `;
 
 const Td = styled.td<{ isThisMonth: boolean }>`
 	position: relative;
 	text-align: center;
-	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc;')};
+	/* important 수정 필요 */
+	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc !important;')};
 `;
 
-const DateBox = styled.div<{ hasEvent: boolean }>`
-	width: 25px;
-	height: 25px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	${({ hasEvent }) =>
-		hasEvent &&
-		`
-		background-color: rgba(113, 138, 255, 0.7); 
-		color:#fff;
-		border-radius: 50%;
-	`};
-	&:hover + ${EventBox} {
+const DateBox = styled.p<{ isToday: boolean }>`
+	${({isToday}) => isToday && 'font-weight: 900;'}
+	&:hover ~ ${EventBox} {
 		display: flex;
 	}
+`;
+
+const TodayUnderline = styled.div`
+	width: 17px;
+	height: 2px;
+	background-color: #718aff;
+	position: absolute;
+	bottom: 6px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+`;
+
+const EventPointer = styled.div`
+	width: 4px;
+	height: 4px;
+	border-radius: 2px;
+	background-color: ${({ theme }) => theme.colors.main};
+	position: absolute;
+	top: 10px;
+	right: 5px;
+`;
+
+const Pointer = styled.div`
+	display: inline-block;
+	width: 4px;
+	height: 4px;
+	border-radius: 2px;
+	background-color: ${({ theme }) => theme.colors.main};
+	margin-right: 5px;
+	position: relative;
+	top: -2px;
 `;

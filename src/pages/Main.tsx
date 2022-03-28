@@ -56,14 +56,14 @@ const Main = () => {
 						<h1>+</h1>
 						<p>새로운 강의 참가하기</p>
 						<Arm src='/images/arm2.png' />
-						<Character src='/images/character2.png' alt='' />
+						<Character src='/images/character2.png' />
 					</AddCardBox>
 				) : (
 					<AddCardBox onClick={openAddTeachClassModal}>
 						<h1>+</h1>
 						<p>새로운 강의 개설하기</p>
 						<Arm src='/images/arm2.png' />
-						<Character src='/images/character2.png' alt='' />
+						<Character src='/images/character2.png' />
 					</AddCardBox>
 				)}
 			</LowerContainer>
@@ -149,15 +149,25 @@ const SubTitle = styled.h2`
 	margin-bottom: 10px;
 `;
 
-const Arm = styled.img`
+const Arm = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
 	position: absolute;
-	right: -15px;
-	bottom: 60px;
+	width: 30px;
+	height: 40px;
+	right: -20px;
+	bottom: 120px;
 `;
 
-const Character = styled.img`
+const Character = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 334px;
+	height: 336px;
 	position: absolute;
 	z-index: -1;
-	right: -200px;
-	bottom: 0px;
+	right: -220px;
+	bottom: 10px;
 `;
