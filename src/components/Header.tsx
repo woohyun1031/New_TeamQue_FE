@@ -1,15 +1,21 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DropDown from './DropDown';
 import { RootState } from '../store/configStore';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
+	const navigate = useNavigate();
 	const user = useSelector((state: RootState) => state.user);
+
+	const toMain = () => {
+		navigate('/');
+	};
+
 	return (
 		<>
 			<Container>
-				<Logo src='/images/logo.png' to='/' />
+				<Logo src='/images/logo.png' onClick={toMain} />
 				<DropDown name={user.user_info.name} />
 			</Container>
 		</>
@@ -27,13 +33,11 @@ const Container = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-type LogoType = {
-	src: string;
-};
-
-const Logo = styled(Link)<LogoType>`
-	width: 130px;
-	height: 50px;
-	background-repeat: no-repeat;
+const Logo = styled.button<{ src: string }>`
+	background: none;
 	${(props) => `background-image: url(${props.src});`}
+	border: none;
+	width: 130px;
+	height: 70px;
+	background-repeat: no-repeat;
 `;
