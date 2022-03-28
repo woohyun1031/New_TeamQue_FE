@@ -19,24 +19,26 @@ const Todo = () => {
 	const [dropdown, setDropdown] = useState({
 		isOpen: false,
 		id: 0,
-		positionX: 0,
-		positionY: 0,
+		position: {
+			x: 0,
+			y: 0,
+		},
 	});
+
 	const closeDropDown = () => {
 		setDropdown((prev) => ({ ...prev, isOpen: false }));
 	};
 
 	const openDropDown = (e: MouseEvent<HTMLButtonElement>, id: number) => {
-		console.log(e.screenX, e.screenY);
 		setDropdown({
 			id,
 			isOpen: true,
-			positionX: e.pageX - 35,
-			positionY: e.pageY + 15,
+			position: {
+				x: e.pageX,
+				y: e.pageY,
+			},
 		});
 	};
-
-	console.log(dropdown)
 
 	const loadTodos = async () => {
 		const response = await apis.loadTodo();
@@ -79,21 +81,6 @@ const Todo = () => {
 
 	return (
 		<>
-			{dropdown.isOpen && (
-				<>
-					<Dropdown position={{ x: dropdown.positionX, y: dropdown.positionY }}>
-						<li
-							onClick={() => {
-								console.log('추가 예정');
-							}}
-						>
-							수정
-						</li>
-						<li onClick={toggleComplete}>완료</li>
-						<li onClick={deleteTodo}>삭제</li>
-					</Dropdown>
-				</>
-			)}
 			<Container>
 				<Title>해야 할 일</Title>
 				<ScheduleBox>
@@ -110,6 +97,16 @@ const Todo = () => {
 									}
 									onClick={(e) => openDropDown(e, id)}
 								/>
+								{dropdown.isOpen && id === dropdown.id && (
+									<>
+										<Dropdown>
+											<li onClick={toggleComplete}>
+												{isComplete ? '완료취소' : '완료'}
+											</li>
+											<li onClick={deleteTodo}>삭제</li>
+										</Dropdown>
+									</>
+								)}
 							</ScheduleItem>
 						))}
 					<Form onSubmit={addTodo}>
@@ -139,7 +136,7 @@ const Todo = () => {
 export default Todo;
 
 const Container = styled.div`
-	width: 290px;
+	width: 300px;
 	height: 320px;
 `;
 
@@ -150,8 +147,9 @@ const Title = styled.h2`
 `;
 
 const ScheduleBox = styled.ul`
-	width: 290px;
+	width: 300px;
 	height: 300px;
+	overflow-x: visible;
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 5px;
@@ -170,7 +168,6 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	align-items: center;
 	justify-content: center;
 	background-color: ${({ theme }) => theme.colors.main};
-	margin: 0 auto;
 	& + & {
 		margin-top: 20px;
 	}
@@ -185,7 +182,6 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			background-color: ${({ theme }) => theme.colors.background};
 			text-decoration: line-through;
 		`};
-	padding: 20px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.1s;
 	&:hover {
@@ -203,7 +199,7 @@ const AddButton = styled.button`
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	color: ${({ theme }) => theme.colors.main};
 	font-size: 40px;
-	margin: 20px auto;
+	margin: 20px 0;
 	transition: 0.1s;
 	&:hover {
 		/* hover 색상 추가 */
@@ -245,9 +241,9 @@ const DropdownButton = styled.button<{ src: string }>`
 	object-fit: contain;
 `;
 
-const Dropdown = styled.div<{ position: { x: number; y: number } }>`
+const Dropdown = styled.div`
 	width: 70px;
-	height: 85px;
+	height: 60px;
 	padding: 4px;
 	border-radius: 7px;
 	background-color: #fff;
@@ -262,12 +258,11 @@ const Dropdown = styled.div<{ position: { x: number; y: number } }>`
 		cursor: pointer;
 		&:nth-child(2) {
 			border-top: 1px solid #d2d2d2;
-			border-bottom: 1px solid #d2d2d2;
 		}
 	}
-	position: fixed;
-	${({ position }) =>
-		position && `top:${position.y}px; left:${position.x}px;`}
+	position: absolute;
+	top: 30px;
+	right: -16px;
 `;
 
 const BackGround = styled.div`
