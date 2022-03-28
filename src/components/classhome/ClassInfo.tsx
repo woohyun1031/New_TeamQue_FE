@@ -8,7 +8,6 @@ import apis from '../../api';
 const ClassInfo: React.FC = () => {
 	const dispatch = useDispatch();
 	const { classid } = useParams();
-	console.log(classid);
 	const [students, setStudents] = useState<{ name: string }[]>();
 	const [data, setData] = useState<{
 		title: string;
@@ -21,8 +20,6 @@ const ClassInfo: React.FC = () => {
 		const response2 = await apis.loadStudents(classid as string);
 		setData(response.data);
 		setStudents(response2.data);
-		console.log(response.data);
-		console.log(response2.data);
 	};
 	useEffect(() => {
 		fetch();

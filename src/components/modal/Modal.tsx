@@ -24,7 +24,6 @@ const Modal: React.FC = () => {
 		} else {
 			isCanClose = true
 		}
-		console.log(isCanClose)
 	}, [modal.type, modal.isOpen])
 
 	switch (modal.type) {
