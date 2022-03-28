@@ -7,7 +7,7 @@ export const signUp = createAsyncThunk(
 	async (
 		userInfo: {
 			email: string;
-			nickname: string;
+			name: string;
 			password: string;
 			confirmPassword: string;
 		},
@@ -25,12 +25,13 @@ export const signUp = createAsyncThunk(
 export const signIn = createAsyncThunk(
 	'user/signin',
 	async (
-		loginInfo: { userEmail: string; password: string },
+		loginInfo: { email: string; password: string },
 		{ rejectWithValue }
 	) => {
 		try {
 			const {data} = await apis.signIn(loginInfo);
-			sessionStorage.setItem('nickname', data.nickname);
+			console.log(data)
+			sessionStorage.setItem('name', data.name);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem('accessToken')}`;
@@ -48,7 +49,8 @@ export const signOut = createAsyncThunk(
 			sessionStorage.removeItem('nickname');
 			sessionStorage.removeItem('accessToken');
 			sessionStorage.removeItem('refreshToken');
-			await apis.signOut();
+			const response = await apis.signOut();
+			console.log(response)
 			return true;
 		} catch (err) {
 			return rejectWithValue(err);
@@ -71,9 +73,9 @@ export const nicknameSet = createAsyncThunk(
 const initialState = {
 	user_info: {
 		// id: '',
-		nickname: '',		
+		name: '',		
 	},
-	is_login: false,
+	isLogin: false,
 };
 
 export const user = createSlice({
@@ -81,11 +83,11 @@ export const user = createSlice({
 	initialState,
 	reducers: {
 		getUser: (state) => {
-			const nickname = sessionStorage.getItem('nickname');
-			if (nickname) {
-				state.user_info.nickname = nickname
+			const name = sessionStorage.getItem('name');
+			if (name) {
+				state.user_info.name = name
 			}
-			state.is_login = true;
+			state.isLogin = true;
 		},
 		errorLog: (state, action) => {
 			if (action.payload.response) {
@@ -101,7 +103,7 @@ export const user = createSlice({
 		builder.addCase(signUp.fulfilled, (state, action) => {
 			if (action.payload) {
 				state.user_info = initialState.user_info;
-				state.is_login = false;
+				state.isLogin = false;
 			}
 		});
 		builder.addCase(signIn.rejected, (state, action) => {
@@ -109,14 +111,15 @@ export const user = createSlice({
 		});
 		builder.addCase(signIn.fulfilled, (state, action) => {
 			state.user_info = {
-				nickname: action.payload.nickname,
+				name: action.payload.name,
 			};
-			state.is_login = true;
+			state.isLogin = true;
 		});
 		builder.addCase(signOut.fulfilled, (state, action) => {
+			// 로그아웃 로직 추가
 			if (action.payload) {
 				state.user_info = initialState.user_info;
-				state.is_login = false;
+				state.isLogin = false;
 			}
 			alert('로그아웃 완료');
 		});

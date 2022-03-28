@@ -9,7 +9,7 @@ const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const [inputs, setInputs] = useState({
-		userEmail: '',
+		email: '',
 		password: '',
 	});
 
@@ -21,9 +21,9 @@ const SignIn: React.FC = () => {
 		});
 	};
 
-	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		await dispatch(signIn(inputs));
+		dispatch(signIn(inputs));
 	};
 
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
@@ -43,7 +43,7 @@ const SignIn: React.FC = () => {
 			<Input
 				type='email'
 				placeholder='이메일'
-				name='userEmail'
+				name='email'
 				onChange={onChange}
 			/>
 			<Input

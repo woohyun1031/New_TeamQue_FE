@@ -10,7 +10,7 @@ const Header = () => {
 		<>
 			<Container>
 				<Logo src='/images/logo.png' to='/' />
-				<DropDown name={user.user_info.nickname} />
+				<DropDown name={user.user_info.name} />
 			</Container>
 		</>
 	);

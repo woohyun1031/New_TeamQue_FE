@@ -22,7 +22,7 @@ const CardList: React.FC<Props> = ({ tabState }) => {
 	const [learnCards, setLearnCards] = useState<CardType[]>();
 	const [teachCards, setTeachCards] = useState<CardType[]>();
 
-	const isLogin = useSelector((state: RootState) => state.user.is_login);
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
 	const loadLearnClass = async () => {
 		const response = await apis.loadLearnClass();

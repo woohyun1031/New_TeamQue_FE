@@ -12,7 +12,7 @@ type todoType = {
 };
 
 const Todo = () => {
-	const isLogin = useSelector((state: RootState) => state.user.is_login);
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
 	const [todos, setTodos] = useState<todoType[]>();
@@ -48,7 +48,7 @@ const Todo = () => {
 	};
 
 	const toggleComplete = async (id: number) => {
-		await apis.updateTodo(id);
+		await apis.completeTodo(id);
 		closeDropDown();
 		loadTodos();
 	};

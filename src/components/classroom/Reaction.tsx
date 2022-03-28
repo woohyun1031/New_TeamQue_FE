@@ -78,21 +78,21 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 	useEffect(() => {
 		const fetchData = () => {
 			socket = io(url);
-			socket.emit('init', { accessToken, nickname: mynickname });
+			socket.emit('init', { accessToken, name: name });
 
 			socket.on('initOk', () => {
 				socket.emit(
 					'joinRoom',
 					{ classId: Number(classId) },
-					(payload: { userList: { nickname: string; state: number }[] }) => {
+					(payload: { userList: { name: string; state: number }[] }) => {
 						if (students) {
-							setStudents(
-								Object.values(payload.userList).map((student) =>
-									student.nickname === mynickname
-										? { nickname: mynickname, state: checkEnum.connect }
-										: student
-								)
-							);
+							// setStudents(
+							// 	// Object.values(payload.userList).map((student) =>
+							// 	// 	student.name === mynickname
+							// 	// 		? { nickname: mynickname, state: checkEnum.connect }
+							// 	// 		: student
+							// 	// )
+							// );
 							setConnect(true);
 							if (isConnect === true) {
 								socket.on('changeState', ({ nickname, state }) => {
@@ -222,7 +222,7 @@ const Reaction: React.FC<ReactionProps> = ({ teacher }) => {
 	return (
 		<Container>
 			<MyReactionBox>
-				<MyNickname>{user.user_info.nickname}</MyNickname>
+				{/* <MyNickname>{user.user_info.nickname}</MyNickname> */}
 				<ReactionButtons>
 					<ReactionLabel>
 						<ReactionInput
