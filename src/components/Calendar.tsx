@@ -182,7 +182,7 @@ const Th = styled.th`
 `;
 
 const EventBox = styled.div`
-	padding: 10px;
+	padding: 5px 10px;
 	position: absolute;
 	top: 20px;
 	left: 20px;
