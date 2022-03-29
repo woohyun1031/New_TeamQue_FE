@@ -37,7 +37,6 @@ export const signIn = createAsyncThunk(
 	) => {
 		try {
 			const { data } = await apis.signIn(loginInfo);
-			sessionStorage.setItem('name', data.name);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common[
@@ -60,7 +59,6 @@ export const signOut = createAsyncThunk(
 	'user/logoutAxios',
 	async (_, { rejectWithValue }) => {
 		try {
-			sessionStorage.removeItem('nickname');
 			sessionStorage.removeItem('accessToken');
 			sessionStorage.removeItem('refreshToken');
 			await apis.signOut();

@@ -22,7 +22,6 @@ const ClassInfo: React.FC = () => {
 			const response2 = await apis.loadStudents(classid);
 			setData(response.data);
 			setStudents(response2.data);
-			console.log(response, response2)
 		}
 	};
 	useEffect(() => {
