@@ -81,5 +81,9 @@ export const apis = {
 	deleteTodo: (todoId: number) => instance.delete(`/post/todo/${todoId}`),
 	completeTodo: (todoId: number) =>
 		instance.put('/post/todo/complete', {id: todoId}),
+	
+	//Comment
+	sendComment: (comment:string) => instance.post('/post/comment',{ comment: comment }),
+	getComment: () => instance.get('/get/comment'),
 };
 export default apis;

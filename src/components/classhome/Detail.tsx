@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
@@ -6,35 +6,51 @@ import apis from '../../api';
 const Detail = () => {
 	const { postid } = useParams<string>();
 	const [data, setData] = useState<{
-			postType: string;
-			title: string;
-			author: string;
-			createdAt: string;
-			content: string;
-			__comments__: [];
+		postType: string;
+		title: string;
+		author: string;
+		createdAt: string;
+		content: string;
+		__comments__: [];
 	}>();
-	const [isByMe, setIsByMe] = useState()
+	const [isByMe, setIsByMe] = useState();
+	const [comment, setComment] = useState('');
+
 	const fetch = async () => {
 		if (postid) {
-			console.log(postid)
+			console.log(postid);
 			const response = await apis.loadPost(postid);
-			setIsByMe(response.data.isByMe)
+			setIsByMe(response.data.isByMe);
 			console.log(response.data);
 			setData(response.data.post);
 		}
 	};
+
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setComment(e.target.value);
+	};
+
+	const commentWrite = async () => {
+		//send state comment to api
+		if (comment) {
+			console.log(comment, 'comment');
+			await apis.sendComment(comment).then((res) => {
+				console.log(res);
+			});
+		}
+	};
+
 	useEffect(() => {
 		fetch();
 	}, []);
+
 	return (
 		<Container>
 			<PostHeader>
 				<PostType>{data && data.postType}</PostType>
 				<PostTitle>{data && data.title}</PostTitle>
 				<Author>{data && data.author}</Author>
-				<Date>
-					{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
-				</Date>
+				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
@@ -46,8 +62,8 @@ const Detail = () => {
 							<Comment>{comment.content}</Comment>
 						</li>
 					))}
-				<CommentInput type='text' />
-				<CommentButton>등록</CommentButton>
+				<CommentInput type='text' onChange={onChange} />
+				<CommentButton onClick={commentWrite}>등록</CommentButton>
 			</Comments>
 		</Container>
 	);

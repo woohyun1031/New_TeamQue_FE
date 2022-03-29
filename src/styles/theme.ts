@@ -26,7 +26,7 @@ const colors = {
 
   kakaoBg:'#fee500;',
   brightKakao:'#FFEC3B',
-  darkerKakao:'#817400',
+  darkerKakao:'#ceb900',
   kakaoTitle:'#3c1e1e;',
 
   background: '#FFFFFF',
