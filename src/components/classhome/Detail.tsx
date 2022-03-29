@@ -15,6 +15,7 @@ const Detail = () => {
 	}>();
 	const [isByMe, setIsByMe] = useState();
 	const [comment, setComment] = useState('');
+	const nickname: string | null = sessionStorage.getItem('nickname');
 
 	const fetch = async () => {
 		if (postid) {
@@ -34,7 +35,7 @@ const Detail = () => {
 		//send state comment to api
 		if (comment) {
 			console.log(comment, 'comment');
-			await apis.sendComment(comment).then((res) => {
+			await apis.sendComment({ comment, nickname }).then((res) => {
 				console.log(res);
 			});
 		}

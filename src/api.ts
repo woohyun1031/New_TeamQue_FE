@@ -83,7 +83,6 @@ export const apis = {
 		instance.put('/post/todo/complete', {id: todoId}),
 	
 	//Comment
-	sendComment: (comment:string) => instance.post('/post/comment',{ comment: comment }),
-	getComment: () => instance.get('/get/comment'),
+	sendComment: (content:object) => instance.post('/post/comment',{ content }),	
 };
 export default apis;
