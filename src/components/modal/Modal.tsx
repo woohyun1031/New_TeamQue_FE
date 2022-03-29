@@ -64,7 +64,7 @@ const Modal: React.FC = () => {
 				}
 			}}
 		>
-			<Contents>{contents}</Contents>
+			<Contents onClick={(e) => e.stopPropagation()}>{contents}</Contents>
 		</Background>,
 		modalRoot
 	);
@@ -83,6 +83,7 @@ const Background = styled.div`
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(5px);
+	z-index: 1000;
 `;
 
 const Contents = styled.div`
@@ -93,4 +94,5 @@ const Contents = styled.div`
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+	z-index: 1001;
 `;
