@@ -12,7 +12,7 @@ const ClassInfo: React.FC = () => {
 	const [data, setData] = useState<{
 		title: string;
 		teacher: string;
-		time: string;
+		timeTable: string[];
 		imageUrl: string;
 	}>();
 	const fetch = async () => {
@@ -22,6 +22,7 @@ const ClassInfo: React.FC = () => {
 			const response2 = await apis.loadStudents(classid);
 			setData(response.data);
 			setStudents(response2.data);
+			console.log(response, response2)
 		}
 	};
 	useEffect(() => {
@@ -31,13 +32,12 @@ const ClassInfo: React.FC = () => {
 		dispatch(openModal());
 		dispatch(changeModal('inviteCode'));
 	};
-	console.log(students);
 	return (
 		<Container>
 			<Image src={data && data.imageUrl} />
 			<Title>{data && data.title}</Title>
 			<Teacher>{data && data.teacher} 선생님</Teacher>
-			<Time>{data && data.time}</Time>
+			<Time>{data && data.timeTable[0]}</Time>
 			<StudentInfo>
 				<div>
 					<h4>
@@ -53,23 +53,25 @@ const ClassInfo: React.FC = () => {
 						<NameColumn span={1} />
 						<col span={1} />
 					</colgroup>
-					{students &&
-						students.map((student: any, index: number) => (
-							<Tr key={index} isAccepted={student.state === 'accepted'}>
-								<td>{student.userId}</td>
-								<td>{student.name}</td>
-								<td>
-									{student.state === 'accepted' ? (
-										<Button>퇴출</Button>
-									) : (
-										<>
-											<AcceptButton>승인</AcceptButton>
-											<RejectButton>거부</RejectButton>
-										</>
-									)}
-								</td>
-							</Tr>
-						))}
+					<tbody>
+						{students &&
+							students.map((student: any, index: number) => (
+								<Tr key={index} isAccepted={student.state === 'accepted'}>
+									<td>{student.userId}</td>
+									<td>{student.name}</td>
+									<td>
+										{student.state === 'accepted' ? (
+											<Button>퇴출</Button>
+										) : (
+											<>
+												<AcceptButton>승인</AcceptButton>
+												<RejectButton>거부</RejectButton>
+											</>
+										)}
+									</td>
+								</Tr>
+							))}
+					</tbody>
 				</StudentList>
 			</TableBox>
 		</Container>
@@ -79,21 +81,19 @@ const ClassInfo: React.FC = () => {
 export default ClassInfo;
 
 const Container = styled.div`
-	/* 사이즈 */
 	width: 280px;
 	height: 540px;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	/* 임시 스타일 코드 */
 	background-color: ${({ theme }) => theme.colors.background};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 20px;
 	position: relative;
 `;
 
 const Image = styled.img`
+	margin-top: 20px;
 	width: 230px;
 	height: 155px;
 	border-radius: 7px;
@@ -106,19 +106,18 @@ const Title = styled.h2`
 `;
 
 const Teacher = styled.p`
-	margin-top: 10px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const Time = styled.p`
-	margin-top: 10px;
+margin-bottom: 20px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
 const StudentInfo = styled.div`
-	width: 230px;
+	width: 235px;
 	display: flex;
 	justify-content: space-between;
 	font-size: 18px;
@@ -134,7 +133,8 @@ const StudentInfo = styled.div`
 `;
 
 const TableBox = styled.div`
-	width: 240px;
+	width: 250px;
+	height: 220px;
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 5px;
@@ -148,7 +148,7 @@ const TableBox = styled.div`
 const StudentList = styled.table`
 	width: 235px;
 	max-height: 180px;
-
+	margin: 0 auto;
 	border-collapse: collapse;
 	& tr {
 		height: 10px;
@@ -162,7 +162,7 @@ const StudentList = styled.table`
 `;
 
 const IdColumn = styled.col`
-	width: 50px;
+	width: 40px;
 `;
 
 const NameColumn = styled.col`

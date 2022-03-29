@@ -10,7 +10,7 @@ type CardType = {
 	title: string;
 	teacher: string;
 	imageUrl: string;
-	time: string[];
+	timeTable: string[];
 	state: 'wait' | 'accepted' | 'teach';
 };
 

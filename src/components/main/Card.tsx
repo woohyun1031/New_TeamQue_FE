@@ -6,7 +6,7 @@ interface CardProps {
 	title: string;
 	teacher: string;
 	imageUrl: string;
-	time: string[];
+	timeTable: string[];
 	state: 'wait' | 'accepted' | 'teach';
 }
 
@@ -15,7 +15,7 @@ const Card: React.FC<CardProps> = ({
 	imageUrl,
 	teacher,
 	title,
-	time,
+	timeTable,
 	state,
 }) => {
 	const navigate = useNavigate();
@@ -53,8 +53,8 @@ const Card: React.FC<CardProps> = ({
 			<Title>{title}</Title>
 			<Teacher>{teacher} 님</Teacher>
 			<TimeTables>
-				{time.map((t) => (
-					<TimeTable key={t}>{t}</TimeTable>
+				{timeTable.map((time) => (
+					<TimeTable key={time}>{time}</TimeTable>
 				))}
 			</TimeTables>
 			<HomeButton src='/images/home.png' onClick={toClassHome} />
