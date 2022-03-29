@@ -101,7 +101,7 @@ const Todo = () => {
 									<>
 										<Dropdown>
 											<li onClick={toggleComplete}>
-												{isComplete ? '완료취소' : '완료'}
+												{isComplete ? '취소' : '해결'}
 											</li>
 											<li onClick={deleteTodo}>삭제</li>
 										</Dropdown>
@@ -198,6 +198,7 @@ const AddButton = styled.button`
 	border-radius: 7px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	color: ${({ theme }) => theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.background};
 	font-size: 40px;
 	margin: 20px 0;
 	transition: 0.1s;
@@ -219,7 +220,7 @@ const InputBox = styled.input`
 	font-weight: 700;
 	font-size: 14px;
 	outline: none;
-	margin: 10px auto;
+	margin: 20px 0;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -248,10 +249,9 @@ const Dropdown = styled.div`
 	border-radius: 7px;
 	background-color: #fff;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: black;
+	color: ${({ theme }) => theme.colors.title};
 	z-index: 101;
-	font-size: 11px;
-	font-weight: 600;
+	font-size: 10px;
 	& li {
 		padding: 5px;
 		text-align: center;
