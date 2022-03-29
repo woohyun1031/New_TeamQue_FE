@@ -16,6 +16,7 @@ const Main = () => {
 	};
 
 	const openAddTeachClassModal = () => {
+		console.log('open!');
 		dispatch(openModal());
 		dispatch(changeModal('addClass'));
 	};

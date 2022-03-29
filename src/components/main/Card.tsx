@@ -90,7 +90,7 @@ const ThumbnailFilter = styled.div<{ src: string }>`
 	background-color: rgba(0, 0, 0, 0.2);
 	opacity: 0;
 	z-index: 10;
-	transition: 0.2s;
+	transition: 0.5s;
 	cursor: pointer;
 	&:hover {
 		opacity: 1;
@@ -172,7 +172,7 @@ const TimeTables = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
-`
+`;
 
 const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	color: ${({ theme }) => theme.colors.title};
@@ -200,8 +200,13 @@ const HomeButton = styled.button<{ src: string }>`
 	position: absolute;
 	bottom: 23px;
 	right: 23px;
-	cursor: pointer;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+		transform: translateY(-5px);
+	}
 	/* hover 색상넣기 */
 `;
 
@@ -216,4 +221,3 @@ const WaitThumbnail = styled.div<{ src: string }>`
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.5);
 `;
-

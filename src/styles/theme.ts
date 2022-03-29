@@ -5,7 +5,7 @@ const colors = {
   buttonTitle:"#FFFFFF",
 
 	main: '#718AFF',
-  brightMain: '#BFCBFF',
+  brightMain: '#9CADFF',
   darkerMain:'#5D72D2',
 
 	subMain: '#BCC8FF',
