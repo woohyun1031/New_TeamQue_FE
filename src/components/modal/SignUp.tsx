@@ -97,6 +97,8 @@ const Button = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
-		transform: translateY(-3px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
 `;

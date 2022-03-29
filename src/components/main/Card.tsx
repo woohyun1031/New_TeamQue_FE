@@ -205,7 +205,11 @@ const HomeButton = styled.button<{ src: string }>`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
-		transform: translateY(-5px);
+		//transform: translateY(-3px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+		//transform: translateY(-3px);
 	}
 	/* hover 색상넣기 */
 `;

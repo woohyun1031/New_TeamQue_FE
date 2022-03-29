@@ -7,6 +7,7 @@ const colors = {
 	main: '#718AFF',
   brightMain: '#9CADFF',
   darkerMain:'#5D72D2',
+  moreDarkerMain:'#323C6E',
 
 	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
@@ -25,6 +26,7 @@ const colors = {
 
   kakaoBg:'#fee500;',
   brightKakao:'#FFEC3B',
+  darkerKakao:'#817400',
   kakaoTitle:'#3c1e1e;',
 
   background: '#FFFFFF',
