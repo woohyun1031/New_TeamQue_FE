@@ -17,11 +17,16 @@ const colors = {
 
   boxShdow:'rgba(0, 0, 0, 0.25)',
 	signOut: '#F73535',
+	signoutHover: '#FB1616',
 	reject: '#D97E7E',
 	shadow: '#F4F4F4',  
   scroll: '#EBEBEB',  
+  scrollHover:'#D6D6D6',  
+
   kakaoBg:'#fee500;',
+  brightKakao:'#FFEC3B',
   kakaoTitle:'#3c1e1e;',
+
   background: '#FFFFFF',
 };
 

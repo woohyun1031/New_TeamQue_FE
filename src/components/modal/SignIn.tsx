@@ -102,7 +102,12 @@ const Button = styled.button`
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
-	cursor: pointer;
+	transition: 0.2s;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+		transform: translateY(-3px);
+	}
 `;
 
 const KakaoButton = styled(Button)`
@@ -113,6 +118,10 @@ const KakaoButton = styled(Button)`
 		left: 20px;
 		top: 15px;
 	}
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightKakao};
+	}
 `;
 
 const SignUp = styled.button`
@@ -122,4 +131,7 @@ const SignUp = styled.button`
 	text-decoration: underline;
 	font-size: 16px;
 	cursor: pointer;
+	&:hover {
+		color: ${({ theme }) => theme.colors.signoutHover};
+	}
 `;

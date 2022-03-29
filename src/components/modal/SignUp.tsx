@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { signUp } from '../../store/modules/user';
 
 const SignUp: React.FC = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		email: '',
 		name: '',
@@ -73,8 +73,13 @@ const Input = styled.input`
 	font-size: 14px;
 	padding-left: 20px;
 	outline: none;
+	transition: 0.3s;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
+	}
+	&:focus {
+		width: 265px;
+		height: 50px;
 	}
 `;
 
@@ -88,5 +93,10 @@ const Button = styled.button`
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
-	cursor: pointer;
+	transition: 0.2s;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+		transform: translateY(-3px);
+	}
 `;

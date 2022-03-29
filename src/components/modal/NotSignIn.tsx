@@ -18,7 +18,9 @@ const NotSignIn = () => {
 			<Message>
 				<img src='/images/smallLogo.png' /> 입니다.
 			</Message>
-			<Button onClick={toSignIn}>큐하러 가기</Button>
+			<Button id='signIn' onClick={toSignIn}>
+				큐하러 가기
+			</Button>
 			<LightButton onClick={toTutorial}>큐 둘러보기</LightButton>
 			<Character src='/images/character1.png' />
 		</Container>
@@ -51,6 +53,12 @@ const Button = styled.button`
 	font-size: 22px;
 	font-weight: 500;
 	cursor: pointer;
+	transition: 0.2s;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+		transform: translateY(-2px);
+	}
 `;
 
 const LightButton = styled(Button)`
