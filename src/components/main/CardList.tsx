@@ -68,4 +68,7 @@ const Container = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #d6d6d6;
+	}
 `;

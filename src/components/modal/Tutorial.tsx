@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import ModalCloseButton from './ModalCloseButton';
 
 const Tutorial: React.FC = () => {
 	const [currentNum, setCurrentNum] = useState(0);
@@ -32,26 +33,29 @@ const Tutorial: React.FC = () => {
 
 	return (
 		<>
-			<Button
-				src='/images/arrow_back_ios_black_48dp.svg'
-				id='buttonPrev'
-				onClick={() => prevSlide()}
-			/>
+			<ModalCloseButton />
 			<Container>
-				<Wrap>
-					<BoxList ref={slideRef}>
-						<Box color='blue'>page1</Box>
-						<Box color='red'>page2</Box>
-						<Box color='pink'>page3</Box>
-						<Box color='green'>page4</Box>
-					</BoxList>
-				</Wrap>
+				<Button
+					src='/images/arrow_back_ios_black_48dp.svg'
+					id='buttonPrev'
+					onClick={() => prevSlide()}
+				/>
+				<InnerContainer>
+					<Wrap>
+						<BoxList ref={slideRef}>
+							<Box color='blue'>page1</Box>
+							<Box color='red'>page2</Box>
+							<Box color='pink'>page3</Box>
+							<Box color='green'>page4</Box>
+						</BoxList>
+					</Wrap>
+				</InnerContainer>
+				<Button
+					src='/images/arrow_forward_ios_black_48dp.svg'
+					id='buttonPrev'
+					onClick={() => nextSlide()}
+				/>
 			</Container>
-			<Button
-				src='/images/arrow_forward_ios_black_48dp.svg'
-				id='buttonPrev'
-				onClick={() => nextSlide()}
-			/>
 		</>
 	);
 };
@@ -59,6 +63,11 @@ const Tutorial: React.FC = () => {
 export default Tutorial;
 
 const Container = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const InnerContainer = styled.div`
 	position: relative;
 	width: 1000px;
 	height: 730px;
