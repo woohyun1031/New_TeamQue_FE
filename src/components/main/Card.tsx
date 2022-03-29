@@ -163,7 +163,7 @@ const Teacher = styled.h4`
 const TimeTables = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	height: 47px;
+	height: 50px;
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 5px;
