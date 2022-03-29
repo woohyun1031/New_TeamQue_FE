@@ -1,9 +1,5 @@
-import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { MouseEvent, useRef } from 'react';
 import styled from 'styled-components';
-import { KAKAO_API_URL } from '../../oAuth';
-import { changeModal } from '../../store/modules/modal';
-import { signIn } from '../../store/modules/user';
 
 const InviteCode: React.FC = () => {
 	const uuid = useRef<HTMLInputElement>(null);

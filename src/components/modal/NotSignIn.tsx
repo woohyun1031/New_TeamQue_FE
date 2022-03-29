@@ -4,9 +4,14 @@ import { changeModal } from '../../store/modules/modal';
 
 const NotSignIn = () => {
 	const dispatch = useDispatch();
+
 	const toSignIn = () => {
 		dispatch(changeModal('signIn'));
 	};
+	const toTutorial = () => {
+		dispatch(changeModal('tutorial'));
+	};
+
 	return (
 		<Container>
 			<Message>환영합니다,</Message>
@@ -14,13 +19,7 @@ const NotSignIn = () => {
 				<img src='/images/smallLogo.png' /> 입니다.
 			</Message>
 			<Button onClick={toSignIn}>큐하러 가기</Button>
-			<LightButton
-				onClick={() => {
-					alert('튜토리얼 구현 중');
-				}}
-			>
-				큐 둘러보기
-			</LightButton>
+			<LightButton onClick={toTutorial}>큐 둘러보기</LightButton>
 			<Character src='/images/character1.png' />
 		</Container>
 	);
