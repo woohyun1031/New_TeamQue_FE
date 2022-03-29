@@ -36,11 +36,19 @@ const Board = () => {
 	useEffect(() => {
 		fetch();
 	}, [page]);
+	console.log(notice, question)
 
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
 			<Table>
+				<colgroup>
+					<IconCol />
+					<TypeCol />
+					<col />
+					<AuthorCol />
+					<DateCol />
+				</colgroup>
 				<thead>
 					<tr>
 						<Th />
@@ -54,9 +62,9 @@ const Board = () => {
 					{notice &&
 						notice.map((row) => (
 							<tr key={row.id}>
-								<td>
-									<img src='/images/star.png' />
-								</td>
+								<Td>
+									<Icon src='/images/star.png' />
+								</Td>
 								<Td>공지</Td>
 								<PostTitle
 									onClick={() => {
@@ -66,15 +74,17 @@ const Board = () => {
 									{row.title}
 								</PostTitle>
 								<Td>{row.author}</Td>
-								<Td>{row.createdAt.split('T')[0]}</Td>
+								<Td>
+									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
+								</Td>
 							</tr>
 						))}
 					{question &&
 						question.map((row) => (
 							<tr key={row.id}>
-								<td>
-									<img src='/images/dot.png' />
-								</td>
+								<Td>
+									<Icon src='/images/dot.png' />
+								</Td>
 								<Td>질문</Td>
 								<PostTitle
 									onClick={() => {
@@ -84,7 +94,9 @@ const Board = () => {
 									{row.title}
 								</PostTitle>
 								<Td>{row.author}</Td>
-								<Td>{row.createdAt.split('T')[0]}</Td>
+								<Td>
+									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
+								</Td>
 							</tr>
 						))}
 				</tbody>
@@ -114,23 +126,21 @@ const Container = styled.div`
 	width: 890px;
 	height: 850px;
 	background-color: ${({ theme }) => theme.colors.background};
-	padding: 30px;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 `;
 
 const Title = styled.h2`
-	padding: 10px;
 	font-size: 30px;
 	font-weight: 700;
-	border-bottom: 3px solid ${({ theme }) => theme.colors.subMain};
+	margin-top: 60px;
+	margin-left: 70px;
 `;
 
 const Table = styled.table`
-	padding: 30px;
-	width: 840px;
-	margin: 0 auto;
+	width: 800px;
+	margin: 20px auto;
 	& td {
 		text-align: left;
 	}
@@ -139,11 +149,13 @@ const Table = styled.table`
 const Th = styled.th`
 	text-align: left;
 	color: ${({ theme }) => theme.colors.title};
+	padding: 6px;
 `;
 
 const Td = styled.td`
 	color: ${({ theme }) => theme.colors.title};
 	text-align: left;
+	padding: 6px;
 `;
 
 const Pagenation = styled.div`
@@ -171,7 +183,7 @@ const AddButton = styled.button`
 	/* hover active 추가 필요 */
 `;
 
-const Page = styled.button<{selected: boolean}>`
+const Page = styled.button<{ selected: boolean }>`
 	border: none;
 	background: none;
 	margin: 0 8px;
@@ -182,3 +194,27 @@ const Page = styled.button<{selected: boolean}>`
 const PostTitle = styled.td`
 	cursor: pointer;
 `;
+
+const IconCol = styled.col`
+	width: 20px;
+`;
+
+const TypeCol = styled.col`
+	width: 80px;
+`
+
+const AuthorCol = styled.col`
+	width: 100px;
+`;
+
+const DateCol = styled.col`
+	width: 100px;
+`;
+
+const Icon = styled.div<{src : string}>`
+	background-image: url(${({src})=> src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 15px;
+	height: 15px;
+`

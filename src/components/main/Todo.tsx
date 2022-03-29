@@ -91,7 +91,10 @@ const Todo = () => {
 											? '/images/meatballBlue.png'
 											: '/images/meatballWhite.png'
 									}
-									onClick={() => openDropDown(id)}
+									onClick={(e) => {
+										openDropDown(id);
+										e.stopPropagation();
+									}}
 								/>
 								{dropdown.isOpen && id === dropdown.id && (
 									<>
