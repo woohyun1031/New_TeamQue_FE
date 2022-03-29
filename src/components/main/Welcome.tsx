@@ -14,7 +14,7 @@ const Welcome = () => {
 	return (
 		<Container>
 			<WelcomeMessage>안녕하세요,</WelcomeMessage>
-			<Name>{user.user_info.name} 님</Name>
+			<Name>{user.name} 님</Name>
 			<MessageBox>
 				<Message>
 					{lifeQuotes[Math.floor(Math.random() * lifeQuotes.length)]}
