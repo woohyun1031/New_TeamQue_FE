@@ -158,12 +158,12 @@ const Container = styled.div`
 	width: 280px;
 	height: 300px;
 	padding: 20px;
-	background-color: ${({ theme }) => theme.colors.Background};
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
+	background-color: #fff;
 `;
 
 const Table = styled.table`

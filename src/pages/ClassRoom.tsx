@@ -39,8 +39,8 @@ const Container = styled.div`
 	margin: 100px auto 0;
 	display: flex;
 	justify-content: space-between;
-	background-color: ${({ theme }) => theme.colors.background};
 `;
+
 const LeftBox = styled.div`
 	display: flex;
 	flex-direction: column;
