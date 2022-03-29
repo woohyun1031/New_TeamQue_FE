@@ -231,7 +231,7 @@ const DropdownButton = styled.button<{ src: string }>`
 	object-fit: contain;
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.ul`
 	width: 70px;
 	height: 60px;
 	padding: 4px;

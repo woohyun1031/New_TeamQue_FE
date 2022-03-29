@@ -56,7 +56,7 @@ const ClassInfo: React.FC = () => {
 					{students &&
 						students.map((student: any, index: number) => (
 							<Tr key={index} isAccepted={student.state === 'accepted'}>
-								<td>{student.id}</td>
+								<td>{student.userId}</td>
 								<td>{student.name}</td>
 								<td>
 									{student.state === 'accepted' ? (
