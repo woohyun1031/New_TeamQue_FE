@@ -89,19 +89,18 @@ const AddClass = () => {
 				</UpperRight> */}
 			</UpperContainer>
 
-			<DayList>
-				{selectedDays.map((item: any) => (
-					<DayNum key={item.id}>
-						{days[item.day - 1]} [{item.startTime}~{item.endTime}]
-						<DayButton
-							src='/images/bigCloseButton.png'
-							onClick={() => deleteDay(item.id)}
-						/>
-					</DayNum>
-				))}
-			</DayList>
-
 			<LowerContainer>
+				<DayList>
+					{selectedDays.map((item: any) => (
+						<DayNum key={item.id}>
+							{days[item.day - 1]} [{item.startTime}~{item.endTime}]
+							<DayButton
+								src='/images/bigCloseButton.png'
+								onClick={() => deleteDay(item.id)}
+							/>
+						</DayNum>
+					))}
+				</DayList>
 				<AddBox>
 					<DayContainer>
 						요일 선택
@@ -168,14 +167,16 @@ const InputDays = styled.div`
 	margin-top: 10px;
 `;
 
-const UpperLeft = styled.div``;
+const UpperLeft = styled.div`
+	width: 250px;
+`;
 
 const LowerContainer = styled.div`
 	margin-top: 20px;
 `;
 
 const DayList = styled.div`
-	height: 70px;
+	height: 50px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -183,7 +184,7 @@ const DayList = styled.div`
 `;
 
 const DayNum = styled.li`
-	width: 160px;
+	width: 170px;
 	height: 30px;
 	padding: 5px;
 	border-radius: 10px;
@@ -206,15 +207,17 @@ const DayContainer = styled.div`
 const DayBox = styled.div`
 	display: flex;
 	padding: 5px;
-	width: 200px;
+	width: 250px;
 	height: 30px;
 	margin-left: 20px;
 	border-radius: 20px;
 	align-items: center;
+	justify-content: center;
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Input = styled.input`
+	width: 100%;
 	height: 30px;
 	border-radius: 7px;
 	border: none;
@@ -263,7 +266,7 @@ const DayButton = styled.button<{ src: string }>`
 	background-position: center center;
 	width: 13px;
 	height: 13px;
-	margin-left: 7px;
+	margin-left: 10px;
 	cursor: pointer;
 `;
 

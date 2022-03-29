@@ -35,9 +35,8 @@ const Detail = () => {
 		//send state comment to api
 		if (comment) {
 			console.log(comment, 'comment');
-			await apis.sendComment({ comment, nickname }).then((res) => {
-				console.log(res);
-			});
+			const response = await apis.sendComment({ comment, nickname });
+			console.log(response);
 		}
 	};
 
