@@ -14,6 +14,7 @@ const colors = {
 
 	base: '#F4F4F4',
   hoverBase:'#F1F1F1',
+  activeBase:'#B8B8B8',
   subBase: 'rgba(0, 0, 0, 0.7)',
 
   boxShdow:'rgba(0, 0, 0, 0.25)',
