@@ -19,25 +19,17 @@ const Todo = () => {
 	const [dropdown, setDropdown] = useState({
 		isOpen: false,
 		id: 0,
-		position: {
-			x: 0,
-			y: 0,
-		},
 	});
 
-	const closeDropDown = () => {
-		setDropdown((prev) => ({ ...prev, isOpen: false }));
-	};
-
-	const openDropDown = (e: MouseEvent<HTMLButtonElement>, id: number) => {
+	const openDropDown = (id: number) => {
 		setDropdown({
 			id,
 			isOpen: true,
-			position: {
-				x: e.pageX,
-				y: e.pageY,
-			},
 		});
+	};
+
+	const closeDropDown = () => {
+		setDropdown({ id: 0, isOpen: false });
 	};
 
 	const loadTodos = async () => {
@@ -53,14 +45,14 @@ const Todo = () => {
 		loadTodos();
 	};
 
-	const deleteTodo = async () => {
-		await apis.deleteTodo(dropdown.id);
+	const deleteTodo = async (id: number) => {
+		await apis.deleteTodo(id);
 		closeDropDown();
 		loadTodos();
 	};
 
-	const toggleComplete = async () => {
-		await apis.completeTodo(dropdown.id);
+	const toggleComplete = async (id: number) => {
+		await apis.completeTodo(id);
 		closeDropDown();
 		loadTodos();
 	};
@@ -95,15 +87,15 @@ const Todo = () => {
 											? '/images/meatballBlue.png'
 											: '/images/meatballWhite.png'
 									}
-									onClick={(e) => openDropDown(e, id)}
+									onClick={() => openDropDown(id)}
 								/>
 								{dropdown.isOpen && id === dropdown.id && (
 									<>
 										<Dropdown>
-											<li onClick={toggleComplete}>
+											<li onClick={() => toggleComplete(id)}>
 												{isComplete ? '취소' : '해결'}
 											</li>
-											<li onClick={deleteTodo}>삭제</li>
+											<li onClick={() => deleteTodo(id)}>삭제</li>
 										</Dropdown>
 									</>
 								)}
@@ -184,9 +176,6 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 		`};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.1s;
-	&:hover {
-		/* hover 색상 추가 */
-	}
 `;
 
 const AddButton = styled.button`
@@ -201,9 +190,9 @@ const AddButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.background};
 	font-size: 40px;
 	margin: 20px 0;
-	transition: 0.1s;
+	transition: 0.3s;
 	&:hover {
-		/* hover 색상 추가 */
+		background-color: ${({ theme }) => theme.colors.base};
 	}
 	cursor: pointer;
 `;
