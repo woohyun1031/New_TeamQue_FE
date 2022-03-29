@@ -19,7 +19,7 @@ export const signUp = createAsyncThunk(
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`회원가입 오류: ${error.response?.data.message[0]}`);
+				alert(`회원가입 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 회원가입 오류: ${error}`);
@@ -46,7 +46,7 @@ export const signIn = createAsyncThunk(
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`로그인 오류: ${error.response?.data.message[0]}`);
+				alert(`로그인 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 로그인 오류: ${error}`);
@@ -67,7 +67,7 @@ export const signOut = createAsyncThunk(
 			return true;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`로그아웃 오류: ${error.response?.data.message[0]}`);
+				alert(`로그아웃 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 로그아웃 오류: ${error}`);
@@ -85,7 +85,7 @@ export const getUserInfo = createAsyncThunk(
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`사용자 정보 불러오기 오류: ${error.response?.data.message[0]}`);
+				alert(`사용자 정보 불러오기 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 사용자 정보 불러오기 오류: ${error}`);
@@ -103,7 +103,7 @@ export const nicknameSet = createAsyncThunk(
 			return true;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`닉네임 설정 오류: ${error.response?.data.message[0]}`);
+				alert(`닉네임 설정 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 닉네임 설정 오류: ${error}`);
@@ -114,7 +114,7 @@ export const nicknameSet = createAsyncThunk(
 );
 
 const initialState = {
-	id: '',
+	id: 0,
 	name: '',
 	isLogin: false,
 };
