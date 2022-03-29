@@ -146,16 +146,16 @@ export default AddClass;
 
 const Form = styled.form`
 	width: 500px;
-	height: 540px;
+	height: 600px;
 	display: flex;
 	flex-direction: column;
 	padding: 50px;
+	justify-content: space-between;
 `;
 
 const UpperContainer = styled.div`
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 20px;
 `;
 const Days = styled.div`
 	margin-right: 10px;
@@ -175,6 +175,7 @@ const LowerContainer = styled.div`
 `;
 
 const DayList = styled.div`
+	height: 70px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
