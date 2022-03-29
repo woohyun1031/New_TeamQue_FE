@@ -106,11 +106,21 @@ const Button = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
-		transform: translateY(-3px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
 `;
 
-const KakaoButton = styled(Button)`
+const KakaoButton = styled.button`
+	width: 260px;
+	height: 40px;
+	border-radius: 7px;
+	border: none;
+	font-size: 14px;
+	font-weight: 600;
+	position: relative;
+	transition: 0.2s;
 	background-color: ${({ theme }) => theme.colors.kakaoBg};
 	color: ${({ theme }) => theme.colors.kakaoTitle};
 	& img {

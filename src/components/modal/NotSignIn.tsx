@@ -57,7 +57,11 @@ const Button = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.darkerMain};
-		transform: translateY(-2px);
+		//transform: translateY(-2px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.moreDarkerMain};
+		//transform: translateY(-2px);
 	}
 `;
 

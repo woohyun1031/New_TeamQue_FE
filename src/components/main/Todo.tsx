@@ -79,7 +79,11 @@ const Todo = () => {
 					{dropdown.isOpen && <BackGround onClick={closeDropDown} />}
 					{todos &&
 						todos.map(({ id, content, isComplete }: todoType) => (
-							<ScheduleItem key={id} isComplete={isComplete}>
+							<ScheduleItem
+								key={id}
+								isComplete={isComplete}
+								onClick={() => toggleComplete(id)}
+							>
 								<p>{content}</p>
 								<DropdownButton
 									src={
@@ -92,9 +96,9 @@ const Todo = () => {
 								{dropdown.isOpen && id === dropdown.id && (
 									<>
 										<Dropdown>
-											<li onClick={() => toggleComplete(id)}>
+											{/* <li onClick={() => toggleComplete(id)}>
 												{isComplete ? '취소' : '해결'}
-											</li>
+											</li> */}
 											<li onClick={() => deleteTodo(id)}>삭제</li>
 										</Dropdown>
 									</>
@@ -159,6 +163,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 	background-color: ${({ theme }) => theme.colors.main};
 	& + & {
 		margin-top: 20px;
@@ -233,12 +238,12 @@ const DropdownButton = styled.button<{ src: string }>`
 
 const Dropdown = styled.ul`
 	width: 70px;
-	height: 60px;
+	height: 35px;
 	padding: 4px;
 	border-radius: 7px;
 	background-color: #fff;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: ${({ theme }) => theme.colors.title};
+	color: ${({ theme }) => theme.colors.subTitle};
 	z-index: 101;
 	font-size: 10px;
 	& li {
