@@ -15,7 +15,7 @@ export const signUp = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const {data} = await apis.signUp(userInfo);
+			const { data } = await apis.signUp(userInfo);
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -81,7 +81,7 @@ export const getUserInfo = createAsyncThunk(
 	'user/getUserInfo',
 	async (_, { rejectWithValue }) => {
 		try {
-			const {data} = await apis.getUserInfo();
+			const { data } = await apis.getUserInfo();
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
