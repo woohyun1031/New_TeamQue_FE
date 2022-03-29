@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import apis from '../../api';
@@ -231,7 +231,7 @@ const DropdownButton = styled.button<{ src: string }>`
 	object-fit: contain;
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.ul`
 	width: 70px;
 	height: 60px;
 	padding: 4px;
