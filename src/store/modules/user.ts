@@ -49,7 +49,7 @@ export const signOut = createAsyncThunk(
 			sessionStorage.removeItem('nickname');
 			sessionStorage.removeItem('accessToken');
 			sessionStorage.removeItem('refreshToken');
-			const response = await apis.signOut();
+			const response = await apis.signOut().then(window.location.reload);
 			console.log(response)
 			return true;
 		} catch (err) {
