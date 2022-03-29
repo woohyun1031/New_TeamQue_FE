@@ -22,21 +22,16 @@ const ClassHome = () => {
 export default ClassHome;
 
 const Container = styled.div`
-	/* 사이즈 */
 	width: 1200px;
 	height: 850px;
-	/* 레이아웃 */
 	margin: 100px auto;
 	display: flex;
 	justify-content: space-between;
-	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const LeftBox = styled.div`
-	/* 사이즈 */
 	width: 280px;
 	height: 850px;
-	/* 레이아웃 */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

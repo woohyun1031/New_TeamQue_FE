@@ -13,24 +13,27 @@ const Header = () => {
 	};
 
 	return (
-		<>
-			<Container>
+		<Container>
+			<Inner>
 				<Logo src='/images/logo.png' onClick={toMain} />
 				<DropDown name={user.user_info.name} />
-			</Container>
-		</>
+			</Inner>
+		</Container>
 	);
 };
 export default Header;
 
 const Container = styled.div`
+	width: auto;
+`;
+
+const Inner = styled.div`
 	width: 1200px;
 	height: 100px;
 	margin: 0 auto;
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;
-	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Logo = styled.button<{ src: string }>`
@@ -40,4 +43,5 @@ const Logo = styled.button<{ src: string }>`
 	width: 130px;
 	height: 60px;
 	background-repeat: no-repeat;
+	cursor: pointer;
 `;
