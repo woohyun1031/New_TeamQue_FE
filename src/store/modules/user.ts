@@ -1,6 +1,7 @@
 import { instance } from './../../api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import apis from '../../api';
+import axios from 'axios';
 
 export const signUp = createAsyncThunk(
 	'user/signup',
@@ -14,10 +15,16 @@ export const signUp = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const response = await apis.signUp(userInfo);
-			return response.data;
-		} catch (err) {
-			return rejectWithValue(err);
+			const {data} = await apis.signUp(userInfo);
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`회원가입 오류: ${error.response?.data.message[0]}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 회원가입 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
 		}
 	}
 );
@@ -29,15 +36,22 @@ export const signIn = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const {data} = await apis.signIn(loginInfo);
-			console.log(data)
+			const { data } = await apis.signIn(loginInfo);
 			sessionStorage.setItem('name', data.name);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
-			instance.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem('accessToken')}`;
+			instance.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
 			return data;
-		} catch (err) {
-			return rejectWithValue(err);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`로그인 오류: ${error.response?.data.message[0]}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 로그인 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
 		}
 	}
 );
@@ -49,83 +63,79 @@ export const signOut = createAsyncThunk(
 			sessionStorage.removeItem('nickname');
 			sessionStorage.removeItem('accessToken');
 			sessionStorage.removeItem('refreshToken');
-			const response = await apis.signOut();
-			console.log(response)
+			await apis.signOut();
 			return true;
-		} catch (err) {
-			return rejectWithValue(err);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`로그아웃 오류: ${error.response?.data.message[0]}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 로그아웃 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
+		}
+	}
+);
+
+export const getUserInfo = createAsyncThunk(
+	'user/getUserInfo',
+	async (_, { rejectWithValue }) => {
+		try {
+			const {data} = await apis.getUserInfo();
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`사용자 정보 불러오기 오류: ${error.response?.data.message[0]}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 사용자 정보 불러오기 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
 		}
 	}
 );
 
 export const nicknameSet = createAsyncThunk(
 	'user/nickname',
-	async (nickname: string, {rejectWithValue}) => {
+	async (nickname: string, { rejectWithValue }) => {
 		try {
 			await apis.setNick(nickname);
 			return true;
-		} catch (err) {
-			return rejectWithValue(err);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`닉네임 설정 오류: ${error.response?.data.message[0]}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
 		}
 	}
 );
 
 const initialState = {
-	user_info: {
-		// id: '',
-		name: '',		
-	},
+	id: '',
+	name: '',
 	isLogin: false,
 };
 
 export const user = createSlice({
 	name: 'user',
 	initialState,
-	reducers: {
-		getUser: (state) => {
-			const name = sessionStorage.getItem('name');
-			if (name) {
-				state.user_info.name = name
-			}
-			state.isLogin = true;
-		},
-		errorLog: (state, action) => {
-			if (action.payload.response) {
-				console.log(action.payload.response, 'error.response');
-			} else if (action.payload.request) {
-				console.log(action.payload.request, 'error.request');
-			} else if (action.payload.message) {
-				console.log(action.payload.message, 'error.message');
-			}
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(signUp.fulfilled, (state, action) => {
-			if (action.payload) {
-				state.user_info = initialState.user_info;
-				state.isLogin = false;
-			}
-		});
-		builder.addCase(signIn.rejected, (state, action) => {
-			console.log(action.payload);
-		});
 		builder.addCase(signIn.fulfilled, (state, action) => {
-			state.user_info = {
-				name: action.payload.name,
-			};
+			state.id = action.payload.id;
+			state.name = action.payload.name;
 			state.isLogin = true;
 		});
-		builder.addCase(signOut.fulfilled, (state, action) => {
-			// 로그아웃 로직 추가
-			if (action.payload) {
-				state.user_info = initialState.user_info;
-				state.isLogin = false;
-			}
-			alert('로그아웃 완료');
+		builder.addCase(getUserInfo.fulfilled, (state, action) => {
+			state.id = action.payload.id;
+			state.name = action.payload.name;
+			state.isLogin = true;
 		});
+		builder.addCase(signOut.fulfilled, () => initialState);
 	},
 });
-
-export const { getUser } = user.actions;
 
 export default user.reducer;

@@ -9,19 +9,20 @@ import Main from './pages/Main';
 import Kakao from './pages/Kakao';
 import { changeModal, closeModal, openModal } from './store/modules/modal';
 import GlobalStyle from './styles/GlobalStyle';
-import { getUser } from './store/modules/user';
+import { getUserInfo } from './store/modules/user';
 import { RootState } from './store/configStore';
 
 const App = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
-	const isToken = sessionStorage.getItem('accessToken') ? true : false
+	const isToken = sessionStorage.getItem('accessToken') ? true : false;
+
 
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
-			dispatch(getUser());
+			dispatch(getUserInfo());
 		} else {
 			navigate('/');
 			dispatch(openModal());

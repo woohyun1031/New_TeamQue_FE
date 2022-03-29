@@ -16,7 +16,7 @@ const Header = () => {
 		<Container>
 			<Inner>
 				<Logo src='/images/logo.png' onClick={toMain} />
-				<DropDown name={user.user_info.name} />
+				<DropDown name={user.name} />
 			</Inner>
 		</Container>
 	);
