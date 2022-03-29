@@ -256,7 +256,7 @@ const EventPointer = styled.div`
 	right: 5px;
 `;
 
-const Pointer = styled.div`
+const Pointer = styled.span`
 	display: inline-block;
 	width: 4px;
 	height: 4px;
