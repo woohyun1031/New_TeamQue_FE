@@ -112,21 +112,17 @@ const Calendar = () => {
 							<tr key={index}>
 								{week.map((date: dateType, index: number) => (
 									<Td isThisMonth={date.month === 'this'} key={index}>
-										{/* 오늘 찾기 로직 중복 제거 및 최적화 필요 */}
-										<DateBox
-											isToday={
-												date.date === thisDate &&
-												month === thisMonth &&
-												year === thisYear &&
-												date.month === 'this'
-											}
-										>
-											{date.date === thisDate &&
-												month === thisMonth &&
-												year === thisYear &&
-												date.month === 'this' && <TodayUnderline />}
-											{date.date}
-										</DateBox>
+										{date.date === thisDate &&
+										month === thisMonth &&
+										year === thisYear &&
+										date.month === 'this' ? (
+											<>
+												<TodayUnderline />
+												<DateBox isToday={true}>{date.date}</DateBox>
+											</>
+										) : (
+											<DateBox isToday={false}>{date.date}</DateBox>
+										)}
 
 										{date.event && (
 											<>
@@ -233,8 +229,8 @@ const Td = styled.td<{ isThisMonth: boolean }>`
 	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc !important;')};
 `;
 
-const DateBox = styled.p<{ isToday: boolean }>`
-	${({isToday}) => isToday && 'font-weight: 900;'}
+const DateBox = styled.div<{ isToday: boolean }>`
+	${({ isToday }) => isToday && 'font-weight: 900;'}
 	&:hover ~ ${EventBox} {
 		display: flex;
 	}
