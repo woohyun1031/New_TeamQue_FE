@@ -31,26 +31,28 @@ const Tutorial: React.FC = () => {
 	};
 
 	return (
-		<Container>
-			<Wrap>
-				<Button
-					src='/images/arrow_back_ios_black_48dp.svg'
-					id='buttonPrev'
-					onClick={() => prevSlide()}
-				/>
-				<Button
-					src='/images/arrow_forward_ios_black_48dp.svg'
-					id='buttonPrev'
-					onClick={() => nextSlide()}
-				/>
-				<BoxList ref={slideRef}>
-					<Box color='blue'>page1</Box>
-					<Box color='red'>page2</Box>
-					<Box color='pink'>page3</Box>
-					<Box color='green'>page4</Box>
-				</BoxList>
-			</Wrap>
-		</Container>
+		<>
+			<Button
+				src='/images/arrow_back_ios_black_48dp.svg'
+				id='buttonPrev'
+				onClick={() => prevSlide()}
+			/>
+			<Container>
+				<Wrap>
+					<BoxList ref={slideRef}>
+						<Box color='blue'>page1</Box>
+						<Box color='red'>page2</Box>
+						<Box color='pink'>page3</Box>
+						<Box color='green'>page4</Box>
+					</BoxList>
+				</Wrap>
+			</Container>
+			<Button
+				src='/images/arrow_forward_ios_black_48dp.svg'
+				id='buttonPrev'
+				onClick={() => nextSlide()}
+			/>
+		</>
 	);
 };
 
