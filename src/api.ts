@@ -65,7 +65,7 @@ export const apis = {
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
 	
 	// Post
-	loadPosts: (classId: string) => instance.get(`/post/${classId}`),
+	loadPosts: (classId: string, page: string) => instance.get(`/post/${classId}?page=${page}`),
 	loadPost: (postId: string) => instance.get(`/post/detail/${postId}`),
 
 	// Main
