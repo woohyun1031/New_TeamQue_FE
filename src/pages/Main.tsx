@@ -106,9 +106,12 @@ const TabButton = styled.button<{ isSelected: boolean }>`
 	border: none;
 	font-size: 27px;
 	font-weight: 700;
-	transition: 0.1s;
+	transition: 0.2s;
 	${(props) => !props.isSelected && 'color: #c4c4c4;'}
 	cursor: pointer;
+	&:hover {
+		${(props) => !props.isSelected && 'color: #aaa;'}
+	}
 `;
 
 const AddCardBox = styled.div`
