@@ -15,29 +15,21 @@ const Board = () => {
 	const { classid, page } = useParams<string>();
 	const [notice, setNotice] = useState<postType[]>();
 	const [question, setQuestion] = useState<postType[]>();
-	const [pages, setPages] = useState<{ page: number; selected: boolean }[]>([]);
+	const [totalPageNumber, setTotalPageNumber] = useState<number>();
 
-	const fetch = async () => {
-		// 로직 다듬기, 에러 핸들링 추가
-		if (classid) {
-			const response = await apis.loadPosts(classid);
-			setNotice(response.data.postListNotice);
-			setQuestion(response.data.postListquestion);
-			const newPages = [];
-			for (let i = 1; i <= response.data.pages; i++) {
-				newPages.push({ page: i, selected: false });
-			}
-			if (page) {
-				newPages[parseInt(page) - 1].selected = true;
-			}
-			setPages(newPages);
+	const LoadPostData = async () => {
+		if (classid && page) {
+			const { data } = await apis.loadPosts(classid, page);
+			console.log(data)
+			setNotice(data.postListNotice);
+			setQuestion(data.postListquestion);
+			setTotalPageNumber(data.pages);
 		}
 	};
-	useEffect(() => {
-		fetch();
-	}, [page]);
-	console.log(notice, question)
 
+	useEffect(() => {
+		LoadPostData();
+	}, [page]);
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
@@ -102,16 +94,16 @@ const Board = () => {
 				</tbody>
 			</Table>
 			<Pagenation>
-				{pages &&
-					pages.map((page) => (
+				{page &&
+					[...Array(totalPageNumber)].map((_, pageNumber) => (
 						<Page
-							key={page.page}
-							selected={page.selected}
+							key={pageNumber}
+							selected={pageNumber + 1 === parseInt(page)}
 							onClick={() => {
-								navigate(`/classhome/${classid}/${page.page}`);
+								navigate(`/classhome/${classid}/${pageNumber + 1}`);
 							}}
 						>
-							{page.page}
+							{pageNumber + 1}
 						</Page>
 					))}
 			</Pagenation>
@@ -149,13 +141,13 @@ const Table = styled.table`
 const Th = styled.th`
 	text-align: left;
 	color: ${({ theme }) => theme.colors.title};
-	padding: 6px;
+	padding: 5px;
 `;
 
 const Td = styled.td`
 	color: ${({ theme }) => theme.colors.title};
 	text-align: left;
-	padding: 6px;
+	padding: 5px;
 `;
 
 const Pagenation = styled.div`

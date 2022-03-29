@@ -18,7 +18,7 @@ type studentType = {
 type chatType = {
 	chatId: string;
 	userId: number;
-	name: string;
+	userName: string;
 	content: string;
 	type: 'chat' | 'question';
 	like?: string[];
@@ -104,7 +104,7 @@ const ClassRoom = () => {
 						chatList.map(
 							({ userId, userName, content, isResolved, uuid, like }) => ({
 								userId,
-								name: userName,
+								userName,
 								content,
 								isResolved,
 								chatId: uuid,
@@ -201,7 +201,7 @@ const ClassRoom = () => {
 							{
 								chatId: id,
 								userId: user.id,
-								name: user.name,
+								userName: user.name,
 								content,
 								type: 'question',
 								like: [],
@@ -222,7 +222,7 @@ const ClassRoom = () => {
 							{
 								chatId: id,
 								userId: user.id,
-								name: user.name,
+								userName: user.name,
 								content,
 								type: 'chat',
 							},
@@ -303,7 +303,7 @@ const ClassRoom = () => {
 				</label>
 				<label>
 					<input name='questionCheck' type='checkbox' onChange={onChange} />
-					채팅
+					질문
 				</label>
 				{chatList &&
 					chatList.map(
@@ -311,7 +311,7 @@ const ClassRoom = () => {
 							chatId,
 							userId,
 							type,
-							name,
+							userName: name,
 							content,
 							isResolved,
 							like,
@@ -336,11 +336,11 @@ const ClassRoom = () => {
 											</button>
 										)}
 										<button onClick={() => likeQuestion(chatId)}>추천</button>
-										<div>
+										{/* <div>
 											{like?.map((student, index) => (
 												<div key={index}>{student}</div>
 											))}
-										</div>
+										</div> */}
 									</div>
 								);
 							}
