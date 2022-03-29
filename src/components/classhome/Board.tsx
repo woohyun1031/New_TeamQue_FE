@@ -15,21 +15,21 @@ const Board = () => {
 	const { classid, page } = useParams<string>();
 	const [notice, setNotice] = useState<postType[]>();
 	const [question, setQuestion] = useState<postType[]>();
-	const [pageNumber, setPageNumber] = useState<number>();
+	const [totalPageNumber, setTotalPageNumber] = useState<number>();
 
 	const LoadPostData = async () => {
 		if (classid && page) {
 			const { data } = await apis.loadPosts(classid, page);
+			console.log(data)
 			setNotice(data.postListNotice);
 			setQuestion(data.postListquestion);
-			setPageNumber(data.page);
+			setTotalPageNumber(data.pages);
 		}
 	};
 
 	useEffect(() => {
 		LoadPostData();
 	}, [page]);
-
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
@@ -95,7 +95,7 @@ const Board = () => {
 			</Table>
 			<Pagenation>
 				{page &&
-					[...Array(5)].map((_, pageNumber) => (
+					[...Array(totalPageNumber)].map((_, pageNumber) => (
 						<Page
 							key={pageNumber}
 							selected={pageNumber + 1 === parseInt(page)}
