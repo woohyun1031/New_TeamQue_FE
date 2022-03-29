@@ -175,6 +175,26 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	position: relative;
 	font-weight: 700;
 	font-size: 14px;
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.brightMain};
+		${(props) =>
+			props.isComplete &&
+			css`
+				color: ${({ theme }) => theme.colors.main};
+				background-color: ${({ theme }) => theme.colors.hoverBase};
+				text-decoration: line-through red 2px;
+			`}
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+		${(props) =>
+			props.isComplete &&
+			css`
+				color: ${({ theme }) => theme.colors.buttonTitle};
+				background-color: ${({ theme }) => theme.colors.darkerMain};
+				text-decoration: line-through red 2px;
+			`}
+	}
 	${(props) =>
 		props.isComplete &&
 		css`
@@ -183,7 +203,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			text-decoration: line-through red 2px;
 		`};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	transition: 0.5s;
+	transition: 0.3s;
 `;
 
 const AddButton = styled.button`
