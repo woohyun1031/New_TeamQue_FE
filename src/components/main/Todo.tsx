@@ -177,10 +177,10 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 		css`
 			color: ${({ theme }) => theme.colors.main};
 			background-color: ${({ theme }) => theme.colors.background};
-			text-decoration: line-through;
+			text-decoration: line-through red 2px;
 		`};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	transition: 0.1s;
+	transition: 0.5s;
 `;
 
 const AddButton = styled.button`
