@@ -240,7 +240,7 @@ const ClassRoom = () => {
 		}
 	};
 
-	const changeMessage = (e: ChangeEvent<HTMLInputElement>) => {
+	const changeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setInput(e.target.value);
 	};
 
@@ -349,89 +349,108 @@ const ClassRoom = () => {
 				</StateBox>
 			</LeftBox>
 			<ChatContainer>
-				<ToggleButtons>
-					<ToggleButton>
-						<input name='chatCheck' type='checkbox' onChange={onChange} />
-						채팅
-					</ToggleButton>
-					<ToggleButton>
-						<input name='questionCheck' type='checkbox' onChange={onChange} />
-						질문
-					</ToggleButton>
-				</ToggleButtons>
-				<ChatBox>
-					{chatList &&
-						chatList.map(
-							({
-								chatId,
-								userId,
-								type,
-								userName: name,
-								content,
-								isResolved,
-								likes,
-							}: chatType) => {
-								if (type === 'chat' && !chatCheck) {
-									return (
-										<Chat key={chatId}>
-											<ChatName>{name}</ChatName>
-											<ChatContent>{content}</ChatContent>
-										</Chat>
-									);
-								} else if (type === 'question' && !questionCheck) {
-									return (
-										<Question key={chatId}>
-											<QuestionContent isResolved={isResolved ? true : false}>
-												<DeleteButton onClick={() => deleteQuestion(chatId)} />
-												{content}
-												<Resolve />
-											</QuestionContent>
-											<ButtonButtons>
-												{likes?.findIndex((like) => like.userId === user.id) !==
-												-1 ? (
-													<BottomButton
-														onClick={() => likeCancelQuestion(chatId)}
-														isClicked={true}
-													>
-														<LikeCharacter />
-														{likes?.length}명이 궁금해하고 있어요
-													</BottomButton>
-												) : (
-													<BottomButton onClick={() => likeQuestion(chatId)} isClicked={false}>
-														<LikeCharacter />
-														{likes?.length}명이 궁금해하고 있어요
-													</BottomButton>
-												)}
-												{userId === user.id && (
-													<BottomButton onClick={() => toggleResolve(chatId)} isClicked={isResolved? true: false}>
-														{isResolved ? '취소' : '해결'}
-													</BottomButton>
-												)}
-											</ButtonButtons>
-										</Question>
-									);
-								}
-							}
-						)}
-				</ChatBox>
-
 				<div>
-					<input
-						type='text'
-						value={input}
-						onChange={changeMessage}
-						onKeyPress={(e) => {
-							if (e.key === 'Enter') {
-								sendChat();
-							}
-						}}
-					/>
-					<button onClick={sendChat}>전송</button>
-					<label>
-						질문
-						<input type='checkbox' name='queCheck' onChange={toggleChatType} />
-					</label>
+					<ToggleButtons>
+						<ToggleButton isChecked={check?.chatCheck}>
+							<input name='chatCheck' type='checkbox' onChange={onChange} />
+							채팅
+						</ToggleButton>
+						<ToggleButton isChecked={check?.questionCheck}>
+							<input name='questionCheck' type='checkbox' onChange={onChange} />
+							질문
+						</ToggleButton>
+					</ToggleButtons>
+					<ChatBox isChecked={check?.chatCheck && check?.questionCheck}>
+						{check?.chatCheck && check?.questionCheck && (
+							<NoCheckedMessage>아무것도 선택하지 않으셨어요</NoCheckedMessage>
+						)}
+						{chatList &&
+							chatList.map(
+								({
+									chatId,
+									userId,
+									type,
+									userName: name,
+									content,
+									isResolved,
+									likes,
+								}: chatType) => {
+									if (type === 'chat' && !chatCheck) {
+										return (
+											<Chat key={chatId}>
+												<ChatName>{name}</ChatName>
+												<ChatContent>{content}</ChatContent>
+											</Chat>
+										);
+									} else if (type === 'question' && !questionCheck) {
+										return (
+											<Question key={chatId}>
+												<QuestionContent isResolved={isResolved ? true : false}>
+													<DeleteButton
+														onClick={() => deleteQuestion(chatId)}
+													/>
+													{content}
+													<Resolve />
+												</QuestionContent>
+												<ButtonButtons>
+													{likes?.findIndex(
+														(like) => like.userId === user.id
+													) !== -1 ? (
+														<BottomButton
+															onClick={() => likeCancelQuestion(chatId)}
+															isClicked={true}
+														>
+															<LikeCharacter />
+															{likes?.length}명이 궁금해하고 있어요
+														</BottomButton>
+													) : (
+														<BottomButton
+															onClick={() => likeQuestion(chatId)}
+															isClicked={false}
+														>
+															<LikeCharacter />
+															{likes?.length}명이 궁금해하고 있어요
+														</BottomButton>
+													)}
+													{userId === user.id && (
+														<BottomButton
+															onClick={() => toggleResolve(chatId)}
+															isClicked={isResolved ? true : false}
+														>
+															{isResolved ? '취소' : '해결'}
+														</BottomButton>
+													)}
+												</ButtonButtons>
+											</Question>
+										);
+									}
+								}
+							)}
+					</ChatBox>
 				</div>
+
+				<InputBox>
+					<div>
+						<Input
+							// type='text'
+							value={input}
+							onChange={changeMessage}
+							onKeyPress={(e) => {
+								if (e.key === 'Enter') {
+									sendChat();
+								}
+							}}
+						/>
+						<SendButton onClick={sendChat} />
+						<QueButton isQuestion={isQuestion}>
+							<input
+								type='checkbox'
+								name='queCheck'
+								onChange={toggleChatType}
+							/>
+						</QueButton>
+					</div>
+				</InputBox>
 			</ChatContainer>
 		</Container>
 	);
@@ -448,7 +467,7 @@ const Container = styled.div`
 	justify-content: space-between;
 `;
 
-const ClassInfo = styled.h2`
+const ClassInfo = styled.div`
 	display: flex;
 	align-items: flex-end;
 	margin-bottom: 10px;
@@ -574,7 +593,7 @@ const ToggleButtons = styled.div`
 	margin: 19px 16px 10px;
 `;
 
-const ToggleButton = styled.label`
+const ToggleButton = styled.label<{ isChecked: boolean }>`
 	font-size: 18px;
 	font-weight: 600;
 	& input {
@@ -583,12 +602,17 @@ const ToggleButton = styled.label`
 	& + & {
 		margin-left: 10px;
 	}
+	${({ isChecked }) => isChecked && 'color: #c4c4c4;'}
+	cursor: pointer;
 `;
 
-const ChatBox = styled.div`
+const ChatBox = styled.div<{ isChecked: boolean }>`
 	width: 275px;
-	height: 750px;
 	overflow-y: scroll;
+	height: 700px;
+	${({ isChecked }) =>
+		isChecked &&
+		`background-image: url('/images/nochecked.png'); background-repeat: no-repeat; background-position: center center;`}
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
@@ -596,6 +620,18 @@ const ChatBox = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
+	position: relative;
+`;
+
+const NoCheckedMessage = styled.p`
+	width: 170px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #718aff;
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 `;
 
 const Chat = styled.div`
@@ -628,21 +664,20 @@ const QuestionContent = styled.div<{ isResolved: boolean }>`
 	background-color: #718aff;
 	color: #fff;
 	position: relative;
-	${({isResolved}) => isResolved && 'background-color: #D4DBF9; '}
+	${({ isResolved }) => isResolved && 'background-color: #D4DBF9; '}
 `;
 
 const Resolve = styled.div`
 	width: 50px;
 	height: 50px;
-	background-image: url('/images/resolve.png'); 
-	background-repeat: no-repeat; 
+	background-image: url('/images/resolve.png');
+	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
 	position: absolute;
 	right: 0px;
 	bottom: 0px;
-`
-
+`;
 
 const DeleteButton = styled.button`
 	border: none;
@@ -675,7 +710,7 @@ const ButtonButtons = styled.div`
 	margin-top: 3px;
 `;
 
-const BottomButton = styled.button<{isClicked : boolean}>`
+const BottomButton = styled.button<{ isClicked: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -688,5 +723,80 @@ const BottomButton = styled.button<{isClicked : boolean}>`
 	& + & {
 		margin-left: 5px;
 	}
-	${({isClicked}) => isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
+	${({ isClicked }) =>
+		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
+`;
+
+const InputBox = styled.div`
+	height: 80px;
+	width: 250px;
+	margin: 10px auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	align-items: center;
+	position: relative;
+`;
+
+const SendButton = styled.button`
+	border: none;
+	background-color: #718aff;
+	background-image: url('/images/send.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	position: absolute;
+	opacity: 0;
+	transition: .2s;
+	right: 0;
+	bottom: 0;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const Input = styled.textarea`
+	resize: none;
+	border: none;
+	width: 214px;
+	height: 30px;
+	border-radius: 7px;
+	background-color: #f4f4f4;
+	outline: none;
+	transition: 0.2s;
+	margin-right: 6px;
+	padding: 10px;
+	&:focus {
+		height: 70px;
+	}
+	&:focus ~ ${SendButton} {
+		bottom: 40px;
+		opacity: 1;
+	}
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
+`;
+
+const QueButton = styled.label<{ isQuestion: boolean }>`
+	border: none;
+	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	position: relative;
+	z-index: 2;
+	cursor: pointer;
+	& input {
+		display: none;
+	}
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
