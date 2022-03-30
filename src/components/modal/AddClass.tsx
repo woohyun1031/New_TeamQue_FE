@@ -256,6 +256,13 @@ const Button = styled.button`
 	font-weight: 600;
 	margin: 0 10px;
 	cursor: pointer;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
 `;
 
 const DayButton = styled.button<{ src: string }>`
@@ -273,4 +280,11 @@ const DayButton = styled.button<{ src: string }>`
 const AddButton = styled(Button)`
 	width: 165px;
 	height: 35px;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
 `;

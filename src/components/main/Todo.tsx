@@ -89,21 +89,11 @@ const Todo = () => {
 								// src 불러오는 로직 변경 필요
 									src={
 										isComplete
-											? '/images/meatballBlue.png'
-											: '/images/meatballWhite.png'
+											? '/images/close_blue.png'
+											: '/images/close_white.png'
 									}
-									onClick={(e) => {
-										openDropDown(id);
-										e.stopPropagation();
-									}}
+									onClick={() => deleteTodo(id)}
 								/>
-								{dropdown.isOpen && id === dropdown.id && (
-									<>
-										<Dropdown>
-											<li onClick={() => deleteTodo(id)}>삭제</li>
-										</Dropdown>
-									</>
-								)}
 							</ScheduleItem>
 						))}
 					<Form onSubmit={addTodo}>
