@@ -21,7 +21,7 @@ const Modal: React.FC = () => {
 	let isCanClose = false;
 	useEffect(() => {
 		if (
-			['notSignIn', 'signIn', 'signUp', 'tutorial', 'addClass'].includes(
+			['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(
 				modal.type
 			)
 		) {
