@@ -21,13 +21,6 @@ const Todo = () => {
 		id: 0,
 	});
 
-	const openDropDown = (id: number) => {
-		setDropdown({
-			id,
-			isOpen: true,
-		});
-	};
-
 	const closeDropDown = () => {
 		setDropdown({ id: 0, isOpen: false });
 	};

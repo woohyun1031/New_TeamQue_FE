@@ -18,7 +18,7 @@ type studentType = {
 type chatType = {
 	chatId: string;
 	userId: number;
-	userName: string;
+	name: string;
 	content: string;
 	type: 'chat' | 'question';
 	likes?: { userId: number }[];
@@ -58,8 +58,8 @@ const ClassRoom = () => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const user = useSelector((state: RootState) => state.user);
 
-	// const SOCKETSERVER = 'ws://noobpro.shop';
-	const SOCKETSERVER = 'ws://xpecter.shop';
+	const SOCKETSERVER = 'ws://noobpro.shop';
+	// const SOCKETSERVER = 'ws://xpecter.shop';
 	const classId = params.classid;
 
 	const socketInitiate = async () => {
@@ -77,19 +77,19 @@ const ClassRoom = () => {
 			}: {
 				chatList: {
 					userId: number;
-					userName: string;
+					name: string;
 					content: string;
 					isResolved: boolean;
 					uuid: string;
 					likes: { userId: number }[];
 				}[];
-				userList: { key: { userName: string; state: stateType } };
+				userList: { key: { name: string; state: stateType } };
 			}) => {
 				setChatList(
 					chatList.map(
-						({ userId, userName, content, isResolved, uuid, likes }) => ({
+						({ userId, name, content, isResolved, uuid, likes }) => ({
 							userId,
-							userName,
+							name,
 							content,
 							isResolved,
 							chatId: uuid,
@@ -99,10 +99,10 @@ const ClassRoom = () => {
 					)
 				);
 				setStudents(
-					Object.entries(userList).map(([key, { userName, state }]) => ({
+					Object.entries(userList).map(([key, { name, state }]) => ({
 						userId: parseInt(key),
-						name: userName,
-						state: state,
+						name,
+						state,
 					}))
 				);
 			}
@@ -192,7 +192,7 @@ const ClassRoom = () => {
 							{
 								chatId: chatId,
 								userId: user.id,
-								userName: user.name,
+								name: user.name,
 								content,
 								type: 'question',
 								likes: [],
@@ -212,7 +212,7 @@ const ClassRoom = () => {
 							{
 								chatId: chatId,
 								userId: user.id,
-								userName: user.name,
+								name: user.name,
 								content,
 								type: 'chat',
 							},
@@ -354,7 +354,7 @@ const ClassRoom = () => {
 									chatId,
 									userId,
 									type,
-									userName: name,
+									name: name,
 									content,
 									isResolved,
 									likes,
@@ -535,21 +535,25 @@ const StudentStateBox = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	display: flex;
-	flex-wrap: nowrap;
-	padding: 35px;
+	flex-wrap: wrap;
+	padding: 30px;
 	background-color: #fff;
-`;
-
-const StudentBox = styled.div`
-	height: 63px;
-	width: 50px;
-	flex: 0;
-	& + & {
-		margin-left: 35px;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
 	}
 `;
 
+const StudentBox = styled.div`
+	height: 120px;
+	width: 80px;
+`;
+
 const StudentName = styled.h4`
+	margin-top: 20px;
 	font-size: 12px;
 	font-weight: bold;
 	text-align: center;
@@ -562,6 +566,7 @@ const StudentState = styled.div<{ src: string }>`
 	background-repeat: no-repeat;
 	width: 50px;
 	height: 50px;
+	margin: 0 auto;
 `;
 
 const ChatContainer = styled.div`

@@ -22,8 +22,6 @@ const AddClass = () => {
 	const onChange = (e: any) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
-		console.log(name, value);
-		console.log(inputs);
 	};
 
 	const addDays = (e: any) => {
@@ -38,7 +36,6 @@ const AddClass = () => {
 			},
 		];
 		count.current += 1;
-		// 요일, 시간에 따라 정렬
 		newArr.sort((a, b) => (a.day > b.day ? 1 : -1));
 		setSelectedDays(newArr);
 	};
