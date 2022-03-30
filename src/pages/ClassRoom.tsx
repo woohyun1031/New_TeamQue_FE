@@ -311,21 +311,42 @@ const ClassRoom = () => {
 					<ClassTeacher>{classInfo?.teacher}</ClassTeacher>
 				</ClassInfo>
 				<Stream />
-				<MyName>{user.name}</MyName>
-				<MyState src={`/images/my${myState}.png`}/>
-				<button onClick={() => changeMyState('correct')}>Correct</button>
-				<button onClick={() => changeMyState('incorrect')}>Incorrect</button>
-				<button onClick={() => changeMyState('away')}>Away</button>
-				{students.map((student: studentType) => {
-					if (student.userId !== user.id) {
-						return (
-							<li key={student.userId}>
-								<p>{student.name}</p>
-								<p>{student.state}</p>
-							</li>
-						);
-					}
-				})}
+				<StateBox>
+					<MyStateBox>
+						<UpperBox>
+							<MyName>{user.name}</MyName>
+							<StateButtons>
+								<StateButton
+									onClick={() => changeMyState('correct')}
+									src='/images/correctbutton.png'
+								/>
+								<Hr />
+								<StateButton
+									onClick={() => changeMyState('incorrect')}
+									src='/images/incorrectbutton.png'
+								/>
+								<Hr />
+								<StateButton
+									onClick={() => changeMyState('away')}
+									src='/images/awaybutton.png'
+								/>
+							</StateButtons>
+						</UpperBox>
+						<MyStateCharacter src={`/images/my${myState}.png`} />
+					</MyStateBox>
+					<StudentStateBox>
+						{students.map((student: studentType) => {
+							if (student.userId !== user.id) {
+								return (
+									<StudentBox key={student.userId}>
+										<StudentName>{student.name}</StudentName>
+										<StudentState src={`/images/${student.state}.png`} />
+									</StudentBox>
+								);
+							}
+						})}
+					</StudentStateBox>
+				</StateBox>
 			</LeftBox>
 			<div>
 				<label>
@@ -434,18 +455,96 @@ const ClassTeacher = styled.h4`
 	color: #b6b6b6;
 `;
 
-const LeftBox = styled.div`
+const LeftBox = styled.div``;
+
+const StateBox = styled.div`
+	margin-top: 40px;
+	display: flex;
+`;
+
+const MyStateBox = styled.div`
+	width: 490px;
+	height: 300px;
+	margin-right: 22px;
+`;
+
+const UpperBox = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `;
 
 const MyName = styled.h2`
 	font-size: 24px;
 	font-weight: bold;
-`
+`;
 
-const MyState = styled.div<{src: string}>`
-	background-image: url(${({src})=> src});
-	background-position: center center;
+const MyStateCharacter = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-position: left center;
 	background-repeat: no-repeat;
 	width: 300px;
 	height: 300px;
-`
+`;
+
+const StateButtons = styled.div`
+	width: 276px;
+	height: 72px;
+	border-radius: 7px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+`;
+
+const StateButton = styled.button<{ src: string }>`
+	background: none;
+	border: none;
+	background-image: url(${({ src }) => src});
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 72px;
+	cursor: pointer;
+`;
+
+const Hr = styled.hr`
+	border: none;
+	border-radius: 1px;
+	width: 2px;
+	height: 30px;
+	background-color: #d2d2d2;
+`;
+
+const StudentStateBox = styled.div`
+	width: 380px;
+	height: 300px;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-wrap: nowrap;
+	padding: 35px;
+`;
+
+const StudentBox = styled.div`
+	height: 63px;
+	width: 50px;
+	flex: 0;
+	& + & {
+		margin-left: 35px;
+	}
+`;
+
+const StudentName = styled.h4`
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 8px;
+`;
+
+const StudentState = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+`;
