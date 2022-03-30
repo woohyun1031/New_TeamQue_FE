@@ -21,7 +21,7 @@ type chatType = {
 	userName: string;
 	content: string;
 	type: 'chat' | 'question';
-	like?: string[];
+	likes?: { userId: number }[];
 	isResolved?: boolean;
 };
 
@@ -96,20 +96,21 @@ const ClassRoom = () => {
 						content: string;
 						isResolved: boolean;
 						uuid: string;
-						like: string[];
+						likes: { userId: number }[];
 					}[];
 					userList: { key: { userName: string; state: stateType } };
 				}) => {
 					setChatList(
 						chatList.map(
-							({ userId, userName, content, isResolved, uuid, like }) => ({
+							({ userId, userName, content, isResolved, uuid, likes }) => ({
 								userId,
 								userName,
 								content,
 								isResolved,
 								chatId: uuid,
 								type: 'question',
-								like,
+								likes,
+
 							})
 						)
 					);
@@ -132,6 +133,7 @@ const ClassRoom = () => {
 				)
 			);
 		});
+
 		socket.on('receiveResolved', ({ chatId }) => {
 			setChatList((prev) =>
 				prev.map((chat) =>
@@ -151,19 +153,25 @@ const ClassRoom = () => {
 				...prev,
 				{
 					...data,
+					likes: [],
 					type: 'question',
 				},
 			]);
 		});
 
-		socket.on('receiveLike', ({ chatId, name }) => {
+		socket.on('receiveLike', ({ chatId, userId }) => {
 			setChatList((prev) =>
 				prev.map((chat) =>
-					chat.chatId === chatId && chat.like
-						? { ...chat, like: [...chat.like, name] }
+					chat.chatId === chatId && chat.likes
+						? { ...chat, likes: [...chat.likes, userId] }
 						: chat
 				)
 			);
+		});
+
+		socket.on('receiveDelete', ({ chatId }) => {
+			console.log(chatId)
+			setChatList((prev) => prev.filter((chat) => chat.chatId !== chatId));
 		});
 	};
 
@@ -195,16 +203,16 @@ const ClassRoom = () => {
 				socket.emit(
 					'sendQuestion',
 					{ content: input, classId },
-					({ id, content }: { id: string; content: string }) => {
+					({ chatId, content }: { chatId: string; content: string }) => {
 						setChatList([
 							...chatList,
 							{
-								chatId: id,
+								chatId: chatId,
 								userId: user.id,
 								userName: user.name,
 								content,
 								type: 'question',
-								like: [],
+								likes: [],
 								isResolved: false,
 							},
 						]);
@@ -215,12 +223,11 @@ const ClassRoom = () => {
 				socket.emit(
 					'sendChat',
 					{ content: input, classId },
-					({ id, content }: { id: string; content: string }) => {
-						console.log(id, content);
+					({ chatId, content }: { chatId: string; content: string }) => {
 						setChatList([
 							...chatList,
 							{
-								chatId: id,
+								chatId: chatId,
 								userId: user.id,
 								userName: user.name,
 								content,
@@ -262,14 +269,36 @@ const ClassRoom = () => {
 	};
 
 	const likeQuestion = (id: string) => {
+		console.log(id, classId);
 		socket.emit('sendLike', { chatId: id, classId }, () => {
 			setChatList((prev) =>
 				prev.map((chat) =>
-					chat.chatId === id && chat.like
-						? { ...chat, like: [...chat.like, user.name] }
+					chat.likes && chat.chatId === id
+						? { ...chat, likes: [...chat.likes, { userId: user.id }] }
 						: chat
 				)
 			);
+		});
+	};
+
+	const likeCancelQuestion = (id: string) => {
+		socket.emit('sendLike', { chatId: id, classId }, () => {
+			setChatList((prev) =>
+				prev.map((chat) =>
+					chat.likes && chat.chatId === id
+						? {
+								...chat,
+								likes: chat.likes.filter((like) => like.userId !== user.id),
+						  }
+						: chat
+				)
+			);
+		});
+	};
+
+	const deleteQuestion = (id: string) => {
+		socket.emit('sendDelete', { chatId: id, classId }, () => {
+			setChatList((prev) => prev.filter((chat) => chat.chatId !== id));
 		});
 	};
 
@@ -298,7 +327,7 @@ const ClassRoom = () => {
 			</LeftBox>
 			<div>
 				<label>
-					<input name='commonCheck' type='checkbox' onChange={onChange} />
+					<input name='chatCheck' type='checkbox' onChange={onChange} />
 					채팅
 				</label>
 				<label>
@@ -314,7 +343,7 @@ const ClassRoom = () => {
 							userName: name,
 							content,
 							isResolved,
-							like,
+							likes,
 						}: chatType) => {
 							if (type === 'chat' && !chatCheck) {
 								return (
@@ -331,16 +360,24 @@ const ClassRoom = () => {
 										<div>{content}</div>
 										<div>{isResolved && '해결'}</div>
 										{userId === user.id && (
-											<button onClick={() => toggleResolve(chatId)}>
-												해결
-											</button>
+											<>
+												<button onClick={() => toggleResolve(chatId)}>
+													해결
+												</button>
+												<button onClick={() => deleteQuestion(chatId)}>
+													삭제
+												</button>
+											</>
 										)}
-										<button onClick={() => likeQuestion(chatId)}>추천</button>
-										{/* <div>
-											{like?.map((student, index) => (
-												<div key={index}>{student}</div>
-											))}
-										</div> */}
+										{likes?.findIndex((like) => like.userId === user.id) !==
+										-1 ? (
+											<button onClick={() => likeCancelQuestion(chatId)}>
+												추천취소
+											</button>
+										) : (
+											<button onClick={() => likeQuestion(chatId)}>추천</button>
+										)}
+										<div>{likes?.length}</div>
 									</div>
 								);
 							}

@@ -7,6 +7,13 @@ export const instance = axios.create({
 	},
 });
 
+
+let isRefreshing = false;
+const refreshSubscribers: ((arg: string) => void)[] = [];
+const addRefreshSubscriber = (callback: (arg: string) => void) => {
+	refreshSubscribers.push(callback);
+};
+
 instance.defaults.headers.common[
 	'Authorization'
 ] = `Bearer ${sessionStorage.getItem('accessToken')}`;
@@ -16,35 +23,34 @@ instance.interceptors.response.use(
 		return response;
 	},
 	async (error) => {
-		const {
-			config,
-			response: { status },
-		} = error;
-		if (status === 401) {
-			console.log(error, '401 error');
-			if (error.response.data.message === 'TokenExpiredError') {
-				console.log('refresh error');
-				const originalRequest = config;
-				const refreshToken = sessionStorage.getItem('refreshToken');
-
-				//token refresh 요청
-				let accesssToken;
-				if (refreshToken) {
-					const { data } = await apis.refresh(refreshToken);
-					accesssToken = data;
+		if (axios.isAxiosError(error)) {
+			const originalRequest = error.config;
+			if (
+				error.response?.status === 401 &&
+				error.response?.data.message === 'Unauthorized'
+			) {
+				if (!isRefreshing) {
+					const response = await apis.refresh();
+					const accessToken = response.data.accessToken;
+					sessionStorage.setItem('accessToken', response.data.accessToken);
+					instance.defaults.headers.common[
+						'Authorization'
+					] = `Bearer ${response.data.accessToken}`;
+					isRefreshing = false;
+					refreshSubscribers.map((callback) => callback(accessToken));
 				}
-
-				//new token
-				const { accessToken: newAccessToken } = accesssToken;
-				sessionStorage.setItem('accessToken', newAccessToken);
-
-				axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-				originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
-				return axios(originalRequest);
+				const retryOriginalRequest = new Promise((resolve) => {
+					addRefreshSubscriber((accessToken: string) => {
+						if (originalRequest.headers) {
+							originalRequest.headers.Authorization = 'Bearer ' + accessToken;
+							resolve(axios(originalRequest));
+						}
+					});
+				});
+				return retryOriginalRequest;
 			}
+			return Promise.reject(error);
 		}
-		return Promise.reject(error);
 	}
 );
 
@@ -54,19 +60,28 @@ export const apis = {
 	signIn: (signInInfo: { email: string; password: string }) =>
 		instance.post('/user/signin', signInInfo),
 	signOut: () => instance.post('/user/signout', {}),
-	setNick: (nickname: string) => instance.put('/user/nickname', { nickname }),
 	getUserInfo: () => instance.get('/user'),
-	refresh: (refreshToken: string) =>
-		instance.post('/auth/refresh', refreshToken),
 	withdrawal: () => instance.delete('auth/withdrawal'),
+	setNick: (nickname: string) => instance.put('/user/nickname', { nickname }),
+	refresh: () =>
+		instance.post(
+			'/user/refresh',
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${sessionStorage.getItem('refreshToken')}`,
+				},
+			}
+		),
 	kakaoLogin: (authorization_code: any) => instance.get(`/user/kakao/callback?code=${authorization_code}`),
 
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
-	
+
 	// Post
-	loadPosts: (classId: string, page: string) => instance.get(`/post/${classId}?page=${page}`),
+	loadPosts: (classId: string, page: string) =>
+		instance.get(`/post/${classId}?page=${page}`),
 	loadPost: (postId: string) => instance.get(`/post/detail/${postId}`),
 
 	// Main
@@ -78,12 +93,13 @@ export const apis = {
 	createClass: (classInfo: object) => instance.post('/class', classInfo),
 	// Todo
 	loadTodo: () => instance.get('/post/todo'),
-	addTodo: (content: string) => instance.post('/post/todo', { content: content }),
+	addTodo: (content: string) =>
+		instance.post('/post/todo', { content: content }),
 	deleteTodo: (todoId: number) => instance.delete(`/post/todo/${todoId}`),
 	completeTodo: (todoId: number) =>
-		instance.put('/post/todo/complete', {id: todoId}),
-	
+		instance.put('/post/todo/complete', { id: todoId }),
+
 	//Comment
-	sendComment: (content:object) => instance.post('/post/comment',{ content }),	
+	sendComment: (content: object) => instance.post('/post/comment', { content }),
 };
 export default apis;

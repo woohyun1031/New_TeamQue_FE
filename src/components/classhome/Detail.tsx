@@ -55,13 +55,13 @@ const Detail = () => {
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				{data &&
+				{/* {data &&
 					data.__comments__.map((comment: any) => (
 						<li key={comment.id}>
 							<CommentWriter>{comment.author}</CommentWriter>
 							<Comment>{comment.content}</Comment>
 						</li>
-					))}
+					))} */}
 				<CommentInput type='text' onChange={onChange} />
 				<CommentButton onClick={commentWrite}>등록</CommentButton>
 			</Comments>
@@ -84,6 +84,7 @@ const Container = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
+	position: relative;
 `;
 
 const PostHeader = styled.div`

@@ -20,7 +20,6 @@ const Board = () => {
 	const LoadPostData = async () => {
 		if (classid && page) {
 			const { data } = await apis.loadPosts(classid, page);
-			console.log(data)
 			setNotice(data.postListNotice);
 			setQuestion(data.postListquestion);
 			setTotalPageNumber(data.pages);
@@ -108,6 +107,7 @@ const Board = () => {
 					))}
 			</Pagenation>
 			<AddButton>새글작성</AddButton>
+
 		</Container>
 	);
 };
