@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
@@ -57,6 +57,16 @@ const ClassRoom = () => {
 
 	const [isQuestion, setIsQuestion] = useState(false);
 	const user = useSelector((state: RootState) => state.user);
+
+	const chatEndRef = useRef<null | HTMLDivElement>(null);
+
+	const scrollToBottom = () => {
+		chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [chatList]);
 
 	const SOCKETSERVER = 'ws://noobpro.shop';
 	// const SOCKETSERVER = 'ws://xpecter.shop';
@@ -128,6 +138,7 @@ const ClassRoom = () => {
 		});
 
 		socket.on('receiveChat', (data: chatType) => {
+			console.log(data);
 			setChatList((prev) => [...prev, { ...data, type: 'chat' }]);
 		});
 
@@ -147,6 +158,19 @@ const ClassRoom = () => {
 				prev.map((chat) =>
 					chat.chatId === chatId && chat.likes
 						? { ...chat, likes: [...chat.likes, userId] }
+						: chat
+				)
+			);
+		});
+
+		socket.on('receiveLikeDown', ({ chatId, userId }) => {
+			setChatList((prev) =>
+				prev.map((chat) =>
+					chat.likes && chat.chatId === chatId
+						? {
+								...chat,
+								likes: chat.likes.filter((like) => like.userId !== userId),
+						  }
 						: chat
 				)
 			);
@@ -252,8 +276,7 @@ const ClassRoom = () => {
 	};
 
 	const likeQuestion = (id: string) => {
-		console.log(id, classId);
-		socket.emit('sendLike', { chatId: id, classId }, () => {
+		socket.emit('sendLikeUp', { chatId: id, classId }, () => {
 			setChatList((prev) =>
 				prev.map((chat) =>
 					chat.likes && chat.chatId === id
@@ -265,7 +288,7 @@ const ClassRoom = () => {
 	};
 
 	const likeCancelQuestion = (id: string) => {
-		socket.emit('sendLike', { chatId: id, classId }, () => {
+		socket.emit('sendLikeDown', { chatId: id, classId }, () => {
 			setChatList((prev) =>
 				prev.map((chat) =>
 					chat.likes && chat.chatId === id
@@ -370,9 +393,11 @@ const ClassRoom = () => {
 										return (
 											<Question key={chatId}>
 												<QuestionContent isResolved={isResolved ? true : false}>
-													<DeleteButton
-														onClick={() => deleteQuestion(chatId)}
-													/>
+													{userId === user.id && (
+														<DeleteButton
+															onClick={() => deleteQuestion(chatId)}
+														/>
+													)}
 													{content}
 													<Resolve />
 												</QuestionContent>
@@ -410,6 +435,7 @@ const ClassRoom = () => {
 									}
 								}
 							)}
+						<div ref={chatEndRef} />
 					</ChatBox>
 				</div>
 
@@ -534,10 +560,9 @@ const StudentStateBox = styled.div`
 	height: 300px;
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	display: flex;
-	flex-wrap: wrap;
-	padding: 30px;
+	padding: 20px;
 	background-color: #fff;
+	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
@@ -548,12 +573,12 @@ const StudentStateBox = styled.div`
 `;
 
 const StudentBox = styled.div`
-	height: 120px;
-	width: 80px;
+	display: inline-block;
+	height: 100px;
+	width: 83px;
 `;
 
 const StudentName = styled.h4`
-	margin-top: 20px;
 	font-size: 12px;
 	font-weight: bold;
 	text-align: center;
@@ -714,6 +739,7 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	}
 	${({ isClicked }) =>
 		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
+	cursor: pointer;
 `;
 
 const InputBox = styled.div`
@@ -738,10 +764,11 @@ const SendButton = styled.button`
 	border-radius: 7px;
 	position: absolute;
 	opacity: 0;
-	transition: .2s;
+	transition: 0.2s;
 	right: 0;
 	bottom: 0;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
 `;
 
 const Input = styled.textarea`
@@ -773,7 +800,8 @@ const Input = styled.textarea`
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
 	border: none;
-	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) =>
+		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 30px;
