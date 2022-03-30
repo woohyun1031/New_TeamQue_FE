@@ -71,10 +71,10 @@ const Detail = () => {
 			<Comments>
 				{data &&
 					data.comments.map((comment: any) => (
-						<li key={comment.id}>
+						<Commentlist key={comment.id}>
 							<CommentWriter>{comment.author}</CommentWriter>
 							<Comment>{comment.content}</Comment>
-						</li>
+						</Commentlist>
 					))}
 				{/* <CommentBox> */}
 				<CommentBox>
@@ -135,6 +135,9 @@ const Contents = styled.p`
 	min-height: 450px;
 	color: ${({ theme }) => theme.colors.title};
 `;
+const Commentlist = styled.li`
+	margin: 10px;
+`;
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
@@ -145,9 +148,12 @@ const CommentTitle = styled.h2`
 const CommentWriter = styled.h4`
 	font-size: 12px;
 	font-weight: 700;
+	margin-bottom: 5px;
 `;
 
 const Comment = styled.p`
+	background-color: ${({ theme }) => theme.colors.background};
+	padding: 6px;
 	font-size: 12px;
 `;
 

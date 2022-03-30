@@ -89,8 +89,8 @@ const Todo = () => {
 									// src 불러오는 로직 변경 필요
 									src={
 										isComplete
-											? '/images/close_blue.png'
-											: '/images/close_white.png'
+											? '/images/closeblue.png'
+											: '/images/closewhite.png'
 									}
 									onClick={() => deleteTodo(id)}
 								/>
@@ -170,7 +170,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			css`
 				color: ${({ theme }) => theme.colors.main};
 				background-color: ${({ theme }) => theme.colors.base};
-				text-decoration: line-through red 2px;
+				text-decoration: line-through 2px;
 			`}
 	}
 	&:active {
@@ -180,7 +180,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			css`
 				color: ${({ theme }) => theme.colors.brightMain};
 				background-color: ${({ theme }) => theme.colors.hoverBase};
-				text-decoration: line-through red 2px;
+				text-decoration: line-through 2px;
 			`}
 	}
 	${(props) =>
@@ -188,7 +188,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 		css`
 			color: ${({ theme }) => theme.colors.main};
 			background-color: ${({ theme }) => theme.colors.background};
-			text-decoration: line-through red 2px;
+			text-decoration: line-through 2px;
 		`};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
