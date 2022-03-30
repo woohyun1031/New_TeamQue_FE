@@ -110,6 +110,7 @@ const ClassRoom = () => {
 								chatId: uuid,
 								type: 'question',
 								likes,
+
 							})
 						)
 					);
@@ -132,7 +133,7 @@ const ClassRoom = () => {
 				)
 			);
 		});
-		
+
 		socket.on('receiveResolved', ({ chatId }) => {
 			setChatList((prev) =>
 				prev.map((chat) =>

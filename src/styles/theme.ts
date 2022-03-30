@@ -11,6 +11,8 @@ const colors = {
 
 	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
+  subHover: '#C7C5C5',
+  subActive: '#B9B9B9',
 
 	base: '#F4F4F4',
   hoverBase:'#F1F1F1',

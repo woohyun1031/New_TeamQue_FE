@@ -66,7 +66,16 @@ const Button = styled.button`
 `;
 
 const LightButton = styled(Button)`
-	background-color: ${({ theme }) => theme.colors.brightMain};
+	background-color: ${({ theme }) => theme.colors.sub};
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.subHover};
+		//transform: translateY(-2px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.subActive};
+		//transform: translateY(-2px);
+	}
 `;
 
 const Character = styled.div<{ src: string }>`
