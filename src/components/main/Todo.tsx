@@ -155,43 +155,47 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	background-color: ${({ theme }) => theme.colors.main};
-	& + & {
-		margin-top: 20px;
-	}
-	color: ${({ theme }) => theme.colors.background};
 	position: relative;
 	font-weight: 700;
 	font-size: 14px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
+
+	& + & {
+		margin-top: 20px;
+	}
+
+	color: ${({ theme }) => theme.colors.buttonTitle};
+	background-color: ${({ theme }) => theme.colors.main};
+	${(props) =>
+		props.isComplete &&
+		css`
+			color: ${({ theme }) => theme.colors.blueTitle};
+			background-color: ${({ theme }) => theme.colors.background};
+			text-decoration: line-through 2px;
+		`};
+
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.brightMain};
 		${(props) =>
 			props.isComplete &&
 			css`
-				color: ${({ theme }) => theme.colors.main};
-				background-color: ${({ theme }) => theme.colors.base};
+				color: ${({ theme }) => theme.colors.blueTitle};
+				background-color: ${({ theme }) => theme.colors.whiteHover};
 				text-decoration: line-through 2px;
 			`}
 	}
+
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 		${(props) =>
 			props.isComplete &&
 			css`
-				color: ${({ theme }) => theme.colors.brightMain};
-				background-color: ${({ theme }) => theme.colors.hoverBase};
+				color: ${({ theme }) => theme.colors.blueTitle};
+				background-color: ${({ theme }) => theme.colors.whiterActive};
 				text-decoration: line-through 2px;
 			`}
 	}
-	${(props) =>
-		props.isComplete &&
-		css`
-			color: ${({ theme }) => theme.colors.main};
-			background-color: ${({ theme }) => theme.colors.background};
-			text-decoration: line-through 2px;
-		`};
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	transition: 0.3s;
 `;
 
 const AddButton = styled.button`
@@ -202,16 +206,16 @@ const AddButton = styled.button`
 	border: none;
 	border-radius: 7px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: ${({ theme }) => theme.colors.main};
-	background-color: ${({ theme }) => theme.colors.background};
 	font-size: 40px;
 	margin: 20px 0;
 	transition: 0.3s;
+	color: ${({ theme }) => theme.colors.blueTitle};
+	background-color: ${({ theme }) => theme.colors.background};
 	&:hover {
-		background-color: ${({ theme }) => theme.colors.base};
+		background-color: ${({ theme }) => theme.colors.whiteHover};
 	}
 	&:active {
-		background-color: ${({ theme }) => theme.colors.hoverBase};
+		background-color: ${({ theme }) => theme.colors.whiterActive};
 	}
 	cursor: pointer;
 `;
@@ -223,7 +227,7 @@ const InputBox = styled.input`
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.main};
 	border: none;
-	color: ${({ theme }) => theme.colors.background};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	text-align: center;
 	font-weight: 700;
 	font-size: 14px;
@@ -256,7 +260,7 @@ const Dropdown = styled.ul`
 	height: 35px;
 	padding: 4px;
 	border-radius: 7px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	color: ${({ theme }) => theme.colors.subTitle};
 	z-index: 101;

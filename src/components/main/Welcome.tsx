@@ -41,19 +41,19 @@ const WelcomeMessage = styled.p`
 	font-size: 30px;
 	font-weight: 700;
 	margin-bottom: -10px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Name = styled.p`
 	font-size: 30px;
 	font-weight: 700;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const MessageBox = styled.div`
 	width: 350px;
 	height: 85px;
 	position: relative;
-	background-color: ${({ theme }) => theme.colors.main};
-	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 18px;
 	font-weight: 500;
 	border-radius: 10px;
@@ -62,9 +62,12 @@ const MessageBox = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin-top: 20px;
+	background-color: ${({ theme }) => theme.colors.main};
 `;
 
-const Message = styled.p``;
+const Message = styled.p`
+	color: ${({ theme }) => theme.colors.buttonTitle};
+`;
 
 const Character = styled.div`
 	background-image: url('/images/welcome.png');
