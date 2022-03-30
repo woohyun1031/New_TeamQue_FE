@@ -156,8 +156,7 @@ export const user = createSlice({
 		builder.addCase(signIn.fulfilled, (state, action) => {
 			state.id = action.payload.id;
 			state.name = action.payload.name;
-			state.isLogin = true;
-			console.log(state.id)
+			state.isLogin = true;			
 		});
 		builder.addCase(kakaoLogin.fulfilled, (state, action) => {
 			state.id = action.payload.id;

@@ -99,9 +99,6 @@ const Todo = () => {
 								{dropdown.isOpen && id === dropdown.id && (
 									<>
 										<Dropdown>
-											{/* <li onClick={() => toggleComplete(id)}>
-												{isComplete ? '취소' : '해결'}
-											</li> */}
 											<li onClick={() => deleteTodo(id)}>삭제</li>
 										</Dropdown>
 									</>
