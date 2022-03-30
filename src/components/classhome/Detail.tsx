@@ -45,6 +45,7 @@ const Detail = () => {
 		if (comment && postid) {
 			try {
 				await apis.sendComment({ postid, comment });
+				setComment('');
 				loadPage();
 			} catch (error) {
 				console.log(error);
