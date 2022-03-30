@@ -240,6 +240,7 @@ const DropdownButton = styled.button<{ src: string }>`
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
+	background-size: contain;
 	width: 13px;
 	height: 13px;
 	padding: 5px;

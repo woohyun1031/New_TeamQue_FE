@@ -348,64 +348,73 @@ const ClassRoom = () => {
 					</StudentStateBox>
 				</StateBox>
 			</LeftBox>
-			<div>
-				<label>
-					<input name='chatCheck' type='checkbox' onChange={onChange} />
-					채팅
-				</label>
-				<label>
-					<input name='questionCheck' type='checkbox' onChange={onChange} />
-					질문
-				</label>
-				{chatList &&
-					chatList.map(
-						({
-							chatId,
-							userId,
-							type,
-							userName: name,
-							content,
-							isResolved,
-							likes,
-						}: chatType) => {
-							if (type === 'chat' && !chatCheck) {
-								return (
-									<div key={chatId}>
-										<div>{name}</div>
-										<div>{content}</div>
-									</div>
-								);
-							} else if (type === 'question' && !questionCheck) {
-								return (
-									<div key={chatId}>
-										<div>{name === user.name && '내 질문'}</div>
-										<div>{name}</div>
-										<div>{content}</div>
-										<div>{isResolved && '해결'}</div>
-										{userId === user.id && (
-											<>
-												<button onClick={() => toggleResolve(chatId)}>
-													해결
-												</button>
-												<button onClick={() => deleteQuestion(chatId)}>
-													삭제
-												</button>
-											</>
-										)}
-										{likes?.findIndex((like) => like.userId === user.id) !==
-										-1 ? (
-											<button onClick={() => likeCancelQuestion(chatId)}>
-												추천취소
-											</button>
-										) : (
-											<button onClick={() => likeQuestion(chatId)}>추천</button>
-										)}
-										<div>{likes?.length}</div>
-									</div>
-								);
+			<ChatContainer>
+				<ToggleButtons>
+					<ToggleButton>
+						<input name='chatCheck' type='checkbox' onChange={onChange} />
+						채팅
+					</ToggleButton>
+					<ToggleButton>
+						<input name='questionCheck' type='checkbox' onChange={onChange} />
+						질문
+					</ToggleButton>
+				</ToggleButtons>
+				<ChatBox>
+					{chatList &&
+						chatList.map(
+							({
+								chatId,
+								userId,
+								type,
+								userName: name,
+								content,
+								isResolved,
+								likes,
+							}: chatType) => {
+								if (type === 'chat' && !chatCheck) {
+									return (
+										<Chat key={chatId}>
+											<ChatName>{name}</ChatName>
+											<ChatContent>{content}</ChatContent>
+										</Chat>
+									);
+								} else if (type === 'question' && !questionCheck) {
+									return (
+										<Question key={chatId}>
+											<QuestionContent isResolved={isResolved ? true : false}>
+												<DeleteButton onClick={() => deleteQuestion(chatId)} />
+												{content}
+												<Resolve />
+											</QuestionContent>
+											<ButtonButtons>
+												{likes?.findIndex((like) => like.userId === user.id) !==
+												-1 ? (
+													<BottomButton
+														onClick={() => likeCancelQuestion(chatId)}
+														isClicked={true}
+													>
+														<LikeCharacter />
+														{likes?.length}명이 궁금해하고 있어요
+													</BottomButton>
+												) : (
+													<BottomButton onClick={() => likeQuestion(chatId)} isClicked={false}>
+														<LikeCharacter />
+														{likes?.length}명이 궁금해하고 있어요
+													</BottomButton>
+												)}
+												{userId === user.id && (
+													<BottomButton onClick={() => toggleResolve(chatId)} isClicked={isResolved? true: false}>
+														{isResolved ? '취소' : '해결'}
+													</BottomButton>
+												)}
+											</ButtonButtons>
+										</Question>
+									);
+								}
 							}
-						}
-					)}
+						)}
+				</ChatBox>
+
 				<div>
 					<input
 						type='text'
@@ -423,7 +432,7 @@ const ClassRoom = () => {
 						<input type='checkbox' name='queCheck' onChange={toggleChatType} />
 					</label>
 				</div>
-			</div>
+			</ChatContainer>
 		</Container>
 	);
 };
@@ -433,8 +442,9 @@ export default ClassRoom;
 const Container = styled.div`
 	width: 1200px;
 	height: 850px;
-	margin: 40px auto 0;
+	margin: 80px auto 0;
 	display: flex;
+	align-items: flex-end;
 	justify-content: space-between;
 `;
 
@@ -494,6 +504,7 @@ const StateButtons = styled.div`
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	display: flex;
 	align-items: center;
+	background-color: #fff;
 `;
 
 const StateButton = styled.button<{ src: string }>`
@@ -523,6 +534,7 @@ const StudentStateBox = styled.div`
 	display: flex;
 	flex-wrap: nowrap;
 	padding: 35px;
+	background-color: #fff;
 `;
 
 const StudentBox = styled.div`
@@ -547,4 +559,134 @@ const StudentState = styled.div<{ src: string }>`
 	background-repeat: no-repeat;
 	width: 50px;
 	height: 50px;
+`;
+
+const ChatContainer = styled.div`
+	width: 275px;
+	height: 855px;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+`;
+
+const ToggleButtons = styled.div`
+	display: flex;
+	margin: 19px 16px 10px;
+`;
+
+const ToggleButton = styled.label`
+	font-size: 18px;
+	font-weight: 600;
+	& input {
+		display: none;
+	}
+	& + & {
+		margin-left: 10px;
+	}
+`;
+
+const ChatBox = styled.div`
+	width: 275px;
+	height: 750px;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
+`;
+
+const Chat = styled.div`
+	width: 250px;
+	margin: 10px auto;
+`;
+
+const ChatName = styled.h4`
+	font-size: 12px;
+	margin-left: 5px;
+	margin-bottom: 3px;
+`;
+
+const ChatContent = styled.div`
+	width: 250px;
+	padding: 10px 10px;
+	border-radius: 7px;
+	background-color: #f4f4f4;
+	font-size: 14px;
+`;
+
+const Question = styled.div`
+	width: 250px;
+	margin: 10px auto;
+`;
+
+const QuestionContent = styled.div<{ isResolved: boolean }>`
+	border-radius: 7px;
+	padding: 15px 15px;
+	background-color: #718aff;
+	color: #fff;
+	position: relative;
+	${({isResolved}) => isResolved && 'background-color: #D4DBF9; '}
+`;
+
+const Resolve = styled.div`
+	width: 50px;
+	height: 50px;
+	background-image: url('/images/resolve.png'); 
+	background-repeat: no-repeat; 
+	background-position: center center;
+	background-size: contain;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+`
+
+
+const DeleteButton = styled.button`
+	border: none;
+	background: none;
+	background-image: url('/images/closewhite.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	z-index: 2;
+`;
+
+const LikeCharacter = styled.div`
+	width: 15px;
+	height: 15px;
+	margin-right: 2px;
+	background-image: url('/images/like.png');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+`;
+
+const ButtonButtons = styled.div`
+	display: flex;
+	margin-top: 3px;
+`;
+
+const BottomButton = styled.button<{isClicked : boolean}>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	padding: 4px;
+	background-color: #f4f4f4;
+	color: #718aff;
+	border-radius: 7px;
+	font-size: 10px;
+	& + & {
+		margin-left: 5px;
+	}
+	${({isClicked}) => isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
 `;
