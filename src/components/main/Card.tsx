@@ -69,13 +69,13 @@ const Container = styled.div`
 	height: 380px;
 	border-radius: 10px;
 	padding: 16px 23px;
-	background-color: ${({ theme }) => theme.colors.background};
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	transition: 0.2s;
 	& + & {
 		margin-left: 20px;
 	}
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const ThumbnailFilter = styled.div`
@@ -87,7 +87,6 @@ const ThumbnailFilter = styled.div`
 	border-radius: 7px;
 	top: 16px;
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.2);
 	opacity: 0;
 	z-index: 10;
 	transition: 0.5s;
@@ -95,6 +94,7 @@ const ThumbnailFilter = styled.div`
 	&:hover {
 		opacity: 1;
 	}
+	background-color: rgba(0, 0, 0, 0.2);
 `;
 
 const Thumbnail = styled.div<{ src: string }>`
@@ -120,30 +120,29 @@ const BadgeBox = styled.div`
 const Badge = styled.div<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	width: 52px;
 	height: 18px;
-	background-color: ${({ theme }) => theme.colors.main};
 	border-radius: 7px;
-	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 10px;
 	font-weight: 400;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	color: ${({ theme }) => theme.colors.buttonTitle};
+	background-color: ${({ theme }) => theme.colors.main};
 	${({ type }) =>
 		type === 'wait' && 'background-color: #F4F4F4; color: #718AFF;'}
-
 	& + & {
 		margin-left: 8px;
 	}
 `;
 
 const SubBadge = styled(Badge)`
-	background-color: ${({ theme }) => theme.colors.subMain};
 	color: ${({ theme }) => theme.colors.buttonTitle};
+	background-color: ${({ theme }) => theme.colors.subMain};
 `;
 
 const WaitBadge = styled(Badge)`
-	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.base};
 `;
 
 const Title = styled.h3`
@@ -156,8 +155,8 @@ const Title = styled.h3`
 const Teacher = styled.h4`
 	font-size: 12px;
 	font-weight: 700;
-	color: ${({ theme }) => theme.colors.title};
 	margin-bottom: 6px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const TimeTables = styled.div`
@@ -175,8 +174,6 @@ const TimeTables = styled.div`
 `;
 
 const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
-	color: ${({ theme }) => theme.colors.title};
-	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 12px;
 	width: 105px;
 	height: 22px;
@@ -186,6 +183,8 @@ const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	justify-content: center;
 	margin-right: 6px;
 	margin-bottom: 3px;
+	color: ${({ theme }) => theme.colors.title};
+	background-color: ${({ theme }) => theme.colors.base};
 `;
 
 const HomeButton = styled.button`
@@ -205,11 +204,9 @@ const HomeButton = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
-		//transform: translateY(-3px);
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
-		//transform: translateY(-3px);
 	}
 	/* hover 색상넣기 */
 `;

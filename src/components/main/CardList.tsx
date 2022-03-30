@@ -65,10 +65,10 @@ const Container = styled.div`
 		height: 5px;
 	}
 	&::-webkit-scrollbar-thumb {
-		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
+		background-color: ${({ theme }) => theme.colors.scroll};
 	}
 	&::-webkit-scrollbar-thumb:hover {
-		background-color: #d6d6d6;
+		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;

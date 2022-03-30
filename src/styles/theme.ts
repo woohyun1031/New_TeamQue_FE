@@ -2,12 +2,17 @@ const colors = {
   //font
 	title: '#000000',
   subTitle:'#626262',
+  blueTitle:'#718AFF',
   buttonTitle:"#FFFFFF",
-
+  //main col
 	main: '#718AFF',
-  brightMain: '#9CADFF',
-  darkerMain:'#5D72D2',
+  brightMain: '#9CAEFF',
+  darkerMain:'#4F66D2',
   moreDarkerMain:'#323C6E',
+  //white col
+  white:'#FFFFFF',
+  whiteHover:'#F4F4F4',
+  whiterActive:'#E1E1E1',
 
 	subMain: '#BCC8FF',
 	sub: '#D2D2D2',
@@ -15,14 +20,15 @@ const colors = {
   subActive: '#B9B9B9',
 
 	base: '#F4F4F4',
-  hoverBase:'#F1F1F1',
+  hoverBase:'#E1E1E1',
   activeBase:'#B8B8B8',
   subBase: 'rgba(0, 0, 0, 0.7)',
-
   boxShdow:'rgba(0, 0, 0, 0.25)',
-	signOut: '#F73535',
+	
+  signOut: '#F73535',
 	signoutHover: '#FB1616',
-	reject: '#D97E7E',
+	
+  reject: '#D97E7E',
 	shadow: '#F4F4F4',  
   scroll: '#EBEBEB',  
   scrollHover:'#D6D6D6',  

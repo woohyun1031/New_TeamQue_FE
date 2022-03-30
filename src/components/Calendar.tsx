@@ -159,7 +159,7 @@ const Container = styled.div`
 	justify-content: center;
 	border-radius: 10px;
 	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Table = styled.table`
@@ -170,11 +170,11 @@ const Table = styled.table`
 	border-collapse: collapse;
 	& tr td:nth-child(1),
 	& tr th:nth-child(1) {
-		color: #d97e7e;
+		color: ${({ theme }) => theme.colors.reject};
 	}
 	& tr td:nth-child(7),
 	& tr th:nth-child(7) {
-		color: #677bda;
+		color: ${({ theme }) => theme.colors.main};
 	}
 `;
 
@@ -192,13 +192,17 @@ const Button = styled.button`
 	background: none;
 	font-weight: 700;
 	font-size: 20px;
-	color: ${({ theme }) => theme.colors.base};
 	cursor: pointer;
+	color: ${({ theme }) => theme.colors.base};
+	&:hover {
+		color: ${({ theme }) => theme.colors.hoverBase};
+	}
 `;
 
 const Th = styled.th`
 	text-align: center;
 	height: 10px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const EventBox = styled.div`
@@ -206,8 +210,6 @@ const EventBox = styled.div`
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: ${({ theme }) => theme.colors.buttonTitle};
 	border-radius: 7px;
 	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 	z-index: 100;
@@ -217,6 +219,8 @@ const EventBox = styled.div`
 	align-items: center;
 	display: none;
 	white-space: nowrap;
+	color: ${({ theme }) => theme.colors.buttonTitle};
+	background-color: ${({ theme }) => theme.colors.main};
 	&:hover {
 		display: flex;
 	}
@@ -239,21 +243,21 @@ const DateBox = styled.div<{ isToday: boolean }>`
 const TodayUnderline = styled.div`
 	width: 17px;
 	height: 2px;
-	background-color: #718aff;
 	position: absolute;
 	bottom: 6px;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	background-color: ${({ theme }) => theme.colors.main};
 `;
 
 const EventPointer = styled.div`
 	width: 4px;
 	height: 4px;
 	border-radius: 2px;
-	background-color: ${({ theme }) => theme.colors.main};
 	position: absolute;
 	top: 10px;
 	right: 5px;
+	background-color: ${({ theme }) => theme.colors.main};
 `;
 
 const Pointer = styled.span`
@@ -261,8 +265,8 @@ const Pointer = styled.span`
 	width: 4px;
 	height: 4px;
 	border-radius: 2px;
-	background-color: ${({ theme }) => theme.colors.main};
 	margin-right: 5px;
 	position: relative;
 	top: -2px;
+	background-color: ${({ theme }) => theme.colors.main};
 `;

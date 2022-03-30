@@ -113,15 +113,16 @@ const TabButton = styled.button<{ isSelected: boolean }>`
 	&:hover {
 		${(props) => !props.isSelected && 'color: #aaa;'}
 	}
+	&:active {
+		${(props) => !props.isSelected && 'color: #9F9F9F;'}
+	}
 `;
 
 const AddCardBox = styled.div`
 	width: 300px;
 	height: 435px;
-	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	color: ${({ theme }) => theme.colors.main};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -130,6 +131,8 @@ const AddCardBox = styled.div`
 	cursor: pointer;
 	position: relative;
 	font-size: 18px;
+	color: ${({ theme }) => theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.background};
 	& h1 {
 		font-size: 50px;
 		font-weight: 300;
