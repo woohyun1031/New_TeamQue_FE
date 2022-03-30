@@ -57,10 +57,27 @@ export const signIn = createAsyncThunk(
 );
 
 //kakao social 로그인
+export const kakaoRequest = createAsyncThunk(
+	'user/kakaoin',
+	async (_, {rejectWithValue}) => {
+		try {
+			const { data } = await apis.kakaoRequest();
+			window.location.reload = data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`로그인 오류: ${error.response?.data.message}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 로그인 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
+		}	
+	}
+);
+
 export const kakaoLogin = createAsyncThunk(
 	'user/kakaoin',
-	async (authorization_code: any,{ rejectWithValue }
-	) => {
+	async (authorization_code:any, {rejectWithValue}) => {
 		try {
 			const { data } = await apis.kakaoLogin(authorization_code);
 			console.log(data,"data")
@@ -82,7 +99,6 @@ export const kakaoLogin = createAsyncThunk(
 		}	
 	}
 );
-
 
 export const signOut = createAsyncThunk(
 	'user/logoutAxios',

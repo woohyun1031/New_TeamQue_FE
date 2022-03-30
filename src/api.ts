@@ -73,7 +73,9 @@ export const apis = {
 				},
 			}
 		),
-	kakaoLogin: (authorization_code: any) => instance.get(`/user/kakao/callback?code=${authorization_code}`),
+	//social login
+	kakaoRequest: () => instance.post('/user/kakao'),
+	kakaoLogin: (authorization_code:any) => instance.post('/user/kakao',authorization_code),
 
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),

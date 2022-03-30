@@ -1,9 +1,8 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
-import { signIn } from '../../store/modules/user';
+import { signIn, kakaoRequest } from '../../store/modules/user';
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
@@ -34,7 +33,7 @@ const SignIn: React.FC = () => {
 	const onKakaoClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		console.log('카카오 로그인');
-		window.location.href = KAKAO_API_URL;
+		dispatch(kakaoRequest());
 	};
 
 	return (

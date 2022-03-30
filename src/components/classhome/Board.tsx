@@ -107,7 +107,6 @@ const Board = () => {
 					))}
 			</Pagenation>
 			<AddButton>새글작성</AddButton>
-
 		</Container>
 	);
 };
@@ -128,6 +127,7 @@ const Title = styled.h2`
 	font-weight: 700;
 	margin-top: 60px;
 	margin-left: 70px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Table = styled.table`
@@ -140,14 +140,14 @@ const Table = styled.table`
 
 const Th = styled.th`
 	text-align: left;
-	color: ${({ theme }) => theme.colors.title};
 	padding: 5px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Td = styled.td`
-	color: ${({ theme }) => theme.colors.title};
 	text-align: left;
 	padding: 5px;
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Pagenation = styled.div`
@@ -155,6 +155,7 @@ const Pagenation = styled.div`
 	bottom: 50px;
 	right: 50%;
 	transform: translateX(50%);
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const AddButton = styled.button`
@@ -171,8 +172,14 @@ const AddButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
 	cursor: pointer;
-	/* hover active 추가 필요 */
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
 `;
 
 const Page = styled.button<{ selected: boolean }>`
@@ -193,7 +200,7 @@ const IconCol = styled.col`
 
 const TypeCol = styled.col`
 	width: 80px;
-`
+`;
 
 const AuthorCol = styled.col`
 	width: 100px;
@@ -203,10 +210,10 @@ const DateCol = styled.col`
 	width: 100px;
 `;
 
-const Icon = styled.div<{src : string}>`
-	background-image: url(${({src})=> src});
+const Icon = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 15px;
 	height: 15px;
-`
+`;

@@ -491,7 +491,7 @@ const ClassTitle = styled.h2`
 
 const ClassTeacher = styled.h4`
 	font-size: 14px;
-	color: #b6b6b6;
+	color: ${({ theme }) => theme.colors.sub};
 `;
 
 const LeftBox = styled.div``;
@@ -533,7 +533,7 @@ const StateButtons = styled.div`
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	display: flex;
 	align-items: center;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const StateButton = styled.button<{ src: string }>`
@@ -552,7 +552,7 @@ const Hr = styled.hr`
 	border-radius: 1px;
 	width: 2px;
 	height: 30px;
-	background-color: #d2d2d2;
+	background-color: ${({ theme }) => theme.colors.sub};
 `;
 
 const StudentStateBox = styled.div`
@@ -561,7 +561,7 @@ const StudentStateBox = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	padding: 20px;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 5px;
@@ -569,6 +569,9 @@ const StudentStateBox = styled.div`
 	&::-webkit-scrollbar-thumb {
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
 
@@ -599,7 +602,7 @@ const ChatContainer = styled.div`
 	height: 855px;
 	border-radius: 10px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const ToggleButtons = styled.div`
@@ -634,6 +637,9 @@ const ChatBox = styled.div<{ isChecked: boolean }>`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: ${({ theme }) => theme.colors.scrollHover};
+	}
 	position: relative;
 `;
 
@@ -641,7 +647,7 @@ const NoCheckedMessage = styled.p`
 	width: 170px;
 	font-size: 13px;
 	font-weight: bold;
-	color: #718aff;
+	color: ${({ theme }) => theme.colors.main};
 	position: absolute;
 	top: 60%;
 	left: 50%;
@@ -663,7 +669,7 @@ const ChatContent = styled.div`
 	width: 250px;
 	padding: 10px 10px;
 	border-radius: 7px;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
 `;
 
@@ -675,8 +681,8 @@ const Question = styled.div`
 const QuestionContent = styled.div<{ isResolved: boolean }>`
 	border-radius: 7px;
 	padding: 15px 15px;
-	background-color: #718aff;
-	color: #fff;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	position: relative;
 	${({ isResolved }) => isResolved && 'background-color: #D4DBF9; '}
 `;
@@ -730,14 +736,14 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	justify-content: center;
 	border: none;
 	padding: 4px;
-	background-color: #f4f4f4;
-	color: #718aff;
+	background-color: ${({ theme }) => theme.colors.base};
+	color: ${({ theme }) => theme.colors.blueTitle};
 	border-radius: 7px;
 	font-size: 10px;
 	& + & {
 		margin-left: 5px;
 	}
-	${({ isClicked }) =>
+	${({ isClicked, theme }) =>
 		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
 	cursor: pointer;
 `;
@@ -755,7 +761,7 @@ const InputBox = styled.div`
 
 const SendButton = styled.button`
 	border: none;
-	background-color: #718aff;
+	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url('/images/send.png');
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -777,7 +783,7 @@ const Input = styled.textarea`
 	width: 214px;
 	height: 30px;
 	border-radius: 7px;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	outline: none;
 	transition: 0.2s;
 	margin-right: 6px;
