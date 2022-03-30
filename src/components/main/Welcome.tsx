@@ -20,7 +20,7 @@ const Welcome = () => {
 					{lifeQuotes[Math.floor(Math.random() * lifeQuotes.length)]}
 				</Message>
 			</MessageBox>
-			<Character src='/images/welcome.png' />
+			<Character />
 		</Container>
 	);
 };
@@ -66,8 +66,8 @@ const MessageBox = styled.div`
 
 const Message = styled.p``;
 
-const Character = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const Character = styled.div`
+	background-image: url('/images/welcome.png');
 	width: 154px;
 	height: 145px;
 	position: absolute;

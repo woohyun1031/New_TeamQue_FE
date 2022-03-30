@@ -15,7 +15,7 @@ const Header = () => {
 	return (
 		<Container>
 			<Inner>
-				<Logo src='/images/logo.png' onClick={toMain} />
+				<Logo onClick={toMain} />
 				<DropDown name={user.name} />
 			</Inner>
 		</Container>
@@ -36,9 +36,9 @@ const Inner = styled.div`
 	justify-content: space-between;
 `;
 
-const Logo = styled.button<{ src: string }>`
+const Logo = styled.button`
 	background: none;
-	${(props) => `background-image: url(${props.src});`}
+	background-image: url('/images/logo.png');
 	border: none;
 	width: 130px;
 	height: 60px;

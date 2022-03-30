@@ -86,6 +86,7 @@ const Todo = () => {
 							>
 								<p>{content}</p>
 								<DropdownButton
+								// src 불러오는 로직 변경 필요
 									src={
 										isComplete
 											? '/images/close_blue.png'

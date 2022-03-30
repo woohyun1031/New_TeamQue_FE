@@ -58,19 +58,19 @@ const ClassRoom = () => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const user = useSelector((state: RootState) => state.user);
 
-	const myStateImage = {
-		connect: '/images/myConnect.png',
-		correct: '/images/myCorrect.png',
-		incorrect: '/images/myIncorrect.png',
-		away: '/images/myQuestion.png',
-	};
+	// const myStateImage = {
+	// 	connect: '/images/myConnect.png',
+	// 	correct: '/images/myCorrect.png',
+	// 	incorrect: '/images/myIncorrect.png',
+	// 	away: '/images/myAway.png',
+	// };
 
 	const studentStateImage = {
 		disconnect: '/images/disconnect.png',
 		connect: '/images/connect.png',
 		correct: '/images/correct.png',
 		incorrect: '/images/incorrect.png',
-		away: '/images/question.png',
+		away: '/images/away.png',
 	};
 
 	// const SOCKETSERVER = 'ws://noobpro.shop';
@@ -110,7 +110,6 @@ const ClassRoom = () => {
 								chatId: uuid,
 								type: 'question',
 								likes,
-
 							})
 						)
 					);
@@ -170,7 +169,7 @@ const ClassRoom = () => {
 		});
 
 		socket.on('receiveDelete', ({ chatId }) => {
-			console.log(chatId)
+			console.log(chatId);
 			setChatList((prev) => prev.filter((chat) => chat.chatId !== chatId));
 		});
 	};
@@ -307,10 +306,13 @@ const ClassRoom = () => {
 	return (
 		<Container>
 			<LeftBox>
-				<ClassInfo>{classInfo?.title}</ClassInfo>
+				<ClassInfo>
+					<ClassTitle>{classInfo?.title}</ClassTitle>
+					<ClassTeacher>{classInfo?.teacher}</ClassTeacher>
+				</ClassInfo>
 				<Stream />
-				<p>{user.name}</p>
-				<p>{myState}</p>
+				<MyName>{user.name}</MyName>
+				<MyState src={`/images/my${myState}.png`}/>
 				<button onClick={() => changeMyState('correct')}>Correct</button>
 				<button onClick={() => changeMyState('incorrect')}>Incorrect</button>
 				<button onClick={() => changeMyState('away')}>Away</button>
@@ -410,19 +412,40 @@ export default ClassRoom;
 const Container = styled.div`
 	width: 1200px;
 	height: 850px;
-	margin: 100px auto 0;
+	margin: 40px auto 0;
 	display: flex;
 	justify-content: space-between;
 `;
 
-const LeftBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-`;
 const ClassInfo = styled.h2`
-	width: 360px;
-	height: 30px;
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 10px;
+`;
+
+const ClassTitle = styled.h2`
 	font-size: ${({ theme }) => theme.fontSizes.xxxlg};
 	color: ${({ theme }) => theme.colors.title};
+	margin-right: 10px;
 `;
+
+const ClassTeacher = styled.h4`
+	font-size: 14px;
+	color: #b6b6b6;
+`;
+
+const LeftBox = styled.div`
+`;
+
+const MyName = styled.h2`
+	font-size: 24px;
+	font-weight: bold;
+`
+
+const MyState = styled.div<{src: string}>`
+	background-image: url(${({src})=> src});
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 300px;
+	height: 300px;
+`

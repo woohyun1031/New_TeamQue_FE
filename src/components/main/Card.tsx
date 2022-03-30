@@ -30,7 +30,7 @@ const Card: React.FC<CardProps> = ({
 			<>
 				<Container>
 					<Thumbnail src={imageUrl} />
-					<WaitThumbnail src='/images/wait.png' />
+					<WaitThumbnail />
 					<BadgeBox>
 						<WaitBadge>대기중</WaitBadge>
 						<Badge>방송중</Badge>
@@ -45,7 +45,7 @@ const Card: React.FC<CardProps> = ({
 	return (
 		<Container>
 			<Thumbnail src={imageUrl} />
-			<ThumbnailFilter src='/images/play.png' onClick={toClassRoom} />
+			<ThumbnailFilter onClick={toClassRoom} />
 			<BadgeBox>
 				<SubBadge>진행중</SubBadge>
 				<Badge>방송중</Badge>
@@ -57,7 +57,7 @@ const Card: React.FC<CardProps> = ({
 					<TimeTable key={time}>{time}</TimeTable>
 				))}
 			</TimeTables>
-			<HomeButton src='/images/home.png' onClick={toClassHome} />
+			<HomeButton onClick={toClassHome} />
 		</Container>
 	);
 };
@@ -78,8 +78,8 @@ const Container = styled.div`
 	}
 `;
 
-const ThumbnailFilter = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const ThumbnailFilter = styled.div`
+	background-image: url('/images/play.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 255px;
@@ -188,13 +188,13 @@ const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	margin-bottom: 3px;
 `;
 
-const HomeButton = styled.button<{ src: string }>`
+const HomeButton = styled.button`
 	width: 41px;
 	height: 41px;
 	border-radius: 50%;
 	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
-	background-image: url(${({ src }) => src});
+	background-image: url('/images/home.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
@@ -214,8 +214,8 @@ const HomeButton = styled.button<{ src: string }>`
 	/* hover 색상넣기 */
 `;
 
-const WaitThumbnail = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const WaitThumbnail = styled.div`
+	background-image: url('/images/wait.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 255px;
