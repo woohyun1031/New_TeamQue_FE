@@ -101,5 +101,6 @@ export const apis = {
 
 	//Comment
 	sendComment: (contents: {postid:string,comment:string}) => instance.post(`/post/comment/${contents.postid}`, { content:contents.comment }),
+	loadPage: (postid:string) => instance.get(`/post/detail/${postid}`),
 };
 export default apis;

@@ -15,7 +15,7 @@ const Detail = () => {
 	}>();
 	const [isByMe, setIsByMe] = useState();
 	const [comment, setComment] = useState('');
-	const nickname: string | null = sessionStorage.getItem('nickname');
+	const nickname: string | null = sessionStorage.getItem('name');
 
 	const fetch = async () => {
 		if (postid) {
@@ -26,7 +26,16 @@ const Detail = () => {
 			setData(response.data.post);
 		}
 	};
-
+	const loadPage = async () => {
+		if (postid) {
+			try {
+				const response = await apis.loadPage(postid);
+				setData(response.data.post);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setComment(e.target.value);
 	};
@@ -35,8 +44,8 @@ const Detail = () => {
 		//send state comment to api
 		if (comment && postid) {
 			try {
-				const response = await apis.sendComment({ postid, comment });
-				console.log(response);
+				await apis.sendComment({ postid, comment });
+				loadPage();
 			} catch (error) {
 				console.log(error);
 			}
