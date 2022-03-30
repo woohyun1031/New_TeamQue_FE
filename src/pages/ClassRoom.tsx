@@ -109,7 +109,7 @@ const ClassRoom = () => {
 								isResolved,
 								chatId: uuid,
 								type: 'question',
-								like
+								like,
 							})
 						)
 					);

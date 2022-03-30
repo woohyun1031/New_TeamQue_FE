@@ -59,6 +59,7 @@ export const apis = {
 	refresh: (refreshToken: string) =>
 		instance.post('/auth/refresh', refreshToken),
 	withdrawal: () => instance.delete('auth/withdrawal'),
+	kakaoLogin: (authorization_code: any) => instance.get(`/user/kakao/callback?code=${authorization_code}`),
 
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),

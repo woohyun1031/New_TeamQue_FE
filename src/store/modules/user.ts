@@ -43,6 +43,7 @@ export const signIn = createAsyncThunk(
 			instance.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
+			console.log(data,"data")
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -55,6 +56,34 @@ export const signIn = createAsyncThunk(
 		}
 	}
 );
+
+//kakao social 로그인
+export const kakaoLogin = createAsyncThunk(
+	'user/kakaoin',
+	async (authorization_code: any,{ rejectWithValue }
+	) => {
+		try {
+			const { data } = await apis.kakaoLogin(authorization_code);
+			console.log(data,"data")
+			sessionStorage.setItem('name', `${data.name}`);
+			sessionStorage.setItem('accessToken', `${data.accessToke}`);
+			sessionStorage.setItem('refreshToken', `${data.refreshToken}`);
+			instance.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`로그인 오류: ${error.response?.data.message}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 로그인 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
+		}	
+	}
+);
+
 
 export const signOut = createAsyncThunk(
 	'user/logoutAxios',
@@ -125,6 +154,12 @@ export const user = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(signIn.fulfilled, (state, action) => {
+			state.id = action.payload.id;
+			state.name = action.payload.name;
+			state.isLogin = true;
+			console.log(state.id)
+		});
+		builder.addCase(kakaoLogin.fulfilled, (state, action) => {
 			state.id = action.payload.id;
 			state.name = action.payload.name;
 			state.isLogin = true;

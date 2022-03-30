@@ -21,7 +21,7 @@ const NotSignIn = () => {
 			<Button id='signIn' onClick={toSignIn}>
 				큐하러 가기
 			</Button>
-			<LightButton onClick={toTutorial}>큐 둘러보기</LightButton>
+			<LightButton onClick={toTutorial}>일단 둘러보기</LightButton>
 			<Character src='/images/character1.png' />
 		</Container>
 	);
@@ -66,7 +66,16 @@ const Button = styled.button`
 `;
 
 const LightButton = styled(Button)`
-	background-color: ${({ theme }) => theme.colors.brightMain};
+	background-color: ${({ theme }) => theme.colors.sub};
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.subHover};
+		//transform: translateY(-2px);
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.subActive};
+		//transform: translateY(-2px);
+	}
 `;
 
 const Character = styled.img`
