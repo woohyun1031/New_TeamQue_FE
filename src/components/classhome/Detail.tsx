@@ -11,7 +11,7 @@ const Detail = () => {
 		author: string;
 		createdAt: string;
 		content: string;
-		__comments__: [];
+		comments: [];
 	}>();
 	const [isByMe, setIsByMe] = useState();
 	const [comment, setComment] = useState('');
@@ -33,10 +33,13 @@ const Detail = () => {
 
 	const commentWrite = async () => {
 		//send state comment to api
-		if (comment) {
-			console.log(comment, 'comment');
-			const response = await apis.sendComment({ comment, nickname });
-			console.log(response);
+		if (comment && postid) {
+			try {
+				const response = await apis.sendComment({ postid, comment });
+				console.log(response);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
 
@@ -55,13 +58,13 @@ const Detail = () => {
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				{/* {data &&
-					data.__comments__.map((comment: any) => (
+				{data &&
+					data.comments.map((comment: any) => (
 						<li key={comment.id}>
 							<CommentWriter>{comment.author}</CommentWriter>
 							<Comment>{comment.content}</Comment>
 						</li>
-					))} */}
+					))}
 				<CommentInput type='text' onChange={onChange} />
 				<CommentButton onClick={commentWrite}>등록</CommentButton>
 			</Comments>
@@ -74,6 +77,7 @@ export default Detail;
 const Container = styled.div`
 	width: 890px;
 	height: 850px;
+	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
 	overflow-y: scroll;
@@ -160,4 +164,5 @@ const CommentButton = styled.button`
 	position: absolute;
 	right: 50px;
 	top: 115px;
+	cursor: pointer;
 `;

@@ -169,7 +169,7 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			props.isComplete &&
 			css`
 				color: ${({ theme }) => theme.colors.main};
-				background-color: ${({ theme }) => theme.colors.hoverBase};
+				background-color: ${({ theme }) => theme.colors.base};
 				text-decoration: line-through red 2px;
 			`}
 	}
@@ -178,8 +178,8 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 		${(props) =>
 			props.isComplete &&
 			css`
-				color: ${({ theme }) => theme.colors.buttonTitle};
-				background-color: ${({ theme }) => theme.colors.darkerMain};
+				color: ${({ theme }) => theme.colors.brightMain};
+				background-color: ${({ theme }) => theme.colors.hoverBase};
 				text-decoration: line-through red 2px;
 			`}
 	}
@@ -209,6 +209,9 @@ const AddButton = styled.button`
 	transition: 0.3s;
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.base};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.hoverBase};
 	}
 	cursor: pointer;
 `;

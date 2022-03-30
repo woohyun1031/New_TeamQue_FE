@@ -36,7 +36,7 @@ const Tutorial: React.FC = () => {
 			<ModalCloseButton />
 			<Container>
 				<Button
-					src='/images/arrow_back_ios_black_48dp.svg'
+					src='/images/arrow_gray_left.png'
 					id='buttonPrev'
 					onClick={() => prevSlide()}
 				/>
@@ -51,7 +51,7 @@ const Tutorial: React.FC = () => {
 					</Wrap>
 				</InnerContainer>
 				<Button
-					src='/images/arrow_forward_ios_black_48dp.svg'
+					src='/images/arrow_gray_right.png'
 					id='buttonPrev'
 					onClick={() => nextSlide()}
 				/>
