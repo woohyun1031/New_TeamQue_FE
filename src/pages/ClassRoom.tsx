@@ -132,6 +132,7 @@ const ClassRoom = () => {
 				)
 			);
 		});
+		
 		socket.on('receiveResolved', ({ chatId }) => {
 			setChatList((prev) =>
 				prev.map((chat) =>
@@ -168,7 +169,8 @@ const ClassRoom = () => {
 		});
 
 		socket.on('receiveDelete', ({ chatId }) => {
-			setChatList((prev) => prev.filter((chat) => chat.chatId === chatId));
+			console.log(chatId)
+			setChatList((prev) => prev.filter((chat) => chat.chatId !== chatId));
 		});
 	};
 
@@ -200,11 +202,11 @@ const ClassRoom = () => {
 				socket.emit(
 					'sendQuestion',
 					{ content: input, classId },
-					({ id, content }: { id: string; content: string }) => {
+					({ chatId, content }: { chatId: string; content: string }) => {
 						setChatList([
 							...chatList,
 							{
-								chatId: id,
+								chatId: chatId,
 								userId: user.id,
 								userName: user.name,
 								content,
@@ -220,11 +222,11 @@ const ClassRoom = () => {
 				socket.emit(
 					'sendChat',
 					{ content: input, classId },
-					({ id, content }: { id: string; content: string }) => {
+					({ chatId, content }: { chatId: string; content: string }) => {
 						setChatList([
 							...chatList,
 							{
-								chatId: id,
+								chatId: chatId,
 								userId: user.id,
 								userName: user.name,
 								content,

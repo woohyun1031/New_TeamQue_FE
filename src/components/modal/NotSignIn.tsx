@@ -69,8 +69,12 @@ const LightButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.brightMain};
 `;
 
-const Character = styled.img`
+const Character = styled.div<{src: string}>`
+background-image: url(${({src}) => src});
+background-position: center center;
 	position: absolute;
+	width: 122px;
+	
 	right: 20px;
 	bottom: 20px;
 `;

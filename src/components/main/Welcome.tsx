@@ -20,7 +20,7 @@ const Welcome = () => {
 					{lifeQuotes[Math.floor(Math.random() * lifeQuotes.length)]}
 				</Message>
 			</MessageBox>
-			<Character src='/images/character1.png' />
+			<Character src='/images/welcome.png' />
 		</Container>
 	);
 };
@@ -69,7 +69,7 @@ const Message = styled.p``;
 const Character = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
 	width: 154px;
-	height: 124px;
+	height: 145px;
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
