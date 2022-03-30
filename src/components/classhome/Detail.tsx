@@ -46,6 +46,7 @@ const Detail = () => {
 			try {
 				await apis.sendComment({ postid, comment });
 				setComment('');
+				console.log(comment, 'comment');
 				loadPage();
 			} catch (error) {
 				console.log(error);
@@ -75,8 +76,12 @@ const Detail = () => {
 							<Comment>{comment.content}</Comment>
 						</li>
 					))}
-				<CommentInput type='text' onChange={onChange} />
-				<CommentButton onClick={commentWrite}>등록</CommentButton>
+				{/* <CommentBox> */}
+				<CommentBox>
+					<CommentInput type='text' onChange={onChange} value={comment} />
+					<CommentButton onClick={commentWrite}>등록</CommentButton>
+				</CommentBox>
+				{/* </CommentBox> */}
 			</Comments>
 		</Container>
 	);
@@ -98,7 +103,6 @@ const Container = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
-	position: relative;
 `;
 
 const PostHeader = styled.div`
@@ -151,17 +155,23 @@ const Comments = styled.div`
 	background-color: ${({ theme }) => theme.colors.base};
 	min-height: 300px;
 	padding: 50px;
+`;
+
+const CommentBox = styled.div`
+	display: flex;
 	position: relative;
 `;
 
 const CommentInput = styled.input`
 	margin-top: 40px;
+	padding: 40px;
 	width: 800px;
 	height: 100px;
 	border: none;
 	border-radius: 10px;
 	margin-bottom: 10px;
-	background-color: ${({ theme }) => theme.colors.background}; ;
+	font-size: ${({ theme }) => theme.fontSizes.base};
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const CommentButton = styled.button`
@@ -171,8 +181,8 @@ const CommentButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	border: none;
-	position: absolute;
-	right: 50px;
-	top: 115px;
+	right: 30px;
+	bottom: 25px;
 	cursor: pointer;
+	position: absolute;
 `;
