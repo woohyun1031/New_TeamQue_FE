@@ -62,7 +62,6 @@ export const apis = {
 	signOut: () => instance.post('/user/signout', {}),
 	getUserInfo: () => instance.get('/user'),
 	withdrawal: () => instance.delete('auth/withdrawal'),
-<<<<<<< HEAD
 	setNick: (nickname: string) => instance.put('/user/nickname', { nickname }),
 	refresh: () =>
 		instance.post(
@@ -74,9 +73,7 @@ export const apis = {
 				},
 			}
 		),
-=======
 	kakaoLogin: (authorization_code: any) => instance.get(`/user/kakao/callback?code=${authorization_code}`),
->>>>>>> 6ebba7ddb421f30a569b8460e08fb968af04fdea
 
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
