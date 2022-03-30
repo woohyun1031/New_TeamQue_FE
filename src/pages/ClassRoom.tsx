@@ -58,72 +58,56 @@ const ClassRoom = () => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const user = useSelector((state: RootState) => state.user);
 
-	// const myStateImage = {
-	// 	connect: '/images/myConnect.png',
-	// 	correct: '/images/myCorrect.png',
-	// 	incorrect: '/images/myIncorrect.png',
-	// 	away: '/images/myAway.png',
-	// };
-
-	const studentStateImage = {
-		disconnect: '/images/disconnect.png',
-		connect: '/images/connect.png',
-		correct: '/images/correct.png',
-		incorrect: '/images/incorrect.png',
-		away: '/images/away.png',
-	};
-
 	// const SOCKETSERVER = 'ws://noobpro.shop';
 	const SOCKETSERVER = 'ws://xpecter.shop';
 	const classId = params.classid;
 
-	const accessToken = sessionStorage.getItem('accessToken');
-
 	const socketInitiate = async () => {
-		socket = io(SOCKETSERVER);
-		socket.emit('init', { userId: user.id, accessToken });
-		socket.on('initOk', () => {
-			socket.emit(
-				'joinRoom',
-				{ classId },
-				({
-					chatList,
-					userList,
-				}: {
-					chatList: {
-						userId: number;
-						userName: string;
-						content: string;
-						isResolved: boolean;
-						uuid: string;
-						likes: { userId: number }[];
-					}[];
-					userList: { key: { userName: string; state: stateType } };
-				}) => {
-					setChatList(
-						chatList.map(
-							({ userId, userName, content, isResolved, uuid, likes }) => ({
-								userId,
-								userName,
-								content,
-								isResolved,
-								chatId: uuid,
-								type: 'question',
-								likes,
-							})
-						)
-					);
-					setStudents(
-						Object.entries(userList).map(([key, { userName, state }]) => ({
-							userId: parseInt(key),
-							name: userName,
-							state: state,
-						}))
-					);
-				}
-			);
-			setIsConnected(true);
+		socket = io(SOCKETSERVER, {
+			extraHeaders: {
+				Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+			},
 		});
+		socket.emit(
+			'joinRoom',
+			{ classId },
+			({
+				chatList,
+				userList,
+			}: {
+				chatList: {
+					userId: number;
+					userName: string;
+					content: string;
+					isResolved: boolean;
+					uuid: string;
+					likes: { userId: number }[];
+				}[];
+				userList: { key: { userName: string; state: stateType } };
+			}) => {
+				setChatList(
+					chatList.map(
+						({ userId, userName, content, isResolved, uuid, likes }) => ({
+							userId,
+							userName,
+							content,
+							isResolved,
+							chatId: uuid,
+							type: 'question',
+							likes,
+						})
+					)
+				);
+				setStudents(
+					Object.entries(userList).map(([key, { userName, state }]) => ({
+						userId: parseInt(key),
+						name: userName,
+						state: state,
+					}))
+				);
+			}
+		);
+		setIsConnected(true);
 
 		socket.on('changeState', ({ userId, state }) => {
 			setStudents((prev) =>
