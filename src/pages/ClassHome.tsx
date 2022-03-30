@@ -15,8 +15,8 @@ const ClassHome = () => {
 				<Calendar />
 			</LeftBox>
 			{postid ? <Detail /> : <Board />}
-			<Arm src='/images/classhomeArm.png' />
-			<Character src='/images/classhome.png' />
+			<Arm />
+			<Character />
 		</Container>
 	);
 };
@@ -40,8 +40,8 @@ const LeftBox = styled.div`
 	justify-content: space-between;
 `;
 
-const Arm = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const Arm = styled.div`
+	background-image: url('/images/classhomeArm.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	position: absolute;
@@ -51,8 +51,8 @@ const Arm = styled.div<{ src: string }>`
 	bottom: 130px;
 `;
 
-const Character = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const Character = styled.div`
+	background-image: url('/images/classhome.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 340px;

@@ -22,7 +22,7 @@ const NotSignIn = () => {
 				큐하러 가기
 			</Button>
 			<LightButton onClick={toTutorial}>큐 둘러보기</LightButton>
-			<Character src='/images/notSignIn.png' />
+			<Character />
 		</Container>
 	);
 };
@@ -78,8 +78,8 @@ const LightButton = styled(Button)`
 	}
 `;
 
-const Character = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
+const Character = styled.div`
+	background-image: url('/images/notSignIn.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
