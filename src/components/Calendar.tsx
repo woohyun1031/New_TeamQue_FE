@@ -220,7 +220,7 @@ const EventBox = styled.div`
 	display: none;
 	white-space: nowrap;
 	color: ${({ theme }) => theme.colors.buttonTitle};
-	background-color: ${({ theme }) => theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.pointer};
 	&:hover {
 		display: flex;
 	}

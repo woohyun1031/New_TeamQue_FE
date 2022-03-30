@@ -34,6 +34,7 @@ const ClassInfo: React.FC = () => {
 	return (
 		<Container>
 			<Image src={data && data.imageUrl} />
+			<ThumbnailFilter />
 			<Title>{data && data.title}</Title>
 			<Teacher>{data && data.teacher} 선생님</Teacher>
 			<Time>{data && data.timeTable[0]}</Time>
@@ -99,7 +100,27 @@ const Image = styled.img`
 	object-fit: cover;
 `;
 
+const ThumbnailFilter = styled.div`
+	background-image: url('/images/play.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 230px;
+	height: 155px;
+	border-radius: 7px;
+	top: 20px;
+	position: absolute;
+	opacity: 0;
+	z-index: 10;
+	transition: 0.5s;
+	cursor: pointer;
+	&:hover {
+		opacity: 1;
+	}
+	background-color: rgba(0, 0, 0, 0.2);
+`;
+
 const Title = styled.h2`
+	margin-top: 8px;
 	font-size: 18px;
 	color: ${({ theme }) => theme.colors.title};
 `;
@@ -110,7 +131,7 @@ const Teacher = styled.p`
 `;
 
 const Time = styled.p`
-margin-bottom: 20px;
+	margin-bottom: 20px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
