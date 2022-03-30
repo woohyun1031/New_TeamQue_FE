@@ -107,6 +107,7 @@ const Board = () => {
 					))}
 			</Pagenation>
 			<AddButton>새글작성</AddButton>
+
 		</Container>
 	);
 };
