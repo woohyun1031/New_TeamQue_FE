@@ -22,7 +22,7 @@ const NotSignIn = () => {
 				큐하러 가기
 			</Button>
 			<LightButton onClick={toTutorial}>큐 둘러보기</LightButton>
-			<Character src='/images/character1.png' />
+			<Character src='/images/notSignIn.png' />
 		</Container>
 	);
 };
@@ -69,12 +69,13 @@ const LightButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.brightMain};
 `;
 
-const Character = styled.div<{src: string}>`
-background-image: url(${({src}) => src});
-background-position: center center;
+const Character = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	background-position: center center;
+	background-repeat: no-repeat;
 	position: absolute;
 	width: 122px;
-	
+	height: 137px;
 	right: 20px;
 	bottom: 20px;
 `;
