@@ -36,7 +36,7 @@ const Detail = () => {
 			}
 		}
 	};
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
 	};
 
@@ -78,7 +78,7 @@ const Detail = () => {
 					))}
 				{/* <CommentBox> */}
 				<CommentBox>
-					<CommentInput type='text' onChange={onChange} value={comment} />
+					<CommentInput onChange={onChange} value={comment} />
 					<CommentButton onClick={commentWrite}>등록</CommentButton>
 				</CommentBox>
 				{/* </CommentBox> */}
@@ -168,16 +168,26 @@ const CommentBox = styled.div`
 	position: relative;
 `;
 
-const CommentInput = styled.input`
+const CommentInput = styled.textarea`
+	resize: none;
+	border: none;
 	margin-top: 40px;
-	padding: 40px;
+	margin-bottom: 10px;
 	width: 800px;
 	height: 100px;
-	border: none;
 	border-radius: 10px;
-	margin-bottom: 10px;
+	outline: none;
+	transition: 0.2s;
+	padding: 25px;
 	font-size: ${({ theme }) => theme.fontSizes.base};
 	background-color: ${({ theme }) => theme.colors.background};
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
 `;
 
 const CommentButton = styled.button`

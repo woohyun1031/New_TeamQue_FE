@@ -94,6 +94,7 @@ const Todo = () => {
 									}
 									onClick={() => deleteTodo(id)}
 								/>
+								{isComplete ? <Complete /> : null}
 							</ScheduleItem>
 						))}
 					<Form onSubmit={addTodo}>
@@ -254,28 +255,16 @@ const DropdownButton = styled.button<{ src: string }>`
 	cursor: pointer;
 	object-fit: contain;
 `;
-
-const Dropdown = styled.ul`
-	width: 70px;
-	height: 35px;
-	padding: 4px;
-	border-radius: 7px;
-	background-color: ${({ theme }) => theme.colors.background};
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	color: ${({ theme }) => theme.colors.subTitle};
-	z-index: 101;
-	font-size: 10px;
-	& li {
-		padding: 5px;
-		text-align: center;
-		cursor: pointer;
-		&:nth-child(2) {
-			border-top: 1px solid #d2d2d2;
-		}
-	}
+const Complete = styled.div`
+	width: 80px;
+	height: 80px;
+	background-image: url('/images/todocorrect.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
 	position: absolute;
-	top: 30px;
-	right: -16px;
+	right: 0px;
+	bottom: -2px;
 `;
 
 const BackGround = styled.div`
