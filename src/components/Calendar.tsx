@@ -158,7 +158,7 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	border-radius: 10px;
-	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
@@ -211,7 +211,7 @@ const EventBox = styled.div`
 	top: 20px;
 	left: 20px;
 	border-radius: 7px;
-	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	z-index: 100;
 	font-weight: bold;
 	flex-direction: column;

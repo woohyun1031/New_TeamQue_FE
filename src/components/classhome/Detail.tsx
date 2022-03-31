@@ -130,7 +130,7 @@ const Container = styled.div`
 	height: 850px;
 	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
-	box-shadow: 0 1px 4px ${({ theme }) => theme.colors.boxShdow};
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
 		width: 12px; /*스크롤바의 너비*/
