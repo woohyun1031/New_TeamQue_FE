@@ -1,3 +1,4 @@
+import { off } from 'process';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -324,16 +325,19 @@ const ClassRoom = () => {
 								<StateButton
 									onClick={() => changeMyState('correct')}
 									src='/images/correctbutton.png'
+									isActive={myState === 'correct'}
 								/>
 								<Hr />
 								<StateButton
 									onClick={() => changeMyState('incorrect')}
 									src='/images/incorrectbutton.png'
+									isActive={myState === 'incorrect'}
 								/>
 								<Hr />
 								<StateButton
 									onClick={() => changeMyState('away')}
 									src='/images/awaybutton.png'
+									isActive={myState === 'away'}
 								/>
 							</StateButtons>
 						</UpperBox>
@@ -439,7 +443,7 @@ const ClassRoom = () => {
 
 				<InputBox>
 					<div>
-					<SendButton onClick={sendChat} />
+						<SendButton onClick={sendChat} />
 						<Input
 							// type='text'
 							value={input}
@@ -450,7 +454,7 @@ const ClassRoom = () => {
 								}
 							}}
 						/>
-						
+
 						<QueButton isQuestion={isQuestion}>
 							<input
 								type='checkbox'
@@ -535,10 +539,12 @@ const StateButtons = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const StateButton = styled.button<{ src: string }>`
+const StateButton = styled.button<{ src: string; isActive: boolean }>`
 	background: none;
 	border: none;
 	background-image: url(${({ src }) => src});
+	background-image: url(${({ isActive, src }) =>
+		isActive ? src : `'${src.split('.')[0]}off.png'`});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 90px;
@@ -798,7 +804,8 @@ const Input = styled.textarea`
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
 	border: none;
-	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) =>
+		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 30px;
