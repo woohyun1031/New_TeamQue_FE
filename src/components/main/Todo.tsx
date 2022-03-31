@@ -77,7 +77,10 @@ const Todo = () => {
 											? '/images/closeblue.png'
 											: '/images/closewhite.png'
 									}
-									onClick={() => deleteTodo(id)}
+									onClick={(e) => {
+										e.stopPropagation();
+										deleteTodo(id);
+									}}
 								/>
 								{isComplete ? <Complete /> : null}
 							</ScheduleItem>
@@ -228,7 +231,7 @@ const DeleteButton = styled.button<{ src: string }>`
 	top: 10px;
 	right: 10px;
 	cursor: pointer;
-	object-fit: contain;
+	z-index: 1;
 `;
 
 const Complete = styled.div`
