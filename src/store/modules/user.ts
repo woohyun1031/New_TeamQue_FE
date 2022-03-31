@@ -130,6 +130,25 @@ export const postBoard = createAsyncThunk(
 	}
 );
 
+export const removeBoard = createAsyncThunk(
+	'user/removeBoard',
+	async (postid:string, { rejectWithValue }) => {
+		try {			
+			await apis.deleteBoard(postid);						
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+				return rejectWithValue(error.message);
+			} else {
+				alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				return rejectWithValue('An unexpected error occurred');
+			}
+		}
+	}
+);
+
+
+
 const initialState = {
 	id: 0,
 	name: '',

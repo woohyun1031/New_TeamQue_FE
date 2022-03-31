@@ -1,10 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
+import { removeBoard } from '../../store/modules/user';
 
 const Detail = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const { classid, postid } = useParams<string>();
 	const [data, setData] = useState<{
 		postType: string;
@@ -40,6 +43,14 @@ const Detail = () => {
 	};
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
+	};
+
+	const onRemove = async () => {
+		if (postid) {
+			await dispatch(removeBoard(postid));
+			alert('저장완료');
+			navigate(`/classhome/${classid}/1`);
+		}
 	};
 
 	const commentWrite = async () => {
@@ -88,6 +99,7 @@ const Detail = () => {
 							}}
 						/>
 					) : null}
+					{isByMe ? <RemoveButton onClick={onRemove} /> : null}
 				</HeaderRight>
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
@@ -144,7 +156,7 @@ const HeaderRight = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	width: 100px;
+	width: 130px;
 `;
 
 const PostType = styled.h3`
@@ -237,16 +249,13 @@ const StarIcon = styled.button<{ src: string }>`
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
 	width: 30px;
 	height: 30px;
 	border-radius: 7px;
 	display: inline-block;
 	transition: 0.2s;
 	z-index: 2;
-	& input {
-		display: none;
-	}
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const CommentButton = styled.button`
@@ -268,6 +277,7 @@ const UpdateButton = styled.button`
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
 	width: 30px;
 	height: 30px;
 	border-radius: 7px;
@@ -275,8 +285,20 @@ const UpdateButton = styled.button`
 	transition: 0.2s;
 	z-index: 2;
 	cursor: pointer;
-	& input {
-		display: none;
-	}
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const RemoveButton = styled.button`
+	border: none;
+	background-image: url('/images/removebutton.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	z-index: 2;
+	cursor: pointer;
 `;
