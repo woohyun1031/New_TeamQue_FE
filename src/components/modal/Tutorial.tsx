@@ -38,6 +38,10 @@ const Tutorial: React.FC = () => {
 		dispatch(changeModal('notSignIn'));
 	};
 
+	const onClick = (pageNum: number) => {
+		setCurrentNum(pageNum);
+	};
+
 	return (
 		<>
 			<Back onClick={toNotSignIn} />
@@ -56,6 +60,14 @@ const Tutorial: React.FC = () => {
 							<Box color='green'>page4</Box>
 						</BoxList>
 					</Wrap>
+					<Pagination>
+						<Pages>
+							<Page id='0' currentNum={currentNum} onClick={() => onClick(0)} />
+							<Page id='1' currentNum={currentNum} onClick={() => onClick(1)} />
+							<Page id='2' currentNum={currentNum} onClick={() => onClick(2)} />
+							<Page id='3' currentNum={currentNum} onClick={() => onClick(3)} />
+						</Pages>
+					</Pagination>
 				</InnerContainer>
 				<Button
 					src='/images/arrow_gray_right.png'
@@ -127,5 +139,27 @@ const Button = styled.button<{ src: string }>`
 	background-position: center center;
 	width: 100px;
 	height: 100px;
+	cursor: pointer;
+`;
+
+const Pagination = styled.div`
+	margin-top: 10px;
+`;
+
+const Pages = styled.ul`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const Page = styled.li<{ id: string; currentNum: number }>`
+	width: 14px;
+	height: 14px;
+	margin: 0px 6px;
+	border: 1px solid black;
+	border-radius: 100%;
+	background-color: white;
+	background-color: ${({ id, currentNum }) =>
+		id === currentNum.toString() ? 'black' : 'white'};
 	cursor: pointer;
 `;
