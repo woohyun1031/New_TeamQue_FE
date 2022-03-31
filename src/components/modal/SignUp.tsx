@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,7 +7,6 @@ import { signUp } from '../../store/modules/user';
 
 const SignUp: React.FC = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const [inputs, setInputs] = useState({
 		email: '',
 		name: '',
@@ -23,28 +22,41 @@ const SignUp: React.FC = () => {
 		});
 	};
 
+	const toSignIn = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		dispatch(changeModal('signIn'));
+	};
+
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(signUp(inputs));
-		alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.')
+		alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.');
 		dispatch(changeModal('notSignIn'));
 	};
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<Title>반갑습니다, <img src='/images/logofont.png' /></Title>
+			<Title>
+				반갑습니다, <img src='/images/logofont.png' />
+			</Title>
 			<Description>계속 하려면 회원가입을 진행해주세요</Description>
 			<Label htmlFor='email'>이메일</Label>
 			<Input
 				type='email'
-				id="email"
+				id='email'
 				name='email'
 				placeholder='이메일'
 				onChange={onChange}
 			/>
 			<Label htmlFor='name'>이름</Label>
 
-			<Input type='text' id='name' name='name' placeholder='이름' onChange={onChange} />
+			<Input
+				type='text'
+				id='name'
+				name='name'
+				placeholder='이름'
+				onChange={onChange}
+			/>
 			<Label htmlFor='password'>비밀번호</Label>
 
 			<Input
@@ -63,6 +75,7 @@ const SignUp: React.FC = () => {
 				onChange={onChange}
 			/>
 			<Button>회원가입</Button>
+			<Back onClick={toSignIn} />
 		</Form>
 	);
 };
@@ -73,6 +86,19 @@ const Form = styled.form`
 	width: 480px;
 	height: 550px;
 	padding: 60px 100px;
+`;
+
+const Back = styled.button`
+	border: none;
+	background: none;
+	width: 11px;
+	height: 19px;
+	background-image: url('/images/arrowleftblack.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 70px;
+	left: 50px;
+	cursor: pointer;
 `;
 
 const Title = styled.h2`

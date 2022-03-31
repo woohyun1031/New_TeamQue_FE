@@ -25,6 +25,12 @@ const SignIn: React.FC = () => {
 		dispatch(signIn(inputs));
 	};
 
+
+	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		dispatch(changeModal('notSignIn'));
+	};
+
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		dispatch(changeModal('signUp'));
@@ -73,6 +79,7 @@ const SignIn: React.FC = () => {
 			<SignUpMessage>
 				아직 계정이 없다면? <SignUp onClick={toSignUp}>회원가입하기</SignUp>
 			</SignUpMessage>
+			<Back onClick={toNotSignIn} />
 		</Form>
 	);
 };
@@ -83,6 +90,19 @@ const Form = styled.form`
 	width: 480px;
 	height: 560px;
 	padding: 60px 100px;
+`;
+
+const Back = styled.button`
+	border: none;
+	background: none;
+	width: 11px;
+	height: 19px;
+	background-image: url('/images/arrowleftblack.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 70px;
+	left: 50px;
+	cursor: pointer;
 `;
 
 const Title = styled.h2`

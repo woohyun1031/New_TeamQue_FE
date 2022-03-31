@@ -42,7 +42,6 @@ export const signIn = createAsyncThunk(
 			instance.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
-			console.log(data,"data")
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

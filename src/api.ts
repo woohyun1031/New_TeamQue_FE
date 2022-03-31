@@ -62,7 +62,6 @@ export const apis = {
 	signOut: () => instance.post('/user/signout', {}),
 	getUserInfo: () => instance.get('/user'),
 	withdrawal: () => instance.delete('auth/withdrawal'),
-	setNick: (nickname: string) => instance.put('/user/nickname', { nickname }),
 	refresh: () =>
 		instance.post(
 			'/user/refresh',
