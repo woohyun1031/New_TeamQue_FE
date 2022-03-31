@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import ModalCloseButton from './ModalCloseButton';
+import { changeModal } from '../../store/modules/modal';
 
 const Tutorial: React.FC = () => {
 	const [currentNum, setCurrentNum] = useState(0);
+	const dispatch = useDispatch();
 	const TotalNum = 3;
 	const slideRef = useRef<any>(null);
 
@@ -31,9 +33,14 @@ const Tutorial: React.FC = () => {
 		}
 	};
 
+	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		dispatch(changeModal('notSignIn'));
+	};
+
 	return (
 		<>
-			<ModalCloseButton />
+			<Back onClick={toNotSignIn} />
 			<Container>
 				<Button
 					src='/images/arrow_gray_left.png'
@@ -65,6 +72,19 @@ export default Tutorial;
 const Container = styled.div`
 	display: flex;
 	align-items: center;
+`;
+
+const Back = styled.button`
+	border: none;
+	background: none;
+	width: 11px;
+	height: 19px;
+	background-image: url('/images/arrowleftblack.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 70px;
+	left: 50px;
+	cursor: pointer;
 `;
 
 const InnerContainer = styled.div`

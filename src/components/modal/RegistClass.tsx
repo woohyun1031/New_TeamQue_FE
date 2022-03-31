@@ -2,10 +2,11 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import apis from '../../api';
+import ModalCloseButton from './ModalCloseButton';
 
 const RegistClass = () => {
 	const [input, setInput] = useState('');
-  const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setInput(e.target.value);
@@ -14,20 +15,23 @@ const RegistClass = () => {
 	const registClass = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		apis.registClass(input);
-    alert('수강 신청이 완료되었습니다')
-    location.reload()
+		alert('수강 신청이 완료되었습니다');
+		location.reload();
 	};
 
 	return (
-		<Form onSubmit={registClass}>
-			<h1>수업 코드 입력</h1>
-			<Input
-				type='text'
-				placeholder='수업 참가 코드를 입력해주세요'
-				onChange={onChange}
-			/>
-			<Button>수업 참가 신청</Button>
-		</Form>
+		<>
+			<ModalCloseButton />
+			<Form onSubmit={registClass}>
+				<h1>수업 코드 입력</h1>
+				<Input
+					type='text'
+					placeholder='수업 참가 코드를 입력해주세요'
+					onChange={onChange}
+				/>
+				<Button>수업 참가 신청</Button>
+			</Form>
+		</>
 	);
 };
 
