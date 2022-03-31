@@ -103,6 +103,9 @@ const Container = styled.div`
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
 	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: ${({ theme }) => theme.colors.scrollHover};
+	}
 `;
 
 const PostHeader = styled.div`
@@ -147,8 +150,9 @@ const CommentTitle = styled.h2`
 
 const CommentWriter = styled.h4`
 	font-size: 12px;
-	font-weight: 700;
+	font-weight: 800;
 	margin-bottom: 5px;
+	${({ theme }) => theme.colors.title};
 `;
 
 const Comment = styled.p`
@@ -187,6 +191,9 @@ const CommentInput = styled.textarea`
 	&::-webkit-scrollbar-thumb {
 		background-color: ${({ theme }) => theme.colors.scroll};
 		border-radius: 10px;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
 

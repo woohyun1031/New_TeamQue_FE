@@ -18,14 +18,15 @@ const colors = {
 	base: '#F4F4F4',
   hoverBase:'#E1E1E1',
   activeBase:'#B8B8B8',
-  
+  //sub
+  sub: '#D2D2D2',
+  subHover: '#C7C5C5',
+  subActive: '#B9B9B9',
+
   subBase: 'rgba(0, 0, 0, 0.7)',
   boxShdow:'rgba(0, 0, 0, 0.25)',
   pointer:'rgba(0, 0, 0, 0.5);',
 	
-  sub: '#D2D2D2',
-  subHover: '#C7C5C5',
-  subActive: '#B9B9B9',
 	
   signOut: '#F73535',
 	signoutHover: '#FB1616',
