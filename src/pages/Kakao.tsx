@@ -15,7 +15,7 @@ const Kakao = () => {
 
 	useEffect(() => {
 		console.log('kakaologin start');
-		dispatch(kakaoLogin(authorization_code));
+		dispatch(kakaoLogin());
 	}, []);
 
 	return null;

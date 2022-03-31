@@ -1,3 +1,4 @@
+import { kakaoLogin } from './store/modules/user';
 import axios from 'axios';
 
 export const instance = axios.create({
@@ -73,7 +74,7 @@ export const apis = {
 				},
 			}
 		),
-	kakaoLogin: (authorization_code: any) => instance.get(`/user/kakao/callback?code=${authorization_code}`),
+	kakaoLogin: () => instance.get(`/user/kakao`),
 
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),

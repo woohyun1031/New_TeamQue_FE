@@ -177,7 +177,6 @@ const ClassRoom = () => {
 		});
 
 		socket.on('receiveDelete', ({ chatId }) => {
-			console.log(chatId);
 			setChatList((prev) => prev.filter((chat) => chat.chatId !== chatId));
 		});
 	};
@@ -800,8 +799,7 @@ const Input = styled.textarea`
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
 	border: none;
-	background-image: url(${({ isQuestion }) =>
-		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 30px;

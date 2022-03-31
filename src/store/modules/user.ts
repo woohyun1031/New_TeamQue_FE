@@ -59,10 +59,13 @@ export const signIn = createAsyncThunk(
 //kakao social 로그인
 export const kakaoLogin = createAsyncThunk(
 	'user/kakaoin',
-	async (authorization_code: any,{ rejectWithValue }
+	async (_,{ rejectWithValue }
 	) => {
 		try {
-			const { data } = await apis.kakaoLogin(authorization_code);
+			console.log(1)
+			const response = await apis.kakaoLogin();
+			console.log(response)
+			const data = response.data
 			console.log(data,"data")
 			sessionStorage.setItem('name', `${data.name}`);
 			sessionStorage.setItem('accessToken', `${data.accessToke}`);
