@@ -69,7 +69,6 @@ const ClassRoom = () => {
 	}, [chatList]);
 
 	const SOCKETSERVER = 'ws://noobpro.shop';
-	// const SOCKETSERVER = 'ws://xpecter.shop';
 	const classId = params.classid;
 
 	const socketInitiate = async () => {
@@ -743,7 +742,7 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	& + & {
 		margin-left: 5px;
 	}
-	${({ isClicked, theme }) =>
+	${({ isClicked }) =>
 		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
 	cursor: pointer;
 `;
@@ -769,41 +768,25 @@ const SendButton = styled.button`
 	height: 30px;
 	border-radius: 7px;
 	position: absolute;
-	opacity: 0;
+	opacity: 1;
 	transition: 0.2s;
 	right: 0;
-	bottom: 0;
+	bottom: 40px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
-	&:hover + textarea {
-		height: 70px;
-	}
-	&:focus + textarea {
-		height: 70px;
-	}
-	&:active + textarea {
-		height: 70px;
-	}
 `;
 
 const Input = styled.textarea`
 	resize: none;
 	border: none;
 	width: 214px;
-	height: 30px;
+	height: 70px;
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.base};
 	outline: none;
 	transition: 0.3s;
 	margin-right: 6px;
 	padding: 10px;
-	&:focus {
-		height: 70px;
-	}
-	&:focus ~ ${SendButton} {
-		bottom: 40px;
-		opacity: 1;
-	}
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
