@@ -51,8 +51,8 @@ const Name = styled.p`
 `;
 
 const MessageBox = styled.div`
-	width: 350px;
-	height: 85px;
+	width: 330px;
+	height: 80px;
 	position: relative;
 	font-size: 18px;
 	font-weight: 500;
@@ -74,6 +74,6 @@ const Character = styled.div`
 	width: 154px;
 	height: 145px;
 	position: absolute;
-	bottom: 10px;
-	right: 20px;
+	bottom: 30px;
+	right: 40px;
 `;

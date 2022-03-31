@@ -11,6 +11,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { getUserInfo } from './store/modules/user';
 import { RootState } from './store/configStore';
 import OAuth from './components/OAuth';
+import styled from 'styled-components';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const App = () => {
 	}, [isLogin, navigate]);
 
 	return (
-		<>
+		<Container>
 			<GlobalStyle />
 			<Header />
 			<Routes>
@@ -49,8 +50,12 @@ const App = () => {
 				<Route path='/auth/:accessToken/:refreshToken' element={<OAuth />} />
 			</Routes>
 			<Modal />
-		</>
+		</Container>
 	);
 };
 
 export default App;
+
+const Container = styled.div`
+	padding-bottom: 100px;
+`
