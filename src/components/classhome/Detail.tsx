@@ -48,7 +48,7 @@ const Detail = () => {
 	const onRemove = async () => {
 		if (postid) {
 			await dispatch(removeBoard(postid));
-			alert('저장완료');
+			alert('삭제완료');
 			navigate(`/classhome/${classid}/1`);
 		}
 	};
@@ -285,6 +285,9 @@ const UpdateButton = styled.button`
 	transition: 0.2s;
 	z-index: 2;
 	cursor: pointer;
+	&:hover {
+		background-image: url('/images/blueupdatebutton.png');
+	}
 `;
 
 const RemoveButton = styled.button`
@@ -301,4 +304,7 @@ const RemoveButton = styled.button`
 	transition: 0.2s;
 	z-index: 2;
 	cursor: pointer;
+	&:hover {
+		background-image: url('/images/redremovebutton.png');
+	}
 `;
