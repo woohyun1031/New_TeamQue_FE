@@ -156,10 +156,9 @@ const Page = styled.li<{ id: string; currentNum: number }>`
 	width: 14px;
 	height: 14px;
 	margin: 0px 6px;
-	border: 1px solid black;
 	border-radius: 100%;
-	background-color: white;
 	background-color: ${({ id, currentNum }) =>
-		id === currentNum.toString() ? 'black' : 'white'};
+		id === currentNum.toString() ? '#718AFF' : 'white'};
+	border: 1px solid ${({ theme }) => theme.colors.main};
 	cursor: pointer;
 `;
