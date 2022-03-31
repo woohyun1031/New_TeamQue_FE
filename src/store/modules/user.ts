@@ -93,23 +93,6 @@ export const getUserInfo = createAsyncThunk(
 	}
 );
 
-// export const nicknameSet = createAsyncThunk(
-// 	'user/nickname',
-// 	async (nickname: string, { rejectWithValue }) => {
-// 		try {
-// 			await apis.setNick(nickname);
-// 			return true;
-// 		} catch (error) {
-// 			if (axios.isAxiosError(error)) {
-// 				alert(`닉네임 설정 오류: ${error.response?.data.message}`);
-// 				return rejectWithValue(error.message);
-// 			} else {
-// 				alert(`알 수 없는 닉네임 설정 오류: ${error}`);
-// 				return rejectWithValue('An unexpected error occurred');
-// 			}
-// 		}
-// 	}
-// );
 
 export const updateBoard = createAsyncThunk(
 	'user/updateBoard',
@@ -130,7 +113,7 @@ export const updateBoard = createAsyncThunk(
 );
 
 export const postBoard = createAsyncThunk(
-	'user/updateBoard',
+	'user/postBoard',
 	async ( boardInfo:{classid:string,boardInfo:object}, { rejectWithValue }) => {
 		try {
 			console.log(boardInfo)

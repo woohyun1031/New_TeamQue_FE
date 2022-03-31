@@ -56,15 +56,11 @@ const Main = () => {
 					<AddCardBox onClick={openAddLearnClassModal}>
 						<h1>+</h1>
 						<p>새로운 강의 참가하기</p>
-						<Arm />
-						<Character />
 					</AddCardBox>
 				) : (
 					<AddCardBox onClick={openAddTeachClassModal}>
 						<h1>+</h1>
 						<p>새로운 강의 개설하기</p>
-						<Arm />
-						<Character />
 					</AddCardBox>
 				)}
 			</LowerContainer>
@@ -154,27 +150,4 @@ const CalendarBox = styled.div`
 const SubTitle = styled.h2`
 	font-size: 20px;
 	margin-bottom: 10px;
-`;
-
-const Arm = styled.div`
-	background-image: url('/images/addClassArm.png');
-	background-repeat: no-repeat;
-	background-position: center center;
-	position: absolute;
-	width: 29px;
-	height: 39px;
-	right: -20px;
-	bottom: 100px;
-`;
-
-const Character = styled.div`
-	background-image: url('/images/addClass.png');
-	background-repeat: no-repeat;
-	background-position: center center;
-	width: 302px;
-	height: 326px;
-	position: absolute;
-	z-index: -1;
-	right: -220px;
-	bottom: 0px;
 `;
