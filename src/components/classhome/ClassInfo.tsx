@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { adddata, changeModal, openModal } from '../../store/modules/modal';
 import apis from '../../api';
 
-const ClassInfo: React.FC = () => {
+const ClassInfo = () => {
 	const dispatch = useDispatch();
 	const { classid } = useParams();
 	const [students, setStudents] = useState<{ name: string }[]>();
@@ -18,18 +18,19 @@ const ClassInfo: React.FC = () => {
 		uuid: string;
 	}>();
 
-	const fetch = async () => {
+	const fetchClassData = async () => {
 		if (classid) {
 			const response = await apis.loadClassInfo(classid);
 			const response2 = await apis.loadStudents(classid);
 			setData(response.data);
 			setStudents(response2.data);
-			console.log(response)
 		}
 	};
+
 	useEffect(() => {
-		fetch();
+		fetchClassData();
 	}, []);
+	
 	const openInviteCode = () => {
 		if (data) {
 			dispatch(adddata(data?.uuid))
