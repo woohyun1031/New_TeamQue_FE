@@ -543,8 +543,7 @@ const StateButton = styled.button<{ src: string; isActive: boolean }>`
 	background: none;
 	border: none;
 	background-image: url(${({ src }) => src});
-	background-image: url(${({ isActive, src }) =>
-		isActive ? src : `'${src.split('.')[0]}off.png'`});
+	background-image: url(${({ isActive, src }) => isActive ? src : `'${src.split('.')[0]}off.png'`});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 90px;
@@ -804,8 +803,7 @@ const Input = styled.textarea`
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
 	border: none;
-	background-image: url(${({ isQuestion }) =>
-		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 30px;
