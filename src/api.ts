@@ -80,11 +80,13 @@ export const apis = {
 	// Class
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
+	updatePost: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
 
 	// Post
 	loadPosts: (classId: string, page: string) =>
 		instance.get(`/post/${classId}?page=${page}`),
 	loadPost: (postId: string) => instance.get(`/post/detail/${postId}`),
+
 
 	// Main
 	loadLearnClass: () => instance.get('/class/learn'),

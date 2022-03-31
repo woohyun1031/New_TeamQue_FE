@@ -29,6 +29,7 @@ const Board = () => {
 	useEffect(() => {
 		LoadPostData();
 	}, [page]);
+
 	return (
 		<Container>
 			<Title>수강생 게시판</Title>
@@ -106,7 +107,9 @@ const Board = () => {
 						</Page>
 					))}
 			</Pagenation>
-			<AddButton>새글작성</AddButton>
+			<AddButton onClick={() => navigate('/classhome/write')}>
+				새글작성
+			</AddButton>
 		</Container>
 	);
 };

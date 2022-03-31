@@ -4,9 +4,10 @@ import Calendar from '../components/Calendar';
 import Board from '../components/classhome/Board';
 import ClassInfo from '../components/classhome/ClassInfo';
 import Detail from '../components/classhome/Detail';
+import WritePost from '../components/classhome/WritePost';
 
 const ClassHome = () => {
-	const { postid } = useParams();
+	const { postid, updateid, page } = useParams();
 
 	return (
 		<Container>
@@ -14,7 +15,18 @@ const ClassHome = () => {
 				<ClassInfo />
 				<Calendar />
 			</LeftBox>
-			{postid ? <Detail /> : <Board />}
+
+			{postid ? (
+				updateid ? (
+					<WritePost />
+				) : (
+					<Detail />
+				)
+			) : page ? (
+				<Board />
+			) : (
+				<WritePost />
+			)}
 			<Arm />
 			<Character />
 		</Container>

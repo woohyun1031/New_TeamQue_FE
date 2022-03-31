@@ -18,7 +18,6 @@ const App = () => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const isToken = sessionStorage.getItem('accessToken') ? true : false;
 
-
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
@@ -40,6 +39,10 @@ const App = () => {
 				<Route path='/classhome/:classid/:page' element={<ClassHome />} />
 				<Route
 					path='/classhome/:classid/post/:postid'
+					element={<ClassHome />}
+				/>
+				<Route
+					path='/classhome/:classid/post/:postid/update/:updateid'
 					element={<ClassHome />}
 				/>
 				<Route path='/auth/kakao/callback' element={<Kakao />} />
