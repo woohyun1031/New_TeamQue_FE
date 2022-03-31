@@ -12,7 +12,7 @@ const Main = () => {
 	const [tabState, setTabState] = useState(true);
 
 	const openAddLearnClassModal = () => {
-		// 강의 참여 코드 넣을 수 있는 모달 오픈
+		alert('강의 참여 모달 구현 중')
 	};
 
 	const openAddTeachClassModal = () => {

@@ -1,10 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { changeModal } from '../../store/modules/modal';
 import { signUp } from '../../store/modules/user';
 
 const SignUp: React.FC = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [inputs, setInputs] = useState({
 		email: '',
 		name: '',
@@ -23,26 +26,38 @@ const SignUp: React.FC = () => {
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(signUp(inputs));
+		alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.')
+		dispatch(changeModal('notSignIn'));
 	};
 
 	return (
 		<Form onSubmit={onSubmit}>
-			<img src='/images/smallLogo.png' />
+			<Title>반갑습니다, <img src='/images/logofont.png' /></Title>
+			<Description>계속 하려면 회원가입을 진행해주세요</Description>
+			<Label htmlFor='email'>이메일</Label>
 			<Input
 				type='email'
+				id="email"
 				name='email'
 				placeholder='이메일'
 				onChange={onChange}
 			/>
-			<Input type='text' name='name' placeholder='이름' onChange={onChange} />
+			<Label htmlFor='name'>이름</Label>
+
+			<Input type='text' id='name' name='name' placeholder='이름' onChange={onChange} />
+			<Label htmlFor='password'>비밀번호</Label>
+
 			<Input
 				type='password'
+				id='password'
 				name='password'
 				placeholder='비밀번호'
 				onChange={onChange}
 			/>
+			<Label htmlFor='confirmPassword'>비밀번호 확인</Label>
 			<Input
 				type='password'
+				id='confirmPassword'
 				name='confirmPassword'
 				placeholder='비밀번호 확인'
 				onChange={onChange}
@@ -55,36 +70,45 @@ const SignUp: React.FC = () => {
 export default SignUp;
 
 const Form = styled.form`
-	width: 460px;
-	height: 510px;
-	padding: 50px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
+	width: 480px;
+	height: 550px;
+	padding: 60px 100px;
+`;
+
+const Title = styled.h2`
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 9px;
+`;
+
+const Description = styled.p`
+	font-size: 12px;
+	margin-bottom: 24px;
 `;
 
 const Input = styled.input`
-	width: 260px;
+	width: 280px;
 	height: 40px;
 	border-radius: 7px;
 	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
-	font-size: 14px;
+	font-size: 12px;
 	padding-left: 20px;
 	outline: none;
-	transition: 0.3s;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
 	}
-	&:focus {
-		width: 265px;
-		height: 50px;
-	}
+	margin-bottom: 10px;
+`;
+
+const Label = styled.label`
+	display: block;
+	font-size: 12px;
+	margin-bottom: 5px;
 `;
 
 const Button = styled.button`
-	width: 260px;
+	width: 280px;
 	height: 40px;
 	border-radius: 7px;
 	border: none;
@@ -101,4 +125,5 @@ const Button = styled.button`
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
+	margin-top: 30px;
 `;
