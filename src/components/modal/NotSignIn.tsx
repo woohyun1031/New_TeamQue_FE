@@ -74,12 +74,12 @@ const LightButton = styled(Button)`
 `;
 
 const Character = styled.div`
-	background-image: url('/images/notSignIn.png');
+	background-image: url('/images/notsignin.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
-	width: 150px;
-	height: 165px;
+	width: 155px;
+	height: 160px;
 	right: 50px;
 	bottom: 30px;
 `;

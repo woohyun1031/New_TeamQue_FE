@@ -17,6 +17,7 @@ const ClassInfo: React.FC = () => {
 		isByMe: boolean;
 		uuid: string;
 	}>();
+
 	const fetch = async () => {
 		if (classid) {
 			const response = await apis.loadClassInfo(classid);
@@ -37,6 +38,7 @@ const ClassInfo: React.FC = () => {
 		dispatch(changeModal('inviteCode'));
 	};
 
+	
 	const acceptStudent = async (studentId: string) => {
 		if (classid) {
 			const response = await apis.changeState(classid, studentId, true);
