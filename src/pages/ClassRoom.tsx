@@ -440,6 +440,7 @@ const ClassRoom = () => {
 
 				<InputBox>
 					<div>
+					<SendButton onClick={sendChat} />
 						<Input
 							// type='text'
 							value={input}
@@ -450,7 +451,7 @@ const ClassRoom = () => {
 								}
 							}}
 						/>
-						<SendButton onClick={sendChat} />
+						
 						<QueButton isQuestion={isQuestion}>
 							<input
 								type='checkbox'
@@ -774,6 +775,15 @@ const SendButton = styled.button`
 	bottom: 0;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+	&:hover + textarea {
+		height: 70px;
+	}
+	&:focus + textarea {
+		height: 70px;
+	}
+	&:active + textarea {
+		height: 70px;
+	}
 `;
 
 const Input = styled.textarea`
@@ -784,7 +794,7 @@ const Input = styled.textarea`
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.base};
 	outline: none;
-	transition: 0.2s;
+	transition: 0.3s;
 	margin-right: 6px;
 	padding: 10px;
 	&:focus {
