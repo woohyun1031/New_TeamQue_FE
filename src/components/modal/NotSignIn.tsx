@@ -14,10 +14,7 @@ const NotSignIn = () => {
 
 	return (
 		<Container>
-			<Message>환영합니다,</Message>
-			<Message>
-				<img src='/images/smallLogo.png' /> 입니다.
-			</Message>
+			<Message>환영합니다, <br /><img src='/images/smallLogo.png' /> 입니다.</Message>
 			<Button id='signIn' onClick={toSignIn}>
 				큐하러 가기
 			</Button>
@@ -32,18 +29,19 @@ export default NotSignIn;
 const Container = styled.div`
 	width: 550px;
 	height: 300px;
-	padding: 40px 50px;
+	padding: 40px 70px;
 	position: relative;
 `;
 
 const Message = styled.h2`
-	font-size: ${({ theme }) => theme.fontSizes.titleSize};
+	font-size: ${({ theme }) => theme.fontSizes.xxxlg};
 	color: ${({ theme }) => theme.colors.title};
+	margin-bottom: 30px;
 `;
 
 const Button = styled.button`
-	width: 300px;
-	height: 50px;
+	width: 250px;
+	height: 45px;
 	border-radius: 7px;
 	margin-top: 10px;
 	display: block;
@@ -57,11 +55,9 @@ const Button = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.darkerMain};
-		//transform: translateY(-2px);
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.moreDarkerMain};
-		//transform: translateY(-2px);
 	}
 `;
 
@@ -70,11 +66,9 @@ const LightButton = styled(Button)`
 	&:hover {
 		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.subHover};
-		//transform: translateY(-2px);
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.subActive};
-		//transform: translateY(-2px);
 	}
 `;
 
@@ -83,8 +77,8 @@ const Character = styled.div`
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
-	width: 122px;
-	height: 137px;
-	right: 20px;
-	bottom: 20px;
+	width: 136px;
+	height: 165px;
+	right: 50px;
+	bottom: 30px;
 `;
