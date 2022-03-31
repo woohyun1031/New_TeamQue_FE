@@ -1,10 +1,11 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
 
 const Detail = () => {
-	const { postid } = useParams<string>();
+	const navigate = useNavigate();
+	const { classid, postid } = useParams<string>();
 	const [data, setData] = useState<{
 		postType: string;
 		title: string;
@@ -21,6 +22,7 @@ const Detail = () => {
 		if (postid) {
 			console.log(postid);
 			const response = await apis.loadPost(postid);
+			console.log(response);
 			setIsByMe(response.data.isByMe);
 			console.log(response.data);
 			setData(response.data.post);
@@ -65,6 +67,15 @@ const Detail = () => {
 				<PostTitle>{data && data.title}</PostTitle>
 				<Author>{data && data.author}</Author>
 				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
+				{isByMe ? (
+					<UpdateButton
+						onClick={() => {
+							navigate(`/classhome/${classid}/post/${postid}/update/${postid}`);
+						}}
+					>
+						수정하기
+					</UpdateButton>
+				) : null}
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
@@ -208,4 +219,23 @@ const CommentButton = styled.button`
 	bottom: 25px;
 	cursor: pointer;
 	position: absolute;
+`;
+
+const UpdateButton = styled.button`
+	border: none;
+	background-image: url('/images/updatebutton.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	position: relative;
+	z-index: 2;
+	cursor: pointer;
+	& input {
+		display: none;
+	}
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 `;

@@ -41,6 +41,11 @@ const App = () => {
 					path='/classhome/:classid/post/:postid'
 					element={<ClassHome />}
 				/>
+				<Route
+					path='/classhome/:classid/post/:postid/update/:updateid'
+					element={<ClassHome />}
+				/>
+				<Route path='/classhome/write' element={<ClassHome />} />
 				<Route path='/auth/:accessToken/:refreshToken' element={<OAuth />} />
 			</Routes>
 			<Modal />
