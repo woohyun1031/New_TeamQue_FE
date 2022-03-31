@@ -1,10 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
+import { removeBoard } from '../../store/modules/user';
 
 const Detail = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const { classid, postid } = useParams<string>();
 	const [data, setData] = useState<{
 		postType: string;
@@ -42,6 +45,14 @@ const Detail = () => {
 		setComment(e.target.value);
 	};
 
+	const onRemove = async () => {
+		if (postid) {
+			await dispatch(removeBoard(postid));
+			alert('삭제완료');
+			navigate(`/classhome/${classid}/1`);
+		}
+	};
+
 	const commentWrite = async () => {
 		//send state comment to api
 		if (comment && postid) {
@@ -63,19 +74,33 @@ const Detail = () => {
 	return (
 		<Container>
 			<PostHeader>
-				<PostType>{data && data.postType}</PostType>
-				<PostTitle>{data && data.title}</PostTitle>
-				<Author>{data && data.author}</Author>
-				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
-				{isByMe ? (
-					<UpdateButton
-						onClick={() => {
-							navigate(`/classhome/${classid}/post/${postid}/update/${postid}`);
-						}}
-					>
-						수정하기
-					</UpdateButton>
-				) : null}
+				<HeaderLeft>
+					<PostType>{data && data.postType}</PostType>
+					<PostTitle>{data && data.title}</PostTitle>
+					<Author>{data && data.author}</Author>
+					<Date>
+						{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
+					</Date>
+				</HeaderLeft>
+				<HeaderRight>
+					<StarIcon
+						src={
+							data?.postType === 'Question'
+								? '/images/graystar.png'
+								: '/images/bluestar.png'
+						}
+					/>
+					{isByMe ? (
+						<UpdateButton
+							onClick={() => {
+								navigate(
+									`/classhome/${classid}/post/${postid}/update/${postid}`
+								);
+							}}
+						/>
+					) : null}
+					{isByMe ? <RemoveButton onClick={onRemove} /> : null}
+				</HeaderRight>
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
@@ -122,6 +147,17 @@ const Container = styled.div`
 
 const PostHeader = styled.div`
 	padding: 50px;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+`;
+const HeaderLeft = styled.div``;
+const HeaderRight = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 130px;
 `;
 
 const PostType = styled.h3`
@@ -208,6 +244,20 @@ const CommentInput = styled.textarea`
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
+const StarIcon = styled.button<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	border: none;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	z-index: 2;
+`;
 
 const CommentButton = styled.button`
 	width: 50px;
@@ -227,16 +277,35 @@ const UpdateButton = styled.button`
 	background-image: url('/images/updatebutton.png');
 	background-position: center center;
 	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
 	width: 30px;
 	height: 30px;
 	border-radius: 7px;
 	display: inline-block;
 	transition: 0.2s;
-	position: relative;
 	z-index: 2;
 	cursor: pointer;
-	& input {
-		display: none;
+	&:hover {
+		background-image: url('/images/blueupdatebutton.png');
 	}
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const RemoveButton = styled.button`
+	border: none;
+	background-image: url('/images/removebutton.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.background};
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	z-index: 2;
+	cursor: pointer;
+	&:hover {
+		background-image: url('/images/redremovebutton.png');
+	}
 `;

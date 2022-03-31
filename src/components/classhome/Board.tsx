@@ -107,7 +107,7 @@ const Board = () => {
 						</Page>
 					))}
 			</Pagenation>
-			<AddButton onClick={() => navigate('/classhome/write')}>
+			<AddButton onClick={() => navigate(`/classhome/${classid}/write`)}>
 				새글작성
 			</AddButton>
 		</Container>
