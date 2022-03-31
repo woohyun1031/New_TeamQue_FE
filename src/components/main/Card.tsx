@@ -10,21 +10,24 @@ interface CardProps {
 	state: 'wait' | 'accepted' | 'teach';
 }
 
-const Card: React.FC<CardProps> = ({
+const Card = ({
 	id,
 	imageUrl,
 	teacher,
 	title,
 	timeTable,
 	state,
-}) => {
+}: CardProps) => {
 	const navigate = useNavigate();
+
 	const toClassRoom = () => {
 		navigate(`/classroom/${id}`);
 	};
+
 	const toClassHome = () => {
 		navigate(`/classhome/${id}/1`);
 	};
+
 	if (state == 'wait') {
 		return (
 			<>
@@ -208,7 +211,6 @@ const HomeButton = styled.button`
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
-	/* hover 색상넣기 */
 `;
 
 const WaitThumbnail = styled.div`
