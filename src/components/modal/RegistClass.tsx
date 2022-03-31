@@ -1,12 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import apis from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 
 const RegistClass = () => {
 	const [input, setInput] = useState('');
-	const dispatch = useDispatch();
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setInput(e.target.value);

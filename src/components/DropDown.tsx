@@ -3,23 +3,28 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { signOut } from '../store/modules/user';
 
-interface Props {
+interface DropDownProps {
 	name: string;
 }
 
-const DropDown: React.FC<Props> = ({ name }) => {
+const DropDown = ({ name }: DropDownProps) => {
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState(false);
+
 	const toggleDropDown = () => {
 		setIsOpen((prevState) => !prevState);
 	};
+
 	const logout = () => {
 		dispatch(signOut());
+		// 새로고침 말고 다른 방안이 없는지 고민해보기
 		window.location.reload();
 	};
+
 	const openMypage = () => {
 		alert('마이페이지 구현 중');
 	};
+
 	return (
 		<Container>
 			<Name onClick={toggleDropDown}>

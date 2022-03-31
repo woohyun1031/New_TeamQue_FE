@@ -4,24 +4,22 @@ import { closeModal } from '../../store/modules/modal';
 
 const ModalCloseButton = () => {
 	const dispatch = useDispatch();
+
 	const onClick = () => {
 		dispatch(closeModal());
 	};
-	return <CloseButton src='/images/bigCloseButton.png' onClick={onClick} />;
+
+	return <CloseButton onClick={onClick} />;
 };
 
 export default ModalCloseButton;
 
-interface CloseButtonProps {
-	src: string;
-}
-
-const CloseButton = styled.button<CloseButtonProps>`
+const CloseButton = styled.button`
 	width: 17px;
 	height: 17px;
 	border: none;
 	background: none;
-	background-image: ${(props) => props.src && `url('${props.src}')`};
+	background-image: url('/images/bigCloseButton.png');
 	position: absolute;
 	top: 30px;
 	right: 30px;

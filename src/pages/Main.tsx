@@ -35,7 +35,7 @@ const Main = () => {
 				<Welcome />
 				<Schedule />
 				<CalendarBox>
-					<SubTitle>이번 달 한눈에 보기</SubTitle>
+					<SubTitle>일정</SubTitle>
 					<Calendar />
 				</CalendarBox>
 			</UpperContainer>
@@ -73,7 +73,7 @@ export default Main;
 const UpperContainer = styled.div`
 	width: 1200px;
 	height: 320px;
-	margin: 100px auto 80px;
+	margin: 50px auto 80px;
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;

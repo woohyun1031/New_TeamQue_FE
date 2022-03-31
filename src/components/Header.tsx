@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import DropDown from './DropDown';
 import { RootState } from '../store/configStore';
 import { useSelector } from 'react-redux';
+import DropDown from './DropDown';
 
 const Header = () => {
 	const navigate = useNavigate();

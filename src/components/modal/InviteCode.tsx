@@ -2,15 +2,17 @@ import { MouseEvent, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/configStore';
+import ModalCloseButton from './ModalCloseButton';
 
-const InviteCode: React.FC = () => {
+const InviteCode = () => {
+	const uuid =  useSelector((state: RootState) => state.modal.data)
 	const uuidRef = useRef<HTMLInputElement>(null);
+
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		alert('공유하기 기능 구현 중')
 	};
 
-	const uuid =  useSelector((state: RootState) => state.modal.data)
 	useEffect(() => {
 		if (uuidRef.current) {
 			uuidRef.current.value = uuid
@@ -29,6 +31,7 @@ const InviteCode: React.FC = () => {
 
 	return (
 		<Form>
+			<ModalCloseButton />
 			<UpperContainer>
 				<h2>더 많은 사람과 수업듣기</h2>
 				<p>아래 링크를 복사하여 다른 사람을 초대할 수 있어요.</p>

@@ -1,3 +1,4 @@
+import { off } from 'process';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -69,7 +70,6 @@ const ClassRoom = () => {
 	}, [chatList]);
 
 	const SOCKETSERVER = 'ws://noobpro.shop';
-	// const SOCKETSERVER = 'ws://xpecter.shop';
 	const classId = params.classid;
 
 	const socketInitiate = async () => {
@@ -325,16 +325,19 @@ const ClassRoom = () => {
 								<StateButton
 									onClick={() => changeMyState('correct')}
 									src='/images/correctbutton.png'
+									isActive={myState === 'correct'}
 								/>
 								<Hr />
 								<StateButton
 									onClick={() => changeMyState('incorrect')}
 									src='/images/incorrectbutton.png'
+									isActive={myState === 'incorrect'}
 								/>
 								<Hr />
 								<StateButton
 									onClick={() => changeMyState('away')}
 									src='/images/awaybutton.png'
+									isActive={myState === 'away'}
 								/>
 							</StateButtons>
 						</UpperBox>
@@ -440,7 +443,7 @@ const ClassRoom = () => {
 
 				<InputBox>
 					<div>
-					<SendButton onClick={sendChat} />
+						<SendButton onClick={sendChat} />
 						<Input
 							// type='text'
 							value={input}
@@ -451,7 +454,7 @@ const ClassRoom = () => {
 								}
 							}}
 						/>
-						
+
 						<QueButton isQuestion={isQuestion}>
 							<input
 								type='checkbox'
@@ -536,10 +539,12 @@ const StateButtons = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const StateButton = styled.button<{ src: string }>`
+const StateButton = styled.button<{ src: string; isActive: boolean }>`
 	background: none;
 	border: none;
 	background-image: url(${({ src }) => src});
+	background-image: url(${({ isActive, src }) =>
+		isActive ? src : `'${src.split('.')[0]}off.png'`});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 90px;
@@ -743,7 +748,7 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	& + & {
 		margin-left: 5px;
 	}
-	${({ isClicked, theme }) =>
+	${({ isClicked }) =>
 		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
 	cursor: pointer;
 `;
@@ -769,41 +774,25 @@ const SendButton = styled.button`
 	height: 30px;
 	border-radius: 7px;
 	position: absolute;
-	opacity: 0;
+	opacity: 1;
 	transition: 0.2s;
 	right: 0;
-	bottom: 0;
+	bottom: 40px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
-	&:hover + textarea {
-		height: 70px;
-	}
-	&:focus + textarea {
-		height: 70px;
-	}
-	&:active + textarea {
-		height: 70px;
-	}
 `;
 
 const Input = styled.textarea`
 	resize: none;
 	border: none;
 	width: 214px;
-	height: 30px;
+	height: 70px;
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.base};
 	outline: none;
 	transition: 0.3s;
 	margin-right: 6px;
 	padding: 10px;
-	&:focus {
-		height: 70px;
-	}
-	&:focus ~ ${SendButton} {
-		bottom: 40px;
-		opacity: 1;
-	}
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
@@ -815,7 +804,8 @@ const Input = styled.textarea`
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
 	border: none;
-	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) =>
+		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 30px;

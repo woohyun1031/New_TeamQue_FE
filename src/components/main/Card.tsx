@@ -1,44 +1,45 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface CardProps {
+type CardProps = {
 	id: number;
 	title: string;
 	teacher: string;
 	imageUrl: string;
 	timeTable: string[];
 	state: 'wait' | 'accepted' | 'teach';
-}
+};
 
-const Card: React.FC<CardProps> = ({
+const Card = ({
 	id,
 	imageUrl,
 	teacher,
 	title,
 	timeTable,
 	state,
-}) => {
+}: CardProps) => {
 	const navigate = useNavigate();
+
 	const toClassRoom = () => {
 		navigate(`/classroom/${id}`);
 	};
+
 	const toClassHome = () => {
 		navigate(`/classhome/${id}/1`);
 	};
+
 	if (state == 'wait') {
 		return (
-			<>
-				<Container>
-					<Thumbnail src={imageUrl} />
-					<WaitThumbnail />
-					<BadgeBox>
-						<WaitBadge>대기중</WaitBadge>
-						<Badge>방송중</Badge>
-					</BadgeBox>
-					<Title>{title}</Title>
-					<Teacher>{teacher} 선생님</Teacher>
-				</Container>
-			</>
+			<Container>
+				<Thumbnail src={imageUrl} />
+				<WaitThumbnail />
+				<BadgeBox>
+					<WaitBadge>대기중</WaitBadge>
+					<Badge>방송중</Badge>
+				</BadgeBox>
+				<Title>{title}</Title>
+				<Teacher>{teacher} 선생님</Teacher>
+			</Container>
 		);
 	}
 
@@ -208,7 +209,6 @@ const HomeButton = styled.button`
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
-	/* hover 색상넣기 */
 `;
 
 const WaitThumbnail = styled.div`

@@ -164,7 +164,7 @@ const Container = styled.div`
 
 const Table = styled.table`
 	width: 230px;
-	height: 230px;
+	height: 210px;
 	font-weight: 500;
 	font-size: 12px;
 	border-collapse: collapse;

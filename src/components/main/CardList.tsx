@@ -14,11 +14,11 @@ type CardType = {
 	state: 'wait' | 'accepted' | 'teach';
 };
 
-interface Props {
+interface CardListProps {
 	tabState: boolean;
 }
 
-const CardList: React.FC<Props> = ({ tabState }) => {
+const CardList = ({ tabState } : CardListProps) => {
 	const [learnCards, setLearnCards] = useState<CardType[]>();
 	const [teachCards, setTeachCards] = useState<CardType[]>();
 

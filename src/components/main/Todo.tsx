@@ -16,14 +16,6 @@ const Todo = () => {
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
 	const [todos, setTodos] = useState<todoType[]>();
-	const [dropdown, setDropdown] = useState({
-		isOpen: false,
-		id: 0,
-	});
-
-	const closeDropDown = () => {
-		setDropdown({ id: 0, isOpen: false });
-	};
 
 	const loadTodos = async () => {
 		const response = await apis.loadTodo();
@@ -40,13 +32,11 @@ const Todo = () => {
 
 	const deleteTodo = async (id: number) => {
 		await apis.deleteTodo(id);
-		closeDropDown();
 		loadTodos();
 	};
 
 	const toggleComplete = async (id: number) => {
 		await apis.completeTodo(id);
-		closeDropDown();
 		loadTodos();
 	};
 
@@ -55,6 +45,10 @@ const Todo = () => {
 			loadTodos();
 		}
 	}, [isLogin]);
+
+	const openInput = () => {
+		setIsInput(true);
+	};
 
 	const focusOut = () => {
 		setIsInput(false);
@@ -69,7 +63,6 @@ const Todo = () => {
 			<Container>
 				<Title>해야 할 일</Title>
 				<ScheduleBox>
-					{dropdown.isOpen && <BackGround onClick={closeDropDown} />}
 					{todos &&
 						todos.map(({ id, content, isComplete }: todoType) => (
 							<ScheduleItem
@@ -78,14 +71,16 @@ const Todo = () => {
 								onClick={() => toggleComplete(id)}
 							>
 								<p>{content}</p>
-								<DropdownButton
-									// src 불러오는 로직 변경 필요
+								<DeleteButton
 									src={
 										isComplete
 											? '/images/closeblue.png'
 											: '/images/closewhite.png'
 									}
-									onClick={() => deleteTodo(id)}
+									onClick={(e) => {
+										e.stopPropagation();
+										deleteTodo(id);
+									}}
 								/>
 								{isComplete ? <Complete /> : null}
 							</ScheduleItem>
@@ -94,18 +89,12 @@ const Todo = () => {
 						{isInput ? (
 							<InputBox
 								type='text'
-								onBlur={focusOut}
 								autoFocus
+								onBlur={focusOut}
 								onChange={onChange}
 							/>
 						) : (
-							<AddButton
-								onClick={() => {
-									setIsInput(true);
-								}}
-							>
-								+
-							</AddButton>
+							<AddButton onClick={openInput}>+</AddButton>
 						)}
 					</Form>
 				</ScheduleBox>
@@ -117,7 +106,7 @@ const Todo = () => {
 export default Todo;
 
 const Container = styled.div`
-	width: 300px;
+	width: 280px;
 	height: 320px;
 `;
 
@@ -128,7 +117,7 @@ const Title = styled.h2`
 `;
 
 const ScheduleBox = styled.ul`
-	width: 300px;
+	width: 280px;
 	height: 300px;
 	overflow-x: visible;
 	overflow-y: scroll;
@@ -148,17 +137,15 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	cursor: pointer;
 	position: relative;
 	font-weight: 700;
 	font-size: 14px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
-
+	cursor: pointer;
 	& + & {
 		margin-top: 20px;
 	}
-
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	background-color: ${({ theme }) => theme.colors.main};
 	${(props) =>
@@ -168,7 +155,6 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 			background-color: ${({ theme }) => theme.colors.background};
 			text-decoration: line-through 2px;
 		`};
-
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.brightMain};
 		${(props) =>
@@ -179,7 +165,6 @@ const ScheduleItem = styled.li<{ isComplete: boolean }>`
 				text-decoration: line-through 2px;
 			`}
 	}
-
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 		${(props) =>
@@ -232,7 +217,7 @@ const InputBox = styled.input`
 
 const Form = styled.form``;
 
-const DropdownButton = styled.button<{ src: string }>`
+const DeleteButton = styled.button<{ src: string }>`
 	border: none;
 	background: none;
 	background-image: url(${({ src }) => src});
@@ -246,8 +231,9 @@ const DropdownButton = styled.button<{ src: string }>`
 	top: 10px;
 	right: 10px;
 	cursor: pointer;
-	object-fit: contain;
+	z-index: 1;
 `;
+
 const Complete = styled.div`
 	width: 80px;
 	height: 80px;
@@ -260,11 +246,3 @@ const Complete = styled.div`
 	bottom: -2px;
 `;
 
-const BackGround = styled.div`
-	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	z-index: 100;
-`;

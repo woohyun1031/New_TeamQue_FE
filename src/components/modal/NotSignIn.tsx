@@ -8,6 +8,7 @@ const NotSignIn = () => {
 	const toSignIn = () => {
 		dispatch(changeModal('signIn'));
 	};
+	
 	const toTutorial = () => {
 		dispatch(changeModal('tutorial'));
 	};
