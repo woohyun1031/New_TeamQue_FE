@@ -80,10 +80,11 @@ const AddClass = () => {
 						</Days>
 					</InputDays>
 				</UpperLeft>
-				{/* <UpperRight>
+				<UpperRight>
 					<p>사진 추가하기</p>
-					<Input type='text' name='imageUrl' onChange={onChange} />
-				</UpperRight> */}
+					<CrossButton />
+					<ImageInput type='text' name='imageUrl' onChange={onChange} />
+				</UpperRight>
 			</UpperContainer>
 
 			<LowerContainer>
@@ -103,15 +104,16 @@ const AddClass = () => {
 						요일 선택
 						<DayBox>
 							{[1, 2, 3, 4, 5, 6, 7].map((day) => (
-								<label key={day}>
-									{days[day - 1]}
-									<input
+								<RadioBox key={day}>
+									<Radio
 										type='radio'
 										name='day'
 										value={day}
 										onChange={onChange}
+										id={days[day - 1]}
 									/>
-								</label>
+									<Label htmlFor={days[day - 1]}>{days[day - 1]}</Label>
+								</RadioBox>
 							))}
 						</DayBox>
 					</DayContainer>
@@ -152,6 +154,7 @@ const Form = styled.form`
 const UpperContainer = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 `;
 const Days = styled.div`
 	margin-right: 10px;
@@ -163,9 +166,43 @@ const InputDays = styled.div`
 	justify-content: space-between;
 	margin-top: 10px;
 `;
+const RadioBox = styled.div``;
 
-const UpperLeft = styled.div`
-	width: 250px;
+const Radio = styled.input`
+	display: none;
+	&:checked + Label {
+		color: ${({ theme }) => theme.colors.main};
+		font-weight: 600;
+	}
+`;
+const Label = styled.label`
+	margin-right: 10px;
+`;
+
+const UpperLeft = styled.div``;
+const UpperRight = styled.div`
+	position: relative;
+`;
+const ImageInput = styled.input`
+	width: 150px;
+	height: 100px;
+	border: none;
+	border-radius: 10px;
+	background-color: ${({ theme }) => theme.colors.base};
+`;
+const CrossButton = styled.div`
+	border: none;
+	background: none;
+	background-image: url('images/crossbutton.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	width: 20px;
+	height: 20px;
+	top: 50%;
+	left: 43%;
+	position: absolute;
+	cursor: pointer;
 `;
 
 const LowerContainer = styled.div`
