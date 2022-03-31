@@ -41,19 +41,18 @@ const ClassInfo: React.FC = () => {
 	
 	const acceptStudent = async (studentId: string) => {
 		if (classid) {
-			const response = await apis.changeState(classid, studentId, true);
-			const response2 = await apis.loadStudents(classid);
-			setStudents(response2.data);
-
+			await apis.changeState(classid, studentId, true);
+			const { data } = await apis.loadStudents(classid);
+			setStudents(data);
 		}
 	};
 
 	const rejectStudent = async (studentId: string) => {
 		if (classid) {
 			if (confirm('정말로 퇴출 하실건가요?')) {
-				const response = await apis.changeState(classid, studentId, false);
-				const response2 = await apis.loadStudents(classid);
-				setStudents(response2.data);
+				await apis.changeState(classid, studentId, false);
+				const { data } = await apis.loadStudents(classid);
+				setStudents(data);
 			}
 		}
 	};
