@@ -93,12 +93,30 @@ export const getUserInfo = createAsyncThunk(
 	}
 );
 
-export const nicknameSet = createAsyncThunk(
-	'user/nickname',
-	async (nickname: string, { rejectWithValue }) => {
+// export const nicknameSet = createAsyncThunk(
+// 	'user/nickname',
+// 	async (nickname: string, { rejectWithValue }) => {
+// 		try {
+// 			await apis.setNick(nickname);
+// 			return true;
+// 		} catch (error) {
+// 			if (axios.isAxiosError(error)) {
+// 				alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+// 				return rejectWithValue(error.message);
+// 			} else {
+// 				alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+// 				return rejectWithValue('An unexpected error occurred');
+// 			}
+// 		}
+// 	}
+// );
+
+export const updateBoard = createAsyncThunk(
+	'user/updateBoard',
+	async ( boardInfo:{updateid:string,boardInfo:object}, { rejectWithValue }) => {
 		try {
-			await apis.setNick(nickname);
-			return true;
+			console.log(boardInfo)
+			await apis.updateBoard(boardInfo);		
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				alert(`닉네임 설정 오류: ${error.response?.data.message}`);
@@ -111,13 +129,12 @@ export const nicknameSet = createAsyncThunk(
 	}
 );
 
-export const updateBoard = createAsyncThunk(
+export const postBoard = createAsyncThunk(
 	'user/updateBoard',
-	async ( boardInfo:{updateid:string,boardInfo:object}, { rejectWithValue }) => {
+	async ( boardInfo:{classid:string,boardInfo:object}, { rejectWithValue }) => {
 		try {
 			console.log(boardInfo)
-			await apis.updatePost(boardInfo);
-			return true;
+			await apis.postBoard(boardInfo);						
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				alert(`닉네임 설정 오류: ${error.response?.data.message}`);

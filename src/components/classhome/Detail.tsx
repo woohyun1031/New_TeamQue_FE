@@ -63,18 +63,20 @@ const Detail = () => {
 	return (
 		<Container>
 			<PostHeader>
-				<PostType>{data && data.postType}</PostType>
-				<PostTitle>{data && data.title}</PostTitle>
-				<Author>{data && data.author}</Author>
-				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
+				<HeaderLeft>
+					<PostType>{data && data.postType}</PostType>
+					<PostTitle>{data && data.title}</PostTitle>
+					<Author>{data && data.author}</Author>
+					<Date>
+						{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
+					</Date>
+				</HeaderLeft>
 				{isByMe ? (
 					<UpdateButton
 						onClick={() => {
 							navigate(`/classhome/${classid}/post/${postid}/update/${postid}`);
 						}}
-					>
-						수정하기
-					</UpdateButton>
+					/>
 				) : null}
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
@@ -121,7 +123,12 @@ const Container = styled.div`
 
 const PostHeader = styled.div`
 	padding: 50px;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 `;
+const HeaderLeft = styled.div``;
 
 const PostType = styled.h3`
 	font-size: 10px;
@@ -231,7 +238,6 @@ const UpdateButton = styled.button`
 	border-radius: 7px;
 	display: inline-block;
 	transition: 0.2s;
-	position: relative;
 	z-index: 2;
 	cursor: pointer;
 	& input {

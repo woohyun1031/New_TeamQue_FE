@@ -27,6 +27,7 @@ const ClassHome = () => {
 			) : (
 				<WritePost />
 			)}
+
 			<Arm />
 			<Character />
 		</Container>

@@ -3,11 +3,16 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
-import { updateBoard } from '../../store/modules/user';
+import { updateBoard, postBoard } from '../../store/modules/user';
 
 const WritePost = () => {
-	const [state, setState] = useState({ title: '', content: '', postType: '' });
-	const { updateid } = useParams<string>();
+	const navigate = useNavigate();
+	const [state, setState] = useState({
+		title: '',
+		content: '',
+		postType: 'Question',
+	});
+	const { updateid, classid, postid } = useParams<string>();
 	const dispatch = useDispatch();
 
 	const loadPost = async () => {
@@ -29,25 +34,52 @@ const WritePost = () => {
 		setState({ ...state, [name]: value });
 	};
 
-	const onPost = (e: MouseEvent<HTMLButtonElement>) => {
+	const onUpdate = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const boardInfo = state;
 		if (updateid) {
 			console.log(state);
 			dispatch(updateBoard({ boardInfo, updateid }));
+			alert('수정완료');
+			navigate(`/classhome/${classid}/post/${postid}`);
 		}
+	};
+
+	const onPost = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		const boardInfo = state;
+		console.log(boardInfo);
+		if (classid) {
+			console.log(state);
+			dispatch(postBoard({ boardInfo, classid }));
+			alert('저장완료');
+			navigate(`/classhome/${classid}/1`);
+		}
+	};
+
+	const onBack = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		navigate(-1);
 	};
 
 	useEffect(() => {
 		loadPost();
 	}, []);
 
-	return (
+	return updateid ? (
 		<Container>
 			<h1>수정하기</h1>
 			<TitleInput onChange={onChange} name='title' value={state.title} />
 			<ContentInput onChange={onChange} name='content' value={state.content} />
-			<Button>작성취소</Button>
+			<Button onClick={onBack}>작성취소</Button>
+			<ReturnButton onClick={onUpdate}>저장하기</ReturnButton>
+		</Container>
+	) : (
+		<Container>
+			<h1>새 글 작성</h1>
+			<TitleInput onChange={onChange} name='title' value={state.title} />
+			<ContentInput onChange={onChange} name='content' value={state.content} />
+			<ReturnButton onClick={onBack}>작성취소</ReturnButton>
 			<Button onClick={onPost}>저장하기</Button>
 		</Container>
 	);
@@ -101,6 +133,19 @@ const ContentInput = styled.textarea`
 	&::-webkit-scrollbar-thumb:hover {
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
+`;
+
+const ReturnButton = styled.button`
+	width: 80px;
+	height: 30px;
+	border-radius: 7px;
+	background-color: ${({ theme }) => theme.colors.base};
+	color: ${({ theme }) => theme.colors.blueTitle};
+	border: none;
+	right: 150px;
+	bottom: 25px;
+	cursor: pointer;
+	position: absolute;
 `;
 
 const Button = styled.button`
