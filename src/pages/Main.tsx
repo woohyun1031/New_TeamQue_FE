@@ -35,7 +35,7 @@ const Main = () => {
 				<Welcome />
 				<Schedule />
 				<CalendarBox>
-					<SubTitle>이번 달 한눈에 보기</SubTitle>
+					<SubTitle>일정</SubTitle>
 					<Calendar />
 				</CalendarBox>
 			</UpperContainer>

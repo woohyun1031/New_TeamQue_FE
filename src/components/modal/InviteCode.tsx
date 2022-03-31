@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
-const InviteCode: React.FC = () => {
+const InviteCode = () => {
+	const uuid =  useSelector((state: RootState) => state.modal.data)
 	const uuidRef = useRef<HTMLInputElement>(null);
+
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		alert('공유하기 기능 구현 중')
 	};
 
-	const uuid =  useSelector((state: RootState) => state.modal.data)
 	useEffect(() => {
 		if (uuidRef.current) {
 			uuidRef.current.value = uuid
