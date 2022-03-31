@@ -63,6 +63,7 @@ const Container = styled.div`
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	padding: 50px;
+	z-index: 1;
 `;
 
 const TitleInput = styled.input`

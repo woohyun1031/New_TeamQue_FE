@@ -10,6 +10,7 @@ import Tutorial from './Tutorial';
 import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
+import RegistClass from './RegistClass';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -46,6 +47,9 @@ const Modal: React.FC = () => {
 			break;
 		case 'inviteCode':
 			contents = <InviteCode />;
+			break;
+		case 'registClass':
+			contents = <RegistClass />;
 			break;
 		case 'tutorial':
 			contents = <Tutorial />;

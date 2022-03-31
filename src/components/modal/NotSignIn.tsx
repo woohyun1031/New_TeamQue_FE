@@ -77,7 +77,7 @@ const Character = styled.div`
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: absolute;
-	width: 136px;
+	width: 150px;
 	height: 165px;
 	right: 50px;
 	bottom: 30px;

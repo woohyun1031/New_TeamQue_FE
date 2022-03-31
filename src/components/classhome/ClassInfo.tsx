@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { changeModal, openModal } from '../../store/modules/modal';
+import { adddata, changeModal, openModal } from '../../store/modules/modal';
 import apis from '../../api';
 
 const ClassInfo: React.FC = () => {
@@ -14,23 +14,48 @@ const ClassInfo: React.FC = () => {
 		teacher: string;
 		timeTable: string[];
 		imageUrl: string;
+		isByMe: boolean;
+		uuid: string;
 	}>();
 	const fetch = async () => {
-		// 로직 다듬기
 		if (classid) {
 			const response = await apis.loadClassInfo(classid);
 			const response2 = await apis.loadStudents(classid);
 			setData(response.data);
 			setStudents(response2.data);
+			console.log(response)
 		}
 	};
 	useEffect(() => {
 		fetch();
 	}, []);
 	const openInviteCode = () => {
+		if (data) {
+			dispatch(adddata(data?.uuid))
+		}
 		dispatch(openModal());
 		dispatch(changeModal('inviteCode'));
 	};
+
+	const acceptStudent = async (studentId: string) => {
+		if (classid) {
+			const response = await apis.changeState(classid, studentId, true);
+			const response2 = await apis.loadStudents(classid);
+			setStudents(response2.data);
+
+		}
+	};
+
+	const rejectStudent = async (studentId: string) => {
+		if (classid) {
+			if (confirm('정말로 퇴출 하실건가요?')) {
+				const response = await apis.changeState(classid, studentId, false);
+				const response2 = await apis.loadStudents(classid);
+				setStudents(response2.data);
+			}
+		}
+	};
+
 	return (
 		<Container>
 			<Image src={data && data.imageUrl} />
@@ -41,7 +66,7 @@ const ClassInfo: React.FC = () => {
 			<StudentInfo>
 				<div>
 					<h4>
-						수강생 <button onClick={openInviteCode}>+</button>
+						수강생 {data?.isByMe && <button onClick={openInviteCode}>+</button>}
 					</h4>
 				</div>
 				<p>{students && students.length}명</p>
@@ -54,23 +79,44 @@ const ClassInfo: React.FC = () => {
 						<col span={1} />
 					</colgroup>
 					<tbody>
-						{students &&
-							students.map((student: any, index: number) => (
-								<Tr key={index} isAccepted={student.state === 'accepted'}>
-									<td>{student.userId}</td>
-									<td>{student.name}</td>
-									<td>
-										{student.state === 'accepted' ? (
-											<Button>퇴출</Button>
-										) : (
-											<>
-												<AcceptButton>승인</AcceptButton>
-												<RejectButton>거부</RejectButton>
-											</>
-										)}
-									</td>
-								</Tr>
-							))}
+						{data?.isByMe
+							? students?.map((student: any, index: number) => (
+									<Tr key={index} isAccepted={student.state === 'accepted'}>
+										<td>{student.userId}</td>
+										<td>{student.name}</td>
+										<td>
+											{student.state === 'accepted' ? (
+												<Button onClick={() => rejectStudent(student.userId)}>
+													퇴출
+												</Button>
+											) : (
+												<>
+													<AcceptButton
+														onClick={() => acceptStudent(student.userId)}
+													>
+														승인
+													</AcceptButton>
+													<RejectButton
+														onClick={() => rejectStudent(student.userId)}
+													>
+														거부
+													</RejectButton>
+												</>
+											)}
+										</td>
+									</Tr>
+							  ))
+							: students?.map((student: any, index: number) => {
+									if (student.state === 'accepted') {
+										return (
+											<Tr key={index} isAccepted={true}>
+												<td>{student.userId}</td>
+												<td>{student.name}</td>
+												<td />
+											</Tr>
+										);
+									}
+							  })}
 					</tbody>
 				</StudentList>
 			</TableBox>
@@ -204,6 +250,7 @@ const Button = styled.button`
 	& + & {
 		margin-left: 4px;
 	}
+	cursor: pointer;
 `;
 
 const RejectButton = styled(Button)`

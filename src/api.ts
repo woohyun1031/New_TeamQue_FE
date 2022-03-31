@@ -77,6 +77,8 @@ export const apis = {
 	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
 	updatePost: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
+	changeState: (classId: string, studentId: string, isAccept: boolean) => instance.put(`/class/student/${classId}/${studentId}`, {isOk: isAccept}), 
+	registClass: (uuid: string) => instance.post(`/class/student`, {uuid}),
 
 	// Post
 	loadPosts: (classId: string, page: string) =>
