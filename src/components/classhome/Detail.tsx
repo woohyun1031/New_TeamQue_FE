@@ -142,6 +142,7 @@ const Container = styled.div`
 	&::-webkit-scrollbar-thumb:hover {
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
+	z-index: 1;
 `;
 
 const PostHeader = styled.div`

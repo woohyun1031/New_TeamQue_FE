@@ -134,6 +134,7 @@ const Container = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	padding: 50px;
+	z-index: 1;
 `;
 
 const TitleHeader = styled.div`

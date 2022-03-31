@@ -12,11 +12,11 @@ const Main = () => {
 	const [tabState, setTabState] = useState(true);
 
 	const openAddLearnClassModal = () => {
-		alert('강의 참여 모달 구현 중')
+		dispatch(openModal());
+		dispatch(changeModal('registClass'));
 	};
 
 	const openAddTeachClassModal = () => {
-		console.log('open!');
 		dispatch(openModal());
 		dispatch(changeModal('addClass'));
 	};

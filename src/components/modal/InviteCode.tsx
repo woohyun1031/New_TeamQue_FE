@@ -1,20 +1,28 @@
-import { MouseEvent, useRef } from 'react';
+import { MouseEvent, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/configStore';
 
 const InviteCode: React.FC = () => {
-	const uuid = useRef<HTMLInputElement>(null);
-
+	const uuidRef = useRef<HTMLInputElement>(null);
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		console.log('공유하기 클릭');
+		alert('공유하기 기능 구현 중')
 	};
+
+	const uuid =  useSelector((state: RootState) => state.modal.data)
+	useEffect(() => {
+		if (uuidRef.current) {
+			uuidRef.current.value = uuid
+		}
+	})
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const content = uuid.current;
+		const content = uuidRef.current;
 		if (content) {
 			navigator.clipboard.writeText(content.value).then(() => {
-				alert('코드 복사');
+				alert('코드 복사 완료');
 			});
 		}
 	};
@@ -27,7 +35,7 @@ const InviteCode: React.FC = () => {
 				<Input
 					type='text'
 					placeholder='임의의 초대코드가 입력됩니다'
-					ref={uuid}
+					ref={uuidRef}
 				/>
 			</UpperContainer>
 			<Buttons>
