@@ -1,9 +1,8 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { KAKAO_API_URL } from '../../oAuth';
 import { changeModal } from '../../store/modules/modal';
-import { kakaoLogin, signIn } from '../../store/modules/user';
+import { signIn } from '../../store/modules/user';
 
 const SignIn: React.FC = () => {
 	const dispatch = useDispatch();
@@ -31,10 +30,14 @@ const SignIn: React.FC = () => {
 		dispatch(changeModal('signUp'));
 	};
 
-	const onKakaoClick = (e: MouseEvent<HTMLButtonElement>) => {
+	const kakaoLogin = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		window.location.href = 'https://noobpro.shop/user/kakao';
-		// dispatch(kakaoLogin())
+	};
+
+	const googleLogin = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		window.location.href = 'https://noobpro.shop/user/google';
 	};
 
 	return (
@@ -59,11 +62,11 @@ const SignIn: React.FC = () => {
 			/>
 			<Button>로그인하기</Button>
 			<Or>또는</Or>
-			<GoogleLogin>
+			<GoogleLogin onClick={googleLogin}>
 				<img src='/images/google.png' />
 				구글 로그인
 			</GoogleLogin>
-			<KakaoButton onClick={onKakaoClick}>
+			<KakaoButton onClick={kakaoLogin}>
 				<img src='/images/kakao.png' />
 				카카오 로그인
 			</KakaoButton>

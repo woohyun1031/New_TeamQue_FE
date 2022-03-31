@@ -6,18 +6,17 @@ import Modal from './components/modal/Modal';
 import ClassHome from './pages/ClassHome';
 import ClassRoom from './pages/ClassRoom';
 import Main from './pages/Main';
-import Kakao from './pages/Kakao';
 import { changeModal, closeModal, openModal } from './store/modules/modal';
 import GlobalStyle from './styles/GlobalStyle';
 import { getUserInfo } from './store/modules/user';
 import { RootState } from './store/configStore';
+import OAuth from './components/OAuth';
 
 const App = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const isToken = sessionStorage.getItem('accessToken') ? true : false;
-
 
 	useEffect(() => {
 		if (isToken) {
@@ -42,7 +41,7 @@ const App = () => {
 					path='/classhome/:classid/post/:postid'
 					element={<ClassHome />}
 				/>
-				<Route path='/auth/kakao/callback' element={<Kakao />} />
+				<Route path='/auth/:accessToken/:refreshToken' element={<OAuth />} />
 			</Routes>
 			<Modal />
 		</>

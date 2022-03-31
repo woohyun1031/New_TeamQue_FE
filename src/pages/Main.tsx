@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
