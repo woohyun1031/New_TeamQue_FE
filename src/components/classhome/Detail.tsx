@@ -71,13 +71,24 @@ const Detail = () => {
 						{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
 					</Date>
 				</HeaderLeft>
-				{isByMe ? (
-					<UpdateButton
-						onClick={() => {
-							navigate(`/classhome/${classid}/post/${postid}/update/${postid}`);
-						}}
+				<HeaderRight>
+					<StarIcon
+						src={
+							data?.postType === 'Question'
+								? '/images/graystar.png'
+								: '/images/bluestar.png'
+						}
 					/>
-				) : null}
+					{isByMe ? (
+						<UpdateButton
+							onClick={() => {
+								navigate(
+									`/classhome/${classid}/post/${postid}/update/${postid}`
+								);
+							}}
+						/>
+					) : null}
+				</HeaderRight>
 			</PostHeader>
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
@@ -129,6 +140,12 @@ const PostHeader = styled.div`
 	justify-content: space-between;
 `;
 const HeaderLeft = styled.div``;
+const HeaderRight = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100px;
+`;
 
 const PostType = styled.h3`
 	font-size: 10px;
@@ -214,6 +231,23 @@ const CommentInput = styled.textarea`
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
+const StarIcon = styled.button<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	border: none;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 30px;
+	height: 30px;
+	border-radius: 7px;
+	display: inline-block;
+	transition: 0.2s;
+	z-index: 2;
+	& input {
+		display: none;
+	}
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+`;
 
 const CommentButton = styled.button`
 	width: 50px;
@@ -233,6 +267,7 @@ const UpdateButton = styled.button`
 	background-image: url('/images/updatebutton.png');
 	background-position: center center;
 	background-repeat: no-repeat;
+	background-size: contain;
 	width: 30px;
 	height: 30px;
 	border-radius: 7px;
