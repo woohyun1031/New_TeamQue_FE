@@ -97,7 +97,11 @@ const ClassInfo: React.FC = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classData && classData.title}</Title>
 			<Teacher>{classData && classData.teacher} 선생님</Teacher>
-			<Time>{classData && classData.timeTable[0]}</Time>
+			<TimeTables>
+				{classData && classData?.timeTable.map((time) => (
+					<TimeTable key={time}>{time}</TimeTable>
+				))}
+			</TimeTables>
 			<StudentInfo>
 				<div>
 					<h4>
@@ -221,12 +225,6 @@ const Teacher = styled.p`
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
-const Time = styled.p`
-	margin-bottom: 20px;
-	font-size: 14px;
-	color: ${({ theme }) => theme.colors.subTitle};
-`;
-
 const StudentInfo = styled.div`
 	width: 235px;
 	display: flex;
@@ -324,4 +322,36 @@ const ClassRoomButton = styled.button`
 	right: -20px;
 	z-index: 0;
 	cursor: pointer;
+`;
+
+const TimeTables = styled.div`
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	height: 60px;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
+`;
+
+
+const TimeTable = styled.p`
+	font-size: 12px;
+	width: 105px;
+	height: 22px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 6px;
+	margin-bottom: 3px;
+	background-color: ${({ theme }) => theme.colors.base};
 `;
