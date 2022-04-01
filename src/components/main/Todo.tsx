@@ -61,7 +61,7 @@ const Todo = () => {
 	return (
 		<>
 			<Container>
-				<Title>해야 할 일</Title>
+				<Title>메모</Title>
 				<ScheduleBox>
 					{todos &&
 						todos.map(({ id, content, isComplete }: todoType) => (

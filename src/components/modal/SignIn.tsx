@@ -95,13 +95,13 @@ const Form = styled.form`
 const Back = styled.button`
 	border: none;
 	background: none;
+	background-image: url('/images/back.png');
+	background-repeat: no-repeat;
 	width: 11px;
 	height: 19px;
-	background-image: url('/images/arrowleftblack.png');
-	background-repeat: no-repeat;
 	position: absolute;
 	top: 70px;
-	left: 50px;
+	left: 77px;
 	cursor: pointer;
 `;
 
@@ -142,20 +142,20 @@ const Button = styled.button`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
+	background-color: ${({ theme }) => theme.colors.main};
 	&:hover {
-		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
-`;
+	cursor: pointer;
+	`;
 
 const Or = styled.p`
 	margin: 19px 0;

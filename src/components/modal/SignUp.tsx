@@ -93,11 +93,11 @@ const Back = styled.button`
 	background: none;
 	width: 11px;
 	height: 19px;
-	background-image: url('/images/arrowleftblack.png');
+	background-image: url('/images/back.png');
 	background-repeat: no-repeat;
 	position: absolute;
-	top: 70px;
-	left: 50px;
+	top: 73px;
+	left: 73px;
 	cursor: pointer;
 `;
 

@@ -35,7 +35,7 @@ const ClassRoom = () => {
 	}>();
 	const { classid } = useParams();
 	const loadClassInfo = async () => {
-		const response = await apis.loadClassInfo(classid as string);
+		const response = await apis.loadClassData(classid as string);
 		setClassInfo(response.data);
 	};
 

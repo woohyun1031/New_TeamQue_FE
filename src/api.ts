@@ -74,13 +74,14 @@ export const apis = {
 		),
 
 	// Class
-	loadClassInfo: (classId: string) => instance.get(`/class/${classId}`),
+	loadClassData: (classId: string) => instance.get(`/class/${classId}`),
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
-	changeState: (classId: string, studentId: string, isAccept: boolean) => instance.put(`/class/student/${classId}/${studentId}`, {isOk: isAccept}), 
+	changeState: (classId: string, studentId: number, isAccept: boolean) => instance.put(`/class/student/${classId}/${studentId}`, {isOk: isAccept}), 
 	registClass: (uuid: string) => instance.post(`/class/student`, {uuid}),
 	updateBoard: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
 	postBoard: (classInfo: {classid:string,boardInfo:object}) => instance.post(`/post/${classInfo.classid}`,classInfo.boardInfo),
 	deleteBoard: (postid:string) => instance.delete(`/post/${postid}`),
+	cancelApply: (classId: string) => instance.delete(`/class/student/${classId}`),
 
 	// Post
 	loadPosts: (classId: string, page: string) =>

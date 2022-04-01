@@ -32,7 +32,6 @@ const ClassHome = () => {
 			) : (
 				<WritePost />
 			)}
-			<ClassRoomButton onClick={toClassRoom} />
 		</Container>
 	);
 };
@@ -56,15 +55,4 @@ const LeftBox = styled.div`
 	justify-content: space-between;
 `;
 
-const ClassRoomButton = styled.button`
-	background: none;
-	border: none;
-	background-image: url('/images/toclassroom.png');
-	width: 160px;
-	height: 105px;
-	position: absolute;
-	top: -80px;
-	right: 150px;
-	z-index: 0;
-	cursor: pointer;
-	`;
+
