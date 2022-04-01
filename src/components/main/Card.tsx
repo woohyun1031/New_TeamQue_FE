@@ -33,8 +33,8 @@ const Card = ({
 
 	const onClick = async (classId: number) => {
 		if (confirm('정말로 수강 취소 하시겠어요?')) {
-			await apis.cancelApply(classId)
-			await loadLearnClass()
+			await apis.cancelApply(classId.toString())
+			loadLearnClass()
 		}
 	}
 

@@ -1,45 +1,65 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { adddata, changeModal, openModal } from '../../store/modules/modal';
 import apis from '../../api';
+import { RootState } from '../../store/configStore';
+
+type ClassDataType = {
+	title: string;
+	teacher: string;
+	timeTable: string[];
+	imageUrl: string;
+	isByMe: boolean;
+	uuid: string;
+};
+
+type StudentDataType = {
+	userId: number;
+	name: string;
+	state: 'accepted' | 'wait';
+};
 
 const ClassInfo: React.FC = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const { classid } = useParams();
-	const [students, setStudents] = useState<{ name: string }[]>();
-	const [data, setData] = useState<{
-		title: string;
-		teacher: string;
-		timeTable: string[];
-		imageUrl: string;
-		isByMe: boolean;
-		uuid: string;
-	}>();
+	const [students, setStudents] = useState<StudentDataType[]>();
+	const [classData, setClassData] = useState<ClassDataType>();
+	const { id, name } = useSelector((state: RootState) => state.user);
 
-	const fetch = async () => {
+	const loadClassInfo = async () => {
 		if (classid) {
-			const response = await apis.loadClassInfo(classid);
+			const response = await apis.loadClassData(classid);
 			const response2 = await apis.loadStudents(classid);
-			setData(response.data);
-			setStudents(response2.data);
-			console.log(response)
+			setClassData(response.data);
+			if (classData?.isByMe) {
+				setClassData(response2.data);
+			} else {
+				setStudents([
+					{ state: 'accepted', userId: id, name },
+					...response2.data.filter(
+						(student: StudentDataType) => student.userId !== id
+					),
+				]);
+			}
 		}
-	};
-	useEffect(() => {
-		fetch();
-	}, []);
-	const openInviteCode = () => {
-		if (data) {
-			dispatch(adddata(data?.uuid))
-		}
-		dispatch(openModal());
-		dispatch(changeModal('inviteCode'));
 	};
 
-	
-	const acceptStudent = async (studentId: string) => {
+	useEffect(() => {
+		loadClassInfo();
+	}, []);
+
+	const openInviteCode = () => {
+		if (classData) {
+			dispatch(adddata(classData?.uuid));
+			dispatch(openModal());
+			dispatch(changeModal('inviteCode'));
+		}
+	};
+
+	const acceptStudent = async (studentId: number) => {
 		if (classid) {
 			await apis.changeState(classid, studentId, true);
 			const { data } = await apis.loadStudents(classid);
@@ -47,7 +67,7 @@ const ClassInfo: React.FC = () => {
 		}
 	};
 
-	const rejectStudent = async (studentId: string) => {
+	const rejectStudent = async (studentId: number) => {
 		if (classid) {
 			if (confirm('정말로 퇴출 하실건가요?')) {
 				await apis.changeState(classid, studentId, false);
@@ -57,17 +77,31 @@ const ClassInfo: React.FC = () => {
 		}
 	};
 
+	const toClassRoom = () => {
+		navigate(`/classroom/${classid}`);
+	};
+
+	const exitClass = async () => {
+		if (confirm('정말로 수업을 나가시겠습니까?')) {
+			if (classid) {
+				await apis.cancelApply(classid);
+				navigate('/')
+			}
+		}
+	};
+
 	return (
 		<Container>
-			<Image src={data && data.imageUrl} />
-			<ThumbnailFilter />
-			<Title>{data && data.title}</Title>
-			<Teacher>{data && data.teacher} 선생님</Teacher>
-			<Time>{data && data.timeTable[0]}</Time>
+			<Image src={classData && classData.imageUrl} />
+			<ThumbnailFilter onClick={toClassRoom} />
+			<Title>{classData && classData.title}</Title>
+			<Teacher>{classData && classData.teacher} 선생님</Teacher>
+			<Time>{classData && classData.timeTable[0]}</Time>
 			<StudentInfo>
 				<div>
 					<h4>
-						수강생 {data?.isByMe && <button onClick={openInviteCode}>+</button>}
+						수강생{' '}
+						{classData?.isByMe && <button onClick={openInviteCode}>+</button>}
 					</h4>
 				</div>
 				<p>{students && students.length}명</p>
@@ -80,9 +114,12 @@ const ClassInfo: React.FC = () => {
 						<col span={1} />
 					</colgroup>
 					<tbody>
-						{data?.isByMe
-							? students?.map((student: any, index: number) => (
-									<Tr key={index} isAccepted={student.state === 'accepted'}>
+						{classData?.isByMe
+							? students?.map((student: StudentDataType) => (
+									<Tr
+										key={student.userId}
+										isAccepted={student.state === 'accepted'}
+									>
 										<td>{student.userId}</td>
 										<td>{student.name}</td>
 										<td>
@@ -107,17 +144,23 @@ const ClassInfo: React.FC = () => {
 										</td>
 									</Tr>
 							  ))
-							: students?.map((student: any, index: number) => {
-									if (student.state === 'accepted') {
-										return (
-											<Tr key={index} isAccepted={true}>
-												<td>{student.userId}</td>
-												<td>{student.name}</td>
-												<td />
-											</Tr>
-										);
-									}
-							  })}
+							: students?.map((student: StudentDataType) =>
+									student.userId !== id ? (
+										<Tr key={student.userId} isAccepted={true}>
+											<td>{student.userId}</td>
+											<td>{student.name}</td>
+											<td />
+										</Tr>
+									) : (
+										<Tr key={student.userId} isAccepted={true}>
+											<td>{student.userId}</td>
+											<td>{student.name}</td>
+											<td>
+												<Button onClick={exitClass}>나가기</Button>
+											</td>
+										</Tr>
+									)
+							  )}
 					</tbody>
 				</StudentList>
 			</TableBox>
