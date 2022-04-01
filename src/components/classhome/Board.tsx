@@ -111,9 +111,7 @@ const Board = () => {
 						</Page>
 					))}
 			</Pagenation>
-			<AddButton onClick={() => navigate(`/classhome/${classid}/write`)}>
-				새글작성
-			</AddButton>
+			<AddButton onClick={() => navigate(`/classhome/${classid}/write`)} />
 		</Container>
 	);
 };
@@ -148,13 +146,13 @@ const Table = styled.table`
 
 const Th = styled.th`
 	text-align: left;
-	padding: 5px;
+	padding: 4px;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Td = styled.td<{ type: string }>`
 	text-align: left;
-	padding: 5px;
+	padding: 4px;
 	color: ${({ type, theme }) =>
 		type === 'notice' ? theme.colors.main : theme.colors.title};
 	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
@@ -162,7 +160,7 @@ const Td = styled.td<{ type: string }>`
 
 const Pagenation = styled.div`
 	position: absolute;
-	bottom: 50px;
+	bottom: 120px;
 	right: 50%;
 	transform: translateX(50%);
 	color: ${({ theme }) => theme.colors.title};
@@ -170,20 +168,15 @@ const Pagenation = styled.div`
 
 const AddButton = styled.button`
 	position: absolute;
-	bottom: 50px;
+	bottom: 30px;
 	right: 50px;
-	width: 100px;
-	height: 100px;
-	line-height: 54px;
-	font-size: 15px;
-	border-radius: 50px;
+	width: 208.22px;
+	height: 140px;
 	font-weight: 600;
-	border: none;
-	color: ${({ theme }) => theme.colors.buttonTitle};
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	background: none;
+	background-image: url('/images/newpost.png');
 	transition: 0.3s;
-	cursor: pointer;
-	${({ theme }) => theme.commons.mainButton};
+	${({ theme }) => theme.commons.backgroundImage};
 `;
 
 const Page = styled.button<{ selected: boolean }>`
