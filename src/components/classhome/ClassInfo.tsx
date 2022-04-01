@@ -37,12 +37,7 @@ const ClassInfo: React.FC = () => {
 			if (classData?.isByMe) {
 				setClassData(response2.data);
 			} else {
-				setStudents([
-					{ state: 'accepted', userId: id, name },
-					...response2.data.filter(
-						(student: StudentDataType) => student.userId !== id
-					),
-				]);
+				setStudents([{ state: 'accepted', userId: id, name }, ...response2.data.filter((student: StudentDataType) => student.userId !== id)]);
 			}
 		}
 	};
@@ -97,18 +92,10 @@ const ClassInfo: React.FC = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classData && classData.title}</Title>
 			<Teacher>{classData && classData.teacher} 선생님</Teacher>
-			<Time>
-				{classData &&
-					classData.timeTable.map((time: string, index: any) => (
-						<DayNum key={index}>{time}</DayNum>
-					))}
-			</Time>
+			<Time>{classData && classData.timeTable.map((time: string, index: number) => <DayNum key={index}>{time}</DayNum>)}</Time>
 			<StudentInfo>
 				<div>
-					<h4>
-						수강생{' '}
-						{classData?.isByMe && <button onClick={openInviteCode}>+</button>}
-					</h4>
+					<h4>수강생 {classData?.isByMe && <button onClick={openInviteCode}>+</button>}</h4>
 				</div>
 				<p>{students && students.length}명</p>
 			</StudentInfo>
@@ -122,29 +109,16 @@ const ClassInfo: React.FC = () => {
 					<tbody>
 						{classData?.isByMe
 							? students?.map((student: StudentDataType) => (
-									<Tr
-										key={student.userId}
-										isAccepted={student.state === 'accepted'}
-									>
+									<Tr key={student.userId} isAccepted={student.state === 'accepted'}>
 										<td>{student.userId}</td>
 										<td>{student.name}</td>
 										<td>
 											{student.state === 'accepted' ? (
-												<Button onClick={() => rejectStudent(student.userId)}>
-													퇴출
-												</Button>
+												<Button onClick={() => rejectStudent(student.userId)}>퇴출</Button>
 											) : (
 												<>
-													<AcceptButton
-														onClick={() => acceptStudent(student.userId)}
-													>
-														승인
-													</AcceptButton>
-													<RejectButton
-														onClick={() => rejectStudent(student.userId)}
-													>
-														거부
-													</RejectButton>
+													<AcceptButton onClick={() => acceptStudent(student.userId)}>승인</AcceptButton>
+													<RejectButton onClick={() => rejectStudent(student.userId)}>거부</RejectButton>
 												</>
 											)}
 										</td>
@@ -196,10 +170,9 @@ const Image = styled.img`
 	object-fit: cover;
 `;
 
-const ThumbnailFilter = styled.div`
+const ThumbnailFilter = styled.button`
 	background-image: url('/images/play.png');
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 230px;
 	height: 155px;
 	border-radius: 7px;
@@ -208,7 +181,6 @@ const ThumbnailFilter = styled.div`
 	opacity: 0;
 	z-index: 10;
 	transition: 0.5s;
-	cursor: pointer;
 	&:hover {
 		opacity: 1;
 	}
@@ -247,6 +219,7 @@ const DayNum = styled.li`
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.title};
 `;
+
 const StudentInfo = styled.div`
 	width: 235px;
 	display: flex;
@@ -255,11 +228,8 @@ const StudentInfo = styled.div`
 	font-weight: bold;
 	margin-bottom: 10px;
 	& button {
-		border: none;
-		background: none;
 		font-size: 18px;
 		font-weight: bold;
-		cursor: pointer;
 	}
 `;
 
@@ -305,7 +275,6 @@ const Button = styled.button`
 	height: 16px;
 	border-radius: 3px;
 	font-size: 10px;
-	border: none;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -315,7 +284,6 @@ const Button = styled.button`
 	& + & {
 		margin-left: 4px;
 	}
-	cursor: pointer;
 `;
 
 const RejectButton = styled(Button)`
@@ -332,47 +300,12 @@ const Tr = styled.tr<{ isAccepted: boolean }>`
 `;
 
 const ClassRoomButton = styled.button`
-	background: none;
-	border: none;
 	background-image: url('/images/toclassroom.png');
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 143.41px;
 	height: 66px;
 	position: absolute;
 	top: -66px;
 	right: -20px;
 	z-index: 0;
-	cursor: pointer;
-`;
-
-const TimeTables = styled.div`
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-	height: 60px;
-	overflow-y: scroll;
-	&::-webkit-scrollbar {
-		width: 5px;
-	}
-	&::-webkit-scrollbar-thumb {
-		background-color: ${({ theme }) => theme.colors.scroll};
-		border-radius: 10px;
-	}
-`;
-
-const TimeTable = styled.p`
-	font-size: 12px;
-	width: 105px;
-	height: 22px;
-	border-radius: 5px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-right: 6px;
-	margin-bottom: 3px;
-	background-color: ${({ theme }) => theme.colors.base};
 `;
