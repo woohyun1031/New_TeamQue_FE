@@ -11,6 +11,8 @@ import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
 import RegistClass from './RegistClass';
+import Withdraw from './Withdraw';
+import ModifyUserInfo from './ModifyUserInfo';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -54,7 +56,12 @@ const Modal: React.FC = () => {
 		case 'tutorial':
 			contents = <Tutorial />;
 			break;
-
+		case 'withdraw':
+			contents = <Withdraw />;
+			break;
+		case 'modifyuserinfo':
+			contents = <ModifyUserInfo />;
+			break;
 		default:
 			contents = null;
 	}

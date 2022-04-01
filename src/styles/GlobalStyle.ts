@@ -13,6 +13,17 @@ const GlobalStyle = createGlobalStyle`
   li {
     list-style: none;
   }
+  button {
+    border: none;
+    cursor: pointer;
+  }
+  input {
+    border: none;
+    outline: none;
+  }
+  label {
+    display: block;
+  }
 `;
 
 export default GlobalStyle;

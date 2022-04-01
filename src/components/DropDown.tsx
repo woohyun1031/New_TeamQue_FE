@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { changeModal, openModal } from '../store/modules/modal';
 import { signOut } from '../store/modules/user';
 
 interface DropDownProps {
@@ -10,6 +11,7 @@ interface DropDownProps {
 const DropDown = ({ name }: DropDownProps) => {
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState(false);
+
 
 	const toggleDropDown = () => {
 		setIsOpen((prevState) => !prevState);
@@ -22,7 +24,8 @@ const DropDown = ({ name }: DropDownProps) => {
 	};
 
 	const openMypage = () => {
-		alert('마이페이지 구현 중');
+		dispatch(changeModal('modifyuserinfo'))
+		dispatch(openModal())
 	};
 
 	return (
