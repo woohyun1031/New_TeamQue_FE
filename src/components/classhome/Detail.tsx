@@ -17,7 +17,7 @@ const Detail = () => {
 		content: string;
 		comments: [];
 	}>();
-	const [isByMe, setIsByMe] = useState();
+	const [isByMe, setIsByMe] = useState(false);
 	const [comment, setComment] = useState('');
 	const nickname: string | null = sessionStorage.getItem('name');
 
@@ -82,7 +82,7 @@ const Detail = () => {
 						{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
 					</Date>
 				</HeaderLeft>
-				<HeaderRight>
+				<HeaderRight isMe={isByMe}>
 					<StarIcon
 						src={
 							data?.postType === 'Question'
@@ -153,10 +153,10 @@ const PostHeader = styled.div`
 	justify-content: space-between;
 `;
 const HeaderLeft = styled.div``;
-const HeaderRight = styled.div`
+const HeaderRight = styled.div<{ isMe: boolean }>`
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: ${({ isMe }) => (isMe ? 'space-between' : 'flex-end')};
 	width: 130px;
 `;
 

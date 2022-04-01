@@ -183,6 +183,7 @@ const Radio = styled.input`
 `;
 const Label = styled.label`
 	margin-right: 5px;
+	cursor: pointer;
 `;
 
 const UpperLeft = styled.div`
