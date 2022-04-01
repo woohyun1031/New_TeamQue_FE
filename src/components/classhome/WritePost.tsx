@@ -78,7 +78,9 @@ const WritePost = () => {
 
 	const onBack = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		navigate(-1);
+		if (confirm('정말로 취소하시겠습니까?')) {
+			navigate(-1);
+		}
 	};
 
 	useEffect(() => {
