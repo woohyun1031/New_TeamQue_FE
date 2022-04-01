@@ -44,7 +44,7 @@ const Board = () => {
 				<thead>
 					<tr>
 						<Th>
-							<StarIcon src='/images/graystar.png' />
+							<Icon src='/images/star.png' />
 						</Th>
 						<Th>구분</Th>
 						<Th>글제목</Th>
@@ -57,7 +57,7 @@ const Board = () => {
 						notice.map((row) => (
 							<tr key={row.id}>
 								<Td type={'notice'}>
-									<Icon src='/images/star.png' />
+									<Icon src='/images/starblue.png' />
 								</Td>
 								<Td type={'notice'}>공지</Td>
 								<PostTitle
@@ -203,13 +203,6 @@ const AuthorCol = styled.col`
 
 const DateCol = styled.col`
 	width: 100px;
-`;
-const StarIcon = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
-	${({ theme }) => theme.commons.backgroundImage};
-	background-size: contain;
-	width: 15px;
-	height: 15px;
 `;
 
 const Icon = styled.div<{ src: string }>`

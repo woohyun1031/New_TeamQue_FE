@@ -58,7 +58,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (updateid) {
 			try {
-				await apis.updateBoard({ boardInfo, updateid });
+				await apis.updatePost({ boardInfo, updateid });
 				alert('수정완료');
 				navigate(`/classhome/${classid}/post/${postid}`);
 			} catch (error) {
@@ -76,7 +76,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (classid) {
 			try {
-				await apis.postBoard({ boardInfo, classid });
+				await apis.addPost({ boardInfo, classid });
 				alert('저장완료');
 				navigate(`/classhome/${classid}/1`);
 			} catch (error) {
