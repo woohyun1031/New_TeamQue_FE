@@ -103,7 +103,6 @@ const ClassInfo: React.FC = () => {
 						<DayNum key={index}>{time}</DayNum>
 					))}
 			</Time>
-
 			<StudentInfo>
 				<div>
 					<h4>
@@ -226,7 +225,6 @@ const Teacher = styled.p`
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
-
 const Time = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -248,7 +246,6 @@ const DayNum = styled.li`
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.title};
 `;
-
 const StudentInfo = styled.div`
 	width: 235px;
 	display: flex;
@@ -346,4 +343,35 @@ const ClassRoomButton = styled.button`
 	right: -20px;
 	z-index: 0;
 	cursor: pointer;
+`;
+
+const TimeTables = styled.div`
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	height: 60px;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.scroll};
+		border-radius: 10px;
+	}
+`;
+
+const TimeTable = styled.p`
+	font-size: 12px;
+	width: 105px;
+	height: 22px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 6px;
+	margin-bottom: 3px;
+	background-color: ${({ theme }) => theme.colors.base};
 `;
