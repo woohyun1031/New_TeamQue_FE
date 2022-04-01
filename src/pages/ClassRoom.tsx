@@ -540,15 +540,10 @@ const StateButtons = styled.div`
 `;
 
 const StateButton = styled.button<{ src: string; isActive: boolean }>`
-	background: none;
-	border: none;
-	background-image: url(${({ src }) => src});
-	background-image: url(${({ isActive, src }) => isActive ? src : `'${src.split('.')[0]}off.png'`});
-	background-position: center center;
-	background-repeat: no-repeat;
+	background-image: url(${({ isActive, src }) => (isActive ? src : `'${src.split('.')[0]}off.png'`)});
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 90px;
 	height: 72px;
-	cursor: pointer;
 `;
 
 const Hr = styled.hr`
@@ -594,8 +589,7 @@ const StudentName = styled.h4`
 
 const StudentState = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage}
 	width: 50px;
 	height: 50px;
 	margin: 0 auto;
@@ -631,9 +625,7 @@ const ChatBox = styled.div<{ isChecked: boolean }>`
 	width: 275px;
 	overflow-y: scroll;
 	height: 700px;
-	${({ isChecked }) =>
-		isChecked &&
-		`background-image: url('/images/nochecked.png'); background-repeat: no-repeat; background-position: center center;`}
+	${({ isChecked }) => isChecked && `background-image: url('/images/nochecked.png'); background-repeat: no-repeat; background-position: center center;`}
 	&::-webkit-scrollbar {
 		width: 5px;
 	}
@@ -695,8 +687,7 @@ const Resolve = styled.div`
 	width: 50px;
 	height: 50px;
 	background-image: url('/images/resolve.png');
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage}
 	background-size: contain;
 	position: absolute;
 	right: 0px;
@@ -704,18 +695,14 @@ const Resolve = styled.div`
 `;
 
 const DeleteButton = styled.button`
-	border: none;
-	background: none;
 	background-image: url('/images/closewhite.png');
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage}
 	background-size: contain;
 	width: 10px;
 	height: 10px;
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	cursor: pointer;
 	z-index: 2;
 `;
 
@@ -724,9 +711,8 @@ const LikeCharacter = styled.div`
 	height: 15px;
 	margin-right: 2px;
 	background-image: url('/images/like.png');
-	background-size: contain;
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage};
+  background-size: contain;
 `;
 
 const ButtonButtons = styled.div`
@@ -738,7 +724,6 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: none;
 	padding: 4px;
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.blueTitle};
@@ -747,9 +732,7 @@ const BottomButton = styled.button<{ isClicked: boolean }>`
 	& + & {
 		margin-left: 5px;
 	}
-	${({ isClicked }) =>
-		isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
-	cursor: pointer;
+	${({ isClicked }) => isClicked && 'background-color: #D2D2D2; color: #718AFF;'}
 `;
 
 const InputBox = styled.div`
@@ -764,7 +747,6 @@ const InputBox = styled.div`
 `;
 
 const SendButton = styled.button`
-	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url('/images/send.png');
 	background-position: center center;
@@ -778,7 +760,6 @@ const SendButton = styled.button`
 	right: 0;
 	bottom: 40px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
 `;
 
 const Input = styled.textarea`
@@ -802,10 +783,8 @@ const Input = styled.textarea`
 `;
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
-	border: none;
 	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 30px;
 	height: 30px;
 	border-radius: 7px;
@@ -813,7 +792,6 @@ const QueButton = styled.label<{ isQuestion: boolean }>`
 	transition: 0.2s;
 	position: relative;
 	z-index: 2;
-	cursor: pointer;
 	& input {
 		display: none;
 	}

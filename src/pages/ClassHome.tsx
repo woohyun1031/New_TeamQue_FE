@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import Board from '../components/classhome/Board';
@@ -7,12 +7,7 @@ import Detail from '../components/classhome/Detail';
 import WritePost from '../components/classhome/WritePost';
 
 const ClassHome = () => {
-	const { postid, updateid, page, classid } = useParams();
-	const navigate = useNavigate();
-
-	const toClassRoom = () => {
-		navigate(`/classroom/${classid}`);
-	};
+	const { postid, updateid, page } = useParams();
 
 	return (
 		<Container>

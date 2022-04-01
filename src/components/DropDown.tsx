@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { changeModal, openModal } from '../store/modules/modal';
 import { signOut } from '../store/modules/user';
 
-interface DropDownProps {
+type DropDownProps = {
 	name: string;
 }
 
@@ -18,7 +18,6 @@ const DropDown = ({ name }: DropDownProps) => {
 
 	const logout = () => {
 		dispatch(signOut());
-		// 새로고침 말고 다른 방안이 없는지 고민해보기
 		window.location.reload();
 	};
 
@@ -55,11 +54,8 @@ const Container = styled.div`
 `;
 
 const Name = styled.button`
-	border: none;
-	background: none;
 	font-size: 14px;
 	font-weight: 600;
-	cursor: pointer;
 	position: relative;
 	z-index: 101;
 	padding: 10px;
