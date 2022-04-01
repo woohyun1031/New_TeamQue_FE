@@ -1,14 +1,14 @@
+import axios from 'axios';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
-import { removeBoard } from '../../store/modules/user';
 
 const Detail = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { classid, postid } = useParams<string>();
+	const { classid, postid, page } = useParams<string>();
 	const [data, setData] = useState<{
 		postType: string;
 		title: string;
@@ -47,9 +47,19 @@ const Detail = () => {
 
 	const onRemove = async () => {
 		if (postid) {
-			await dispatch(removeBoard(postid));
-			alert('삭제완료');
-			navigate(`/classhome/${classid}/1`);
+			if (confirm('정말로 삭제 하실건가요?')) {
+				try {
+					await apis.deleteBoard(postid);
+					alert('삭제 완료');
+					navigate(`/classhome/${classid}/1`);
+				} catch (error) {
+					if (axios.isAxiosError(error)) {
+						alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+					} else {
+						alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+					}
+				}
+			}
 		}
 	};
 

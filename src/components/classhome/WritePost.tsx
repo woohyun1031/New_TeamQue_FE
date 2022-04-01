@@ -1,9 +1,9 @@
+import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
-import { updateBoard, postBoard } from '../../store/modules/user';
 
 const WritePost = () => {
 	const navigate = useNavigate();
@@ -53,26 +53,39 @@ const WritePost = () => {
 		}
 	};
 
-	const onUpdate = (e: MouseEvent<HTMLButtonElement>) => {
+	const onUpdate = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const boardInfo = state;
 		if (updateid) {
-			console.log(state);
-			dispatch(updateBoard({ boardInfo, updateid }));
-			alert('수정완료');
-			navigate(`/classhome/${classid}/post/${postid}`);
+			try {
+				await apis.updateBoard({ boardInfo, updateid });
+				alert('수정완료');
+				navigate(`/classhome/${classid}/post/${postid}`);
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+				} else {
+					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				}
+			}
 		}
 	};
 
-	const onPost = (e: MouseEvent<HTMLButtonElement>) => {
+	const onPost = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const boardInfo = state;
-		console.log(boardInfo);
 		if (classid) {
-			console.log(state);
-			dispatch(postBoard({ boardInfo, classid }));
-			alert('저장완료');
-			navigate(`/classhome/${classid}/1`);
+			try {
+				await apis.postBoard({ boardInfo, classid });
+				alert('저장완료');
+				navigate(`/classhome/${classid}/1`);
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+				} else {
+					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				}
+			}
 		}
 	};
 

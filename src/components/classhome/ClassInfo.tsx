@@ -97,7 +97,13 @@ const ClassInfo: React.FC = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classData && classData.title}</Title>
 			<Teacher>{classData && classData.teacher} 선생님</Teacher>
-			<Time>{classData && classData.timeTable[0]}</Time>
+			<Time>
+				{classData &&
+					classData.timeTable.map((time: string, index: any) => (
+						<DayNum key={index}>{time}</DayNum>
+					))}
+			</Time>
+
 			<StudentInfo>
 				<div>
 					<h4>
@@ -221,10 +227,26 @@ const Teacher = styled.p`
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
-const Time = styled.p`
-	margin-bottom: 20px;
+const Time = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	margin: 10px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
+`;
+
+const DayNum = styled.li`
+	width: 120px;
+	height: 30px;
+	padding: 3px;
+	border-radius: 10px;
+	margin: 2px 2px;
+	text-align: center;
+	align-items: center;
+	background-color: ${({ theme }) => theme.colors.base};
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const StudentInfo = styled.div`

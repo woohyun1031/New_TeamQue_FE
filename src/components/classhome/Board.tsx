@@ -44,7 +44,7 @@ const Board = () => {
 				<thead>
 					<tr>
 						<Th>
-							<Icon src='/images/smallgraystar.png' />
+							<StarIcon src='/images/graystar.png' />
 						</Th>
 						<Th>구분</Th>
 						<Th>글제목</Th>
@@ -215,6 +215,13 @@ const AuthorCol = styled.col`
 
 const DateCol = styled.col`
 	width: 100px;
+`;
+const StarIcon = styled.div<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	${({ theme }) => theme.commons.backgroundImage};
+	background-size: contain;
+	width: 15px;
+	height: 15px;
 `;
 
 const Icon = styled.div<{ src: string }>`
