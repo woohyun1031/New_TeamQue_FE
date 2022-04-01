@@ -67,8 +67,8 @@ const ArrowIcon = styled.div<{ src: string }>`
 	height: 8px;
 	margin-left: 5px;
 	background-image: url(${({ src }) => src});
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
+
 `;
 
 const Menu = styled.ul`
