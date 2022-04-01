@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import apis from '../../api';
 import ModalCloseButton from './ModalCloseButton';
+import AWS from 'aws-sdk';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -14,14 +15,39 @@ const AddClass = () => {
 		startTime: '',
 		endTime: '',
 	});
+	//image
+	const [file, setFile] = useState<any>('');
+	const [previewURL, setPreviewURL] = useState<any>('');
+	const [isImage, setIsImage] = useState(false);
+	const fileRef = useRef();
 
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
+	// const S3_BUCKET = 'my-magazine-shine7329';
+	// const ACCESS_KEY = process.env.REACT_APP_AWSAccessKeyId;
+	// const SECRET_ACCESS_KEY = process.env.REACT_APP_AWSSecretKey;
+	// const REGION = 'ap-northeast-2';
+
+	// AWS.config.update({
+	// 	accessKeyId: ACCESS_KEY,
+	// 	secretAccessKey: SECRET_ACCESS_KEY,
+	// });
+
+	// const myBucket = new AWS.S3({
+	// 	params: { Bucket: S3_BUCKET },
+	// 	region: REGION,
+	// });
+
+	useEffect(() => {
+		console.log(selectedDays);
+	}, [selectedDays]);
+
 	const onChange = (e: any) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
+		console.log(inputs);
 	};
 
 	const addDays = (e: any) => {
@@ -44,10 +70,6 @@ const AddClass = () => {
 		setSelectedDays(selectedDays.filter((day: any) => day.id !== id));
 	};
 
-	useEffect(() => {
-		console.log(selectedDays);
-	}, [selectedDays]);
-
 	const createClass = async (e: any) => {
 		e.preventDefault();
 		const classInfo = {
@@ -59,6 +81,22 @@ const AddClass = () => {
 		};
 		console.log(classInfo);
 		await apis.createClass(classInfo);
+	};
+
+	const handleFileOnChange = (event: any) => {
+		event.preventDefault();
+		const file = event.target.files[0];
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			setFile(file);
+			//setPreviewURL(reader.result);
+			const csv: string = reader.result as string;
+			setInputs({ ...inputs, ['imageUrl']: csv });
+			setIsImage(true);
+		};
+		if (file) {
+			reader.readAsDataURL(file);
+		}
 	};
 
 	return (
@@ -82,8 +120,10 @@ const AddClass = () => {
 				</UpperLeft>
 				<UpperRight>
 					<p>사진 추가하기</p>
-					<CrossButton />
-					<ImageInput type='text' name='imageUrl' onChange={onChange} />
+					<FileLabel htmlFor='file' src={inputs.imageUrl}>
+						{isImage || <CrossButton />}
+					</FileLabel>
+					<FileInput type='file' id='file' onChange={handleFileOnChange} />
 				</UpperRight>
 			</UpperContainer>
 
@@ -187,26 +227,46 @@ const Label = styled.label`
 `;
 
 const UpperLeft = styled.div`
-	width: 240px;
+	width: 250px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 `;
 
 const UpperRight = styled.div`
+	width: 180px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	margin-top: 10px;
 `;
-const ImageInput = styled.input`
+const FileInput = styled.input`
+	position: absolute;
+	width: 0;
+	height: 0;
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+`;
+const FileLabel = styled.label<{ src: string }>`
+	background-image: url(${({ src }) => src});
+	${({ theme }) => theme.commons.backgroundImage};
+	background-size: contain;
+	background-color: ${({ theme }) => theme.colors.base};
 	width: 100%;
 	height: 100%;
-	border: none;
-	border-radius: 10px;
-	background-color: ${({ theme }) => theme.colors.base};
+	border-radius: 5px;
+	cursor: pointer;
+	box-shadow: 5px 5px 5px #ccc;
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.hoverBase};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.activeBase};
+	}
 `;
+
 const CrossButton = styled.div`
 	border: none;
 	background: none;

@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/configStore';
@@ -7,17 +7,28 @@ import ModalCloseButton from './ModalCloseButton';
 const InviteCode = () => {
 	const uuid = useSelector((state: RootState) => state.modal.data);
 	const uuidRef = useRef<HTMLInputElement>(null);
+	const [showModal, setShowModal] = useState(false);
 
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		alert('공유하기 기능 구현 중');
+		setShowModal(true);
+	};
+	const closeModal = () => {
+		setShowModal(false);
 	};
 
 	useEffect(() => {
 		if (uuidRef.current) {
 			uuidRef.current.value = uuid;
 		}
-	});
+		const script = document.createElement('script');
+		script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+		script.async = true;
+		document.body.appendChild(script);
+		return () => {
+			document.body.removeChild(script);
+		};
+	}, []);
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -42,6 +53,12 @@ const InviteCode = () => {
 				/>
 			</UpperContainer>
 			<Buttons>
+				{showModal ? (
+					<ModalContainer>
+						<KakaButton />
+						<CloseButton onClick={closeModal} />
+					</ModalContainer>
+				) : null}
 				<Button onClick={onClick}>공유하기</Button>
 				<Button onClick={onCopy}>복사하기</Button>
 			</Buttons>
@@ -85,6 +102,7 @@ const Buttons = styled.div`
 	display: flex;
 	justify-content: end;
 	margin-right: 20px;
+	position: relative;
 `;
 
 const Button = styled.button`
@@ -96,7 +114,46 @@ const Button = styled.button`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
-	position: relative;
 	margin: 0 10px;
 	cursor: pointer;
+`;
+
+const ModalContainer = styled.div`
+	display: flex;
+
+	position: absolute;
+	left: 350px;
+	top: -60px;
+	transform: translate(-50%, -50%);
+	width: 200px;
+	height: 100px;
+	padding: 16px;
+	background: rgba(113, 138, 255, 0.7);
+	border-radius: 10px;
+	text-align: center;
+`;
+
+const CloseButton = styled.button`
+	background-image: url('/images/bigCloseButton.png');
+	${({ theme }) => theme.commons.backgroundImage};
+	background-color: rgba(113, 138, 255, 0.7);
+	background-size: contain;
+	position: absolute;
+	left: 180px;
+	top: 15px;
+	transform: translate(-50%, -50%);
+	width: 10px;
+	height: 10px;
+	text-align: center;
+`;
+
+const KakaButton = styled.button`
+	background-image: url('/images/kakaolinkicon.png');
+	${({ theme }) => theme.commons.backgroundImage};
+	background-size: contain;
+	border-radius: 10px;
+	transform: translateX(90%);
+	align-items: center;
+	width: 60px;
+	height: 60px;
 `;
