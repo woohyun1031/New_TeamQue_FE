@@ -38,6 +38,7 @@ const colors = {
   darkerKakao:'#ceb900',
   kakaoTitle:'#3c1e1e;',
   //background
+  subBackground:"F8F8F8",
   background: '#FFFFFF',
 };
 

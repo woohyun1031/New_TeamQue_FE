@@ -24,7 +24,6 @@ const Tutorial: React.FC = () => {
 			setCurrentNum(currentNum + 1);
 		}
 	};
-	// Prev 버튼 클릭 시
 	const prevSlide = () => {
 		if (currentNum === 0) {
 			setCurrentNum(TotalNum);
@@ -52,14 +51,6 @@ const Tutorial: React.FC = () => {
 					onClick={() => prevSlide()}
 				/>
 				<InnerContainer>
-					<Wrap>
-						<BoxList ref={slideRef}>
-							<Box color='blue'>page1</Box>
-							<Box color='red'>page2</Box>
-							<Box color='pink'>page3</Box>
-							<Box color='green'>page4</Box>
-						</BoxList>
-					</Wrap>
 					<Pagination>
 						<Pages>
 							<Page id='0' currentNum={currentNum} onClick={() => onClick(0)} />
@@ -68,6 +59,14 @@ const Tutorial: React.FC = () => {
 							<Page id='3' currentNum={currentNum} onClick={() => onClick(3)} />
 						</Pages>
 					</Pagination>
+					<Wrap>
+						<BoxList ref={slideRef}>
+							<Box color='blue'>page1</Box>
+							<Box color='red'>page2</Box>
+							<Box color='pink'>page3</Box>
+							<Box color='green'>page4</Box>
+						</BoxList>
+					</Wrap>
 				</InnerContainer>
 				<Button
 					src='/images/arrow_gray_right.png'
@@ -84,6 +83,7 @@ export default Tutorial;
 const Container = styled.div`
 	display: flex;
 	align-items: center;
+	background-color: ${({ theme }) => theme.colors.subBackground};
 `;
 
 const Back = styled.button`
@@ -143,7 +143,7 @@ const Button = styled.button<{ src: string }>`
 `;
 
 const Pagination = styled.div`
-	margin-top: 10px;
+	margin-bottom: 10px;
 `;
 
 const Pages = styled.ul`
