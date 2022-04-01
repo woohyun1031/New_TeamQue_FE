@@ -96,10 +96,18 @@ const fontSizes = {
   xs:'12px',
 };
 
+const commons = {
+  backgroundImage: `
+  background-position: center center;
+	background-repeat: no-repeat;
+  `
+}
+
 const theme = {
 	colors,
   darkColors,
   fontSizes,
+  commons
 };
 
 

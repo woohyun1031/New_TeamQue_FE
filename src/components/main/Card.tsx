@@ -31,9 +31,9 @@ const Card = ({
 		navigate(`/classhome/${id}/1`);
 	};
 
-	const onClick = async (classId: number) => {
+	const handleClick = async () => {
 		if (confirm('정말로 수강 취소 하시겠어요?')) {
-			await apis.cancelApply(classId.toString())
+			await apis.cancelApply(id.toString())
 			loadLearnClass()
 		}
 	}
@@ -49,7 +49,7 @@ const Card = ({
 				</BadgeBox>
 				<Title>{title}</Title>
 				<Teacher>{teacher} 선생님</Teacher>
-				<WaitButton onClick={() => onClick(id)}>신청 취소하기</WaitButton>
+				<WaitButton onClick={handleClick}>신청 취소하기</WaitButton>
 			</WaitContainer>
 		);
 	}
@@ -83,7 +83,6 @@ const Container = styled.div`
 	padding: 16px 23px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
-	transition: 0.2s;
 	color: ${({ theme }) => theme.colors.title};
 	& + & {
 		margin-left: 20px;
@@ -199,7 +198,6 @@ const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	justify-content: center;
 	margin-right: 6px;
 	margin-bottom: 3px;
-	color: ${({ theme }) => theme.colors.title};
 	background-color: ${({ theme }) => theme.colors.base};
 `;
 
@@ -207,17 +205,14 @@ const HomeButton = styled.button`
 	width: 41px;
 	height: 41px;
 	border-radius: 50%;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url('/images/home.png');
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage};
 	position: absolute;
 	bottom: 23px;
 	right: 23px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
-	cursor: pointer;
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
@@ -228,8 +223,7 @@ const HomeButton = styled.button`
 
 const WaitThumbnail = styled.div`
 	background-image: url('/images/wait.png');
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 255px;
 	height: 172px;
 	border-radius: 7px;
@@ -243,14 +237,13 @@ const WaitButton = styled.button`
 	border-radius: 7px;
 	width: 92px;
 	height: 32px;
-	background-color: ${({theme}) => theme.colors.main};
 	font-size: 12px;
-	color: ${({theme}) => theme.colors.background};
 	box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.25);
 	position: absolute;
 	bottom: 25px;
 	right: 25px;
-	cursor: pointer;
+	color: ${({theme}) => theme.colors.background};
+	background-color: ${({theme}) => theme.colors.main};
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
