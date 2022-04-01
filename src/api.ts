@@ -79,6 +79,7 @@ export const apis = {
 	changeState: (classId: string, studentId: number, isAccept: boolean) => instance.put(`/class/student/${classId}/${studentId}`, {isOk: isAccept}), 
 	registClass: (uuid: string) => instance.post(`/class/student`, {uuid}),
 	cancelApply: (classId: string) => instance.delete(`/class/student/${classId}`),
+	loadClassCalendar: (classId: string, year: number, month: number) => instance.get(`/class/date/${classId}?year=${year}&month=${month}`),
 	
 	// Post
 	loadPosts: (classId: string, page: string) =>

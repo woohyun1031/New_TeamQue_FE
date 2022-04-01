@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../api';
 import { RootState } from '../store/configStore';
@@ -15,6 +16,7 @@ type weekType = dateType[];
 type calendarType = weekType[];
 
 const Calendar = () => {
+	const { classid } = useParams();
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const today = new Date();
 	const thisDate = today.getDate();
@@ -43,7 +45,12 @@ const Calendar = () => {
 			allDate.push({ month: 'next', date: i });
 		}
 
-		const response = await apis.loadMyCalendar(year, month + 1);
+		let response;
+		if (classid) {
+			response = await apis.loadClassCalendar(classid, year, month + 1)
+		} else {
+			response = await apis.loadMyCalendar(year, month + 1);
+		}
 
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
