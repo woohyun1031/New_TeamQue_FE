@@ -19,7 +19,7 @@ const Card = ({
 	title,
 	timeTable,
 	state,
-	loadLearnClass
+	loadLearnClass,
 }: CardProps) => {
 	const navigate = useNavigate();
 
@@ -33,10 +33,10 @@ const Card = ({
 
 	const handleClick = async () => {
 		if (confirm('정말로 수강 취소 하시겠어요?')) {
-			await apis.cancelApply(id.toString())
-			loadLearnClass()
+			await apis.cancelApply(id.toString());
+			loadLearnClass();
 		}
-	}
+	};
 
 	if (state == 'wait') {
 		return (
@@ -92,8 +92,7 @@ const Container = styled.div`
 
 const WaitContainer = styled(Container)`
 	color: #ccc;
-`
-
+`;
 
 const ThumbnailFilter = styled.div`
 	background-image: url('/images/play.png');
@@ -242,12 +241,12 @@ const WaitButton = styled.button`
 	position: absolute;
 	bottom: 25px;
 	right: 25px;
-	color: ${({theme}) => theme.colors.background};
-	background-color: ${({theme}) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.background};
+	background-color: ${({ theme }) => theme.colors.main};
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
-`
+`;

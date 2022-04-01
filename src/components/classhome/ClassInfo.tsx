@@ -85,7 +85,7 @@ const ClassInfo: React.FC = () => {
 		if (confirm('정말로 수업을 나가시겠습니까?')) {
 			if (classid) {
 				await apis.cancelApply(classid);
-				navigate('/')
+				navigate('/');
 			}
 		}
 	};
@@ -304,7 +304,7 @@ const RejectButton = styled(Button)`
 
 const AcceptButton = styled(Button)`
 	color: ${({ theme }) => theme.colors.background};
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const Tr = styled.tr<{ isAccepted: boolean }>`
@@ -324,4 +324,4 @@ const ClassRoomButton = styled.button`
 	right: -20px;
 	z-index: 0;
 	cursor: pointer;
-	`;
+`;

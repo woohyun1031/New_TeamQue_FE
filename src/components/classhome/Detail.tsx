@@ -105,19 +105,18 @@ const Detail = () => {
 			<Contents>{data && data.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
+				<CommentBox>
+					<CommentInput onChange={onChange} value={comment} />
+					<CommentButton onClick={commentWrite}>등록</CommentButton>
+				</CommentBox>
 				{data &&
 					data.comments.map((comment: any) => (
 						<Commentlist key={comment.id}>
 							<CommentWriter>{comment.author}</CommentWriter>
 							<Comment>{comment.content}</Comment>
+							<UnderLine />
 						</Commentlist>
 					))}
-				{/* <CommentBox> */}
-				<CommentBox>
-					<CommentInput onChange={onChange} value={comment} />
-					<CommentButton onClick={commentWrite}>등록</CommentButton>
-				</CommentBox>
-				{/* </CommentBox> */}
 			</Comments>
 		</Container>
 	);
@@ -187,12 +186,14 @@ const Contents = styled.p`
 	color: ${({ theme }) => theme.colors.title};
 `;
 const Commentlist = styled.li`
-	margin: 10px;
+	margin: 20px 20px 30px 20px;
+	position: relative;
 `;
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
 	margin-bottom: 20px;
+	padding-bottom: 30px;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
@@ -204,9 +205,15 @@ const CommentWriter = styled.h4`
 `;
 
 const Comment = styled.p`
-	background-color: ${({ theme }) => theme.colors.background};
-	padding: 6px;
 	font-size: 12px;
+`;
+const UnderLine = styled.div`
+	position: absolute;
+	width: 775px;
+	height: 0.5px;
+	margin-top: 15px;
+	left: -20px;
+	background-color: ${({ theme }) => theme.colors.sub};
 `;
 
 const Comments = styled.div`
@@ -223,10 +230,9 @@ const CommentBox = styled.div`
 const CommentInput = styled.textarea`
 	resize: none;
 	border: none;
-	margin-top: 40px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	width: 800px;
-	height: 100px;
+	height: 130px;
 	border-radius: 10px;
 	outline: none;
 	transition: 0.2s;
@@ -263,11 +269,11 @@ const CommentButton = styled.button`
 	width: 50px;
 	height: 25px;
 	border-radius: 5px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	border: none;
 	right: 30px;
-	bottom: 25px;
+	bottom: 30px;
 	cursor: pointer;
 	position: absolute;
 `;

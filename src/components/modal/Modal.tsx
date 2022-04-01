@@ -23,11 +23,7 @@ const Modal: React.FC = () => {
 
 	let isCanClose = false;
 	useEffect(() => {
-		if (
-			['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(
-				modal.type
-			)
-		) {
+		if (['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(modal.type)) {
 			isCanClose = false;
 		} else {
 			isCanClose = true;
@@ -102,7 +98,7 @@ const Contents = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 	z-index: 1001;

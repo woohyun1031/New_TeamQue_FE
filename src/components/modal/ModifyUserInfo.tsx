@@ -82,7 +82,7 @@ const Input = styled.input`
 	height: 38px;
 	border-radius: 7px;
 	padding: 12px;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	margin-top: 10px;
 	margin-bottom: 20px;
 `;
@@ -91,8 +91,8 @@ const Button = styled.button`
 	width: 265px;
 	height: 38px;
 	border-radius: 7px;
-	background-color: #718aff;
-	color: #fff;
+	${({ theme }) => theme.commons.mainButton};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-weight: bold;
 	margin-bottom: 10px;
 `;
@@ -104,6 +104,9 @@ const WithdrawGuide = styled.p`
 const ToWithdrawButton = styled.button`
 	background: none;
 	text-decoration: underline;
-	color: #f73535;
+	color: ${({ theme }) => theme.colors.signOut};
+	&:hover {
+		color: ${({ theme }) => theme.colors.signoutHover};
+	}
 	margin-left: 10px;
 `;

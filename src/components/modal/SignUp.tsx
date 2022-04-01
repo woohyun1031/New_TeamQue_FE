@@ -138,18 +138,11 @@ const Button = styled.button`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 	margin-top: 30px;
 `;

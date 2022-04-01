@@ -12,7 +12,6 @@ const DropDown = ({ name }: DropDownProps) => {
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState(false);
 
-
 	const toggleDropDown = () => {
 		setIsOpen((prevState) => !prevState);
 	};
@@ -24,8 +23,8 @@ const DropDown = ({ name }: DropDownProps) => {
 	};
 
 	const openMypage = () => {
-		dispatch(changeModal('modifyuserinfo'))
-		dispatch(openModal())
+		dispatch(changeModal('modifyuserinfo'));
+		dispatch(openModal());
 	};
 
 	return (
@@ -86,7 +85,7 @@ const Menu = styled.ul`
 	bottom: -60px;
 	left: 5px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.backgorund};
 	& li {
 		width: 70px;
 		text-align: center;
@@ -95,8 +94,8 @@ const Menu = styled.ul`
 		padding: 4px 0;
 	}
 	& li:nth-child(2) {
-		color: #718aff;
-		border-top: 1px solid #d2d2d2;
+		color: ${({ theme }) => theme.colors.main};
+		border-top: 1px solid ${({ theme }) => theme.colors.sub};
 	}
 	position: absolute;
 	z-index: 101;

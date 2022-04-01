@@ -157,10 +157,6 @@ const Container = styled.div`
 const TitleHeader = styled.div`
 	position: relative;
 `;
-
-const Icons = styled.div<{ isMe: boolean }>`
-	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
-`;
 const TitleInput = styled.input<{ isMe: boolean }>`
 	resize: none;
 	border: none;
@@ -243,7 +239,7 @@ const Button = styled.button`
 	width: 80px;
 	height: 30px;
 	border-radius: 7px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	border: none;
 	right: 50px;

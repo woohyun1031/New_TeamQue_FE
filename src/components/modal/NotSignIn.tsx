@@ -8,14 +8,17 @@ const NotSignIn = () => {
 	const toSignIn = () => {
 		dispatch(changeModal('signIn'));
 	};
-	
+
 	const toTutorial = () => {
 		dispatch(changeModal('tutorial'));
 	};
 
 	return (
 		<Container>
-			<Message>환영합니다, <br /><img src='/images/smallLogo.png' /> 입니다.</Message>
+			<Message>
+				환영합니다, <br />
+				<img src='/images/smallLogo.png' /> 입니다.
+			</Message>
 			<Button id='signIn' onClick={toSignIn}>
 				큐하러 가기
 			</Button>
@@ -47,30 +50,16 @@ const Button = styled.button`
 	margin-top: 10px;
 	display: block;
 	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 22px;
 	font-weight: 500;
 	cursor: pointer;
 	transition: 0.2s;
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.moreDarkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const LightButton = styled(Button)`
-	background-color: ${({ theme }) => theme.colors.sub};
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.subHover};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.subActive};
-	}
+	${({ theme }) => theme.commons.subButton};
 `;
 
 const Character = styled.div`
