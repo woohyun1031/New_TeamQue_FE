@@ -43,7 +43,9 @@ const Board = () => {
 				</colgroup>
 				<thead>
 					<tr>
-						<Th />
+						<Th>
+							<Icon src='/images/smallgraystar.png' />
+						</Th>
 						<Th>구분</Th>
 						<Th>글제목</Th>
 						<Th>작성자</Th>
@@ -54,19 +56,20 @@ const Board = () => {
 					{notice &&
 						notice.map((row) => (
 							<tr key={row.id}>
-								<Td>
+								<Td type={'notice'}>
 									<Icon src='/images/star.png' />
 								</Td>
-								<Td>공지</Td>
+								<Td type={'notice'}>공지</Td>
 								<PostTitle
+									type={'notice'}
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
 								</PostTitle>
-								<Td>{row.author}</Td>
-								<Td>
+								<Td type={'notice'}>{row.author}</Td>
+								<Td type={'notice'}>
 									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
 								</Td>
 							</tr>
@@ -74,19 +77,20 @@ const Board = () => {
 					{question &&
 						question.map((row) => (
 							<tr key={row.id}>
-								<Td>
+								<Td type={'question'}>
 									<Icon src='/images/dot.png' />
 								</Td>
-								<Td>질문</Td>
+								<Td type={'question'}>질문</Td>
 								<PostTitle
+									type={'question'}
 									onClick={() => {
 										navigate(`/classhome/${classid}/post/${row.id}`);
 									}}
 								>
 									{row.title}
 								</PostTitle>
-								<Td>{row.author}</Td>
-								<Td>
+								<Td type={'question'}>{row.author}</Td>
+								<Td type={'question'}>
 									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
 								</Td>
 							</tr>
@@ -130,7 +134,7 @@ const Title = styled.h2`
 	font-size: 30px;
 	font-weight: 700;
 	margin-top: 60px;
-	margin-left: 70px;
+	margin-left: 45px;
 	color: ${({ theme }) => theme.colors.title};
 `;
 
@@ -148,10 +152,12 @@ const Th = styled.th`
 	color: ${({ theme }) => theme.colors.title};
 `;
 
-const Td = styled.td`
+const Td = styled.td<{ type: string }>`
 	text-align: left;
 	padding: 5px;
-	color: ${({ theme }) => theme.colors.title};
+	color: ${({ type, theme }) =>
+		type === 'notice' ? theme.colors.main : theme.colors.title};
+	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
 `;
 
 const Pagenation = styled.div`
@@ -188,8 +194,11 @@ const Page = styled.button<{ selected: boolean }>`
 	cursor: pointer;
 `;
 
-const PostTitle = styled.td`
+const PostTitle = styled.td<{ type: string }>`
 	cursor: pointer;
+	color: ${({ type, theme }) =>
+		type === 'notice' ? theme.colors.main : theme.colors.title};
+	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
 `;
 
 const IconCol = styled.col`
