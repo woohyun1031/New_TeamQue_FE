@@ -44,7 +44,7 @@ const Board = () => {
 				<thead>
 					<tr>
 						<Th>
-							<StarIcon src='/images/graystar.png' />
+							<Icon src='/images/star.png' />
 						</Th>
 						<Th>구분</Th>
 						<Th>글제목</Th>
@@ -57,7 +57,7 @@ const Board = () => {
 						notice.map((row) => (
 							<tr key={row.id}>
 								<Td type={'notice'}>
-									<Icon src='/images/star.png' />
+									<Icon src='/images/starblue.png' />
 								</Td>
 								<Td type={'notice'}>공지</Td>
 								<PostTitle
@@ -173,24 +173,19 @@ const AddButton = styled.button`
 	width: 208.22px;
 	height: 140px;
 	font-weight: 600;
-	background: none;
-	background-image: url('/images/newpost.png');
 	transition: 0.3s;
+	background-image: url('/images/newpost.png');
 	${({ theme }) => theme.commons.backgroundImage};
 `;
 
 const Page = styled.button<{ selected: boolean }>`
-	border: none;
-	background: none;
 	margin: 0 8px;
 	${(props) => (props.selected ? 'color: #718AFF; font-weight: 700;' : '')}
-	cursor: pointer;
 `;
 
 const PostTitle = styled.td<{ type: string }>`
 	cursor: pointer;
-	color: ${({ type, theme }) =>
-		type === 'notice' ? theme.colors.main : theme.colors.title};
+	color: ${({ type, theme }) => (type === 'notice' ? theme.colors.main : theme.colors.title)};
 	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
 `;
 
@@ -208,13 +203,6 @@ const AuthorCol = styled.col`
 
 const DateCol = styled.col`
 	width: 100px;
-`;
-const StarIcon = styled.div<{ src: string }>`
-	background-image: url(${({ src }) => src});
-	${({ theme }) => theme.commons.backgroundImage};
-	background-size: contain;
-	width: 15px;
-	height: 15px;
 `;
 
 const Icon = styled.div<{ src: string }>`

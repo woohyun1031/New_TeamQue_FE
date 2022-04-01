@@ -51,7 +51,6 @@ const Main = () => {
 					</TabButtons>
 					<CardList tabState={tabState} />
 				</CardBox>
-				{/* 이미지 중복 로드, 수정 필요 */}
 				{tabState ? (
 					<AddCardBox onClick={openAddLearnClassModal}>
 						<h1>+</h1>
@@ -99,13 +98,10 @@ const TabButtons = styled.div`
 `;
 
 const TabButton = styled.button<{ isSelected: boolean }>`
-	background: none;
-	border: none;
 	font-size: 27px;
 	font-weight: 700;
 	transition: 0.2s;
 	${(props) => !props.isSelected && 'color: #c4c4c4;'}
-	cursor: pointer;
 	&:hover {
 		${(props) => !props.isSelected && 'color: #aaa;'}
 	}
@@ -114,7 +110,7 @@ const TabButton = styled.button<{ isSelected: boolean }>`
 	}
 `;
 
-const AddCardBox = styled.div`
+const AddCardBox = styled.button`
 	width: 300px;
 	height: 435px;
 	border-radius: 10px;
@@ -124,7 +120,6 @@ const AddCardBox = styled.div`
 	align-items: center;
 	justify-content: center;
 	transition: 0.5s;
-	cursor: pointer;
 	position: relative;
 	font-size: 18px;
 	color: ${({ theme }) => theme.colors.main};

@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   button {
+    background: none;
     border: none;
     cursor: pointer;
   }

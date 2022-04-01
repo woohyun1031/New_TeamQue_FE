@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
@@ -14,7 +13,6 @@ const WritePost = () => {
 	});
 	const [isMe, setIsMe] = useState(false);
 	const { updateid, classid, postid } = useParams<string>();
-	const dispatch = useDispatch();
 
 	const loadPost = async () => {
 		if (updateid) {
@@ -58,7 +56,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (updateid) {
 			try {
-				await apis.updateBoard({ boardInfo, updateid });
+				await apis.updatePost({ boardInfo, updateid });
 				alert('수정완료');
 				navigate(`/classhome/${classid}/post/${postid}`);
 			} catch (error) {
@@ -76,7 +74,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (classid) {
 			try {
-				await apis.postBoard({ boardInfo, classid });
+				await apis.addPost({ boardInfo, classid });
 				alert('저장완료');
 				navigate(`/classhome/${classid}/1`);
 			} catch (error) {
@@ -107,8 +105,8 @@ const WritePost = () => {
 				<StarIcon
 					src={
 						state.postType === 'Question'
-							? '/images/graystar.png'
-							: '/images/bluestar.png'
+							? '/images/star.png'
+							: '/images/starblue.png'
 					}
 					isMe={isMe}
 					onClick={onTrans}
@@ -133,8 +131,8 @@ const WritePost = () => {
 				<StarIcon
 					src={
 						state.postType === 'Question'
-							? '/images/graystar.png'
-							: '/images/bluestar.png'
+							? '/images/star.png'
+							: '/images/starblue.png'
 					}
 					onClick={onTrans}
 					isMe={isMe}
@@ -170,22 +168,21 @@ const Container = styled.div`
 const TitleHeader = styled.div`
 	position: relative;
 `;
+
 const TitleInput = styled.input<{ isMe: boolean }>`
-	resize: none;
-	border: none;
 	margin-top: 20px;
 	padding: 25px;
 	padding-left: ${({ isMe }) => (isMe ? '50px' : '20px')};
 	width: 100%;
 	height: 50px;
 	border-radius: 10px;
-	outline: none;
 	transition: 0.2s;
 	font-size: ${({ theme }) => theme.fontSizes.base};
 	font-weight: 500;
 	background-color: ${({ theme }) => theme.colors.base};
 `;
-const StarIcon = styled.div<{ src: string; isMe: boolean }>`
+
+const StarIcon = styled.button<{ src: string; isMe: boolean }>`
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -197,7 +194,6 @@ const StarIcon = styled.div<{ src: string; isMe: boolean }>`
 	bottom: 16px;
 	border-radius: 15px;
 	position: absolute;
-	cursor: pointer;
 `;
 
 const LineIcon = styled.div<{ isMe: boolean }>`
@@ -241,10 +237,8 @@ const ReturnButton = styled.button`
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.blueTitle};
-	border: none;
 	right: 150px;
 	bottom: 25px;
-	cursor: pointer;
 	position: absolute;
 `;
 
@@ -254,9 +248,7 @@ const Button = styled.button`
 	border-radius: 7px;
 	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
-	border: none;
 	right: 50px;
 	bottom: 25px;
-	cursor: pointer;
 	position: absolute;
 `;

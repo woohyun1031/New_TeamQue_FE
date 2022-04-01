@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../api';
 import { RootState } from '../store/configStore';
@@ -15,6 +16,7 @@ type weekType = dateType[];
 type calendarType = weekType[];
 
 const Calendar = () => {
+	const { classid } = useParams();
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const today = new Date();
 	const thisDate = today.getDate();
@@ -43,7 +45,12 @@ const Calendar = () => {
 			allDate.push({ month: 'next', date: i });
 		}
 
-		const response = await apis.loadMyCalendar(year, month + 1);
+		let response;
+		if (classid) {
+			response = await apis.loadClassCalendar(classid, year, month + 1)
+		} else {
+			response = await apis.loadMyCalendar(year, month + 1);
+		}
 
 		for (const event of response.data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
@@ -168,6 +175,7 @@ const Table = styled.table`
 	font-weight: 500;
 	font-size: 12px;
 	border-collapse: collapse;
+	color: ${({ theme }) => theme.colors.title};
 	& tr td:nth-child(1),
 	& tr th:nth-child(1) {
 		color: ${({ theme }) => theme.colors.reject};
@@ -188,11 +196,8 @@ const Caption = styled.caption`
 
 const Button = styled.button`
 	padding: 0 15px;
-	border: none;
-	background: none;
 	font-weight: 700;
 	font-size: 20px;
-	cursor: pointer;
 	color: ${({ theme }) => theme.colors.base};
 	&:hover {
 		color: ${({ theme }) => theme.colors.hoverBase};
@@ -202,7 +207,6 @@ const Button = styled.button`
 const Th = styled.th`
 	text-align: center;
 	height: 10px;
-	color: ${({ theme }) => theme.colors.title};
 `;
 
 const EventBox = styled.div`
@@ -229,8 +233,7 @@ const EventBox = styled.div`
 const Td = styled.td<{ isThisMonth: boolean }>`
 	position: relative;
 	text-align: center;
-	/* important 수정 필요 */
-	color: ${({ isThisMonth }) => (isThisMonth ? 'black' : '#ccc !important;')};
+	color: ${({ isThisMonth }) => (!isThisMonth && '#ccc !important;')};
 `;
 
 const DateBox = styled.div<{ isToday: boolean }>`
