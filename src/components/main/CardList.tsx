@@ -45,9 +45,11 @@ const CardList = ({ tabState } : CardListProps) => {
 		<Container>
 			{tabState
 				? learnCards &&
-				  learnCards.map((card: CardType) => <Card key={card.id} {...card} />)
+				  learnCards.map((card: CardType) => (
+						<Card key={card.id} {...card} loadLearnClass={loadLearnClass} />
+				  ))
 				: teachCards &&
-				  teachCards.map((card: CardType) => <Card key={card.id} {...card} />)}
+				  teachCards.map((card: CardType) => <Card key={card.id} {...card} loadLearnClass={loadLearnClass}/>)}
 		</Container>
 	);
 };

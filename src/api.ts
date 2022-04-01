@@ -81,6 +81,7 @@ export const apis = {
 	updateBoard: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
 	postBoard: (classInfo: {classid:string,boardInfo:object}) => instance.post(`/post/${classInfo.classid}`,classInfo.boardInfo),
 	deleteBoard: (postid:string) => instance.delete(`/post/${postid}`),
+	cancelApply: (classId: number) => instance.delete(`/class/student/${classId}`),
 
 	// Post
 	loadPosts: (classId: string, page: string) =>

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import apis from '../../api';
 
 type CardProps = {
 	id: number;
@@ -8,6 +9,7 @@ type CardProps = {
 	imageUrl: string;
 	timeTable: string[];
 	state: 'wait' | 'accepted' | 'teach';
+	loadLearnClass: () => void;
 };
 
 const Card = ({
@@ -17,6 +19,7 @@ const Card = ({
 	title,
 	timeTable,
 	state,
+	loadLearnClass
 }: CardProps) => {
 	const navigate = useNavigate();
 
@@ -28,9 +31,16 @@ const Card = ({
 		navigate(`/classhome/${id}/1`);
 	};
 
+	const onClick = async (classId: number) => {
+		if (confirm('정말로 수강 취소 하시겠어요?')) {
+			await apis.cancelApply(classId)
+			await loadLearnClass()
+		}
+	}
+
 	if (state == 'wait') {
 		return (
-			<Container>
+			<WaitContainer>
 				<Thumbnail src={imageUrl} />
 				<WaitThumbnail />
 				<BadgeBox>
@@ -39,7 +49,8 @@ const Card = ({
 				</BadgeBox>
 				<Title>{title}</Title>
 				<Teacher>{teacher} 선생님</Teacher>
-			</Container>
+				<WaitButton onClick={() => onClick(id)}>신청 취소하기</WaitButton>
+			</WaitContainer>
 		);
 	}
 
@@ -73,11 +84,17 @@ const Container = styled.div`
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	transition: 0.2s;
+	color: ${({ theme }) => theme.colors.title};
 	& + & {
 		margin-left: 20px;
 	}
 	background-color: ${({ theme }) => theme.colors.background};
 `;
+
+const WaitContainer = styled(Container)`
+	color: #ccc;
+`
+
 
 const ThumbnailFilter = styled.div`
 	background-image: url('/images/play.png');
@@ -150,14 +167,12 @@ const Title = styled.h3`
 	font-weight: 700;
 	font-size: 18px;
 	height: 40px;
-	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Teacher = styled.h4`
 	font-size: 12px;
 	font-weight: 700;
 	margin-bottom: 6px;
-	color: ${({ theme }) => theme.colors.title};
 `;
 
 const TimeTables = styled.div`
@@ -202,8 +217,8 @@ const HomeButton = styled.button`
 	right: 23px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
+	cursor: pointer;
 	&:hover {
-		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
 	&:active {
@@ -222,3 +237,24 @@ const WaitThumbnail = styled.div`
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.5);
 `;
+
+const WaitButton = styled.button`
+	border: none;
+	border-radius: 7px;
+	width: 92px;
+	height: 32px;
+	background-color: ${({theme}) => theme.colors.main};
+	font-size: 12px;
+	color: ${({theme}) => theme.colors.background};
+	box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.25);
+	position: absolute;
+	bottom: 25px;
+	right: 25px;
+	cursor: pointer;
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
+`
