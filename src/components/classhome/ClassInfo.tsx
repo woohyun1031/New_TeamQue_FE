@@ -237,12 +237,13 @@ const Time = styled.div`
 
 const DayNum = styled.li`
 	width: 120px;
-	height: 30px;
-	padding: 3px;
+	height: 22px;
+	padding: 1px;
 	border-radius: 10px;
-	margin: 2px 2px;
+	margin: 2px 0px;
 	text-align: center;
 	align-items: center;
+	font-size: 12px;
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.title};
 `;
