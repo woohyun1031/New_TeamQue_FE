@@ -65,20 +65,20 @@ const AddClass = () => {
 		<Form>
 			<ModalCloseButton />
 			<h2>클래스 개설하기</h2>
+			<TopContainer>
+				<p>강의 이름</p>
+				<Input type='text' name='title' onChange={onChange} />
+			</TopContainer>
 			<UpperContainer>
 				<UpperLeft>
-					<p>강의 이름</p>
-					<Input type='text' name='title' onChange={onChange} />
-					<InputDays>
-						<Days>
-							<p>시작일</p>
-							<InputDay type='date' name='startDate' onChange={onChange} />
-						</Days>
-						<Days>
-							<p>종료일</p>
-							<InputDay type='date' name='endDate' onChange={onChange} />
-						</Days>
-					</InputDays>
+					<Days>
+						<p>시작일</p>
+						<InputDay type='date' name='startDate' onChange={onChange} />
+					</Days>
+					<Days>
+						<p>종료일</p>
+						<InputDay type='date' name='endDate' onChange={onChange} />
+					</Days>
 				</UpperLeft>
 				<UpperRight>
 					<p>사진 추가하기</p>
@@ -88,53 +88,55 @@ const AddClass = () => {
 			</UpperContainer>
 
 			<LowerContainer>
-				<DayList>
-					{selectedDays.map((item: any) => (
-						<DayNum key={item.id}>
-							{days[item.day - 1]} [{item.startTime}~{item.endTime}]
-							<DayButton
-								src='/images/bigCloseButton.png'
-								onClick={() => deleteDay(item.id)}
-							/>
-						</DayNum>
-					))}
-				</DayList>
 				<AddBox>
-					<DayContainer>
-						요일 선택
-						<DayBox>
-							{[1, 2, 3, 4, 5, 6, 7].map((day) => (
-								<RadioBox key={day}>
-									<Radio
-										type='radio'
-										name='day'
-										value={day}
-										onChange={onChange}
-										id={days[day - 1]}
+					<BoxLeft>
+						<DayList>
+							{selectedDays.map((item: any) => (
+								<DayNum key={item.id}>
+									{days[item.day - 1]} [{item.startTime}~{item.endTime}]
+									<DayButton
+										src='/images/closeday.png'
+										onClick={() => deleteDay(item.id)}
 									/>
-									<Label htmlFor={days[day - 1]}>{days[day - 1]}</Label>
-								</RadioBox>
+								</DayNum>
 							))}
-						</DayBox>
-					</DayContainer>
-					<InputDays>
-						<Days>
-							<p>시작 시간</p>
-							<InputDay type='time' name='startTime' onChange={onChange} />
-						</Days>
-						<Days>
-							<p>종료 시간</p>
-							<InputDay type='time' name='endTime' onChange={onChange} />
-						</Days>
-						<Days>
-							<p style={{ visibility: 'hidden' }}>추가 버튼</p>
+						</DayList>
+					</BoxLeft>
+					<BoxRight>
+						<p>요일 선택</p>
+						<DayContainer>
+							<DayBox>
+								{[1, 2, 3, 4, 5, 6, 7].map((day) => (
+									<RadioBox key={day}>
+										<Radio
+											type='radio'
+											name='day'
+											value={day}
+											onChange={onChange}
+											id={days[day - 1]}
+										/>
+										<Label htmlFor={days[day - 1]}>{days[day - 1]}</Label>
+									</RadioBox>
+								))}
+							</DayBox>
+
 							<Button onClick={addDays}>추가</Button>
-						</Days>
-					</InputDays>
+						</DayContainer>
+						<InputDays>
+							<Days>
+								<p>시작 시간</p>
+								<InputDay type='time' name='startTime' onChange={onChange} />
+							</Days>
+							<Days>
+								<p>종료 시간</p>
+								<InputDay type='time' name='endTime' onChange={onChange} />
+							</Days>
+						</InputDays>
+					</BoxRight>
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<AddButton onClick={createClass}>강의 추가</AddButton>
+				<AddButton onClick={createClass}>개설하기</AddButton>
 			</Footer>
 		</Form>
 	);
@@ -143,12 +145,15 @@ const AddClass = () => {
 export default AddClass;
 
 const Form = styled.form`
-	width: 500px;
+	width: 560px;
 	height: 600px;
 	display: flex;
 	flex-direction: column;
-	padding: 50px;
-	justify-content: space-between;
+	padding: 40px 50px 30px 50px;
+	//justify-content: space-between;
+`;
+const TopContainer = styled.div`
+	margin-top: 10px;
 `;
 
 const UpperContainer = styled.div`
@@ -158,13 +163,14 @@ const UpperContainer = styled.div`
 `;
 const Days = styled.div`
 	margin-right: 10px;
+	margin-top: 5px;
 `;
 
 const InputDays = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-between;
-	margin-top: 10px;
+	margin-top: 5px;
 `;
 const RadioBox = styled.div``;
 
@@ -176,16 +182,27 @@ const Radio = styled.input`
 	}
 `;
 const Label = styled.label`
-	margin-right: 10px;
+	margin-right: 5px;
+	cursor: pointer;
 `;
 
-const UpperLeft = styled.div``;
+const UpperLeft = styled.div`
+	width: 240px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`;
+
 const UpperRight = styled.div`
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 10px;
 `;
 const ImageInput = styled.input`
-	width: 150px;
-	height: 100px;
+	width: 100%;
+	height: 100%;
 	border: none;
 	border-radius: 10px;
 	background-color: ${({ theme }) => theme.colors.base};
@@ -206,33 +223,68 @@ const CrossButton = styled.div`
 `;
 
 const LowerContainer = styled.div`
-	margin-top: 20px;
+	margin-top: 30px;
+`;
+const BoxRight = styled.div`
+	margin-left: 10px;
+`;
+
+const BoxLeft = styled.div`
+	width: 180px;
+	height: 100%;
 `;
 
 const DayList = styled.div`
-	height: 50px;
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	overflow-y: auto;
+	height: 100%;
+	flex-direction: column;
+	overflow: auto;
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: ${({ theme }) => theme.colors.scroll};
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: ${({ theme }) => theme.colors.scrollHover};
+	}
 `;
 
 const DayNum = styled.li`
-	width: 170px;
+	width: 160px;
 	height: 30px;
-	padding: 5px;
+	padding: 3px;
 	border-radius: 10px;
-	margin: 5px;
+	margin: 5px 0;
 	text-align: center;
 	align-items: center;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 `;
 
+const DayButton = styled.button<{ src: string }>`
+	border: none;
+	background: none;
+	background-image: url(${({ src }) => src});
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	width: 10px;
+	height: 10px;
+	margin-left: 5px;
+	cursor: pointer;
+`;
+
 const AddBox = styled.div`
-	padding: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 15px;
+	height: 220px;
 	background-color: ${({ theme }) => theme.colors.base};
 `;
+
 const DayContainer = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -241,10 +293,9 @@ const DayContainer = styled.div`
 const DayBox = styled.div`
 	display: flex;
 	padding: 5px;
-	width: 250px;
+	width: 160px;
 	height: 30px;
-	margin-left: 20px;
-	border-radius: 20px;
+	border-radius: 7px;
 	align-items: center;
 	justify-content: center;
 	background-color: ${({ theme }) => theme.colors.background};
@@ -262,7 +313,7 @@ const Input = styled.input`
 `;
 
 const InputDay = styled.input<{ type?: 'time' | 'date' }>`
-	width: 100px;
+	width: 100%;
 	height: 30px;
 	border-radius: 7px;
 	border: none;
@@ -271,6 +322,7 @@ const InputDay = styled.input<{ type?: 'time' | 'date' }>`
 	font-size: 14px;
 	padding-left: 20px;
 	outline: none;
+	margin-top: 5px;
 `;
 
 const Footer = styled.div`
@@ -297,18 +349,6 @@ const Button = styled.button`
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
-`;
-
-const DayButton = styled.button<{ src: string }>`
-	border: none;
-	background: none;
-	background-image: url(${({ src }) => src});
-	background-repeat: no-repeat;
-	background-position: center center;
-	width: 13px;
-	height: 13px;
-	margin-left: 10px;
-	cursor: pointer;
 `;
 
 const AddButton = styled(Button)`

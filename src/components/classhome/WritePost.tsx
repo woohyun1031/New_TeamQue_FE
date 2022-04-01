@@ -12,6 +12,7 @@ const WritePost = () => {
 		content: '',
 		postType: 'Question',
 	});
+	const [isMe, setIsMe] = useState(false);
 	const { updateid, classid, postid } = useParams<string>();
 	const dispatch = useDispatch();
 
@@ -25,6 +26,16 @@ const WritePost = () => {
 				setState({ title, content, postType });
 			} catch (error) {
 				console.log(error);
+			}
+		} else {
+			if (classid) {
+				try {
+					const response = await apis.loadClassData(classid);
+					const isByMe = response.data.isByMe;
+					setIsMe(() => isByMe);
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		}
 	};
@@ -67,7 +78,9 @@ const WritePost = () => {
 
 	const onBack = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		navigate(-1);
+		if (confirm('정말로 취소하시겠습니까?')) {
+			navigate(-1);
+		}
 	};
 
 	useEffect(() => {
@@ -84,14 +97,16 @@ const WritePost = () => {
 							? '/images/graystar.png'
 							: '/images/bluestar.png'
 					}
+					isMe={isMe}
 					onClick={onTrans}
 				/>
-				<LineIcon />
+				<LineIcon isMe={isMe} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
 					value={state.title}
+					isMe={isMe}
 				/>
 			</TitleHeader>
 			<ContentInput onChange={onChange} name='content' value={state.content} />
@@ -109,13 +124,15 @@ const WritePost = () => {
 							: '/images/bluestar.png'
 					}
 					onClick={onTrans}
+					isMe={isMe}
 				/>
-				<LineIcon />
+				<LineIcon isMe={isMe} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
 					value={state.title}
+					isMe={isMe}
 				/>
 			</TitleHeader>
 			<ContentInput onChange={onChange} name='content' value={state.content} />
@@ -141,12 +158,15 @@ const TitleHeader = styled.div`
 	position: relative;
 `;
 
-const TitleInput = styled.input`
+const Icons = styled.div<{ isMe: boolean }>`
+	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
+`;
+const TitleInput = styled.input<{ isMe: boolean }>`
 	resize: none;
 	border: none;
 	margin-top: 20px;
 	padding: 25px;
-	padding-left: 50px;
+	padding-left: ${({ isMe }) => (isMe ? '50px' : '20px')};
 	width: 100%;
 	height: 50px;
 	border-radius: 10px;
@@ -156,12 +176,12 @@ const TitleInput = styled.input`
 	font-weight: 500;
 	background-color: ${({ theme }) => theme.colors.base};
 `;
-const StarIcon = styled.div<{ src: string }>`
+const StarIcon = styled.div<{ src: string; isMe: boolean }>`
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
-	display: inline-block;
+	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
 	width: 17px;
 	height: 17px;
 	left: 15px;
@@ -171,8 +191,8 @@ const StarIcon = styled.div<{ src: string }>`
 	cursor: pointer;
 `;
 
-const LineIcon = styled.div`
-	display: inline-block;
+const LineIcon = styled.div<{ isMe: boolean }>`
+	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
 	width: 2px;
 	height: 23px;
 	left: 40px;
