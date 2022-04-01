@@ -29,7 +29,7 @@ const ModalSlice = createSlice({
 				| 'inviteCode'
 				| 'tutorial'
 				| 'registClass'
-				| 'withdraw'
+				| 'deleteaccount'
 				| 'modifyuserinfo'
 			>
 		) {

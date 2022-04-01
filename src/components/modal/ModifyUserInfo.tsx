@@ -18,9 +18,9 @@ const ModifyUserInfo = () => {
 		apis.modifyUserInfo(input);
 	};
 
-	const toWithdraw = (e: MouseEvent<HTMLButtonElement>) => {
+	const toDeleteAccount = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('withdraw'));
+		dispatch(changeModal('deleteaccount'));
 	};
 
 	return (
@@ -33,7 +33,7 @@ const ModifyUserInfo = () => {
 			<Button>정보 수정하기</Button>
 			<WithdrawGuide>
 				큐 졸업하고싶다면?{' '}
-				<ToWithdrawButton onClick={toWithdraw}>회원탈퇴하기</ToWithdrawButton>
+				<ToWithdrawButton onClick={toDeleteAccount}>회원탈퇴하기</ToWithdrawButton>
 			</WithdrawGuide>
 		</Form>
 	);
