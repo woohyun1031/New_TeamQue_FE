@@ -259,7 +259,7 @@ const DayNum = styled.li`
 	margin: 5px 0;
 	text-align: center;
 	align-items: center;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 `;
 

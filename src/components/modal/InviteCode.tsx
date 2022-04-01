@@ -5,19 +5,19 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const uuid =  useSelector((state: RootState) => state.modal.data)
+	const uuid = useSelector((state: RootState) => state.modal.data);
 	const uuidRef = useRef<HTMLInputElement>(null);
 
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		alert('공유하기 기능 구현 중')
+		alert('공유하기 기능 구현 중');
 	};
 
 	useEffect(() => {
 		if (uuidRef.current) {
-			uuidRef.current.value = uuid
+			uuidRef.current.value = uuid;
 		}
-	})
+	});
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -92,7 +92,7 @@ const Button = styled.button`
 	height: 40px;
 	border-radius: 7px;
 	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;

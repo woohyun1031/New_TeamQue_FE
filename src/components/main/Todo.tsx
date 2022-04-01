@@ -189,7 +189,7 @@ const AddButton = styled.button`
 	margin: 20px 0;
 	transition: 0.3s;
 	color: ${({ theme }) => theme.colors.blueTitle};
-	background-color: ${({ theme }) => theme.colors.background};
+	background-color: ${({ theme }) => theme.colors.white};
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.whiteHover};
 	}
@@ -245,4 +245,3 @@ const Complete = styled.div`
 	right: 0px;
 	bottom: -2px;
 `;
-

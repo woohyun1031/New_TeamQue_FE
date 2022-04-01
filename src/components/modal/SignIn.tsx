@@ -25,7 +25,6 @@ const SignIn: React.FC = () => {
 		dispatch(signIn(inputs));
 	};
 
-
 	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		dispatch(changeModal('notSignIn'));
@@ -147,20 +146,14 @@ const Button = styled.button`
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
-	background-color: ${({ theme }) => theme.colors.main};
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 	cursor: pointer;
-	`;
+`;
 
 const Or = styled.p`
 	margin: 19px 0;
 	text-align: center;
-`
+`;
 
 const KakaoButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.kakaoBg};
@@ -211,4 +204,3 @@ const SignUp = styled.button`
 		color: ${({ theme }) => theme.colors.signoutHover};
 	}
 `;
-

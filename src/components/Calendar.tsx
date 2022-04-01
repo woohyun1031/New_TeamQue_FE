@@ -247,7 +247,7 @@ const TodayUnderline = styled.div`
 	bottom: 6px;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const EventPointer = styled.div`
@@ -257,7 +257,7 @@ const EventPointer = styled.div`
 	position: absolute;
 	top: 10px;
 	right: 5px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const Pointer = styled.span`
@@ -268,5 +268,5 @@ const Pointer = styled.span`
 	margin-right: 5px;
 	position: relative;
 	top: -2px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 `;

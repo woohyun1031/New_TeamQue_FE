@@ -119,11 +119,11 @@ export default Board;
 const Container = styled.div`
 	width: 890px;
 	height: 850px;
-	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
 	z-index: 1;
+	background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Title = styled.h2`
@@ -173,17 +173,11 @@ const AddButton = styled.button`
 	border-radius: 50px;
 	font-weight: 600;
 	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
 	cursor: pointer;
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const Page = styled.button<{ selected: boolean }>`
@@ -216,8 +210,7 @@ const DateCol = styled.col`
 
 const Icon = styled.div<{ src: string }>`
 	background-image: url(${({ src }) => src});
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 15px;
 	height: 15px;
 `;

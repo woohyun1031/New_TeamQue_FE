@@ -20,7 +20,7 @@ const DeleteAccount = () => {
 			alert('탈퇴가 완료되었습니다.');
 			dispatch(signOut());
 			location.reload();
-		} 
+		}
 	};
 
 	const hendleCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
@@ -70,7 +70,7 @@ const Input = styled.input`
 	height: 38px;
 	border-radius: 7px;
 	padding: 12px;
-	background-color: #f4f4f4;
+	background-color: ${({ theme }) => theme.colors.base};
 	margin-top: 10px;
 	margin-bottom: 20px;
 `;
@@ -79,8 +79,8 @@ const Button = styled.button`
 	width: 265px;
 	height: 38px;
 	border-radius: 7px;
-	background-color: #718aff;
-	color: #fff;
+	${({ theme }) => theme.commons.mainButton};
+	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-weight: bold;
 	margin-bottom: 10px;
 `;

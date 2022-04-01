@@ -100,6 +100,24 @@ const commons = {
   backgroundImage: `
   background-position: center center;
 	background-repeat: no-repeat;
+  `,
+  mainButton:`
+  background-color: ${colors.main};
+	&:hover {
+		background-color: ${colors.brightMain};;
+	}
+	&:active {
+		background-color:${colors.darkerMain};;
+	}
+  `,
+  subButton:`
+  background-color: ${colors.sub};
+	&:hover {
+		background-color: ${colors.subHover};;
+	}
+	&:active {
+		background-color:${colors.subActive};;
+	}
   `
 }
 
