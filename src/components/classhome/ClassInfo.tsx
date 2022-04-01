@@ -92,6 +92,7 @@ const ClassInfo: React.FC = () => {
 
 	return (
 		<Container>
+			<ClassRoomButton onClick={toClassRoom} />
 			<Image src={classData && classData.imageUrl} />
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classData && classData.title}</Title>
@@ -309,3 +310,18 @@ const AcceptButton = styled(Button)`
 const Tr = styled.tr<{ isAccepted: boolean }>`
 	${({ isAccepted }) => !isAccepted && 'color: #718AFF;'}
 `;
+
+const ClassRoomButton = styled.button`
+	background: none;
+	border: none;
+	background-image: url('/images/toclassroom.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 143.41px;
+	height: 66px;
+	position: absolute;
+	top: -66px;
+	right: -20px;
+	z-index: 0;
+	cursor: pointer;
+	`;
