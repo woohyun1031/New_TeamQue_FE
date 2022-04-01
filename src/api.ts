@@ -7,7 +7,6 @@ export const instance = axios.create({
 	},
 });
 
-
 let isRefreshing = false;
 const refreshSubscribers: ((arg: string) => void)[] = [];
 const addRefreshSubscriber = (callback: (arg: string) => void) => {
@@ -61,7 +60,7 @@ export const apis = {
 		instance.post('/user/signin', signInInfo),
 	signOut: () => instance.post('/user/signout', {}),
 	getUserInfo: () => instance.get('/user'),
-	withdrawal: (password: string) => instance.put('/user/withdrawal', {password}),
+	withdrawal: (password: string) => instance.put('/user/delete', {password}),
 	modifyUserInfo: (name: string) => instance.put('/user/edit', {name}),
 	refresh: () =>
 		instance.post(
@@ -79,15 +78,15 @@ export const apis = {
 	loadStudents: (classId: string) => instance.get(`/class/student/${classId}`),
 	changeState: (classId: string, studentId: number, isAccept: boolean) => instance.put(`/class/student/${classId}/${studentId}`, {isOk: isAccept}), 
 	registClass: (uuid: string) => instance.post(`/class/student`, {uuid}),
-	updateBoard: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
-	postBoard: (classInfo: {classid:string,boardInfo:object}) => instance.post(`/post/${classInfo.classid}`,classInfo.boardInfo),
-	deleteBoard: (postid:string) => instance.delete(`/post/${postid}`),
 	cancelApply: (classId: string) => instance.delete(`/class/student/${classId}`),
-
+	
 	// Post
 	loadPosts: (classId: string, page: string) =>
-		instance.get(`/post/${classId}?page=${page}`),
+	instance.get(`/post/${classId}?page=${page}`),
 	loadPost: (postId: string) => instance.get(`/post/detail/${postId}`),
+	postBoard: (classInfo: {classid:string,boardInfo:object}) => instance.post(`/post/${classInfo.classid}`,classInfo.boardInfo),
+	deleteBoard: (postid:string) => instance.delete(`/post/${postid}`),
+	updateBoard: (classInfo: {updateid:string,boardInfo:object}) => instance.put(`/post/${classInfo.updateid}`,classInfo.boardInfo),
 
 	//Comment
 	sendComment: (contents: {postid:string,comment:string}) => instance.post(`/post/comment/${contents.postid}`, { content:contents.comment }),
@@ -98,7 +97,6 @@ export const apis = {
 	loadTeachClass: () => instance.get('/class/teach'),
 	loadMyCalendar: (year: number, month: number) =>
 		instance.get(`/class/date?year=${year}&month=${month}`),
-	// 강의참여하기 추가 예정
 	createClass: (classInfo: object) => instance.post('/class', classInfo),
 	// Todo
 	loadTodo: () => instance.get('/post/todo'),

@@ -1,32 +1,44 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
+import { signOut } from '../../store/modules/user';
 import ModalCloseButton from './ModalCloseButton';
 
 const DeleteAccount = () => {
+	const dispatch = useDispatch();
 	const [input, setInput] = useState('');
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInput(e.target.value);
 	};
 
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-    if (confirm('정말로 회원탈퇴 하시겠어요?')) {
-      apis.withdrawal(input);
-    }
+	const deleteAccount = async () => {
+		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
+			await apis.withdrawal(input);
+			alert('탈퇴가 완료되었습니다.');
+			dispatch(signOut());
+			location.reload();
+		} 
+	};
+
+	const hendleCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
+		if (e.key === 'Enter') {
+			deleteAccount();
+		}
 	};
 
 	return (
-		<Form onSubmit={onSubmit}>
-      <ModalCloseButton />
+		<Form onKeyPress={hendleCheckEnter}>
+			<ModalCloseButton />
 			<FormTitle>회원 탈퇴</FormTitle>
 			<FormDescription>
 				비밀번호를 한번 더 입력해주시면 <br /> 회원 탈퇴가 완료됩니다.
 			</FormDescription>
 			<Label htmlFor='password'>비밀번호</Label>
-			<Input type='password' id='password' onChange={onChange}/>
-			<Button>회원탈퇴</Button>
+			<Input type='password' id='password' onChange={handleChange} />
+			<Button onClick={deleteAccount}>회원탈퇴</Button>
 		</Form>
 	);
 };

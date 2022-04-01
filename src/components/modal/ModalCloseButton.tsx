@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { closeModal } from '../../store/modules/modal';
@@ -5,7 +6,8 @@ import { closeModal } from '../../store/modules/modal';
 const ModalCloseButton = () => {
 	const dispatch = useDispatch();
 
-	const onClick = () => {
+	const onClick = (e:MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
 		dispatch(closeModal());
 	};
 

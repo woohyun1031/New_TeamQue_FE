@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import {
+	ChangeEvent,
+	FormEvent,
+	KeyboardEvent,
+	MouseEvent,
+	useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import apis from '../../api';
@@ -10,12 +16,21 @@ const ModifyUserInfo = () => {
 	const [input, setInput] = useState('');
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
 		setInput(e.target.value);
 	};
 
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		apis.modifyUserInfo(input);
+	const ChangeName = async () => {
+		if (confirm(`${input}으로 이름을 변경하시겠습니까?`)) {
+			await apis.modifyUserInfo(input);
+			location.reload();
+		}
+	};
+
+	const onCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
+		if (e.key === 'Enter') {
+			ChangeName();
+		}
 	};
 
 	const toDeleteAccount = (e: MouseEvent<HTMLButtonElement>) => {
@@ -24,16 +39,18 @@ const ModifyUserInfo = () => {
 	};
 
 	return (
-		<Form onSubmit={onSubmit}>
+		<Form onKeyPress={onCheckEnter}>
 			<ModalCloseButton />
 			<FormTitle>회원 정보 관리</FormTitle>
 			<FormDescription>이름을 변경할 수 있습니다.</FormDescription>
 			<Label htmlFor='name'>이름</Label>
 			<Input type='text' id='name' onChange={onChange} />
-			<Button>정보 수정하기</Button>
+			<Button onClick={ChangeName}>정보 수정하기</Button>
 			<WithdrawGuide>
-				큐 졸업하고싶다면?{' '}
-				<ToWithdrawButton onClick={toDeleteAccount}>회원탈퇴하기</ToWithdrawButton>
+				큐 졸업하고싶다면?
+				<ToWithdrawButton onClick={toDeleteAccount}>
+					회원탈퇴하기
+				</ToWithdrawButton>
 			</WithdrawGuide>
 		</Form>
 	);
