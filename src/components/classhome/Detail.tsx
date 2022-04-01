@@ -284,7 +284,7 @@ const UpdateButton = styled(Button)`
 	&:hover {
 		background-image: url('/images/editblue.png');
 	}
-	top: 50px;
+	top: 40px;
 	right: 100px;
 `;
 
@@ -293,6 +293,6 @@ const RemoveButton = styled(Button)`
 	&:hover {
 		background-image: url('/images/removeblue.png');
 	}
-	top: 50px;
-	right: 50px;
+	top: 40px;
+	right: 60px;
 `;
