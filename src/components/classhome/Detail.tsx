@@ -1,14 +1,12 @@
 import axios from 'axios';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import apis from '../../api';
 
 const Detail = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const { classid, postid, page } = useParams<string>();
+	const { classid, postid } = useParams<string>();
 	const [data, setData] = useState<{
 		postType: string;
 		title: string;
@@ -94,11 +92,8 @@ const Detail = () => {
 				</HeaderLeft>
 				<HeaderRight isMe={isByMe}>
 					<StarIcon
-						src={
-							data?.postType === 'Question'
-								? '/images/graystar.png'
-								: '/images/bluestar.png'
-						}
+						src={'/images/bluestar.png'}
+						isType={data && data.postType}
 					/>
 					{isByMe ? (
 						<UpdateButton
@@ -165,8 +160,8 @@ const HeaderLeft = styled.div``;
 const HeaderRight = styled.div<{ isMe: boolean }>`
 	display: flex;
 	flex-direction: row;
-	justify-content: ${({ isMe }) => (isMe ? 'space-between' : 'flex-end')};
-	width: 130px;
+	justify-content: ${({ isMe }) => (isMe ? 'space-around' : 'flex-end')};
+	width: 120px;
 `;
 
 const PostType = styled.h3`
@@ -260,17 +255,17 @@ const CommentInput = styled.textarea`
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
-const StarIcon = styled.button<{ src: string }>`
+const StarIcon = styled.button<{ isType: string | undefined; src: string }>`
+	display: ${({ isType }) => (isType === 'Question' ? 'none' : 'inline-block')};
 	background-image: url(${({ src }) => src});
 	border: none;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 	border-radius: 7px;
-	display: inline-block;
 	transition: 0.2s;
 	z-index: 2;
 `;
@@ -295,8 +290,8 @@ const UpdateButton = styled.button`
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 	border-radius: 7px;
 	display: inline-block;
 	transition: 0.2s;
@@ -314,8 +309,8 @@ const RemoveButton = styled.button`
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 	border-radius: 7px;
 	display: inline-block;
 	transition: 0.2s;
