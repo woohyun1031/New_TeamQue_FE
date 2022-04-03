@@ -25,8 +25,8 @@ const AddClass = () => {
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
 	const S3_BUCKET = 'mywoo1031bucket';
-	const ACCESS_KEY = 'AKIAT7KAFNOUZAM2EF22';
-	const SECRET_ACCESS_KEY = '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';
+	const ACCESS_KEY = REACT_APP_AWSAccessKeyId;
+	const SECRET_ACCESS_KEY = REACT_APP_AWSSecretKey;
 	const REGION = 'ap-northeast-2';
 
 	AWS.config.update({
@@ -54,7 +54,9 @@ const AddClass = () => {
 				console.log(res);
 				await setInputs({
 					...inputs,
-					['imageUrl']: 'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' + res.request.httpRequest.path,
+					['imageUrl']:
+						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+						res.request.httpRequest.path,
 				});
 				console.log(inputs);
 				createClass();
@@ -73,7 +75,7 @@ const AddClass = () => {
 			times: [...selectedDays],
 		};
 		console.log(classInfo, 'crate');
-		apis.createClass(classInfo);
+		api.createClass(classInfo);
 		//navigator('/');
 	};
 	useEffect(() => {
@@ -155,7 +157,10 @@ const AddClass = () => {
 							{selectedDays.map((item: any) => (
 								<DayNum key={item.id}>
 									{days[item.day - 1]} [{item.startTime}~{item.endTime}]
-									<DayButton src='/images/closeday.png' onClick={() => deleteDay(item.id)} />
+									<DayButton
+										src='/images/closeday.png'
+										onClick={() => deleteDay(item.id)}
+									/>
 								</DayNum>
 							))}
 						</DayList>
@@ -166,7 +171,13 @@ const AddClass = () => {
 							<DayBox>
 								{[1, 2, 3, 4, 5, 6, 7].map((day) => (
 									<RadioBox key={day}>
-										<Radio type='radio' name='day' value={day} onChange={onChange} id={days[day - 1]} />
+										<Radio
+											type='radio'
+											name='day'
+											value={day}
+											onChange={onChange}
+											id={days[day - 1]}
+										/>
 										<Label htmlFor={days[day - 1]}>{days[day - 1]}</Label>
 									</RadioBox>
 								))}
