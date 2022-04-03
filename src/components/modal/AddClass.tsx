@@ -17,28 +17,48 @@ const AddClass = () => {
 	});
 	//image
 	const [file, setFile] = useState<any>('');
-	const [previewURL, setPreviewURL] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
-	const fileRef = useRef();
 
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-	// const S3_BUCKET = 'my-magazine-shine7329';
-	// const ACCESS_KEY = process.env.REACT_APP_AWSAccessKeyId;
-	// const SECRET_ACCESS_KEY = process.env.REACT_APP_AWSSecretKey;
-	// const REGION = 'ap-northeast-2';
+	const S3_BUCKET = 'mywoo1031bucket';
+	const ACCESS_KEY = process.env.REACT_APP_AWSAccessKeyId;
+	const SECRET_ACCESS_KEY = process.env.REACT_APP_AWSSecretKey;
+	const REGION = 'ap-northeast-2';
 
-	// AWS.config.update({
-	// 	accessKeyId: ACCESS_KEY,
-	// 	secretAccessKey: SECRET_ACCESS_KEY,
-	// });
+	AWS.config.update({
+		accessKeyId: ACCESS_KEY,
+		secretAccessKey: SECRET_ACCESS_KEY,
+	});
 
-	// const myBucket = new AWS.S3({
-	// 	params: { Bucket: S3_BUCKET },
-	// 	region: REGION,
-	// });
+	const myBucket = new AWS.S3({
+		params: { Bucket: S3_BUCKET },
+		region: REGION,
+	});
+
+	const uploadFile = (file: any) => {
+		const params = {
+			ACL: 'public-read',
+			Body: file,
+			Bucket: S3_BUCKET,
+			Key: 'upload/' + file.name,
+		};
+
+		myBucket
+			.putObject(params)
+			.on('httpUploadProgress', (evt, res: any) => {
+				console.log(res);
+				setInputs({
+					...inputs,
+					['imageUrl']: 'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' + res.request.httpRequest.path,
+				});
+			})
+			.send((err) => {
+				if (err) console.log(err, 'err');
+			});
+	};
 
 	useEffect(() => {
 		console.log(selectedDays);
@@ -80,7 +100,9 @@ const AddClass = () => {
 			times: [...selectedDays],
 		};
 		console.log(classInfo);
-		await api.createClass(classInfo);
+		await uploadFile(file);
+
+		//await apis.createClass(classInfo);
 	};
 
 	const handleFileOnChange = (event: any) => {
@@ -134,10 +156,7 @@ const AddClass = () => {
 							{selectedDays.map((item: any) => (
 								<DayNum key={item.id}>
 									{days[item.day - 1]} [{item.startTime}~{item.endTime}]
-									<DayButton
-										src='/images/closeday.png'
-										onClick={() => deleteDay(item.id)}
-									/>
+									<DayButton src='/images/closeday.png' onClick={() => deleteDay(item.id)} />
 								</DayNum>
 							))}
 						</DayList>
@@ -148,13 +167,7 @@ const AddClass = () => {
 							<DayBox>
 								{[1, 2, 3, 4, 5, 6, 7].map((day) => (
 									<RadioBox key={day}>
-										<Radio
-											type='radio'
-											name='day'
-											value={day}
-											onChange={onChange}
-											id={days[day - 1]}
-										/>
+										<Radio type='radio' name='day' value={day} onChange={onChange} id={days[day - 1]} />
 										<Label htmlFor={days[day - 1]}>{days[day - 1]}</Label>
 									</RadioBox>
 								))}
