@@ -33,6 +33,8 @@ const ClassInfo: React.FC = () => {
 		if (classid) {
 			const classData = await api.loadClassData(classid);
 			const studentsData = await api.loadStudents(classid);
+			console.log(classData)
+			console.log(studentsData)
 			setClassData(classData);
 			if (classData?.isByMe) {
 				setClassData(studentsData);
@@ -92,7 +94,7 @@ const ClassInfo: React.FC = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classData && classData.title}</Title>
 			<Teacher>{classData && classData.teacher} 선생님</Teacher>
-			<Time>{classData && classData.timeTable.map((time: string, index: number) => <DayNum key={index}>{time}</DayNum>)}</Time>
+			<Time>{classData?.timeTable?.map((time: string, index: number) => <DayNum key={index}>{time}</DayNum>)}</Time>
 			<StudentInfo>
 				<div>
 					<h4>수강생 {classData?.isByMe && <button onClick={openInviteCode}>+</button>}</h4>

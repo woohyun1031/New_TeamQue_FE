@@ -25,8 +25,8 @@ export type PostType = {
 };
 
 export type PostsType = {
-	postListNotice: PostType[];
-	postListquestion: PostType[];
+	notice: PostType[];
+	question: PostType[];
 	pages: number;
 };
 
