@@ -29,3 +29,12 @@ export type PostsType = {
 	postListquestion: PostType[];
 	pages: number;
 };
+
+export type CardType = {
+	id: number;
+	title: string;
+	teacher: string;
+	imageUrl: string;
+	timeTable: string[];
+	state: 'wait' | 'accepted' | 'teach';
+};

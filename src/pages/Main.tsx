@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
-import { RootState } from '../store/configStore';
 import { changeModal, openModal } from '../store/modules/modal';
 
 const Main = () => {
 	const dispatch = useDispatch();
 	const [tabState, setTabState] = useState(true);
-	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
 	const openAddLearnClassModal = () => {
 		dispatch(openModal());
@@ -35,7 +33,7 @@ const Main = () => {
 		<>
 			<UpperContainer>
 				<Welcome />
-				{isLogin && <Schedule />}
+				<Schedule />
 				<CalendarBox>
 					<SubTitle>일정</SubTitle>
 					<Calendar />

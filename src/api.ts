@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { PostsType, PostType, TodoType } from './type';
+import { CardType, PostsType, PostType, TodoType } from './type';
 
 export const instance = axios.create({
 	baseURL: 'https://noobpro.shop:3000/',
@@ -56,7 +56,6 @@ const requests = {
 	delete: (url: string) => instance.delete(url).then(responseBody),
 };
 
-
 const api = {
 	// User
 	signUp: (userInfo: object) => requests.post('/user/signup', userInfo),
@@ -67,15 +66,15 @@ const api = {
 	modifyUserInfo: (name: string) => requests.put('/user/edit', { name }),
 
 	// Class
-	loadLearnClass: () => requests.get('/class/learn'),
-	loadTeachClass: () => requests.get('/class/teach'),
+	loadLearnCards: (): Promise<CardType[]> => requests.get('/class/learn'),
+	loadTeachCards: (): Promise<CardType[]> => requests.get('/class/teach'),
+	cancelApply: (classId: string) => requests.delete(`/class/student/${classId}`),
 	loadMyCalendar: (year: number, month: number) => requests.get(`/class/date?year=${year}&month=${month}`),
 	createClass: (classInfo: object) => requests.post('/class', classInfo),
 	loadClassData: (classId: string) => requests.get(`/class/${classId}`),
 	loadStudents: (classId: string) => requests.get(`/class/student/${classId}`),
 	changeState: (classId: string, studentId: number, isAccept: boolean) => requests.put(`/class/student/${classId}/${studentId}`, { isOk: isAccept }),
 	registClass: (uuid: string) => requests.post(`/class/student`, { uuid }),
-	cancelApply: (classId: string) => requests.delete(`/class/student/${classId}`),
 	loadClassCalendar: (classId: string, year: number, month: number) => requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 
 	// Post
