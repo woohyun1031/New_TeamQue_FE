@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { changeModal } from '../../store/modules/modal';
 import ModalCloseButton from './ModalCloseButton';
 
@@ -22,7 +22,7 @@ const ModifyUserInfo = () => {
 
 	const ChangeName = async () => {
 		if (confirm(`${input}으로 이름을 변경하시겠습니까?`)) {
-			await apis.modifyUserInfo(input);
+			await api.modifyUserInfo(input);
 			location.reload();
 		}
 	};

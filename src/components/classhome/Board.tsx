@@ -1,34 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
-
-type postType = {
-	id: number;
-	title: string;
-	author: string;
-	createdAt: string;
-};
+import api from '../../api';
 
 const Board = () => {
 	const navigate = useNavigate();
-	const { classid, page } = useParams<string>();
-	const [notice, setNotice] = useState<postType[]>();
-	const [question, setQuestion] = useState<postType[]>();
-	const [totalPageNumber, setTotalPageNumber] = useState<number>();
+	const { classid, page } = useParams();
 
-	const LoadPostData = async () => {
-		if (classid && page) {
-			const { data } = await apis.loadPosts(classid, page);
-			setNotice(data.postListNotice);
-			setQuestion(data.postListquestion);
-			setTotalPageNumber(data.pages);
-		}
-	};
-
-	useEffect(() => {
-		LoadPostData();
-	}, [page]);
+	const { data } = useQuery('posts', () =>
+		api.loadPosts(classid as string, page as string)
+	);
 
 	return (
 		<Container>
@@ -53,63 +34,60 @@ const Board = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{notice &&
-						notice.map((row) => (
-							<tr key={row.id}>
-								<Td type={'notice'}>
-									<Icon src='/images/starblue.png' />
-								</Td>
-								<Td type={'notice'}>공지</Td>
-								<PostTitle
-									type={'notice'}
-									onClick={() => {
-										navigate(`/classhome/${classid}/post/${row.id}`);
-									}}
-								>
-									{row.title}
-								</PostTitle>
-								<Td type={'notice'}>{row.author}</Td>
-								<Td type={'notice'}>
-									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
-								</Td>
-							</tr>
-						))}
-					{question &&
-						question.map((row) => (
-							<tr key={row.id}>
-								<Td type={'question'}>
-									<Icon src='/images/dot.png' />
-								</Td>
-								<Td type={'question'}>질문</Td>
-								<PostTitle
-									type={'question'}
-									onClick={() => {
-										navigate(`/classhome/${classid}/post/${row.id}`);
-									}}
-								>
-									{row.title}
-								</PostTitle>
-								<Td type={'question'}>{row.author}</Td>
-								<Td type={'question'}>
-									{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
-								</Td>
-							</tr>
-						))}
+					{data?.notice.map((row) => (
+						<tr key={row.id}>
+							<Td type={'notice'}>
+								<Icon src='/images/starblue.png' />
+							</Td>
+							<Td type={'notice'}>공지</Td>
+							<PostTitle
+								type={'notice'}
+								onClick={() => {
+									navigate(`/classhome/${classid}/post/${row.id}`);
+								}}
+							>
+								{row.title}
+							</PostTitle>
+							<Td type={'notice'}>{row.author}</Td>
+							<Td type={'notice'}>
+								{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
+							</Td>
+						</tr>
+					))}
+					{data?.question.map((row) => (
+						<tr key={row.id}>
+							<Td type={'question'}>
+								<Icon src='/images/dot.png' />
+							</Td>
+							<Td type={'question'}>질문</Td>
+							<PostTitle
+								type={'question'}
+								onClick={() => {
+									navigate(`/classhome/${classid}/post/${row.id}`);
+								}}
+							>
+								{row.title}
+							</PostTitle>
+							<Td type={'question'}>{row.author}</Td>
+							<Td type={'question'}>
+								{row.createdAt.split('T')[0].replaceAll('-', '.').slice(2)}
+							</Td>
+						</tr>
+					))}
 				</tbody>
 			</Table>
 			<Pagenation>
-				{page &&
-					[...Array(totalPageNumber)].map((_, pageNumber) => (
-						<Page
-							key={pageNumber}
-							selected={pageNumber + 1 === parseInt(page)}
-							onClick={() => {
-								navigate(`/classhome/${classid}/${pageNumber + 1}`);
-							}}
-						>
-							{pageNumber + 1}
-						</Page>
-					))}
+				{[...Array(data?.pages)].map((_, pageNumber) => (
+					<Page
+						key={pageNumber}
+						selected={pageNumber + 1 === parseInt(page as string)}
+						onClick={() => {
+							navigate(`/classhome/${classid}/${pageNumber + 1}`);
+						}}
+					>
+						{pageNumber + 1}
+					</Page>
+				))}
 			</Pagenation>
 			<AddButton onClick={() => navigate(`/classhome/${classid}/write`)} />
 		</Container>
@@ -185,7 +163,8 @@ const Page = styled.button<{ selected: boolean }>`
 
 const PostTitle = styled.td<{ type: string }>`
 	cursor: pointer;
-	color: ${({ type, theme }) => (type === 'notice' ? theme.colors.main : theme.colors.title)};
+	color: ${({ type, theme }) =>
+		type === 'notice' ? theme.colors.main : theme.colors.title};
 	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
 `;
 

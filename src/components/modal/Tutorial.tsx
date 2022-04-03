@@ -104,9 +104,7 @@ const InnerContainer = styled.div`
 	width: 1000px;
 	height: 730px;
 	padding: 50px 70px;
-
 	background-color: ${({ theme }) => theme.colors.background};
-
 	&::-webkit-scrollbar {
 		display: none;
 	}

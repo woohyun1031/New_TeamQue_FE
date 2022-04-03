@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 
 const RegistClass = () => {
@@ -12,7 +12,7 @@ const RegistClass = () => {
 
 	const registClass = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		apis.registClass(input);
+		api.registClass(input);
 		alert('수강 신청이 완료되었습니다');
 		location.reload();
 	};

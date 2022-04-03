@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import styled from 'styled-components';
-import apis from '../api';
+import api from '../api';
 import Stream from '../components/classroom/Stream';
 import { RootState } from '../store/configStore';
 
@@ -34,8 +34,8 @@ const ClassRoom = () => {
 	}>();
 	const { classid } = useParams();
 	const loadClassInfo = async () => {
-		const response = await apis.loadClassData(classid as string);
-		setClassInfo(response.data);
+		const data = await api.loadClassData(classid as string);
+		setClassInfo(data);
 	};
 
 	useEffect(() => {

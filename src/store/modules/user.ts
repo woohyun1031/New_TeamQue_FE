@@ -1,6 +1,6 @@
 import { instance } from './../../api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import apis from '../../api';
+import api from '../../api';
 import axios from 'axios';
 
 export const signUp = createAsyncThunk(
@@ -15,7 +15,7 @@ export const signUp = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const { data } = await apis.signUp(userInfo);
+			const data = await api.signUp(userInfo);
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -36,7 +36,7 @@ export const signIn = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const { data } = await apis.signIn(loginInfo);
+			const data = await api.signIn(loginInfo);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common[
@@ -61,7 +61,7 @@ export const signOut = createAsyncThunk(
 		try {
 			sessionStorage.removeItem('accessToken');
 			sessionStorage.removeItem('refreshToken');
-			await apis.signOut();
+			await api.signOut();
 			return true;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -79,7 +79,7 @@ export const getUserInfo = createAsyncThunk(
 	'user/getUserInfo',
 	async (_, { rejectWithValue }) => {
 		try {
-			const { data } = await apis.getUserInfo();
+			const data = await api.getUserInfo();
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

@@ -1,26 +1,11 @@
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
+import { CardType } from '../../type';
 
-type CardProps = {
-	id: number;
-	title: string;
-	teacher: string;
-	imageUrl: string;
-	timeTable: string[];
-	state: 'wait' | 'accepted' | 'teach';
-	loadLearnClass: () => void;
-};
-
-const Card = ({
-	id,
-	imageUrl,
-	teacher,
-	title,
-	timeTable,
-	state,
-	loadLearnClass,
-}: CardProps) => {
+const Card = ({ id, imageUrl, teacher, title, timeTable, state }: CardType) => {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
 	const toClassRoom = () => {
@@ -31,10 +16,15 @@ const Card = ({
 		navigate(`/classhome/${id}/1`);
 	};
 
+	const { mutate: cancel } = useMutation(() => api.cancelApply(id.toString()), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('learnCard');
+		},
+	});
+
 	const handleClick = async () => {
 		if (confirm('정말로 수강 취소 하시겠어요?')) {
-			await apis.cancelApply(id.toString());
-			loadLearnClass();
+			cancel();
 		}
 	};
 

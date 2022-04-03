@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { signOut } from '../../store/modules/user';
 import ModalCloseButton from './ModalCloseButton';
 
@@ -16,7 +16,7 @@ const DeleteAccount = () => {
 
 	const deleteAccount = async () => {
 		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
-			await apis.withdrawal(input);
+			await api.withdrawal(input);
 			alert('탈퇴가 완료되었습니다.');
 			dispatch(signOut());
 			location.reload();
