@@ -99,6 +99,7 @@ export const apis = {
 	loadMyCalendar: (year: number, month: number) =>
 		instance.get(`/class/date?year=${year}&month=${month}`),
 	createClass: (classInfo: object) => instance.post('/class', classInfo),
+	
 	// Todo
 	loadTodo: () => instance.get('/post/todo'),
 	addTodo: (content: string) =>

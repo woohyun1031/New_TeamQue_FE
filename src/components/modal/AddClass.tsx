@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import apis from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
+import { useNavigate } from 'react-router-dom';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -18,14 +19,14 @@ const AddClass = () => {
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
-
+	const navigator = useNavigate();
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
 	const S3_BUCKET = 'mywoo1031bucket';
-	const ACCESS_KEY = process.env.REACT_APP_AWSAccessKeyId;
-	const SECRET_ACCESS_KEY = process.env.REACT_APP_AWSSecretKey;
+	const ACCESS_KEY = 'AKIAT7KAFNOUZAM2EF22';
+	const SECRET_ACCESS_KEY = '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';
 	const REGION = 'ap-northeast-2';
 
 	AWS.config.update({
@@ -38,7 +39,8 @@ const AddClass = () => {
 		region: REGION,
 	});
 
-	const uploadFile = (file: any) => {
+	const uploadFile = async (e: any, file: any) => {
+		e.preventDefault();
 		const params = {
 			ACL: 'public-read',
 			Body: file,
@@ -48,18 +50,32 @@ const AddClass = () => {
 
 		myBucket
 			.putObject(params)
-			.on('httpUploadProgress', (evt, res: any) => {
+			.on('httpUploadProgress', async (evt, res: any) => {
 				console.log(res);
-				setInputs({
+				await setInputs({
 					...inputs,
 					['imageUrl']: 'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' + res.request.httpRequest.path,
 				});
+				console.log(inputs);
+				createClass();
 			})
 			.send((err) => {
 				if (err) console.log(err, 'err');
 			});
 	};
 
+	const createClass = () => {
+		const classInfo = {
+			title: inputs.title,
+			imageUrl: inputs.imageUrl,
+			startDate: inputs.startDate,
+			endDate: inputs.endDate,
+			times: [...selectedDays],
+		};
+		console.log(classInfo, 'crate');
+		apis.createClass(classInfo);
+		//navigator('/');
+	};
 	useEffect(() => {
 		console.log(selectedDays);
 	}, [selectedDays]);
@@ -67,7 +83,6 @@ const AddClass = () => {
 	const onChange = (e: any) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
-		console.log(inputs);
 	};
 
 	const addDays = (e: any) => {
@@ -90,28 +105,12 @@ const AddClass = () => {
 		setSelectedDays(selectedDays.filter((day: any) => day.id !== id));
 	};
 
-	const createClass = async (e: any) => {
-		e.preventDefault();
-		const classInfo = {
-			title: inputs.title,
-			imageUrl: inputs.imageUrl,
-			startDate: inputs.startDate,
-			endDate: inputs.endDate,
-			times: [...selectedDays],
-		};
-		console.log(classInfo);
-		await uploadFile(file);
-
-		//await apis.createClass(classInfo);
-	};
-
 	const handleFileOnChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
 		const reader = new FileReader();
 		reader.onloadend = () => {
 			setFile(file);
-			//setPreviewURL(reader.result);
 			const csv: string = reader.result as string;
 			setInputs({ ...inputs, ['imageUrl']: csv });
 			setIsImage(true);
@@ -189,7 +188,7 @@ const AddClass = () => {
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<AddButton onClick={createClass}>개설하기</AddButton>
+				<AddButton onClick={(e) => uploadFile(e, file)}>개설하기</AddButton>
 			</Footer>
 		</Form>
 	);
