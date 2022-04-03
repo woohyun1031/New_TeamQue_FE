@@ -25,13 +25,13 @@ const CardList = ({ tabState } : CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
 	const loadLearnClass = async () => {
-		const response = await api.loadLearnClass();
-		setLearnCards(response.data);
+		const data = await api.loadLearnClass();
+		setLearnCards(data);
 	};
 
 	const loadTeachClass = async () => {
-		const response = await api.loadTeachClass();
-		setTeachCards(response.data);
+		const data = await api.loadTeachClass();
+		setTeachCards(data);
 	};
 
 	useEffect(() => {

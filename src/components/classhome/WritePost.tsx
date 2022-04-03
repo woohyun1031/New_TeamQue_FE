@@ -17,10 +17,10 @@ const WritePost = () => {
 	const loadPost = async () => {
 		if (updateid) {
 			try {
-				const response = await api.loadPost(updateid);
-				const title = response.data.post.title;
-				const content = response.data.post.content;
-				const postType = response.data.post.postType;
+				const data = await api.loadPost(updateid);
+				const title = data.title;
+				const content = data.content;
+				const postType = data.postType;
 				setState({ title, content, postType });
 			} catch (error) {
 				console.log(error);

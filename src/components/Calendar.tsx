@@ -45,14 +45,14 @@ const Calendar = () => {
 			allDate.push({ month: 'next', date: i });
 		}
 
-		let response;
+		let data;
 		if (classid) {
-			response = await api.loadClassCalendar(classid, year, month + 1)
+			data = await api.loadClassCalendar(classid, year, month + 1)
 		} else {
-			response = await api.loadMyCalendar(year, month + 1);
+			data = await api.loadMyCalendar(year, month + 1);
 		}
 
-		for (const event of response.data) {
+		for (const event of data) {
 			if (allDate[event.day + thisMonthFirstDay - 1].event) {
 				allDate[event.day + thisMonthFirstDay - 1].event?.push({
 					title: event.title,

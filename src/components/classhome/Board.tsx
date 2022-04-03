@@ -2,24 +2,19 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../api';
-
-type postType = {
-	id: number;
-	title: string;
-	author: string;
-	createdAt: string;
-};
+import { PostType } from '../../type';
 
 const Board = () => {
 	const navigate = useNavigate();
 	const { classid, page } = useParams<string>();
-	const [notice, setNotice] = useState<postType[]>();
-	const [question, setQuestion] = useState<postType[]>();
+	const [notice, setNotice] = useState<PostType[]>();
+	const [question, setQuestion] = useState<PostType[]>();
 	const [totalPageNumber, setTotalPageNumber] = useState<number>();
 
 	const LoadPostData = async () => {
 		if (classid && page) {
-			const { data } = await api.loadPosts(classid, page);
+			const data = await api.loadPosts(classid, page);
+			console.log(data)
 			setNotice(data.postListNotice);
 			setQuestion(data.postListquestion);
 			setTotalPageNumber(data.pages);

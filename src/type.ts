@@ -14,11 +14,18 @@ export type CommentType = {
 };
 
 export type PostType = {
-	postType: string;
+  id: number;
+	postType: 'Notice' | 'Question';
 	title: string;
 	author: string;
 	userId: number;
 	createdAt: string;
 	content: string;
-	comments: CommentType[];
+	comments?: CommentType[];
+};
+
+export type PostsType = {
+	postListNotice: PostType[];
+	postListquestion: PostType[];
+	pages: number;
 };

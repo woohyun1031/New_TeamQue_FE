@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { TodoType } from './type';
+import { PostsType, PostType, TodoType } from './type';
 
 export const instance = axios.create({
 	baseURL: 'https://noobpro.shop:3000/',
@@ -57,7 +57,7 @@ const requests = {
 };
 
 
-export const api = {
+const api = {
 	// User
 	signUp: (userInfo: object) => requests.post('/user/signup', userInfo),
 	signIn: (signInInfo: { email: string; password: string }) => requests.post('/user/signin', signInInfo),
@@ -79,8 +79,8 @@ export const api = {
 	loadClassCalendar: (classId: string, year: number, month: number) => requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 
 	// Post
-	loadPosts: (classId: string, page: string) => requests.get(`/post/${classId}?page=${page}`),
-	loadPost: (postId: string) => requests.get(`/post/detail/${postId}`),
+	loadPosts: (classId: string, page: string): Promise<PostsType> => requests.get(`/post/${classId}?page=${page}`),
+	loadPost: (postId: string): Promise<PostType> => requests.get(`/post/detail/${postId}`),
 	addPost: (classInfo: { classid: string; boardInfo: object }) => requests.post(`/post/${classInfo.classid}`, classInfo.boardInfo),
 	deletePost: (postid: string) => requests.delete(`/post/${postid}`),
 	updatePost: (classInfo: { updateid: string; boardInfo: object }) => requests.put(`/post/${classInfo.updateid}`, classInfo.boardInfo),
@@ -94,4 +94,5 @@ export const api = {
 	deleteTodo: (todoId: number) => requests.delete(`/post/todo/${todoId}`),
 	completeTodo: (todoId: number) => requests.put('/post/todo/complete', { id: todoId }),
 };
+
 export default api;

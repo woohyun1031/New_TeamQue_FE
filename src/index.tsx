@@ -7,17 +7,22 @@ import App from './App';
 import GlobalStyle from './styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
 	<React.StrictMode>
 		<GlobalStyle />
-		<BrowserRouter>
-			<Provider store={store}>
-				<ThemeProvider theme={theme}>
-				<App />
-				</ThemeProvider>
-			</Provider>
-		</BrowserRouter>
+		<Provider store={store}>
+			<QueryClientProvider client={queryClient}>
+				<BrowserRouter>
+					<ThemeProvider theme={theme}>
+						<App />
+					</ThemeProvider>
+				</BrowserRouter>
+			</QueryClientProvider>
+		</Provider>
 	</React.StrictMode>,
 	document.getElementById('root')
 );

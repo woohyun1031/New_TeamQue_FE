@@ -31,13 +31,13 @@ const ClassInfo: React.FC = () => {
 
 	const loadClassInfo = async () => {
 		if (classid) {
-			const response = await api.loadClassData(classid);
-			const response2 = await api.loadStudents(classid);
-			setClassData(response.data);
+			const classData = await api.loadClassData(classid);
+			const studentsData = await api.loadStudents(classid);
+			setClassData(classData);
 			if (classData?.isByMe) {
-				setClassData(response2.data);
+				setClassData(studentsData);
 			} else {
-				setStudents([{ state: 'accepted', userId: id, name }, ...response2.data.filter((student: StudentDataType) => student.userId !== id)]);
+				setStudents([{ state: 'accepted', userId: id, name }, ...studentsData.filter((student: StudentDataType) => student.userId !== id)]);
 			}
 		}
 	};

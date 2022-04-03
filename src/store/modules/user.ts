@@ -15,7 +15,7 @@ export const signUp = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const { data } = await api.signUp(userInfo);
+			const data = await api.signUp(userInfo);
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -36,7 +36,7 @@ export const signIn = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const { data } = await api.signIn(loginInfo);
+			const data = await api.signIn(loginInfo);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common[
@@ -79,7 +79,7 @@ export const getUserInfo = createAsyncThunk(
 	'user/getUserInfo',
 	async (_, { rejectWithValue }) => {
 		try {
-			const { data } = await api.getUserInfo();
+			const data = await api.getUserInfo();
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

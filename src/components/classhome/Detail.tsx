@@ -5,25 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../api';
 import { RootState } from '../../store/configStore';
-
-type CommentType = {
-	id: number;
-	content: string;
-	author: string;
-	userId: number;
-	postId: number;
-	createdAt: string;
-};
-
-type PostType = {
-	postType: string;
-	title: string;
-	author: string;
-	userId: number;
-	createdAt: string;
-	content: string;
-	comments: CommentType[];
-};
+import { PostType } from '../../type';
 
 const Detail = () => {
 	const navigate = useNavigate();
@@ -34,17 +16,16 @@ const Detail = () => {
 
 	const fetch = async () => {
 		if (postid) {
-			const response = await api.loadPost(postid);
-			setData(response.data);
-			console.log(response);
+			const data = await api.loadPost(postid);
+			setData(data);
 		}
 	};
 
 	const loadPage = async () => {
 		if (postid) {
 			try {
-				const response = await api.loadPost(postid);
-				setData(response.data);
+				const data = await api.loadPost(postid);
+				setData(data);
 			} catch (error) {
 				console.log(error);
 			}
@@ -92,7 +73,7 @@ const Detail = () => {
 	return (
 		<Container>
 			<PostHeader>
-				<PostType>{data && data.postType}</PostType>
+				<TypeOfPost>{data && data.postType}</TypeOfPost>
 				<PostTitle>{data && data.title}</PostTitle>
 				<Author>{data && data.author}</Author>
 				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
@@ -114,8 +95,7 @@ const Detail = () => {
 					<CommentInput onChange={onChange} value={comment} />
 					<CommentButton onClick={commentWrite}>등록</CommentButton>
 				</CommentBox>
-				{data &&
-					data.comments.map((comment: CommentType) => (
+				{data?.comments?.map((comment) => (
 						<Commentlist key={comment.id}>
 							<CommentWriter>
 								{comment.author}
@@ -158,7 +138,7 @@ const PostHeader = styled.div`
 	position: relative;
 `;
 
-const PostType = styled.h3`
+const TypeOfPost = styled.h3`
 	font-size: 12px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
