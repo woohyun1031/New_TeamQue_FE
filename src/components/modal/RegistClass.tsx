@@ -41,7 +41,7 @@ const Form = styled.form`
 	justify-content: space-between;
 	width: 760px;
 	height: 268px;
-	padding: 50px;
+	padding: 50px 65px;
 `;
 
 const Input = styled.input`
@@ -62,13 +62,11 @@ const Button = styled.button`
 	width: 150px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
-	margin-right: 30px;
+	margin-right: 0px;
 	margin-left: auto;
-	cursor: pointer;
 `;
