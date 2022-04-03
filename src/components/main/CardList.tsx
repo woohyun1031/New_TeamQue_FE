@@ -1,6 +1,8 @@
 import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
+import { RootState } from '../../store/configStore';
 import { CardType } from '../../type';
 import Card from './Card';
 
@@ -9,8 +11,14 @@ type CardListProps = {
 };
 
 const CardList = ({ tabState }: CardListProps) => {
-	const { data: learnCards } = useQuery('learnCard', api.loadLearnCards);
-	const { data: teachCards } = useQuery('teachCard', api.loadTeachCards);
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
+
+	const { data: learnCards } = useQuery('learnCard', api.loadLearnCards, {
+		enabled: isLogin,
+	});
+	const { data: teachCards } = useQuery('teachCard', api.loadTeachCards, {
+		enabled: isLogin,
+	});
 
 	return (
 		<Container>

@@ -1,15 +1,20 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
+import { RootState } from '../../store/configStore';
 import TodoItem from './TodoItem';
 
 const Todo = () => {
 	const queryClient = useQueryClient();
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
+	const isLogin = useSelector((state: RootState) => state.user.isLogin)
 
-	const { data: todos } = useQuery('todo', api.loadTodo);
+	const { data: todos } = useQuery('todo', api.loadTodo, {
+		enabled: isLogin,
+	});
 
 	const { mutate: addTodo } = useMutation(() => api.addTodo(input), {
 		onSuccess: () => {
