@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -136,8 +136,7 @@ const StateButtons = styled.div`
 `;
 
 const StateButton = styled.button<{ src: string; isActive: boolean }>`
-	background-image: url(${({ isActive, src }) =>
-		isActive ? src : `'${src.split('.')[0]}off.png'`});
+	background-image: url(${({ isActive, src }) => isActive ? src : `'${src.split('.')[0]}off.png'`});
 	${({ theme }) => theme.commons.backgroundImage};
 	width: 90px;
 	height: 72px;
