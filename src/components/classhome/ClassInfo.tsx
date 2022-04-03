@@ -75,7 +75,7 @@ const ClassInfo = () => {
 			<StudentInfo>
 				<div>
 					<h4>
-						수강생{' '}
+						수강생
 						{classInfo?.isByMe && <button onClick={openInviteCode}>+</button>}
 					</h4>
 				</div>
