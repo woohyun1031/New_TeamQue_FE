@@ -1,42 +1,36 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
-
-type todoType = {
-	id: number;
-	content: string;
-	isComplete: boolean;
-	isOpen: boolean;
-};
+import { TodoType } from '../../type';
 
 const Todo = () => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
-	const [todos, setTodos] = useState<todoType[]>();
+	const [todos, setTodos] = useState<TodoType[]>();
 
 	const loadTodos = async () => {
-		const response = await apis.loadTodo();
-		setTodos(response.data);
+		const data = await api.loadTodo();
+		setTodos(data);
 	};
 
 	const addTodo = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		await apis.addTodo(input);
+		await api.addTodo(input);
 		setIsInput(false);
 		setInput('');
 		loadTodos();
 	};
 
 	const deleteTodo = async (id: number) => {
-		await apis.deleteTodo(id);
+		await api.deleteTodo(id);
 		loadTodos();
 	};
 
 	const toggleComplete = async (id: number) => {
-		await apis.completeTodo(id);
+		await api.completeTodo(id);
 		loadTodos();
 	};
 
@@ -64,7 +58,7 @@ const Todo = () => {
 				<Title>메모</Title>
 				<ScheduleBox>
 					{todos &&
-						todos.map(({ id, content, isComplete }: todoType) => (
+						todos.map(({ id, content, isComplete }) => (
 							<ScheduleItem
 								key={id}
 								isComplete={isComplete}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../api';
+import api from '../api';
 import { RootState } from '../store/configStore';
 
 type dateType = {
@@ -47,9 +47,9 @@ const Calendar = () => {
 
 		let response;
 		if (classid) {
-			response = await apis.loadClassCalendar(classid, year, month + 1)
+			response = await api.loadClassCalendar(classid, year, month + 1)
 		} else {
-			response = await apis.loadMyCalendar(year, month + 1);
+			response = await api.loadMyCalendar(year, month + 1);
 		}
 
 		for (const event of response.data) {

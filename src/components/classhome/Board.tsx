@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 
 type postType = {
 	id: number;
@@ -19,7 +19,7 @@ const Board = () => {
 
 	const LoadPostData = async () => {
 		if (classid && page) {
-			const { data } = await apis.loadPosts(classid, page);
+			const { data } = await api.loadPosts(classid, page);
 			setNotice(data.postListNotice);
 			setQuestion(data.postListquestion);
 			setTotalPageNumber(data.pages);

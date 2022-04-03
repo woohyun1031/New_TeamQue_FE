@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
 
@@ -80,7 +80,7 @@ const AddClass = () => {
 			times: [...selectedDays],
 		};
 		console.log(classInfo);
-		await apis.createClass(classInfo);
+		await api.createClass(classInfo);
 	};
 
 	const handleFileOnChange = (event: any) => {

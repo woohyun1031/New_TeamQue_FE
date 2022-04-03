@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
 
 type CommentType = {
@@ -34,7 +34,7 @@ const Detail = () => {
 
 	const fetch = async () => {
 		if (postid) {
-			const response = await apis.loadPost(postid);
+			const response = await api.loadPost(postid);
 			setData(response.data);
 			console.log(response);
 		}
@@ -43,7 +43,7 @@ const Detail = () => {
 	const loadPage = async () => {
 		if (postid) {
 			try {
-				const response = await apis.loadPage(postid);
+				const response = await api.loadPost(postid);
 				setData(response.data);
 			} catch (error) {
 				console.log(error);
@@ -59,7 +59,7 @@ const Detail = () => {
 		if (postid) {
 			if (confirm('정말로 삭제 하실건가요?')) {
 				try {
-					await apis.deletePost(postid);
+					await api.deletePost(postid);
 					alert('삭제 완료');
 					navigate(`/classhome/${classid}/1`);
 				} catch (error) {
@@ -76,7 +76,7 @@ const Detail = () => {
 	const commentWrite = async () => {
 		if (comment && postid) {
 			try {
-				await apis.sendComment({ postid, comment });
+				await api.sendComment({ postid, comment });
 				setComment('');
 				loadPage();
 			} catch (error) {

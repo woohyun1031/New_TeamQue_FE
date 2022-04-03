@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 
 type CardProps = {
 	id: number;
@@ -33,7 +33,7 @@ const Card = ({
 
 	const handleClick = async () => {
 		if (confirm('정말로 수강 취소 하시겠어요?')) {
-			await apis.cancelApply(id.toString());
+			await api.cancelApply(id.toString());
 			loadLearnClass();
 		}
 	};

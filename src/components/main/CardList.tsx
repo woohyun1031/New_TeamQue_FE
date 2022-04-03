@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
 import Card from './Card';
 
@@ -25,12 +25,12 @@ const CardList = ({ tabState } : CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
 	const loadLearnClass = async () => {
-		const response = await apis.loadLearnClass();
+		const response = await api.loadLearnClass();
 		setLearnCards(response.data);
 	};
 
 	const loadTeachClass = async () => {
-		const response = await apis.loadTeachClass();
+		const response = await api.loadTeachClass();
 		setTeachCards(response.data);
 	};
 

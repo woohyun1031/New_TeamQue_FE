@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 
 const WritePost = () => {
 	const navigate = useNavigate();
@@ -17,7 +17,7 @@ const WritePost = () => {
 	const loadPost = async () => {
 		if (updateid) {
 			try {
-				const response = await apis.loadPage(updateid);
+				const response = await api.loadPost(updateid);
 				const title = response.data.post.title;
 				const content = response.data.post.content;
 				const postType = response.data.post.postType;
@@ -28,7 +28,7 @@ const WritePost = () => {
 		} else {
 			if (classid) {
 				try {
-					const response = await apis.loadClassData(classid);
+					const response = await api.loadClassData(classid);
 					const isByMe = response.data.isByMe;
 					setIsMe(() => isByMe);
 				} catch (error) {
@@ -56,7 +56,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (updateid) {
 			try {
-				await apis.updatePost({ boardInfo, updateid });
+				await api.updatePost({ boardInfo, updateid });
 				alert('수정완료');
 				navigate(`/classhome/${classid}/post/${postid}`);
 			} catch (error) {
@@ -74,7 +74,7 @@ const WritePost = () => {
 		const boardInfo = state;
 		if (classid) {
 			try {
-				await apis.addPost({ boardInfo, classid });
+				await api.addPost({ boardInfo, classid });
 				alert('저장완료');
 				navigate(`/classhome/${classid}/1`);
 			} catch (error) {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { adddata, changeModal, openModal } from '../../store/modules/modal';
-import apis from '../../api';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
 
 type ClassDataType = {
@@ -31,8 +31,8 @@ const ClassInfo: React.FC = () => {
 
 	const loadClassInfo = async () => {
 		if (classid) {
-			const response = await apis.loadClassData(classid);
-			const response2 = await apis.loadStudents(classid);
+			const response = await api.loadClassData(classid);
+			const response2 = await api.loadStudents(classid);
 			setClassData(response.data);
 			if (classData?.isByMe) {
 				setClassData(response2.data);
@@ -56,8 +56,8 @@ const ClassInfo: React.FC = () => {
 
 	const acceptStudent = async (studentId: number) => {
 		if (classid) {
-			await apis.changeState(classid, studentId, true);
-			const { data } = await apis.loadStudents(classid);
+			await api.changeState(classid, studentId, true);
+			const { data } = await api.loadStudents(classid);
 			setStudents(data);
 		}
 	};
@@ -65,8 +65,8 @@ const ClassInfo: React.FC = () => {
 	const rejectStudent = async (studentId: number) => {
 		if (classid) {
 			if (confirm('정말로 퇴출 하실건가요?')) {
-				await apis.changeState(classid, studentId, false);
-				const { data } = await apis.loadStudents(classid);
+				await api.changeState(classid, studentId, false);
+				const { data } = await api.loadStudents(classid);
 				setStudents(data);
 			}
 		}
@@ -79,7 +79,7 @@ const ClassInfo: React.FC = () => {
 	const exitClass = async () => {
 		if (confirm('정말로 수업을 나가시겠습니까?')) {
 			if (classid) {
-				await apis.cancelApply(classid);
+				await api.cancelApply(classid);
 				navigate('/');
 			}
 		}
