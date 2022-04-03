@@ -28,8 +28,8 @@ const WritePost = () => {
 		} else {
 			if (classid) {
 				try {
-					const response = await api.loadClassData(classid);
-					const isByMe = response.data.isByMe;
+					const data = await api.loadClassData(classid);
+					const isByMe = data.isByMe;
 					setIsMe(() => isByMe);
 				} catch (error) {
 					console.log(error);

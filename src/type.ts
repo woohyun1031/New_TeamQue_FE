@@ -38,3 +38,18 @@ export type CardType = {
 	timeTable: string[];
 	state: 'wait' | 'accepted' | 'teach';
 };
+
+export type ClassDataType = {
+	title: string;
+	teacher: string;
+	timeTable: string[];
+	imageUrl: string;
+	isByMe: boolean;
+	uuid: string;
+};
+
+export type StudentType = {
+	userId: number;
+	name: string;
+	state: 'accepted' | 'wait';
+};
