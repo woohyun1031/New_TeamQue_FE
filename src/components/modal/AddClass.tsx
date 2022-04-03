@@ -25,8 +25,8 @@ const AddClass = () => {
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
 	const S3_BUCKET = 'mywoo1031bucket';
-	const ACCESS_KEY = REACT_APP_AWSAccessKeyId;
-	const SECRET_ACCESS_KEY = REACT_APP_AWSSecretKey;
+	const ACCESS_KEY = 'AKIAT7KAFNOUZAM2EF22';
+	const SECRET_ACCESS_KEY = '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';
 	const REGION = 'ap-northeast-2';
 
 	AWS.config.update({
@@ -74,7 +74,7 @@ const AddClass = () => {
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'crate');
+		console.log(classInfo, 'create');
 		api.createClass(classInfo);
 		//navigator('/');
 	};
