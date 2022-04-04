@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
+import { useNavigate } from 'react-router-dom';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -18,6 +19,7 @@ const AddClass = () => {
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
+	const navigate = useNavigate();
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -37,7 +39,7 @@ const AddClass = () => {
 		region: REGION,
 	});
 
-	const uploadFile = async (e: any, file: any) => {
+	const uploadFile = (e: any, file: any) => {
 		e.preventDefault();
 		const params = {
 			ACL: 'public-read',
@@ -45,37 +47,45 @@ const AddClass = () => {
 			Bucket: S3_BUCKET as string,
 			Key: 'upload/' + file.name,
 		};
-
 		myBucket
 			.putObject(params)
-			.on('httpUploadProgress', (evt, res: any) => {
-				console.log(res);
+			.on('httpUploadProgress', (evt: any, res: any) => {
+				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
 				setInputs({
 					...inputs,
 					['imageUrl']:
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 						res.request.httpRequest.path,
 				});
-				console.log(inputs);
-				createClass();
+			})
+			.on('httpDone', (res: any) => {
+				console.log(res, 'httpDone');
+				const newUrl: string =
+					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+					res.request.httpRequest.path;
+				const classnum = createClass(newUrl);
+				//navigate(`/classhome/${classnum.result.classid}/1`);
+				//
 			})
 			.send((err) => {
 				if (err) console.log(err, 'err');
 			});
 	};
 
-	const createClass = () => {
+	const createClass = (url: string) => {
 		const classInfo = {
 			title: inputs.title,
-			imageUrl: inputs.imageUrl,
+			imageUrl: url,
 			startDate: inputs.startDate,
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'create');
 		api.createClass(classInfo);
 		location.reload()
+		const response = api.createClass(classInfo);
+		return response;
 	};
+
 	useEffect(() => {
 		console.log(selectedDays);
 	}, [selectedDays]);
