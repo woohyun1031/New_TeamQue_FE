@@ -21,7 +21,6 @@ type ChattingProps = {
 }
 
 const Chatting = ({ chatData, isConnected }: ChattingProps) => {
-  console.log(chatData)
 	const user = useSelector((state: RootState) => state.user);
 	const [chatList, setChatList] = useState<chatType[]>(chatData);
 	const [input, setInput] = useState('');
@@ -35,10 +34,9 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 
 	const chatEndRef = useRef<null | HTMLDivElement>(null);
 
-  useEffect(() => {
-    setChatList(chatData)
-  }, [chatData])
-
+	useEffect(() => {
+		setChatList(chatData);
+	}, [chatData]);
 
 	const scrollToBottom = () => {
 		chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -61,7 +59,6 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 			});
 
 			socket.on('receiveChat', (data: chatType) => {
-				console.log(data);
 				setChatList((prev) => [...prev, { ...data, type: 'chat' }]);
 			});
 
@@ -76,18 +73,18 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 				]);
 			});
 
-			socket.on('receiveLike', ({ chatId, userId }) => {
+			socket.on('receiveLikeUp', ({ chatId, userId }) => {
 				setChatList((prev) =>
 					prev.map((chat) =>
-						chat.chatId === chatId && chat.likes
-							? { ...chat, likes: [...chat.likes, userId] }
+					  chat.likes && chat.chatId === chatId 
+							? { ...chat, likes: [...chat.likes, {userId}] }
 							: chat
 					)
 				);
 			});
 
 			socket.on('receiveLikeDown', ({ chatId, userId }) => {
-        console.log(chatId, userId)
+				console.log(chatId)
 				setChatList((prev) =>
 					prev.map((chat) =>
 						chat.likes && chat.chatId === chatId
@@ -104,7 +101,7 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 				setChatList((prev) => prev.filter((chat) => chat.chatId !== chatId));
 			});
 		}
-	});
+	}, [isConnected]);
 
 	const sendChat = () => {
 		if (input) {
