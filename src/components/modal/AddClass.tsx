@@ -74,7 +74,7 @@ const AddClass = () => {
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'crate');
+		console.log(classInfo, 'create');
 		api.createClass(classInfo);
 		//navigator('/');
 	};
