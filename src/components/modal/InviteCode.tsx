@@ -109,18 +109,15 @@ const Button = styled.button`
 	width: 100px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	margin: 0 10px;
-	cursor: pointer;
 `;
 
 const ModalContainer = styled.div`
 	display: flex;
-
 	position: absolute;
 	left: 350px;
 	top: -60px;

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
-import { useNavigate } from 'react-router-dom';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -19,7 +18,6 @@ const AddClass = () => {
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
-	const navigator = useNavigate();
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
