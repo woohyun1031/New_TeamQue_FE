@@ -34,6 +34,7 @@ const ClassRoom = () => {
 	const { classid } = useParams();
 	const loadClassInfo = async () => {
 		const data = await api.loadClassData(classid as string);
+		console.log(data);
 		setClassInfo(data);
 	};
 

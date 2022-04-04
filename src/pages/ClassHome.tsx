@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
@@ -8,7 +9,6 @@ import WritePost from '../components/classhome/WritePost';
 
 const ClassHome = () => {
 	const { postid, updateid, page } = useParams();
-
 	return (
 		<Container>
 			<LeftBox>
@@ -49,5 +49,3 @@ const LeftBox = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 `;
-
-

@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import RegistClass from './RegistClass';
 import DeleteAccount from './DeleteAccount';
 import ModifyUserInfo from './ModifyUserInfo';
+import ModifyClass from './ModifyClass';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -57,6 +58,9 @@ const Modal = () => {
 			break;
 		case 'modifyuserinfo':
 			contents = <ModifyUserInfo />;
+			break;
+		case 'modifyclass':
+			contents = <ModifyClass />;
 			break;
 		default:
 			contents = null;

@@ -28,6 +28,11 @@ const ClassInfo = () => {
 		}
 	};
 
+	const openModifyModal = () => {
+		dispatch(openModal());
+		dispatch(changeModal('modifyclass'));
+	};
+
 	const { mutate: acceptStudent } = useMutation(
 		(studentId: number) => api.changeState(classid as string, studentId, true),
 		{
@@ -43,9 +48,9 @@ const ClassInfo = () => {
 
 	const handleClickReject = (studentsId: number) => {
 		if (confirm('정말로 거부하겠습니까?')) {
-			rejectStudent(studentsId)
+			rejectStudent(studentsId);
 		}
-	}
+	};
 
 	const toClassRoom = () => {
 		navigate(`/classroom/${classid}`);
@@ -65,7 +70,7 @@ const ClassInfo = () => {
 			<ClassRoomButton onClick={toClassRoom} />
 			<Image src={classInfo?.imageUrl} />
 			<ThumbnailFilter onClick={toClassRoom} />
-			<Title>{classInfo?.title}</Title>
+			<Title onClick={openModifyModal}>{classInfo?.title}</Title>
 			<Teacher>{classInfo?.teacher} 선생님</Teacher>
 			<Time>
 				{classInfo?.timeTable?.map((time: string, index: number) => (
