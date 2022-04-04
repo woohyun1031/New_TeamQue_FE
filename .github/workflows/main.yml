@@ -17,7 +17,7 @@ jobs:
     
     steps:
       - name: Checkout source code.  
-        uses: actions/checkout@main
+        uses: actions/checkout@master
 
       - name: Cache node modules      
         uses: actions/cache@v1
@@ -43,7 +43,7 @@ jobs:
             build s3://everyque.com
             
       - name: Invalidate cache CloudFront
-        uses: chetan/invalidate-cloudfront-action@main
+        uses: chetan/invalidate-cloudfront-action@master
         env:
           DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}
           PATHS: '/*'
