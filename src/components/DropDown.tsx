@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { changeModal, openModal } from '../store/modules/modal';
 import { signOut } from '../store/modules/user';
 
-interface DropDownProps {
+type DropDownProps = {
 	name: string;
 }
 
@@ -17,12 +18,12 @@ const DropDown = ({ name }: DropDownProps) => {
 
 	const logout = () => {
 		dispatch(signOut());
-		// 새로고침 말고 다른 방안이 없는지 고민해보기
 		window.location.reload();
 	};
 
 	const openMypage = () => {
-		alert('마이페이지 구현 중');
+		dispatch(changeModal('modifyuserinfo'));
+		dispatch(openModal());
 	};
 
 	return (
@@ -53,11 +54,8 @@ const Container = styled.div`
 `;
 
 const Name = styled.button`
-	border: none;
-	background: none;
 	font-size: 14px;
 	font-weight: 600;
-	cursor: pointer;
 	position: relative;
 	z-index: 101;
 	padding: 10px;
@@ -69,8 +67,8 @@ const ArrowIcon = styled.div<{ src: string }>`
 	height: 8px;
 	margin-left: 5px;
 	background-image: url(${({ src }) => src});
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
+
 `;
 
 const Menu = styled.ul`
@@ -83,7 +81,7 @@ const Menu = styled.ul`
 	bottom: -60px;
 	left: 5px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.backgorund};
 	& li {
 		width: 70px;
 		text-align: center;
@@ -92,8 +90,8 @@ const Menu = styled.ul`
 		padding: 4px 0;
 	}
 	& li:nth-child(2) {
-		color: #718aff;
-		border-top: 1px solid #d2d2d2;
+		color: ${({ theme }) => theme.colors.main};
+		border-top: 1px solid ${({ theme }) => theme.colors.sub};
 	}
 	position: absolute;
 	z-index: 101;

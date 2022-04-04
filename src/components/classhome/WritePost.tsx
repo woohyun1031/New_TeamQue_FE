@@ -1,9 +1,8 @@
+import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
-import { updateBoard, postBoard } from '../../store/modules/user';
+import api from '../../api';
 
 const WritePost = () => {
 	const navigate = useNavigate();
@@ -12,19 +11,29 @@ const WritePost = () => {
 		content: '',
 		postType: 'Question',
 	});
+	const [isMe, setIsMe] = useState(false);
 	const { updateid, classid, postid } = useParams<string>();
-	const dispatch = useDispatch();
-
+	
 	const loadPost = async () => {
 		if (updateid) {
 			try {
-				const response = await apis.loadPage(updateid);
-				const title = response.data.post.title;
-				const content = response.data.post.content;
-				const postType = response.data.post.postType;
+				const data = await api.loadPost(updateid);
+				const title = data.title;
+				const content = data.content;
+				const postType = data.postType;
 				setState({ title, content, postType });
 			} catch (error) {
 				console.log(error);
+			}
+		} else {
+			if (classid) {
+				try {
+					const data = await api.loadClassData(classid);
+					const isByMe = data.isByMe;
+					setIsMe(() => isByMe);
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		}
 	};
@@ -42,32 +51,47 @@ const WritePost = () => {
 		}
 	};
 
-	const onUpdate = (e: MouseEvent<HTMLButtonElement>) => {
+	const onUpdate = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const boardInfo = state;
 		if (updateid) {
-			console.log(state);
-			dispatch(updateBoard({ boardInfo, updateid }));
-			alert('수정완료');
-			navigate(`/classhome/${classid}/post/${postid}`);
+			try {
+				await api.updatePost({ boardInfo, updateid });
+				alert('수정완료');
+				navigate(`/classhome/${classid}/post/${postid}`);
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+				} else {
+					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				}
+			}
 		}
 	};
 
-	const onPost = (e: MouseEvent<HTMLButtonElement>) => {
+	const onPost = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const boardInfo = state;
-		console.log(boardInfo);
 		if (classid) {
-			console.log(state);
-			dispatch(postBoard({ boardInfo, classid }));
-			alert('저장완료');
-			navigate(`/classhome/${classid}/1`);
+			try {
+				await api.addPost({ boardInfo, classid });
+				alert('저장완료');
+				navigate(`/classhome/${classid}/1`);
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
+				} else {
+					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
+				}
+			}
 		}
 	};
 
 	const onBack = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		navigate(-1);
+		if (confirm('정말로 취소하시겠습니까?')) {
+			navigate(-1);
+		}
 	};
 
 	useEffect(() => {
@@ -81,17 +105,19 @@ const WritePost = () => {
 				<StarIcon
 					src={
 						state.postType === 'Question'
-							? '/images/graystar.png'
-							: '/images/bluestar.png'
+							? '/images/star.png'
+							: '/images/starblue.png'
 					}
+					isMe={isMe}
 					onClick={onTrans}
 				/>
-				<LineIcon />
+				<LineIcon isMe={isMe} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
 					value={state.title}
+					isMe={isMe}
 				/>
 			</TitleHeader>
 			<ContentInput onChange={onChange} name='content' value={state.content} />
@@ -105,17 +131,19 @@ const WritePost = () => {
 				<StarIcon
 					src={
 						state.postType === 'Question'
-							? '/images/graystar.png'
-							: '/images/bluestar.png'
+							? '/images/star.png'
+							: '/images/starblue.png'
 					}
 					onClick={onTrans}
+					isMe={isMe}
 				/>
-				<LineIcon />
+				<LineIcon isMe={isMe} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
 					value={state.title}
+					isMe={isMe}
 				/>
 			</TitleHeader>
 			<ContentInput onChange={onChange} name='content' value={state.content} />
@@ -141,38 +169,35 @@ const TitleHeader = styled.div`
 	position: relative;
 `;
 
-const TitleInput = styled.input`
-	resize: none;
-	border: none;
+const TitleInput = styled.input<{ isMe: boolean }>`
 	margin-top: 20px;
 	padding: 25px;
-	padding-left: 50px;
+	padding-left: ${({ isMe }) => (isMe ? '50px' : '20px')};
 	width: 100%;
 	height: 50px;
 	border-radius: 10px;
-	outline: none;
 	transition: 0.2s;
 	font-size: ${({ theme }) => theme.fontSizes.base};
 	font-weight: 500;
 	background-color: ${({ theme }) => theme.colors.base};
 `;
-const StarIcon = styled.div<{ src: string }>`
+
+const StarIcon = styled.button<{ src: string; isMe: boolean }>`
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
-	display: inline-block;
+	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
 	width: 17px;
 	height: 17px;
 	left: 15px;
 	bottom: 16px;
 	border-radius: 15px;
 	position: absolute;
-	cursor: pointer;
 `;
 
-const LineIcon = styled.div`
-	display: inline-block;
+const LineIcon = styled.div<{ isMe: boolean }>`
+	display: ${({ isMe }) => (isMe ? 'inline-block' : 'none')};
 	width: 2px;
 	height: 23px;
 	left: 40px;
@@ -212,10 +237,8 @@ const ReturnButton = styled.button`
 	border-radius: 7px;
 	background-color: ${({ theme }) => theme.colors.base};
 	color: ${({ theme }) => theme.colors.blueTitle};
-	border: none;
 	right: 150px;
 	bottom: 25px;
-	cursor: pointer;
 	position: absolute;
 `;
 
@@ -223,11 +246,9 @@ const Button = styled.button`
 	width: 80px;
 	height: 30px;
 	border-radius: 7px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
-	border: none;
 	right: 50px;
 	bottom: 25px;
-	cursor: pointer;
 	position: absolute;
 `;

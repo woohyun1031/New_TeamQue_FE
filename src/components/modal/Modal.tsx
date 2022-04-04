@@ -11,21 +11,19 @@ import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
 import RegistClass from './RegistClass';
+import DeleteAccount from './DeleteAccount';
+import ModifyUserInfo from './ModifyUserInfo';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
-const Modal: React.FC = () => {
+const Modal = () => {
 	const dispatch = useDispatch();
 	const modal = useSelector((state: RootState) => state.modal);
 	let contents;
 
 	let isCanClose = false;
 	useEffect(() => {
-		if (
-			['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(
-				modal.type
-			)
-		) {
+		if (['notSignIn', 'signIn', 'signUp', 'tutorial'].includes(modal.type)) {
 			isCanClose = false;
 		} else {
 			isCanClose = true;
@@ -54,7 +52,12 @@ const Modal: React.FC = () => {
 		case 'tutorial':
 			contents = <Tutorial />;
 			break;
-
+		case 'deleteaccount':
+			contents = <DeleteAccount />;
+			break;
+		case 'modifyuserinfo':
+			contents = <ModifyUserInfo />;
+			break;
 		default:
 			contents = null;
 	}
@@ -95,7 +98,7 @@ const Contents = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 10px;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 	z-index: 1001;

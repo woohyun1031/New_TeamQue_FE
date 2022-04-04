@@ -1,11 +1,10 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
 import { signUp } from '../../store/modules/user';
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		email: '',
@@ -89,16 +88,13 @@ const Form = styled.form`
 `;
 
 const Back = styled.button`
-	border: none;
-	background: none;
 	width: 11px;
 	height: 19px;
-	background-image: url('/images/arrowleftblack.png');
+	background-image: url('/images/back.png');
 	background-repeat: no-repeat;
 	position: absolute;
-	top: 70px;
-	left: 50px;
-	cursor: pointer;
+	top: 73px;
+	left: 73px;
 `;
 
 const Title = styled.h2`
@@ -116,11 +112,9 @@ const Input = styled.input`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 12px;
 	padding-left: 20px;
-	outline: none;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
 	}
@@ -137,19 +131,11 @@ const Button = styled.button`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 	margin-top: 30px;
 `;

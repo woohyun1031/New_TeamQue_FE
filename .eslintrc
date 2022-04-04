@@ -24,6 +24,6 @@
         "react/self-closing-comp": "error",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": 0,
-        "no-mixed-spaces-and-tabs": 0
+        "no-mixed-spaces-and-tabs": 0,
     }
 }

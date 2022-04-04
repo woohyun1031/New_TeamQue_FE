@@ -37,11 +37,9 @@ const Inner = styled.div`
 `;
 
 const Logo = styled.button`
-	background: none;
 	background-image: url('/images/logo.png');
-	border: none;
+	${({theme}) => theme.commons.backgroundImage}
 	width: 130px;
 	height: 60px;
 	background-repeat: no-repeat;
-	cursor: pointer;
 `;

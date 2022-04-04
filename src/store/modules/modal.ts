@@ -17,11 +17,21 @@ const ModalSlice = createSlice({
 			state.isOpen = false;
 		},
 		adddata(state, action: PayloadAction<string>) {
-			state.data = action.payload
+			state.data = action.payload;
 		},
 		changeModal(
 			state,
-			action: PayloadAction<'notSignIn' | 'signIn' | 'signUp' | 'addClass' | 'inviteCode' | 'tutorial' | 'registClass'>
+			action: PayloadAction<
+				| 'notSignIn'
+				| 'signIn'
+				| 'signUp'
+				| 'addClass'
+				| 'inviteCode'
+				| 'tutorial'
+				| 'registClass'
+				| 'deleteaccount'
+				| 'modifyuserinfo'
+			>
 		) {
 			state.type = action.payload;
 		},

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 
 const RegistClass = () => {
@@ -12,7 +12,7 @@ const RegistClass = () => {
 
 	const registClass = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		apis.registClass(input);
+		api.registClass(input);
 		alert('수강 신청이 완료되었습니다');
 		location.reload();
 	};
@@ -41,7 +41,7 @@ const Form = styled.form`
 	justify-content: space-between;
 	width: 760px;
 	height: 268px;
-	padding: 50px;
+	padding: 50px 65px;
 `;
 
 const Input = styled.input`
@@ -62,13 +62,11 @@ const Button = styled.button`
 	width: 150px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
-	margin-right: 30px;
+	margin-right: 0px;
 	margin-left: auto;
-	cursor: pointer;
 `;

@@ -1,96 +1,76 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { ChangeEvent, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import apis from '../../api';
-import { removeBoard } from '../../store/modules/user';
+import api from '../../api';
+import { RootState } from '../../store/configStore';
 
 const Detail = () => {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const { classid, postid } = useParams<string>();
-	const [data, setData] = useState<{
-		postType: string;
-		title: string;
-		author: string;
-		createdAt: string;
-		content: string;
-		comments: [];
-	}>();
-	const [isByMe, setIsByMe] = useState();
+	const userId = useSelector((state: RootState) => state.user.id);
+	const { classid, postid } = useParams();
 	const [comment, setComment] = useState('');
-	const nickname: string | null = sessionStorage.getItem('name');
 
-	const fetch = async () => {
-		if (postid) {
-			console.log(postid);
-			const response = await apis.loadPost(postid);
-			console.log(response);
-			setIsByMe(response.data.isByMe);
-			console.log(response.data);
-			setData(response.data.post);
+	const { data } = useQuery('post', () => api.loadPost(postid as string));
+	const { mutate: removePost } = useMutation(
+		() => api.deletePost(postid as string),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('posts');
+			},
 		}
-	};
-	const loadPage = async () => {
-		if (postid) {
-			try {
-				const response = await apis.loadPage(postid);
-				setData(response.data.post);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
+	);
+
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
 	};
 
-	const onRemove = async () => {
-		if (postid) {
-			await dispatch(removeBoard(postid));
-			alert('삭제완료');
+	const deletePost = () => {
+		if (confirm('정말로 삭제 하실건가요?')) {
+			removePost();
 			navigate(`/classhome/${classid}/1`);
 		}
 	};
 
-	const commentWrite = async () => {
-		//send state comment to api
-		if (comment && postid) {
-			try {
-				await apis.sendComment({ postid, comment });
-				setComment('');
-				console.log(comment, 'comment');
-				loadPage();
-			} catch (error) {
-				console.log(error);
-			}
+	const { mutate: addComment } = useMutation(
+		() => api.addComment(postid as string, comment),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('post');
+				setComment('')
+			},
+		}
+	);
+
+	const deleteComment = (commentId: number) => {
+		if (confirm('정말로 삭제 하실건가요?')) {
+			deleteCommentMutate(commentId);
 		}
 	};
 
-	useEffect(() => {
-		fetch();
-	}, []);
+	const { mutate: deleteCommentMutate } = useMutation(
+		(commentId: number) => api.deleteComment(commentId),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('post');
+			},
+			onError: (err) => {
+				console.log(err)
+			}
+		}
+	);
 
 	return (
 		<Container>
 			<PostHeader>
-				<HeaderLeft>
-					<PostType>{data && data.postType}</PostType>
-					<PostTitle>{data && data.title}</PostTitle>
-					<Author>{data && data.author}</Author>
-					<Date>
-						{data && data.createdAt.split('T')[0].replaceAll('-', '.')}
-					</Date>
-				</HeaderLeft>
-				<HeaderRight>
-					<StarIcon
-						src={
-							data?.postType === 'Question'
-								? '/images/graystar.png'
-								: '/images/bluestar.png'
-						}
-					/>
-					{isByMe ? (
+				<TypeOfPost>{data?.postType}</TypeOfPost>
+				<PostTitle>{data?.title}</PostTitle>
+				<Author>{data?.author}</Author>
+				<Date>{data?.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
+				{data && data?.userId === userId && (
+					<>
 						<UpdateButton
 							onClick={() => {
 								navigate(
@@ -98,26 +78,32 @@ const Detail = () => {
 								);
 							}}
 						/>
-					) : null}
-					{isByMe ? <RemoveButton onClick={onRemove} /> : null}
-				</HeaderRight>
+						<RemoveButton onClick={deletePost} />
+					</>
+				)}
 			</PostHeader>
-			<Contents>{data && data.content}</Contents>
+			<Contents>{data?.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				{data &&
-					data.comments.map((comment: any) => (
-						<Commentlist key={comment.id}>
-							<CommentWriter>{comment.author}</CommentWriter>
-							<Comment>{comment.content}</Comment>
-						</Commentlist>
-					))}
-				{/* <CommentBox> */}
+				<CommentCharacter />
 				<CommentBox>
 					<CommentInput onChange={onChange} value={comment} />
-					<CommentButton onClick={commentWrite}>등록</CommentButton>
+					<CommentButton onClick={() => addComment()}>등록</CommentButton>
 				</CommentBox>
-				{/* </CommentBox> */}
+				{data?.comments?.map((comment) => (
+					<Commentlist key={comment.id}>
+						<CommentWriter>
+							{comment.author}
+							{comment.userId === userId && ' (나)'}
+						</CommentWriter>
+						<Comment>{comment.content}</Comment>
+						<CommentTime>
+							{comment.createdAt.split('T')[0].replaceAll('-', '.')}
+						</CommentTime>
+						{comment.userId === userId && <button onClick={() => {deleteComment(comment.id)}}>삭제</button>}
+						<UnderLine />
+					</Commentlist>
+				))}
 			</Comments>
 		</Container>
 	);
@@ -133,7 +119,7 @@ const Container = styled.div`
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	overflow-y: scroll;
 	&::-webkit-scrollbar {
-		width: 12px; /*스크롤바의 너비*/
+		width: 12px;
 	}
 	&::-webkit-scrollbar-thumb {
 		background-color: ${({ theme }) => theme.colors.scroll};
@@ -148,20 +134,10 @@ const Container = styled.div`
 const PostHeader = styled.div`
 	padding: 50px;
 	position: relative;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-`;
-const HeaderLeft = styled.div``;
-const HeaderRight = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	width: 130px;
 `;
 
-const PostType = styled.h3`
-	font-size: 10px;
+const TypeOfPost = styled.h3`
+	font-size: 12px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
 
@@ -172,28 +148,32 @@ const PostTitle = styled.h2`
 `;
 
 const Author = styled.h3`
-	font-size: 10px;
+	font-size: 12px;
 	color: ${({ theme }) => theme.colors.subTitle};
+	margin-top: 10px;
 `;
 
 const Date = styled.h3`
-	font-size: 10px;
+	font-size: 12px;
 	color: ${({ theme }) => theme.colors.subTitle};
+	margin-top: 10px;
 `;
 
 const Contents = styled.p`
-	padding: 50px;
-	min-height: 450px;
+	padding: 20px 50px;
+	min-height: 350px;
 	color: ${({ theme }) => theme.colors.title};
-`;
-const Commentlist = styled.li`
-	margin: 10px;
 `;
 
 const CommentTitle = styled.h2`
 	margin-left: 50px;
 	margin-bottom: 20px;
 	color: ${({ theme }) => theme.colors.title};
+`;
+
+const Commentlist = styled.li`
+	margin: 20px 20px 30px 20px;
+	position: relative;
 `;
 
 const CommentWriter = styled.h4`
@@ -204,14 +184,21 @@ const CommentWriter = styled.h4`
 `;
 
 const Comment = styled.p`
-	background-color: ${({ theme }) => theme.colors.background};
-	padding: 6px;
 	font-size: 12px;
+`;
+
+const UnderLine = styled.div`
+	position: absolute;
+	width: 775px;
+	height: 0.5px;
+	margin-top: 15px;
+	left: -20px;
+	background-color: ${({ theme }) => theme.colors.sub};
 `;
 
 const Comments = styled.div`
 	background-color: ${({ theme }) => theme.colors.base};
-	min-height: 300px;
+	min-height: 200px;
 	padding: 50px;
 `;
 
@@ -220,17 +207,20 @@ const CommentBox = styled.div`
 	position: relative;
 `;
 
+const CommentTime = styled.p`
+	font-size: 10px;
+	color: #626262;
+`;
+
 const CommentInput = styled.textarea`
 	resize: none;
 	border: none;
-	margin-top: 40px;
-	margin-bottom: 10px;
-	width: 800px;
-	height: 100px;
-	border-radius: 10px;
 	outline: none;
-	transition: 0.2s;
+	width: 800px;
+	height: 130px;
 	padding: 25px;
+	border-radius: 10px;
+	margin-bottom: 20px;
 	font-size: ${({ theme }) => theme.fontSizes.base};
 	background-color: ${({ theme }) => theme.colors.background};
 	&::-webkit-scrollbar {
@@ -244,68 +234,47 @@ const CommentInput = styled.textarea`
 		background-color: ${({ theme }) => theme.colors.scrollHover};
 	}
 `;
-const StarIcon = styled.button<{ src: string }>`
-	background-image: url(${({ src }) => src});
-	border: none;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
-	border-radius: 7px;
-	display: inline-block;
-	transition: 0.2s;
-	z-index: 2;
-`;
 
 const CommentButton = styled.button`
 	width: 50px;
 	height: 25px;
 	border-radius: 5px;
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 	color: ${({ theme }) => theme.colors.buttonTitle};
-	border: none;
 	right: 30px;
-	bottom: 25px;
-	cursor: pointer;
+	bottom: 30px;
 	position: absolute;
 `;
 
-const UpdateButton = styled.button`
-	border: none;
-	background-image: url('/images/updatebutton.png');
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
-	border-radius: 7px;
-	display: inline-block;
-	transition: 0.2s;
+const Button = styled.button`
+	${({ theme }) => theme.commons.backgroundImage};
+	width: 16px;
+	height: 18.22px;
 	z-index: 2;
-	cursor: pointer;
-	&:hover {
-		background-image: url('/images/blueupdatebutton.png');
-	}
+	display: inline-block;
+	background-size: contain;
+	transition: 0.2s;
+	position: absolute;
 `;
 
-const RemoveButton = styled.button`
-	border: none;
-	background-image: url('/images/removebutton.png');
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-color: ${({ theme }) => theme.colors.background};
-	width: 30px;
-	height: 30px;
-	border-radius: 7px;
-	display: inline-block;
-	transition: 0.2s;
-	z-index: 2;
-	cursor: pointer;
+const UpdateButton = styled(Button)`
+	background-image: url('/images/edit.png');
 	&:hover {
-		background-image: url('/images/redremovebutton.png');
+		background-image: url('/images/editblue.png');
 	}
+	top: 40px;
+	right: 100px;
 `;
+
+const RemoveButton = styled(Button)`
+	background-image: url('/images/remove.png');
+	&:hover {
+		background-image: url('/images/removeblue.png');
+	}
+	top: 40px;
+	right: 60px;
+`;
+
+const CommentCharacter = styled.div`
+	background-image: url('images/comment.png');
+`

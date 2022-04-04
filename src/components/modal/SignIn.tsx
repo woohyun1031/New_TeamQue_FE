@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
 	const dispatch = useDispatch();
 
 	const [inputs, setInputs] = useState({
@@ -24,7 +24,6 @@ const SignIn: React.FC = () => {
 		e.preventDefault();
 		dispatch(signIn(inputs));
 	};
-
 
 	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -93,16 +92,13 @@ const Form = styled.form`
 `;
 
 const Back = styled.button`
-	border: none;
-	background: none;
+	background-image: url('/images/back.png');
+	background-repeat: no-repeat;
 	width: 11px;
 	height: 19px;
-	background-image: url('/images/arrowleftblack.png');
-	background-repeat: no-repeat;
 	position: absolute;
 	top: 70px;
-	left: 50px;
-	cursor: pointer;
+	left: 77px;
 `;
 
 const Title = styled.h2`
@@ -126,11 +122,9 @@ const Input = styled.input`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 12px;
 	padding-left: 20px;
-	outline: none;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
 	}
@@ -141,26 +135,18 @@ const Button = styled.button`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
-	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const Or = styled.p`
 	margin: 19px 0;
 	text-align: center;
-`
+`;
 
 const KakaoButton = styled(Button)`
 	background-color: ${({ theme }) => theme.colors.kakaoBg};
@@ -172,7 +158,6 @@ const KakaoButton = styled(Button)`
 	}
 	margin-bottom: 22px;
 	&:hover {
-		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightKakao};
 	}
 `;
@@ -201,14 +186,10 @@ const SignUpMessage = styled.p`
 `;
 
 const SignUp = styled.button`
-	border: none;
-	background: none;
 	color: ${({ theme }) => theme.colors.signOut};
 	text-decoration: underline;
 	font-size: 12px;
-	cursor: pointer;
 	&:hover {
 		color: ${({ theme }) => theme.colors.signoutHover};
 	}
 `;
-

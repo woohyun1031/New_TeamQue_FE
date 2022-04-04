@@ -1,45 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import apis from '../../api';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
+import { CardType } from '../../type';
 import Card from './Card';
 
-type CardType = {
-	id: number;
-	title: string;
-	teacher: string;
-	imageUrl: string;
-	timeTable: string[];
-	state: 'wait' | 'accepted' | 'teach';
+type CardListProps = {
+	tabState: boolean;
 };
 
-interface CardListProps {
-	tabState: boolean;
-}
-
-const CardList = ({ tabState } : CardListProps) => {
-	const [learnCards, setLearnCards] = useState<CardType[]>();
-	const [teachCards, setTeachCards] = useState<CardType[]>();
-
+const CardList = ({ tabState }: CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
-	const loadLearnClass = async () => {
-		const response = await apis.loadLearnClass();
-		setLearnCards(response.data);
-	};
-
-	const loadTeachClass = async () => {
-		const response = await apis.loadTeachClass();
-		setTeachCards(response.data);
-	};
-
-	useEffect(() => {
-		if (isLogin) {
-			loadLearnClass();
-			loadTeachClass();
-		}
-	}, [isLogin]);
+	const { data: learnCards } = useQuery('learnCard', api.loadLearnCards, {
+		enabled: isLogin,
+	});
+	const { data: teachCards } = useQuery('teachCard', api.loadTeachCards, {
+		enabled: isLogin,
+	});
 
 	return (
 		<Container>

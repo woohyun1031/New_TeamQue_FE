@@ -1,23 +1,11 @@
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import api from '../../api';
+import { CardType } from '../../type';
 
-type CardProps = {
-	id: number;
-	title: string;
-	teacher: string;
-	imageUrl: string;
-	timeTable: string[];
-	state: 'wait' | 'accepted' | 'teach';
-};
-
-const Card = ({
-	id,
-	imageUrl,
-	teacher,
-	title,
-	timeTable,
-	state,
-}: CardProps) => {
+const Card = ({ id, imageUrl, teacher, title, timeTable, state }: CardType) => {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
 	const toClassRoom = () => {
@@ -28,9 +16,21 @@ const Card = ({
 		navigate(`/classhome/${id}/1`);
 	};
 
+	const { mutate: cancel } = useMutation(() => api.cancelApply(id.toString()), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('learnCard');
+		},
+	});
+
+	const handleClick = async () => {
+		if (confirm('정말로 수강 취소 하시겠어요?')) {
+			cancel();
+		}
+	};
+
 	if (state == 'wait') {
 		return (
-			<Container>
+			<WaitContainer>
 				<Thumbnail src={imageUrl} />
 				<WaitThumbnail />
 				<BadgeBox>
@@ -39,7 +39,8 @@ const Card = ({
 				</BadgeBox>
 				<Title>{title}</Title>
 				<Teacher>{teacher} 선생님</Teacher>
-			</Container>
+				<WaitButton onClick={handleClick}>신청 취소하기</WaitButton>
+			</WaitContainer>
 		);
 	}
 
@@ -72,11 +73,15 @@ const Container = styled.div`
 	padding: 16px 23px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 	position: relative;
-	transition: 0.2s;
+	color: ${({ theme }) => theme.colors.title};
 	& + & {
 		margin-left: 20px;
 	}
 	background-color: ${({ theme }) => theme.colors.background};
+`;
+
+const WaitContainer = styled(Container)`
+	color: #ccc;
 `;
 
 const ThumbnailFilter = styled.div`
@@ -150,14 +155,12 @@ const Title = styled.h3`
 	font-weight: 700;
 	font-size: 18px;
 	height: 40px;
-	color: ${({ theme }) => theme.colors.title};
 `;
 
 const Teacher = styled.h4`
 	font-size: 12px;
 	font-weight: 700;
 	margin-bottom: 6px;
-	color: ${({ theme }) => theme.colors.title};
 `;
 
 const TimeTables = styled.div`
@@ -184,7 +187,6 @@ const TimeTable = styled.p<{ type?: 'accepted' | 'wait' | 'teach' }>`
 	justify-content: center;
 	margin-right: 6px;
 	margin-bottom: 3px;
-	color: ${({ theme }) => theme.colors.title};
 	background-color: ${({ theme }) => theme.colors.base};
 `;
 
@@ -192,18 +194,15 @@ const HomeButton = styled.button`
 	width: 41px;
 	height: 41px;
 	border-radius: 50%;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url('/images/home.png');
-	background-position: center center;
-	background-repeat: no-repeat;
+	${({ theme }) => theme.commons.backgroundImage};
 	position: absolute;
 	bottom: 23px;
 	right: 23px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
 	&:hover {
-		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
 	&:active {
@@ -213,12 +212,31 @@ const HomeButton = styled.button`
 
 const WaitThumbnail = styled.div`
 	background-image: url('/images/wait.png');
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 255px;
 	height: 172px;
 	border-radius: 7px;
 	top: 16px;
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const WaitButton = styled.button`
+	border: none;
+	border-radius: 7px;
+	width: 92px;
+	height: 32px;
+	font-size: 12px;
+	box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.25);
+	position: absolute;
+	bottom: 25px;
+	right: 25px;
+	color: ${({ theme }) => theme.colors.background};
+	background-color: ${({ theme }) => theme.colors.main};
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
 `;

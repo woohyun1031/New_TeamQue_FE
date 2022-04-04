@@ -1,74 +1,83 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { adddata, changeModal, openModal } from '../../store/modules/modal';
-import apis from '../../api';
+import api from '../../api';
+import { RootState } from '../../store/configStore';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const ClassInfo = () => {
+	const queryClient = useQueryClient();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const { classid } = useParams();
-	const [students, setStudents] = useState<{ name: string }[]>();
-	const [data, setData] = useState<{
-		title: string;
-		teacher: string;
-		timeTable: string[];
-		imageUrl: string;
-		isByMe: boolean;
-		uuid: string;
-	}>();
+	const { id } = useSelector((state: RootState) => state.user);
 
-	const fetchClassData = async () => {
-		if (classid) {
-			const response = await apis.loadClassInfo(classid);
-			const response2 = await apis.loadStudents(classid);
-			setData(response.data);
-			setStudents(response2.data);
-		}
-	};
+	const { data: classInfo } = useQuery('classInfo', () =>
+		api.loadClassData(classid as string)
+	);
+	const { data: students } = useQuery('students', () =>
+		api.loadStudents(classid as string)
+	);
 
-	useEffect(() => {
-		fetchClassData();
-	}, []);
-	
+
 	const openInviteCode = () => {
-		if (data) {
-			dispatch(adddata(data?.uuid))
-		}
-		dispatch(openModal());
-		dispatch(changeModal('inviteCode'));
-	};
-
-	
-	const acceptStudent = async (studentId: string) => {
-		if (classid) {
-			await apis.changeState(classid, studentId, true);
-			const { data } = await apis.loadStudents(classid);
-			setStudents(data);
+		if (classInfo) {
+			dispatch(adddata(classInfo?.uuid));
+			dispatch(openModal());
+			dispatch(changeModal('inviteCode'));
 		}
 	};
 
-	const rejectStudent = async (studentId: string) => {
-		if (classid) {
-			if (confirm('정말로 퇴출 하실건가요?')) {
-				await apis.changeState(classid, studentId, false);
-				const { data } = await apis.loadStudents(classid);
-				setStudents(data);
+	const { mutate: acceptStudent } = useMutation(
+		(studentId: number) => api.changeState(classid as string, studentId, true),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('students');
+			},
+		}
+	);
+
+	const { mutate: rejectStudent } = useMutation((studentId: number) =>
+		api.changeState(classid as string, studentId, false)
+	);
+
+	const handleClickReject = (studentsId: number) => {
+		if (confirm('정말로 거부하겠습니까?')) {
+			rejectStudent(studentsId)
+		}
+	}
+
+	const toClassRoom = () => {
+		navigate(`/classroom/${classid}`);
+	};
+
+	const exitClass = async () => {
+		if (confirm('정말로 수업을 나가시겠습니까?')) {
+			if (classid) {
+				await api.cancelApply(classid);
+				navigate('/');
 			}
 		}
 	};
 
 	return (
 		<Container>
-			<Image src={data && data.imageUrl} />
-			<ThumbnailFilter />
-			<Title>{data && data.title}</Title>
-			<Teacher>{data && data.teacher} 선생님</Teacher>
-			<Time>{data && data.timeTable[0]}</Time>
+			<ClassRoomButton onClick={toClassRoom} />
+			<Image src={classInfo?.imageUrl} />
+			<ThumbnailFilter onClick={toClassRoom} />
+			<Title>{classInfo?.title}</Title>
+			<Teacher>{classInfo?.teacher} 선생님</Teacher>
+			<Time>
+				{classInfo?.timeTable?.map((time: string, index: number) => (
+					<DayNum key={index}>{time}</DayNum>
+				))}
+			</Time>
 			<StudentInfo>
 				<div>
 					<h4>
-						수강생 {data?.isByMe && <button onClick={openInviteCode}>+</button>}
+						수강생
+						{classInfo?.isByMe && <button onClick={openInviteCode}>+</button>}
 					</h4>
 				</div>
 				<p>{students && students.length}명</p>
@@ -81,9 +90,12 @@ const ClassInfo = () => {
 						<col span={1} />
 					</colgroup>
 					<tbody>
-						{data?.isByMe
-							? students?.map((student: any, index: number) => (
-									<Tr key={index} isAccepted={student.state === 'accepted'}>
+						{classInfo?.isByMe
+							? students?.map((student) => (
+									<Tr
+										key={student.userId}
+										isAccepted={student.state === 'accepted'}
+									>
 										<td>{student.userId}</td>
 										<td>{student.name}</td>
 										<td>
@@ -99,7 +111,7 @@ const ClassInfo = () => {
 														승인
 													</AcceptButton>
 													<RejectButton
-														onClick={() => rejectStudent(student.userId)}
+														onClick={() => handleClickReject(student.userId)}
 													>
 														거부
 													</RejectButton>
@@ -108,17 +120,23 @@ const ClassInfo = () => {
 										</td>
 									</Tr>
 							  ))
-							: students?.map((student: any, index: number) => {
-									if (student.state === 'accepted') {
-										return (
-											<Tr key={index} isAccepted={true}>
-												<td>{student.userId}</td>
-												<td>{student.name}</td>
-												<td />
-											</Tr>
-										);
-									}
-							  })}
+							: students?.map((student) =>
+									student.userId !== id ? (
+										<Tr key={student.userId} isAccepted={true}>
+											<td>{student.userId}</td>
+											<td>{student.name}</td>
+											<td />
+										</Tr>
+									) : (
+										<Tr key={student.userId} isAccepted={true}>
+											<td>{student.userId}</td>
+											<td>{student.name}</td>
+											<td>
+												<Button onClick={exitClass}>나가기</Button>
+											</td>
+										</Tr>
+									)
+							  )}
 					</tbody>
 				</StudentList>
 			</TableBox>
@@ -148,10 +166,9 @@ const Image = styled.img`
 	object-fit: cover;
 `;
 
-const ThumbnailFilter = styled.div`
+const ThumbnailFilter = styled.button`
 	background-image: url('/images/play.png');
-	background-repeat: no-repeat;
-	background-position: center center;
+	${({ theme }) => theme.commons.backgroundImage};
 	width: 230px;
 	height: 155px;
 	border-radius: 7px;
@@ -160,7 +177,6 @@ const ThumbnailFilter = styled.div`
 	opacity: 0;
 	z-index: 10;
 	transition: 0.5s;
-	cursor: pointer;
 	&:hover {
 		opacity: 1;
 	}
@@ -177,11 +193,27 @@ const Teacher = styled.p`
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
 `;
-
-const Time = styled.p`
-	margin-bottom: 20px;
+const Time = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	margin: 10px;
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.subTitle};
+`;
+
+const DayNum = styled.li`
+	width: 120px;
+	height: 22px;
+	padding: 1px;
+	border-radius: 10px;
+	margin: 2px 0px;
+	text-align: center;
+	align-items: center;
+	font-size: 12px;
+	background-color: ${({ theme }) => theme.colors.base};
+	color: ${({ theme }) => theme.colors.title};
 `;
 
 const StudentInfo = styled.div`
@@ -192,11 +224,8 @@ const StudentInfo = styled.div`
 	font-weight: bold;
 	margin-bottom: 10px;
 	& button {
-		border: none;
-		background: none;
 		font-size: 18px;
 		font-weight: bold;
-		cursor: pointer;
 	}
 `;
 
@@ -242,7 +271,6 @@ const Button = styled.button`
 	height: 16px;
 	border-radius: 3px;
 	font-size: 10px;
-	border: none;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -252,7 +280,6 @@ const Button = styled.button`
 	& + & {
 		margin-left: 4px;
 	}
-	cursor: pointer;
 `;
 
 const RejectButton = styled(Button)`
@@ -261,9 +288,20 @@ const RejectButton = styled(Button)`
 
 const AcceptButton = styled(Button)`
 	color: ${({ theme }) => theme.colors.background};
-	background-color: ${({ theme }) => theme.colors.main};
+	${({ theme }) => theme.commons.mainButton};
 `;
 
 const Tr = styled.tr<{ isAccepted: boolean }>`
 	${({ isAccepted }) => !isAccepted && 'color: #718AFF;'}
+`;
+
+const ClassRoomButton = styled.button`
+	background-image: url('/images/toclassroom.png');
+	${({ theme }) => theme.commons.backgroundImage};
+	width: 143.41px;
+	height: 66px;
+	position: absolute;
+	top: -66px;
+	right: -20px;
+	z-index: 0;
 `;

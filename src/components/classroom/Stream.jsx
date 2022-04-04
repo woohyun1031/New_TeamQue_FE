@@ -13,12 +13,12 @@ const Stream = () => {
 	return (
 		<Container>
 			<Video
-				src='http://xpecter.shop/live/1234/index.m3u8'
+				src={`http://xpecter.shop/live/${classid}/index.m3u8`}
 				width='890'
 				height='500'
 				autoPlay
 			/>
-			<ClassHoomButton onClick={toClassHome}/>
+			<ClassHoomButton onClick={toClassHome} />
 		</Container>
 	);
 };
