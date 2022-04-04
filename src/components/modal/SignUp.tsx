@@ -1,11 +1,10 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
 import { signUp } from '../../store/modules/user';
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
 	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		email: '',
@@ -89,8 +88,6 @@ const Form = styled.form`
 `;
 
 const Back = styled.button`
-	border: none;
-	background: none;
 	width: 11px;
 	height: 19px;
 	background-image: url('/images/back.png');
@@ -98,7 +95,6 @@ const Back = styled.button`
 	position: absolute;
 	top: 73px;
 	left: 73px;
-	cursor: pointer;
 `;
 
 const Title = styled.h2`
@@ -116,11 +112,9 @@ const Input = styled.input`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 12px;
 	padding-left: 20px;
-	outline: none;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
 	}
@@ -137,7 +131,6 @@ const Button = styled.button`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;

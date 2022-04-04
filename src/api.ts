@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { CardType, ClassDataType, PostsType, PostType, StudentType, TodoType } from './type';
 
 export const instance = axios.create({
-	baseURL: 'https://noobpro.shop:3000/',
+	baseURL: process.env.REACT_APP_API_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 	},
@@ -59,39 +59,55 @@ const requests = {
 const api = {
 	// User
 	signUp: (userInfo: object) => requests.post('/user/signup', userInfo),
-	signIn: (signInInfo: { email: string; password: string }) => requests.post('/user/signin', signInInfo),
+	signIn: (signInInfo: { email: string; password: string }) =>
+		requests.post('/user/signin', signInInfo),
 	signOut: () => requests.post('/user/signout', {}),
-	getUserInfo: () => requests.get('/user'),
+	getUserInfo: (): Promise<{ id: number; name: string }> =>
+		requests.get('/user'),
 	withdrawal: (password: string) => requests.put('/user/delete', { password }),
 	modifyUserInfo: (name: string) => requests.put('/user/edit', { name }),
 
 	// Class
 	loadLearnCards: (): Promise<CardType[]> => requests.get('/class/learn'),
 	loadTeachCards: (): Promise<CardType[]> => requests.get('/class/teach'),
-	cancelApply: (classId: string) => requests.delete(`/class/student/${classId}`),
-	loadMyCalendar: (year: number, month: number) => requests.get(`/class/date?year=${year}&month=${month}`),
+	cancelApply: (classId: string) =>
+		requests.delete(`/class/student/${classId}`),
+	loadMyCalendar: (year: number, month: number) =>
+		requests.get(`/class/date?year=${year}&month=${month}`),
 	createClass: (classInfo: object) => requests.post('/class', classInfo),
-	loadClassData: (classId: string): Promise<ClassDataType> => requests.get(`/class/${classId}`),
-	loadStudents: (classId: string): Promise<StudentType[]> => requests.get(`/class/student/${classId}`),
-	changeState: (classId: string, studentId: number, isAccept: boolean) => requests.put(`/class/student/${classId}/${studentId}`, { isOk: isAccept }),
+	loadClassData: (classId: string): Promise<ClassDataType> =>
+		requests.get(`/class/${classId}`),
+	loadStudents: (classId: string): Promise<StudentType[]> =>
+		requests.get(`/class/student/${classId}`),
+	changeState: (classId: string, studentId: number, isAccept: boolean) =>
+		requests.put(`/class/student/${classId}/${studentId}`, { isOk: isAccept }),
 	registClass: (uuid: string) => requests.post(`/class/student`, { uuid }),
-	loadClassCalendar: (classId: string, year: number, month: number) => requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
+	loadClassCalendar: (classId: string, year: number, month: number) =>
+		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 
 	// Post
-	loadPosts: (classId: string, page: string): Promise<PostsType> => requests.get(`/post/${classId}?page=${page}`),
-	loadPost: (postId: string): Promise<PostType> => requests.get(`/post/detail/${postId}`),
-	addPost: (classInfo: { classid: string; boardInfo: object }) => requests.post(`/post/${classInfo.classid}`, classInfo.boardInfo),
+	loadPosts: (classId: string, page: string): Promise<PostsType> =>
+		requests.get(`/post/${classId}?page=${page}`),
+	loadPost: (postId: string): Promise<PostType> =>
+		requests.get(`/post/detail/${postId}`),
+	addPost: (classInfo: { classid: string; boardInfo: object }) =>
+		requests.post(`/post/${classInfo.classid}`, classInfo.boardInfo),
 	deletePost: (postid: string) => requests.delete(`/post/${postid}`),
-	updatePost: (classInfo: { updateid: string; boardInfo: object }) => requests.put(`/post/${classInfo.updateid}`, classInfo.boardInfo),
+	updatePost: (classInfo: { updateid: string; boardInfo: object }) =>
+		requests.put(`/post/${classInfo.updateid}`, classInfo.boardInfo),
 
 	//Comment
-	sendComment: (contents: { postid: string; comment: string }) => requests.post(`/post/comment/${contents.postid}`, { content: contents.comment }),
+	addComment: (postid: string, comment: string) =>
+		requests.post(`/post/comment/${postid}`, { content: comment }),
+	deleteComment: (commentId: number) => requests.delete(`/post/comment/${commentId}`),
 
 	// Todo
 	loadTodo: (): Promise<TodoType[]> => requests.get('/post/todo'),
-	addTodo: (content: string) => requests.post('/post/todo', { content: content }),
+	addTodo: (content: string) =>
+		requests.post('/post/todo', { content: content }),
 	deleteTodo: (todoId: number) => requests.delete(`/post/todo/${todoId}`),
-	completeTodo: (todoId: number) => requests.put('/post/todo/complete', { id: todoId }),
+	completeTodo: (todoId: number) =>
+		requests.put('/post/todo/complete', { id: todoId }),
 };
 
 export default api;

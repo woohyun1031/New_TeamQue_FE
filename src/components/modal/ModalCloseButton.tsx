@@ -19,11 +19,8 @@ export default ModalCloseButton;
 const CloseButton = styled.button`
 	width: 17px;
 	height: 17px;
-	border: none;
-	background: none;
 	background-image: url('/images/bigCloseButton.png');
 	position: absolute;
 	top: 30px;
 	right: 30px;
-	cursor: pointer;
 `;

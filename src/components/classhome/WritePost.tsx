@@ -13,7 +13,7 @@ const WritePost = () => {
 	});
 	const [isMe, setIsMe] = useState(false);
 	const { updateid, classid, postid } = useParams<string>();
-
+	
 	const loadPost = async () => {
 		if (updateid) {
 			try {

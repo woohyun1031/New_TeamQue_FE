@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { changeModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
 	const dispatch = useDispatch();
 
 	const [inputs, setInputs] = useState({
@@ -92,8 +92,6 @@ const Form = styled.form`
 `;
 
 const Back = styled.button`
-	border: none;
-	background: none;
 	background-image: url('/images/back.png');
 	background-repeat: no-repeat;
 	width: 11px;
@@ -101,7 +99,6 @@ const Back = styled.button`
 	position: absolute;
 	top: 70px;
 	left: 77px;
-	cursor: pointer;
 `;
 
 const Title = styled.h2`
@@ -125,11 +122,9 @@ const Input = styled.input`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 12px;
 	padding-left: 20px;
-	outline: none;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
 	}
@@ -140,14 +135,12 @@ const Button = styled.button`
 	width: 280px;
 	height: 40px;
 	border-radius: 7px;
-	border: none;
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 14px;
 	font-weight: 600;
 	position: relative;
 	transition: 0.2s;
 	${({ theme }) => theme.commons.mainButton};
-	cursor: pointer;
 `;
 
 const Or = styled.p`
@@ -165,7 +158,6 @@ const KakaoButton = styled(Button)`
 	}
 	margin-bottom: 22px;
 	&:hover {
-		cursor: pointer;
 		background-color: ${({ theme }) => theme.colors.brightKakao};
 	}
 `;
@@ -194,12 +186,9 @@ const SignUpMessage = styled.p`
 `;
 
 const SignUp = styled.button`
-	border: none;
-	background: none;
 	color: ${({ theme }) => theme.colors.signOut};
 	text-decoration: underline;
 	font-size: 12px;
-	cursor: pointer;
 	&:hover {
 		color: ${({ theme }) => theme.colors.signoutHover};
 	}

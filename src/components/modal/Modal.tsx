@@ -16,7 +16,7 @@ import ModifyUserInfo from './ModifyUserInfo';
 
 const modalRoot = document.querySelector('#modal') as HTMLElement;
 
-const Modal: React.FC = () => {
+const Modal = () => {
 	const dispatch = useDispatch();
 	const modal = useSelector((state: RootState) => state.modal);
 	let contents;
