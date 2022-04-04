@@ -48,9 +48,9 @@ const AddClass = () => {
 
 		myBucket
 			.putObject(params)
-			.on('httpUploadProgress', async (evt, res: any) => {
+			.on('httpUploadProgress', (evt, res: any) => {
 				console.log(res);
-				await setInputs({
+				setInputs({
 					...inputs,
 					['imageUrl']:
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
@@ -74,7 +74,7 @@ const AddClass = () => {
 		};
 		console.log(classInfo, 'create');
 		api.createClass(classInfo);
-		//navigator('/');
+		location.reload()
 	};
 	useEffect(() => {
 		console.log(selectedDays);

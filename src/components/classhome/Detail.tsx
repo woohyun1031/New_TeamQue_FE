@@ -22,6 +22,7 @@ const Detail = () => {
 			},
 		}
 	);
+	console.log(data)
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
@@ -39,7 +40,7 @@ const Detail = () => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries('post');
-				setComment('')
+				setComment('');
 			},
 		}
 	);
@@ -57,8 +58,8 @@ const Detail = () => {
 				queryClient.invalidateQueries('post');
 			},
 			onError: (err) => {
-				console.log(err)
-			}
+				console.log(err);
+			},
 		}
 	);
 
@@ -73,9 +74,9 @@ const Detail = () => {
 					<>
 						<UpdateButton
 							onClick={() => {
-								navigate(
-									`/classhome/${classid}/post/${postid}/update/${postid}`
-								);
+								navigate(`/classhome/${classid}/update/${data.id}`, {
+									state: { title: data?.title, content: data?.content, postType: data?.postType },
+								});
 							}}
 						/>
 						<RemoveButton onClick={deletePost} />
@@ -100,7 +101,15 @@ const Detail = () => {
 						<CommentTime>
 							{comment.createdAt.split('T')[0].replaceAll('-', '.')}
 						</CommentTime>
-						{comment.userId === userId && <button onClick={() => {deleteComment(comment.id)}}>삭제</button>}
+						{comment.userId === userId && (
+							<button
+								onClick={() => {
+									deleteComment(comment.id);
+								}}
+							>
+								삭제
+							</button>
+						)}
 						<UnderLine />
 					</Commentlist>
 				))}
@@ -277,4 +286,4 @@ const RemoveButton = styled(Button)`
 
 const CommentCharacter = styled.div`
 	background-image: url('images/comment.png');
-`
+`;

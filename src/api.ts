@@ -8,6 +8,7 @@ export const instance = axios.create({
 	},
 });
 
+
 let isRefreshing = false;
 const refreshSubscribers: ((arg: string) => void)[] = [];
 const addRefreshSubscriber = (callback: (arg: string) => void) => {
@@ -90,8 +91,8 @@ const api = {
 		requests.get(`/post/${classId}?page=${page}`),
 	loadPost: (postId: string): Promise<PostType> =>
 		requests.get(`/post/detail/${postId}`),
-	addPost: (classInfo: { classid: string; boardInfo: object }) =>
-		requests.post(`/post/${classInfo.classid}`, classInfo.boardInfo),
+	addPost: (classid: string, postData: {title: string, content: string, postType: 'Question' | 'Notice'}) =>
+		requests.post(`/post/${classid}`, postData),
 	deletePost: (postid: string) => requests.delete(`/post/${postid}`),
 	updatePost: (classInfo: { updateid: string; boardInfo: object }) =>
 		requests.put(`/post/${classInfo.updateid}`, classInfo.boardInfo),
