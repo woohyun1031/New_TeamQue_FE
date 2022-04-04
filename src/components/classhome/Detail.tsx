@@ -39,7 +39,7 @@ const Detail = () => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries('post');
-				setComment('')
+				setComment('');
 			},
 		}
 	);
@@ -57,8 +57,8 @@ const Detail = () => {
 				queryClient.invalidateQueries('post');
 			},
 			onError: (err) => {
-				console.log(err)
-			}
+				console.log(err);
+			},
 		}
 	);
 
@@ -100,7 +100,15 @@ const Detail = () => {
 						<CommentTime>
 							{comment.createdAt.split('T')[0].replaceAll('-', '.')}
 						</CommentTime>
-						{comment.userId === userId && <button onClick={() => {deleteComment(comment.id)}}>삭제</button>}
+						{comment.userId === userId && (
+							<button
+								onClick={() => {
+									deleteComment(comment.id);
+								}}
+							>
+								삭제
+							</button>
+						)}
 						<UnderLine />
 					</Commentlist>
 				))}
@@ -277,4 +285,4 @@ const RemoveButton = styled(Button)`
 
 const CommentCharacter = styled.div`
 	background-image: url('images/comment.png');
-`
+`;

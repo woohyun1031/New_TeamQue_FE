@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
+import { useNavigate } from 'react-router-dom';
 
 const AddClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -18,6 +19,7 @@ const AddClass = () => {
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
+	const navigate = useNavigate();
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -57,27 +59,30 @@ const AddClass = () => {
 				});
 			})
 			.on('httpDone', (res: any) => {
-				console.log(res);
-				createClass();
+				console.log(res, 'httpDone');
+				const newUrl: string =
+					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+					res.request.httpRequest.path;
+				const classnum = createClass(newUrl);
+				//navigate(`/classhome/${classnum.result.classid}/1`);
+				//
 			})
 			.send((err) => {
 				if (err) console.log(err, 'err');
 			});
 	};
 
-	const createClass = () => {
+	const createClass = (url: string) => {
 		const classInfo = {
 			title: inputs.title,
-			imageUrl: inputs.imageUrl,
+			imageUrl: url,
 			startDate: inputs.startDate,
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
 		console.log(classInfo, 'classInfo');
 		const response = api.createClass(classInfo);
-		console.log(response, 'response');
-		//window.location.reload();
-		//navigator('/classhome//1')
+		return response;
 	};
 
 	useEffect(() => {
