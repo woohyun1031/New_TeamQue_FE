@@ -22,10 +22,10 @@ const AddClass = () => {
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-	const S3_BUCKET = 'mywoo1031bucket';
-	const ACCESS_KEY = 'REACT_APP_AWSAccessKeyId';
-	const SECRET_ACCESS_KEY = 'REACT_APP_AWSSecretKey';
-	const REGION = 'ap-northeast-2';
+	const S3_BUCKET = process.env.REACT_APP_IMAGE_BUCKET;
+	const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
+	const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
+	const REGION = process.env.REACT_APP_REGION;
 
 	AWS.config.update({
 		accessKeyId: ACCESS_KEY,
@@ -42,7 +42,7 @@ const AddClass = () => {
 		const params = {
 			ACL: 'public-read',
 			Body: file,
-			Bucket: S3_BUCKET,
+			Bucket: S3_BUCKET as string,
 			Key: 'upload/' + file.name,
 		};
 

@@ -26,7 +26,6 @@ type chatType = {
 };
 
 export let socket: Socket;
-
 const ClassRoom = () => {
 	const [classInfo, setClassInfo] = useState<{
 		title: string;
@@ -50,7 +49,7 @@ const ClassRoom = () => {
 	const classId = params.classid;
 
 	const socketInitiate = () => {
-		socket = io('ws://noobpro.shop', {
+		socket = io(process.env.REACT_APP_SOCKET_BASE_URL as string, {
 			extraHeaders: {
 				Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
 			},

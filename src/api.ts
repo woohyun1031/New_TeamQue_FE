@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { CardType, ClassDataType, PostsType, PostType, StudentType, TodoType } from './type';
 
 export const instance = axios.create({
-	baseURL: 'https://noobpro.shop:3000/',
+	baseURL: process.env.REACT_APP_API_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 	},
