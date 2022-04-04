@@ -177,7 +177,7 @@ const TypeCol = styled.col`
 `;
 
 const AuthorCol = styled.col`
-	width: 100px;
+	width: 150px;
 `;
 
 const DateCol = styled.col`

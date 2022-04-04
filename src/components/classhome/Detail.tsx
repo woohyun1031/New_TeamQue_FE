@@ -22,6 +22,7 @@ const Detail = () => {
 			},
 		}
 	);
+	console.log(data)
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
@@ -73,9 +74,9 @@ const Detail = () => {
 					<>
 						<UpdateButton
 							onClick={() => {
-								navigate(
-									`/classhome/${classid}/post/${postid}/update/${postid}`
-								);
+								navigate(`/classhome/${classid}/update/${data.id}`, {
+									state: { title: data?.title, content: data?.content, postType: data?.postType },
+								});
 							}}
 						/>
 						<RemoveButton onClick={deletePost} />

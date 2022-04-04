@@ -8,25 +8,14 @@ import Detail from '../components/classhome/Detail';
 import WritePost from '../components/classhome/WritePost';
 
 const ClassHome = () => {
-	const { postid, updateid, page } = useParams();
+	const { postid, page } = useParams();
 	return (
 		<Container>
 			<LeftBox>
 				<ClassInfo />
 				<Calendar />
 			</LeftBox>
-
-			{postid ? (
-				updateid ? (
-					<WritePost />
-				) : (
-					<Detail />
-				)
-			) : page ? (
-				<Board />
-			) : (
-				<WritePost />
-			)}
+			{page ? <Board /> : postid ? <Detail /> : <WritePost />}
 		</Container>
 	);
 };

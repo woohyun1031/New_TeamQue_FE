@@ -80,7 +80,8 @@ const AddClass = () => {
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'classInfo');
+		api.createClass(classInfo);
+		location.reload()
 		const response = api.createClass(classInfo);
 		return response;
 	};
