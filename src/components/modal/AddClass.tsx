@@ -39,7 +39,7 @@ const AddClass = () => {
 		region: REGION,
 	});
 
-	const uploadFile = async (e: any, file: any) => {
+	const uploadFile = (e: any, file: any) => {
 		e.preventDefault();
 		const params = {
 			ACL: 'public-read',
@@ -47,18 +47,19 @@ const AddClass = () => {
 			Bucket: S3_BUCKET,
 			Key: 'upload/' + file.name,
 		};
-
 		myBucket
 			.putObject(params)
-			.on('httpUploadProgress', async (evt, res: any) => {
-				console.log(res);
-				await setInputs({
+			.on('httpUploadProgress', (evt: any, res: any) => {
+				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
+				setInputs({
 					...inputs,
 					['imageUrl']:
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 						res.request.httpRequest.path,
 				});
-				console.log(inputs);
+			})
+			.on('httpDone', (res: any) => {
+				console.log(res);
 				createClass();
 			})
 			.send((err) => {
@@ -74,10 +75,13 @@ const AddClass = () => {
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'create');
-		api.createClass(classInfo);
-		//navigator('/');
+		console.log(classInfo, 'classInfo');
+		const response = api.createClass(classInfo);
+		console.log(response, 'response');
+		//window.location.reload();
+		//navigator('/classhome//1')
 	};
+
 	useEffect(() => {
 		console.log(selectedDays);
 	}, [selectedDays]);
