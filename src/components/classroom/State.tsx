@@ -27,7 +27,6 @@ const State = ({ students, isConnected }: StateProps) => {
 	useEffect(() => {
 		if (isConnected) {
 			socket.on('changeState', ({ userId, state }) => {
-				console.log(1)
 				setStudentState((prev) =>
 					prev.map((student: studentType) =>
 						student.userId === userId ? { ...student, state } : student
