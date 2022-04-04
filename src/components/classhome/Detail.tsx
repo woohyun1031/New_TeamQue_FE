@@ -1,111 +1,109 @@
-import axios from 'axios';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../api';
 import { RootState } from '../../store/configStore';
-import { PostType } from '../../type';
 
 const Detail = () => {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const userId = useSelector((state: RootState) => state.user.id);
 	const { classid, postid } = useParams();
-	const [data, setData] = useState<PostType>();
 	const [comment, setComment] = useState('');
 
-	const fetch = async () => {
-		if (postid) {
-			const data = await api.loadPost(postid);
-			setData(data);
+	const { data } = useQuery('post', () => api.loadPost(postid as string));
+	const { mutate: removePost } = useMutation(
+		() => api.deletePost(postid as string),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('posts');
+			},
 		}
-	};
-
-	const loadPage = async () => {
-		if (postid) {
-			try {
-				const data = await api.loadPost(postid);
-				setData(data);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
+	);
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
 	};
 
-	const onRemove = async () => {
-		if (postid) {
-			if (confirm('정말로 삭제 하실건가요?')) {
-				try {
-					await api.deletePost(postid);
-					alert('삭제 완료');
-					navigate(`/classhome/${classid}/1`);
-				} catch (error) {
-					if (axios.isAxiosError(error)) {
-						alert(`게시글 삭제 오류: ${error.response?.data.message}`);
-					} else {
-						alert(`알 수 없는 닉네임 설정 오류: ${error}`);
-					}
-				}
-			}
+	const deletePost = () => {
+		if (confirm('정말로 삭제 하실건가요?')) {
+			removePost();
+			navigate(`/classhome/${classid}/1`);
 		}
 	};
 
-	const commentWrite = async () => {
-		if (comment && postid) {
-			try {
-				await api.sendComment({ postid, comment });
-				setComment('');
-				loadPage();
-			} catch (error) {
-				console.log(error);
-			}
+	const { mutate: addComment } = useMutation(
+		() => api.addComment(postid as string, comment),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('post');
+				setComment('')
+			},
+		}
+	);
+
+	const deleteComment = (commentId: number) => {
+		if (confirm('정말로 삭제 하실건가요?')) {
+			deleteCommentMutate(commentId);
 		}
 	};
 
-	useEffect(() => {
-		fetch();
-	}, []);
+	const { mutate: deleteCommentMutate } = useMutation(
+		(commentId: number) => api.deleteComment(commentId),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('post');
+			},
+			onError: (err) => {
+				console.log(err)
+			}
+		}
+	);
 
 	return (
 		<Container>
 			<PostHeader>
-				<TypeOfPost>{data && data.postType}</TypeOfPost>
-				<PostTitle>{data && data.title}</PostTitle>
-				<Author>{data && data.author}</Author>
-				<Date>{data && data.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
+				<TypeOfPost>{data?.postType}</TypeOfPost>
+				<PostTitle>{data?.title}</PostTitle>
+				<Author>{data?.author}</Author>
+				<Date>{data?.createdAt.split('T')[0].replaceAll('-', '.')}</Date>
 				{data && data?.userId === userId && (
 					<>
 						<UpdateButton
 							onClick={() => {
-								navigate(`/classhome/${classid}/post/${postid}/update/${postid}`);
+								navigate(
+									`/classhome/${classid}/post/${postid}/update/${postid}`
+								);
 							}}
 						/>
-						<RemoveButton onClick={onRemove} />
+						<RemoveButton onClick={deletePost} />
 					</>
 				)}
 			</PostHeader>
-			<Contents>{data && data.content}</Contents>
+			<Contents>{data?.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
+				<CommentCharacter />
 				<CommentBox>
 					<CommentInput onChange={onChange} value={comment} />
-					<CommentButton onClick={commentWrite}>등록</CommentButton>
+					<CommentButton onClick={() => addComment()}>등록</CommentButton>
 				</CommentBox>
 				{data?.comments?.map((comment) => (
-						<Commentlist key={comment.id}>
-							<CommentWriter>
-								{comment.author}
-								{comment.userId === userId && ' (나)'}
-							</CommentWriter>
-							<Comment>{comment.content}</Comment>
-							<CommentTime>{comment.createdAt.split('T')[0].replaceAll('-', '.')}</CommentTime>
-							<UnderLine />
-						</Commentlist>
-					))}
+					<Commentlist key={comment.id}>
+						<CommentWriter>
+							{comment.author}
+							{comment.userId === userId && ' (나)'}
+						</CommentWriter>
+						<Comment>{comment.content}</Comment>
+						<CommentTime>
+							{comment.createdAt.split('T')[0].replaceAll('-', '.')}
+						</CommentTime>
+						{comment.userId === userId && <button onClick={() => {deleteComment(comment.id)}}>삭제</button>}
+						<UnderLine />
+					</Commentlist>
+				))}
 			</Comments>
 		</Container>
 	);
@@ -276,3 +274,7 @@ const RemoveButton = styled(Button)`
 	top: 40px;
 	right: 60px;
 `;
+
+const CommentCharacter = styled.div`
+	background-image: url('images/comment.png');
+`

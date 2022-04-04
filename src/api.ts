@@ -97,10 +97,9 @@ const api = {
 		requests.put(`/post/${classInfo.updateid}`, classInfo.boardInfo),
 
 	//Comment
-	sendComment: (contents: { postid: string; comment: string }) =>
-		requests.post(`/post/comment/${contents.postid}`, {
-			content: contents.comment,
-		}),
+	addComment: (postid: string, comment: string) =>
+		requests.post(`/post/comment/${postid}`, { content: comment }),
+	deleteComment: (commentId: number) => requests.delete(`/post/comment/${commentId}`),
 
 	// Todo
 	loadTodo: (): Promise<TodoType[]> => requests.get('/post/todo'),
