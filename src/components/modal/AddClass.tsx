@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../../store/modules/modal';
 
 const AddClass = () => {
-	const [selectedDays, setSelectedDays] = useState<any>([]);
+	const queryClient = useQueryClient()
+	const dispatch = useDispatch()
+	const [selectedDays, setSelectedDays] = useState<{id: number, day: number, startTime: string, endTime: string}[]>([]);
 	const [inputs, setInputs] = useState({
 		title: '',
 		imageUrl: '',
@@ -16,15 +20,14 @@ const AddClass = () => {
 		startTime: '',
 		endTime: '',
 	});
+
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
-	const navigate = useNavigate();
 	const count = useRef(0);
 
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-	const S3_BUCKET = process.env.REACT_APP_IMAGE_BUCKET;
 	const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
 	const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
 	const REGION = process.env.REACT_APP_REGION;
@@ -35,67 +38,55 @@ const AddClass = () => {
 	});
 
 	const myBucket = new AWS.S3({
-		params: { Bucket: S3_BUCKET },
+		params: { Bucket: process.env.REACT_APP_IMAGE_BUCKET },
 		region: REGION,
 	});
 
-	const uploadFile = (e: any, file: any) => {
-		e.preventDefault();
+	const uploadFile = () => {
 		const params = {
 			ACL: 'public-read',
 			Body: file,
-			Bucket: S3_BUCKET as string,
+			Bucket: process.env.REACT_APP_IMAGE_BUCKET as string,
 			Key: 'upload/' + file.name,
 		};
+		console.log(process.env)
+		console.log(inputs)
 		myBucket
 			.putObject(params)
 			.on('httpUploadProgress', (evt: any, res: any) => {
+				console.log(evt, res)
 				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
 				setInputs({
 					...inputs,
-					['imageUrl']:
+					imageUrl:
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 						res.request.httpRequest.path,
 				});
 			})
 			.on('httpDone', (res: any) => {
-				console.log(res, 'httpDone');
 				const newUrl: string =
 					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 					res.request.httpRequest.path;
-				const classnum = createClass(newUrl);
-				//navigate(`/classhome/${classnum.result.classid}/1`);
-				//
+				createClass(newUrl);
+			}).send((err) => {
+				if (err) console.log(err, 'err')
 			})
-			.send((err) => {
-				if (err) console.log(err, 'err');
-			});
 	};
 
-	const createClass = (url: string) => {
-		const classInfo = {
-			title: inputs.title,
-			imageUrl: url,
-			startDate: inputs.startDate,
-			endDate: inputs.endDate,
-			times: [...selectedDays],
-		};
-		api.createClass(classInfo);
-		location.reload()
-		const response = api.createClass(classInfo);
-		return response;
-	};
+	const { mutate: createClass } = useMutation((url: string)=> api.createClass({...inputs, times: selectedDays, imageUrl: url}), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('teachCard')
+			dispatch(closeModal())
+		}
+	})
 
-	useEffect(() => {
-		console.log(selectedDays);
-	}, [selectedDays]);
 
-	const onChange = (e: any) => {
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
 	};
 
-	const addDays = (e: any) => {
+	const addDays = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const newArr = [
 			...selectedDays,
@@ -112,16 +103,15 @@ const AddClass = () => {
 	};
 
 	const deleteDay = (id: number) => {
-		setSelectedDays(selectedDays.filter((day: any) => day.id !== id));
+		setSelectedDays(selectedDays.filter((day) => day.id !== id));
 	};
 
-	const handleFileOnChange = (event: any) => {
-		event.preventDefault();
-		const file = event.target.files[0];
+	const handleFileOnChange = (e: any) => {
+		const file = e.target.files[0];
 		const reader = new FileReader();
 		reader.onloadend = () => {
 			setFile(file);
-			const csv: string = reader.result as string;
+			const csv = reader.result as string;
 			setInputs({ ...inputs, ['imageUrl']: csv });
 			setIsImage(true);
 		};
@@ -131,7 +121,7 @@ const AddClass = () => {
 	};
 
 	return (
-		<Form>
+		<Container>
 			<ModalCloseButton />
 			<h2>클래스 개설하기</h2>
 			<TopContainer>
@@ -162,7 +152,7 @@ const AddClass = () => {
 				<AddBox>
 					<BoxLeft>
 						<DayList>
-							{selectedDays.map((item: any) => (
+							{selectedDays?.map((item) => (
 								<DayNum key={item.id}>
 									{days[item.day - 1]} [{item.startTime}~{item.endTime}]
 									<DayButton
@@ -207,22 +197,22 @@ const AddClass = () => {
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<AddButton onClick={(e) => uploadFile(e, file)}>개설하기</AddButton>
+				<AddButton onClick={uploadFile}>개설하기</AddButton>
 			</Footer>
-		</Form>
+		</Container>
 	);
 };
 
 export default AddClass;
 
-const Form = styled.form`
+const Container = styled.div`
 	width: 560px;
 	height: 600px;
 	display: flex;
 	flex-direction: column;
 	padding: 40px 50px 30px 50px;
-	//justify-content: space-between;
 `;
+
 const TopContainer = styled.div`
 	margin-top: 10px;
 `;
@@ -289,7 +279,7 @@ const FileLabel = styled.label<{ src: string }>`
 	height: 100%;
 	border-radius: 5px;
 	cursor: pointer;
-	box-shadow: 5px 5px 5px #ccc;
+	transition: .2s;
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.hoverBase};
 	}
