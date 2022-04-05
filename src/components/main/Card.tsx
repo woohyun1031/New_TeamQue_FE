@@ -201,7 +201,12 @@ const HomeButton = styled.button`
 	right: 23px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
-	/* hover 아이콘 변경 */
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const WaitThumbnail = styled.div`

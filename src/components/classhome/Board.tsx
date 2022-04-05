@@ -154,6 +154,12 @@ const AddButton = styled.button`
 	transition: 0.3s;
 	background-image: url('/images/newpost.png');
 	${({ theme }) => theme.commons.backgroundImage};
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const Page = styled.button<{ selected: boolean }>`
@@ -166,6 +172,13 @@ const PostTitle = styled.td<{ type: string }>`
 	color: ${({ type, theme }) =>
 		type === 'notice' ? theme.colors.main : theme.colors.title};
 	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
+	transition: .2s;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const IconCol = styled.col`

@@ -37,10 +37,7 @@ const Video = styled(ReackHlsPlayer)`
 `
 
 const ClassHoomButton = styled.button`
-	background: none;
-	border: none;
 	background-image: url('/images/toclasshome.png');
-	background-position: center top;
 	background-repeat: no-repeat;
 	width: 160px;
 	height: 80px;
@@ -48,5 +45,11 @@ const ClassHoomButton = styled.button`
 	top: -80px;
 	right: 80px;
 	z-index: 0;
-	cursor: pointer;
+	transition: .3s;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 	`;

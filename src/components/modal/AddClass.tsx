@@ -344,8 +344,6 @@ const DayNum = styled.li`
 `;
 
 const DayButton = styled.button<{ src: string }>`
-	border: none;
-	background: none;
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -353,7 +351,6 @@ const DayButton = styled.button<{ src: string }>`
 	width: 10px;
 	height: 10px;
 	margin-left: 5px;
-	cursor: pointer;
 `;
 
 const AddBox = styled.div`
@@ -385,23 +382,19 @@ const Input = styled.input`
 	width: 100%;
 	height: 30px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
 	padding-left: 20px;
-	outline: none;
 `;
 
 const InputDay = styled.input<{ type?: 'time' | 'date' }>`
 	width: 100%;
 	height: 30px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	${({ type }) => type === 'time' && 'background-color: #FFF; color: #000;'}
 	font-size: 14px;
 	padding-left: 20px;
-	outline: none;
 	margin-top: 5px;
 `;
 
@@ -415,30 +408,21 @@ const Button = styled.button`
 	width: 70px;
 	height: 30px;
 	border-radius: 7px;
-	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 12px;
 	font-weight: 600;
 	margin: 0 10px;
-	cursor: pointer;
+	transition: .3s;
 	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.brightMain};
+		filter: brightness(110%);
 	}
 	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
+		filter: brightness(90%);
 	}
 `;
 
 const AddButton = styled(Button)`
 	width: 165px;
 	height: 35px;
-	&:hover {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.brightMain};
-	}
-	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
-	}
 `;
