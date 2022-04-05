@@ -199,8 +199,12 @@ const Button = styled.button`
 	font-weight: 700;
 	font-size: 20px;
 	color: ${({ theme }) => theme.colors.base};
+	transition: .2s;
 	&:hover {
-		color: ${({ theme }) => theme.colors.hoverBase};
+		filter: brightness(102%);
+	}
+	&:active {
+		filter: brightness(98%);
 	}
 `;
 

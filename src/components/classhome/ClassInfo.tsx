@@ -182,9 +182,12 @@ const FixButton = styled.button`
 	top: 130px;
 	right: 40px;
 	z-index: 11;
-	transition: 0.5s;
+	transition: 0.3s;
 	&:hover {
-		background-image: url('/images/fixclassbuttondark.png');
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
 	}
 `;
 
@@ -204,6 +207,10 @@ const ThumbnailFilter = styled.button`
 	}
 	&:hover FixButton {
 		background-image: none;
+	}
+	transition: 0.3s;
+	&:active {
+		filter: brightness(90%);
 	}
 	background-color: rgba(0, 0, 0, 0.2);
 `;
@@ -305,6 +312,13 @@ const Button = styled.button`
 	& + & {
 		margin-left: 4px;
 	}
+	transition: .2s;
+	&:hover {
+		filter: brightness(103%);
+	}
+	&:active {
+		filter: brightness(97%);
+	}
 `;
 
 const RejectButton = styled(Button)`
@@ -329,4 +343,11 @@ const ClassRoomButton = styled.button`
 	top: -66px;
 	right: -20px;
 	z-index: 0;
+	transition: 0.3s;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;

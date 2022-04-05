@@ -22,7 +22,6 @@ const Detail = () => {
 			},
 		}
 	);
-	console.log(data)
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value);
@@ -86,7 +85,6 @@ const Detail = () => {
 			<Contents>{data?.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				<CommentCharacter />
 				<CommentBox>
 					<CommentInput onChange={onChange} value={comment} />
 					<CommentButton onClick={() => addComment()}>등록</CommentButton>
@@ -209,6 +207,7 @@ const Comments = styled.div`
 	background-color: ${({ theme }) => theme.colors.base};
 	min-height: 200px;
 	padding: 50px;
+	position: relative;
 `;
 
 const CommentBox = styled.div`
@@ -253,6 +252,13 @@ const CommentButton = styled.button`
 	right: 30px;
 	bottom: 30px;
 	position: absolute;
+	transition: .2s;
+	&:hover {
+		filter: brightness(105%);
+	}
+	&:active {
+		filter: brightness(95%);
+	}
 `;
 
 const Button = styled.button`
@@ -264,26 +270,22 @@ const Button = styled.button`
 	background-size: contain;
 	transition: 0.2s;
 	position: absolute;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const UpdateButton = styled(Button)`
 	background-image: url('/images/edit.png');
-	&:hover {
-		background-image: url('/images/editblue.png');
-	}
 	top: 40px;
 	right: 100px;
 `;
 
 const RemoveButton = styled(Button)`
 	background-image: url('/images/remove.png');
-	&:hover {
-		background-image: url('/images/removeblue.png');
-	}
 	top: 40px;
 	right: 60px;
-`;
-
-const CommentCharacter = styled.div`
-	background-image: url('images/comment.png');
 `;

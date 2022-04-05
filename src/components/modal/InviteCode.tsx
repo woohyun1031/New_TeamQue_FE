@@ -114,6 +114,13 @@ const Button = styled.button`
 	font-size: 14px;
 	font-weight: 600;
 	margin: 0 10px;
+	transition: 0.3s;
+	&:hover {
+		filter: brightness(105%);
+	}
+	&:active {
+		filter: brightness(95%);
+	}
 `;
 
 const ModalContainer = styled.div`

@@ -69,4 +69,11 @@ const Button = styled.button`
 	position: relative;
 	margin-right: 0px;
 	margin-left: auto;
+	transition: 0.3s;
+	&:hover {
+		filter: brightness(105%);
+	}
+	&:active {
+		filter: brightness(95%);
+	}
 `;
