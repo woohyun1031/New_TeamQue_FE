@@ -53,8 +53,8 @@ const Tutorial = () => {
 				<Button
 					src={
 						pageItems[page].type === 'normal'
-							? '/images/arrowblueright.png'
-							: '/images/arrowwhiteright.png'
+							? '/images/arrowrightblue.png'
+							: '/images/arrowrightwhite.png'
 					}
 					id='buttonNext'
 					onClick={nextSlide}
@@ -155,13 +155,13 @@ const Button = styled.button<{ src: string; id: string }>`
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
-	width: 50px;
-	height: 50px;
+	width: 8px;
+	height: 19px;
 	position: absolute;
 	z-index: 1002;
 	top: 43%;
-	left: ${({ id }) => id === 'buttonPrev' && '10px'};
-	right: ${({ id }) => id === 'buttonNext' && '10px'};
+	left: ${({ id }) => id === 'buttonPrev' && '20px'};
+	right: ${({ id }) => id === 'buttonNext' && '20px'};
 `;
 
 const Pagination = styled.div`
