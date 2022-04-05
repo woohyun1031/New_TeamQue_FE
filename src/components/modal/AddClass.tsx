@@ -8,9 +8,11 @@ import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/modules/modal';
 
 const AddClass = () => {
-	const queryClient = useQueryClient()
-	const dispatch = useDispatch()
-	const [selectedDays, setSelectedDays] = useState<{id: number, day: number, startTime: string, endTime: string}[]>([]);
+	const queryClient = useQueryClient();
+	const dispatch = useDispatch();
+	const [selectedDays, setSelectedDays] = useState<
+		{ id: number; day: number; startTime: string; endTime: string }[]
+	>([]);
 	const [inputs, setInputs] = useState({
 		title: '',
 		imageUrl: '',
@@ -49,12 +51,12 @@ const AddClass = () => {
 			Bucket: process.env.REACT_APP_IMAGE_BUCKET as string,
 			Key: 'upload/' + file.name,
 		};
-		console.log(process.env)
-		console.log(inputs)
+		console.log(process.env);
+		console.log(inputs);
 		myBucket
 			.putObject(params)
 			.on('httpUploadProgress', (evt: any, res: any) => {
-				console.log(evt, res)
+				console.log(evt, res);
 				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
 				setInputs({
 					...inputs,
@@ -68,17 +70,22 @@ const AddClass = () => {
 					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 					res.request.httpRequest.path;
 				createClass(newUrl);
-			}).send((err) => {
-				if (err) console.log(err, 'err')
 			})
+			.send((err) => {
+				if (err) console.log(err, 'err');
+			});
 	};
 
-	const { mutate: createClass } = useMutation((url: string)=> api.createClass({...inputs, times: selectedDays, imageUrl: url}), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('teachCard')
-			dispatch(closeModal())
+	const { mutate: createClass } = useMutation(
+		(url: string) =>
+			api.createClass({ ...inputs, times: selectedDays, imageUrl: url }),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('teachCard');
+				dispatch(closeModal());
+			},
 		}
-	})
+	);
 
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -278,7 +285,7 @@ const FileLabel = styled.label<{ src: string }>`
 	height: 100%;
 	border-radius: 5px;
 	cursor: pointer;
-	transition: .2s;
+	transition: 0.2s;
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.hoverBase};
 	}

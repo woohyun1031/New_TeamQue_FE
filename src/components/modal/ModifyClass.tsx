@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configStore';
+import { closeModal } from '../../store/modules/modal';
+import { useNavigate } from 'react-router-dom';
 
 const ModifyClass = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [selectedDays, setSelectedDays] = useState<any>([]);
 	const [inputs, setInputs] = useState({
 		title: '',
@@ -21,46 +25,29 @@ const ModifyClass = () => {
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
-	const navigate = useNavigate();
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
-	const classInfo = useSelector((state: RootState) => state.modal.data);
+	const classInfo: any = useSelector((state: RootState) => state.modal.data);
+	const classid = classInfo.id;
 
 	useEffect(() => {
-		console.log(classInfo);
-		//load data
-		// const newData = {
-		//   title: data.title,
-		// 	imageUrl: data.imageUrl,
-		// 	startDate: data.startDate,
-		// 	endDate: data.endDate,
-		// }
+		console.log(classInfo, 'classInfo');
 		const newData = {
-			title: '타이틀',
-			imageUrl:
-				'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com/upload/Depth-First-Search.gif',
-			startDate: '2022-04-01',
-			endDate: '2022-04-30',
+			title: classInfo.title,
+			imageUrl: classInfo.imageUrl,
+			startDate: classInfo.startDate,
+			endDate: classInfo.endDate,
 			day: '',
 			startTime: '',
 			endTime: '',
 		};
-		setInputs(newData);
-		setSelectedDays([
-			{ id: 0, day: 1, startTime: '05:30', endTime: '10:30' },
-			{ id: 1, day: 3, startTime: '05:30', endTime: '10:30' },
-		]);
+		setInputs(newData); //' 월 띄우고 [startDate~(기준)endDate]
+		// setSelectedDays([
+		// 	classInfo.timeTable.map((data: string) => {
+		// 		data;
+		// 	})
+		// ]);
 	}, []);
-
-	const loadClassInfo = () => {
-		//받았다 하고
-		//console.log(data);
-		// if (classid) {
-		// 	//const data = api.loadClassData(classid);
-		// 	console.log(data, 'data');
-		// setInputs(data);
-		//}
-	};
 
 	const S3_BUCKET = process.env.REACT_APP_IMAGE_BUCKET;
 	const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
@@ -79,47 +66,50 @@ const ModifyClass = () => {
 
 	const uploadFile = (e: any, file: any) => {
 		e.preventDefault();
-		const params = {
-			ACL: 'public-read',
-			Body: file,
-			Bucket: S3_BUCKET as string,
-			Key: 'upload/' + file.name,
-		};
-		myBucket
-			.putObject(params)
-			.on('httpUploadProgress', (evt: any, res: any) => {
-				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
-				setInputs({
-					...inputs,
-					['imageUrl']:
+		if (isImage) {
+			const params = {
+				ACL: 'public-read',
+				Body: file,
+				Bucket: S3_BUCKET as string,
+				Key: 'upload/' + file.name,
+			};
+			myBucket
+				.putObject(params)
+				.on('httpUploadProgress', (evt: any, res: any) => {
+					console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
+					setInputs({
+						...inputs,
+						['imageUrl']:
+							'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+							res.request.httpRequest.path,
+					});
+				})
+				.on('httpDone', (res: any) => {
+					console.log(res, 'httpDone');
+					const newUrl: string =
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-						res.request.httpRequest.path,
+						res.request.httpRequest.path;
+				})
+				.send((err) => {
+					if (err) console.log(err, 'err');
 				});
-			})
-			.on('httpDone', (res: any) => {
-				console.log(res, 'httpDone');
-				const newUrl: string =
-					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-					res.request.httpRequest.path;
-				const classnum = createClass(newUrl);
-				//navigate(`/classhome/${classnum.result.classid}/1`);
-				//
-			})
-			.send((err) => {
-				if (err) console.log(err, 'err');
-			});
+		} else {
+			const response = changeClass(inputs.imageUrl);
+			alert(response + '수정이 완료되었습니다');
+			navigate('/');
+		}
 	};
 
-	const createClass = (url: string) => {
-		const classInfo = {
+	const changeClass = (url: string) => {
+		const classData = {
 			title: inputs.title,
 			imageUrl: url,
 			startDate: inputs.startDate,
 			endDate: inputs.endDate,
 			times: [...selectedDays],
 		};
-		console.log(classInfo, 'classInfo');
-		const response = api.createClass(classInfo);
+		console.log(classData, 'classData');
+		const response = api.changeClass(classData, classid);
 		return response;
 	};
 
@@ -162,6 +152,21 @@ const ModifyClass = () => {
 			reader.readAsDataURL(file);
 		}
 	};
+	const deleteClick = (e: MouseEvent<HTMLButtonElement>, classid: string) => {
+		e.preventDefault();
+		if (confirm('정말로 삭제하시겠습니까?')) {
+			deleteClass(classid);
+		}
+	};
+	const { mutate: deleteClass } = useMutation(
+		(classid: string) => api.deleteClass(classid),
+		{
+			onSuccess: () => {
+				dispatch(closeModal());
+				navigate('/');
+			},
+		}
+	);
 
 	return (
 		<Form>
@@ -255,7 +260,12 @@ const ModifyClass = () => {
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<AddButton onClick={(e) => uploadFile(e, file)}>수정하기</AddButton>
+				<DeleteButton onClick={(e) => deleteClick(e, classid)}>
+					삭제하기
+				</DeleteButton>
+				<UpdateButton onClick={(e) => uploadFile(e, file)}>
+					수정하기
+				</UpdateButton>
 			</Footer>
 		</Form>
 	);
@@ -480,6 +490,7 @@ const Button = styled.button`
 	font-size: 12px;
 	font-weight: 600;
 	margin: 0 10px;
+	transition: 0.3s;
 	cursor: pointer;
 	&:hover {
 		cursor: pointer;
@@ -490,7 +501,7 @@ const Button = styled.button`
 	}
 `;
 
-const AddButton = styled(Button)`
+const UpdateButton = styled(Button)`
 	width: 165px;
 	height: 35px;
 	&:hover {
@@ -499,5 +510,20 @@ const AddButton = styled(Button)`
 	}
 	&:active {
 		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
+`;
+
+const DeleteButton = styled(Button)`
+	background-color: ${({ theme }) => theme.colors.background};
+	color: ${({ theme }) => theme.colors.main};
+	width: 165px;
+	height: 35px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.whiteHover};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.whiterActive};
 	}
 `;

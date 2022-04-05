@@ -85,6 +85,8 @@ const api = {
 	registClass: (uuid: string) => requests.post(`/class/student`, { uuid }),
 	loadClassCalendar: (classId: string, year: number, month: number) =>
 		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
+	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
+	deleteClass:(classId : string) => requests.delete(`/class/${classId}`),
 
 	// Post
 	loadPosts: (classId: string, page: string): Promise<PostsType> =>
