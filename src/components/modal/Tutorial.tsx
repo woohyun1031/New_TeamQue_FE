@@ -44,8 +44,8 @@ const Tutorial = () => {
 				<Button
 					src={
 						pageItems[page].type === 'normal'
-							? '/images/arrowblueleft.png'
-							: '/images/arrowwhiteleft.png'
+							? '/images/arrowleftblue.png'
+							: '/images/arrowleftwhite.png'
 					}
 					id='buttonPrev'
 					onClick={prevSlide}
