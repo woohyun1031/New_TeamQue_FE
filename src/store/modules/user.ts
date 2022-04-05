@@ -1,6 +1,5 @@
-import { instance } from './../../api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../api';
+import api, { instance } from '../../api';
 import axios from 'axios';
 
 export const signUp = createAsyncThunk(
@@ -36,7 +35,9 @@ export const signIn = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
+			console.log(process.env.REACT_APP_API_BASE_URL);
 			const data = await api.signIn(loginInfo);
+			console.log(data);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common[
@@ -45,7 +46,7 @@ export const signIn = createAsyncThunk(
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`로그인 오류: ${error.response?.data.message}`);
+				alert(`로그인 오류: ${error.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 로그인 오류: ${error}`);
@@ -93,7 +94,6 @@ export const getUserInfo = createAsyncThunk(
 	}
 );
 
-
 const initialState = {
 	id: 0,
 	name: '',
@@ -110,13 +110,13 @@ export const user = createSlice({
 			instance.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${action.payload.accessToken}`;
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(signIn.fulfilled, (state, action) => {
 			state.id = action.payload.id;
 			state.name = action.payload.name;
-			state.isLogin = true;			
+			state.isLogin = true;
 		});
 		builder.addCase(getUserInfo.fulfilled, (state, action) => {
 			state.id = action.payload.id;
@@ -127,6 +127,6 @@ export const user = createSlice({
 	},
 });
 
-export const { authLogin } = user.actions
+export const { authLogin } = user.actions;
 
 export default user.reducer;

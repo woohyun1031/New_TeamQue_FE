@@ -1,18 +1,19 @@
-import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
-import { useMutation, useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/configStore';
 import { closeModal } from '../../store/modules/modal';
+import { useNavigate } from 'react-router-dom';
 
-const AddClass = () => {
-	const queryClient = useQueryClient();
+const ModifyClass = () => {
 	const dispatch = useDispatch();
-	const [selectedDays, setSelectedDays] = useState<
-		{ id: number; day: number; startTime: string; endTime: string }[]
-	>([]);
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const [selectedDays, setSelectedDays] = useState<any>([]);
 	const [inputs, setInputs] = useState({
 		title: '',
 		imageUrl: '',
@@ -22,14 +23,43 @@ const AddClass = () => {
 		startTime: '',
 		endTime: '',
 	});
-
 	//image
 	const [file, setFile] = useState<any>('');
 	const [isImage, setIsImage] = useState(false);
 	const count = useRef(0);
-
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
+	const classInfo: any = useSelector((state: RootState) => state.modal.data);
+	const classid = classInfo.id;
 
+	useEffect(() => {
+		console.log(classInfo, 'classInfo');
+		const newData = {
+			title: classInfo.title,
+			imageUrl: classInfo.imageUrl,
+			startDate: classInfo.startDate,
+			endDate: classInfo.endDate,
+			day: '',
+			startTime: '',
+			endTime: '',
+		};
+		setInputs(newData); //' 월 띄우고 [startDate~(기준)endDate]
+		const newDay = classInfo.timeTable.map((time: string) => parsingTime(time));
+		console.log(newDay, 'newDay');
+		setSelectedDays(newDay);
+	}, []);
+
+	const parsingTime = (time: string) => {
+		const id = count.current;
+		const day = days.indexOf(time.slice(0, 1)) + 1;
+		const startTime = time.slice(3, 8);
+		const endTime = time.slice(9, 14);
+		const items = { id, day, startTime, endTime };
+		count.current += 1;
+
+		return items;
+	};
+
+	const S3_BUCKET = process.env.REACT_APP_IMAGE_BUCKET;
 	const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
 	const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
 	const REGION = process.env.REACT_APP_REGION;
@@ -40,59 +70,71 @@ const AddClass = () => {
 	});
 
 	const myBucket = new AWS.S3({
-		params: { Bucket: process.env.REACT_APP_IMAGE_BUCKET },
+		params: { Bucket: S3_BUCKET },
 		region: REGION,
 	});
 
-	const uploadFile = () => {
-		const params = {
-			ACL: 'public-read',
-			Body: file,
-			Bucket: process.env.REACT_APP_IMAGE_BUCKET as string,
-			Key: 'upload/' + file.name,
-		};
-		console.log(process.env);
-		console.log(inputs);
-		myBucket
-			.putObject(params)
-			.on('httpUploadProgress', (evt: any, res: any) => {
-				console.log(evt, res);
-				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
-				setInputs({
-					...inputs,
-					imageUrl:
+	const uploadFile = (e: any, file: any) => {
+		e.preventDefault();
+		console.log(isImage);
+		if (isImage) {
+			const params = {
+				ACL: 'public-read',
+				Body: file,
+				Bucket: S3_BUCKET as string,
+				Key: 'upload/' + file.name,
+			};
+			myBucket
+				.putObject(params)
+				.on('httpUploadProgress', (evt: any, res: any) => {
+					console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
+					setInputs({
+						...inputs,
+						['imageUrl']:
+							'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+							res.request.httpRequest.path,
+					});
+				})
+				.on('httpDone', (res: any) => {
+					console.log(res, 'httpDone');
+					const newUrl: string =
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-						res.request.httpRequest.path,
+						res.request.httpRequest.path;
+					const response = changeClass(newUrl);
+					alert(response + '수정이 완료되었습니다');
+					queryClient.invalidateQueries('classInfo');
+					dispatch(closeModal());
+				})
+				.send((err) => {
+					if (err) console.log(err, 'err');
 				});
-			})
-			.on('httpDone', (res: any) => {
-				const newUrl: string =
-					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-					res.request.httpRequest.path;
-				createClass(newUrl);
-			})
-			.send((err) => {
-				if (err) console.log(err, 'err');
-			});
+		} else {
+			const response = changeClass(inputs.imageUrl);
+			alert(response + '수정이 완료되었습니다');
+			queryClient.invalidateQueries('classInfo');
+			dispatch(closeModal());
+		}
 	};
 
-	const { mutate: createClass } = useMutation(
-		(url: string) =>
-			api.createClass({ ...inputs, times: selectedDays, imageUrl: url }),
-		{
-			onSuccess: () => {
-				queryClient.invalidateQueries('teachCard');
-				dispatch(closeModal());
-			},
-		}
-	);
+	const changeClass = (url: string) => {
+		const classData = {
+			title: inputs.title,
+			imageUrl: url,
+			startDate: inputs.startDate,
+			endDate: inputs.endDate,
+			times: [...selectedDays],
+		};
+		console.log(classData, 'classData');
+		const response = api.changeClass(classData, classid);
+		return response;
+	};
 
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onChange = (e: any) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
 	};
 
-	const addDays = (e: MouseEvent<HTMLButtonElement>) => {
+	const addDays = (e: any) => {
 		e.preventDefault();
 		const newArr = [
 			...selectedDays,
@@ -106,19 +148,19 @@ const AddClass = () => {
 		count.current += 1;
 		newArr.sort((a, b) => (a.day > b.day ? 1 : -1));
 		setSelectedDays(newArr);
-		console.log(selectedDays);
 	};
 
 	const deleteDay = (id: number) => {
-		setSelectedDays(selectedDays.filter((day) => day.id !== id));
+		setSelectedDays(selectedDays.filter((day: any) => day.id !== id));
 	};
 
-	const handleFileOnChange = (e: any) => {
-		const file = e.target.files[0];
+	const handleFileOnChange = (event: any) => {
+		event.preventDefault();
+		const file = event.target.files[0];
 		const reader = new FileReader();
 		reader.onloadend = () => {
 			setFile(file);
-			const csv = reader.result as string;
+			const csv: string = reader.result as string;
 			setInputs({ ...inputs, ['imageUrl']: csv });
 			setIsImage(true);
 		};
@@ -127,23 +169,56 @@ const AddClass = () => {
 		}
 	};
 
+	const deleteClick = () => {
+		if (confirm('정말로 삭제하시겠습니까?')) {
+			console.log(classid, 'classid');
+			deleteClass(classid);
+		}
+	};
+	const { mutate: deleteClass } = useMutation(
+		(classid: string) => api.deleteClass(classid),
+		{
+			onSuccess: () => {
+				console.log('1');
+				dispatch(closeModal());
+				queryClient.invalidateQueries('teachCard');
+				navigate('/');
+			},
+		}
+	);
+
 	return (
-		<Container>
+		<Form>
 			<ModalCloseButton />
-			<h2>클래스 개설하기</h2>
+			<h2>클래스 수정하기</h2>
 			<TopContainer>
 				<p>강의 이름</p>
-				<Input type='text' name='title' onChange={onChange} />
+				<Input
+					type='text'
+					name='title'
+					value={inputs.title}
+					onChange={onChange}
+				/>
 			</TopContainer>
 			<UpperContainer>
 				<UpperLeft>
 					<Days>
 						<p>시작일</p>
-						<InputDay type='date' name='startDate' onChange={onChange} />
+						<InputDay
+							type='date'
+							name='startDate'
+							value={inputs.startDate}
+							onChange={onChange}
+						/>
 					</Days>
 					<Days>
 						<p>종료일</p>
-						<InputDay type='date' name='endDate' onChange={onChange} />
+						<InputDay
+							type='date'
+							name='endDate'
+							value={inputs.endDate}
+							onChange={onChange}
+						/>
 					</Days>
 				</UpperLeft>
 				<UpperRight>
@@ -159,7 +234,7 @@ const AddClass = () => {
 				<AddBox>
 					<BoxLeft>
 						<DayList>
-							{selectedDays?.map((item) => (
+							{selectedDays.map((item: any) => (
 								<DayNum key={item.id}>
 									{days[item.day - 1]} [{item.startTime}~{item.endTime}]
 									<DayButton
@@ -204,22 +279,25 @@ const AddClass = () => {
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<AddButton onClick={uploadFile}>개설하기</AddButton>
+				<DeleteButton onClick={deleteClick}>삭제하기</DeleteButton>
+				<UpdateButton onClick={(e) => uploadFile(e, file)}>
+					수정하기
+				</UpdateButton>
 			</Footer>
-		</Container>
+		</Form>
 	);
 };
 
-export default AddClass;
+export default ModifyClass;
 
-const Container = styled.div`
+const Form = styled.div`
 	width: 560px;
 	height: 600px;
 	display: flex;
 	flex-direction: column;
 	padding: 40px 50px 30px 50px;
+	//justify-content: space-between;
 `;
-
 const TopContainer = styled.div`
 	margin-top: 10px;
 `;
@@ -286,7 +364,7 @@ const FileLabel = styled.label<{ src: string }>`
 	height: 100%;
 	border-radius: 5px;
 	cursor: pointer;
-	transition: 0.2s;
+	box-shadow: 5px 5px 5px #ccc;
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.hoverBase};
 	}
@@ -352,6 +430,8 @@ const DayNum = styled.li`
 `;
 
 const DayButton = styled.button<{ src: string }>`
+	border: none;
+	background: none;
 	background-image: url(${({ src }) => src});
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -359,6 +439,7 @@ const DayButton = styled.button<{ src: string }>`
 	width: 10px;
 	height: 10px;
 	margin-left: 5px;
+	cursor: pointer;
 `;
 
 const AddBox = styled.div`
@@ -390,19 +471,23 @@ const Input = styled.input`
 	width: 100%;
 	height: 30px;
 	border-radius: 7px;
+	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
 	padding-left: 20px;
+	outline: none;
 `;
 
 const InputDay = styled.input<{ type?: 'time' | 'date' }>`
 	width: 100%;
 	height: 30px;
 	border-radius: 7px;
+	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	${({ type }) => type === 'time' && 'background-color: #FFF; color: #000;'}
 	font-size: 14px;
 	padding-left: 20px;
+	outline: none;
 	margin-top: 5px;
 `;
 
@@ -416,21 +501,46 @@ const Button = styled.button`
 	width: 70px;
 	height: 30px;
 	border-radius: 7px;
+	border: none;
 	background-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-size: 12px;
 	font-weight: 600;
 	margin: 0 10px;
 	transition: 0.3s;
+	cursor: pointer;
 	&:hover {
-		filter: brightness(110%);
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
 	}
 	&:active {
-		filter: brightness(90%);
+		background-color: ${({ theme }) => theme.colors.darkerMain};
 	}
 `;
 
-const AddButton = styled(Button)`
+const UpdateButton = styled(Button)`
 	width: 165px;
 	height: 35px;
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.brightMain};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.darkerMain};
+	}
+`;
+
+const DeleteButton = styled(Button)`
+	background-color: ${({ theme }) => theme.colors.background};
+	color: ${({ theme }) => theme.colors.main};
+	width: 165px;
+	height: 35px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	&:hover {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.whiteHover};
+	}
+	&:active {
+		background-color: ${({ theme }) => theme.colors.whiterActive};
+	}
 `;

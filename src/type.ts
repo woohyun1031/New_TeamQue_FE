@@ -45,7 +45,9 @@ export type ClassDataType = {
 	timeTable: string[];
 	imageUrl: string;
 	isByMe: boolean;
-	uuid: string;
+	uuid: string;	
+	startDate:string;
+	endDate:string;
 };
 
 export type StudentType = {

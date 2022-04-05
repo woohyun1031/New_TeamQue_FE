@@ -39,7 +39,7 @@ const Detail = () => {
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries('post');
-				setComment('')
+				setComment('');
 			},
 		}
 	);
@@ -57,8 +57,8 @@ const Detail = () => {
 				queryClient.invalidateQueries('post');
 			},
 			onError: (err) => {
-				console.log(err)
-			}
+				console.log(err);
+			},
 		}
 	);
 
@@ -73,9 +73,9 @@ const Detail = () => {
 					<>
 						<UpdateButton
 							onClick={() => {
-								navigate(
-									`/classhome/${classid}/post/${postid}/update/${postid}`
-								);
+								navigate(`/classhome/${classid}/update/${data.id}`, {
+									state: { title: data?.title, content: data?.content, postType: data?.postType },
+								});
 							}}
 						/>
 						<RemoveButton onClick={deletePost} />
@@ -85,7 +85,6 @@ const Detail = () => {
 			<Contents>{data?.content}</Contents>
 			<CommentTitle>댓글</CommentTitle>
 			<Comments>
-				<CommentCharacter />
 				<CommentBox>
 					<CommentInput onChange={onChange} value={comment} />
 					<CommentButton onClick={() => addComment()}>등록</CommentButton>
@@ -100,7 +99,15 @@ const Detail = () => {
 						<CommentTime>
 							{comment.createdAt.split('T')[0].replaceAll('-', '.')}
 						</CommentTime>
-						{comment.userId === userId && <button onClick={() => {deleteComment(comment.id)}}>삭제</button>}
+						{comment.userId === userId && (
+							<button
+								onClick={() => {
+									deleteComment(comment.id);
+								}}
+							>
+								삭제
+							</button>
+						)}
 						<UnderLine />
 					</Commentlist>
 				))}
@@ -200,6 +207,7 @@ const Comments = styled.div`
 	background-color: ${({ theme }) => theme.colors.base};
 	min-height: 200px;
 	padding: 50px;
+	position: relative;
 `;
 
 const CommentBox = styled.div`
@@ -244,6 +252,13 @@ const CommentButton = styled.button`
 	right: 30px;
 	bottom: 30px;
 	position: absolute;
+	transition: .2s;
+	&:hover {
+		filter: brightness(105%);
+	}
+	&:active {
+		filter: brightness(95%);
+	}
 `;
 
 const Button = styled.button`
@@ -255,26 +270,22 @@ const Button = styled.button`
 	background-size: contain;
 	transition: 0.2s;
 	position: absolute;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const UpdateButton = styled(Button)`
 	background-image: url('/images/edit.png');
-	&:hover {
-		background-image: url('/images/editblue.png');
-	}
 	top: 40px;
 	right: 100px;
 `;
 
 const RemoveButton = styled(Button)`
 	background-image: url('/images/remove.png');
-	&:hover {
-		background-image: url('/images/removeblue.png');
-	}
 	top: 40px;
 	right: 60px;
 `;
-
-const CommentCharacter = styled.div`
-	background-image: url('images/comment.png');
-`

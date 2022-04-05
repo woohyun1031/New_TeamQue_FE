@@ -339,6 +339,13 @@ const ToggleButton = styled.label<{ isChecked: boolean }>`
 	}
 	${({ isChecked }) => isChecked && 'color: #c4c4c4;'}
 	cursor: pointer;
+	transition: .3s;
+	&:hover {
+		filter: brightness(80%);
+	}
+	&:active {
+		filter: brightness(120%);
+	}
 `;
 
 const ChatBox = styled.div<{ isChecked: boolean }>`
@@ -483,6 +490,12 @@ const SendButton = styled.button`
 	right: 0;
 	bottom: 40px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const Input = styled.textarea`
@@ -519,4 +532,11 @@ const QueButton = styled.label<{ isQuestion: boolean }>`
 		display: none;
 	}
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;

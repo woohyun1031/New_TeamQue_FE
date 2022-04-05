@@ -1,91 +1,69 @@
-import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../api';
 
 const WritePost = () => {
 	const navigate = useNavigate();
-	const [state, setState] = useState({
+	const queryClient = useQueryClient();
+	const { updateid, classid } = useParams();
+	const [isNotice, setIsNotice] = useState(false);
+	const [inputs, setInputs] = useState({
 		title: '',
 		content: '',
-		postType: 'Question',
 	});
-	const [isMe, setIsMe] = useState(false);
-	const { updateid, classid, postid } = useParams<string>();
-	
-	const loadPost = async () => {
-		if (updateid) {
-			try {
-				const data = await api.loadPost(updateid);
-				const title = data.title;
-				const content = data.content;
-				const postType = data.postType;
-				setState({ title, content, postType });
-			} catch (error) {
-				console.log(error);
-			}
-		} else {
-			if (classid) {
-				try {
-					const data = await api.loadClassData(classid);
-					const isByMe = data.isByMe;
-					setIsMe(() => isByMe);
-				} catch (error) {
-					console.log(error);
-				}
-			}
+	const [isMeTeacher, setIsMeTeacher] = useState(false);
+
+	const { data: prevData } = useQuery(
+		'post',
+		() => api.loadPost(updateid as string),
+		{
+			enabled: !!updateid,
 		}
-	};
+	);
+
+	const { data: classData } = useQuery('classInfo', () =>
+		api.loadClassData(classid as string)
+	);
+
+	useEffect(() => {
+		if (prevData) {
+			setInputs({ title: prevData.title, content: prevData.content });
+			setIsNotice(prevData.postType === 'Notice');
+		}
+		setIsMeTeacher(classData?.isByMe ?? false);
+	}, []);
 
 	const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
-		setState({ ...state, [name]: value });
+		setInputs({ ...inputs, [name]: value });
 	};
 
-	const onTrans = () => {
-		if (state.postType === 'Question') {
-			setState({ ...state, postType: 'Notice' });
-		} else {
-			setState({ ...state, postType: 'Question' });
-		}
+	const changeType = () => {
+		setIsNotice((prev) => !prev);
 	};
 
-	const onUpdate = async (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-		const boardInfo = state;
-		if (updateid) {
-			try {
-				await api.updatePost({ boardInfo, updateid });
-				alert('수정완료');
-				navigate(`/classhome/${classid}/post/${postid}`);
-			} catch (error) {
-				if (axios.isAxiosError(error)) {
-					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
-				} else {
-					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
-				}
-			}
-		}
-	};
+	const { mutate: updateMutate } = useMutation(() =>
+		api.updatePost({
+			boardInfo: { ...inputs, postType: isNotice ? 'Notice' : 'Question' },
+			updateid: updateid as string,
+		})
+	);
 
-	const onPost = async (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-		const boardInfo = state;
-		if (classid) {
-			try {
-				await api.addPost({ boardInfo, classid });
-				alert('저장완료');
+	const { mutate: addMutate } = useMutation(
+		() =>
+			api.addPost(classid as string, {
+				...inputs,
+				postType: isNotice ? 'Notice' : 'Question',
+			}),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('posts');
 				navigate(`/classhome/${classid}/1`);
-			} catch (error) {
-				if (axios.isAxiosError(error)) {
-					alert(`닉네임 설정 오류: ${error.response?.data.message}`);
-				} else {
-					alert(`알 수 없는 닉네임 설정 오류: ${error}`);
-				}
-			}
+			},
 		}
-	};
+	);
 
 	const onBack = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -94,61 +72,49 @@ const WritePost = () => {
 		}
 	};
 
-	useEffect(() => {
-		loadPost();
-	}, []);
-
 	return updateid ? (
 		<Container>
 			<h1>수정하기</h1>
 			<TitleHeader>
 				<StarIcon
-					src={
-						state.postType === 'Question'
-							? '/images/star.png'
-							: '/images/starblue.png'
-					}
-					isMe={isMe}
-					onClick={onTrans}
+					src={isNotice ? '/images/starblue.png' : '/images/star.png'}
+					isMe={isMeTeacher}
+					onClick={changeType}
 				/>
-				<LineIcon isMe={isMe} />
+				<LineIcon isMe={isMeTeacher} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
-					value={state.title}
-					isMe={isMe}
+					value={inputs.title}
+					isMe={isMeTeacher}
 				/>
 			</TitleHeader>
-			<ContentInput onChange={onChange} name='content' value={state.content} />
+			<ContentInput onChange={onChange} name='content' value={inputs.content} />
 			<ReturnButton onClick={onBack}>작성취소</ReturnButton>
-			<Button onClick={onUpdate}>수정하기</Button>
+			<Button onClick={() => updateMutate()}>수정하기</Button>
 		</Container>
 	) : (
 		<Container>
 			<h1>새 글 작성</h1>
 			<TitleHeader>
 				<StarIcon
-					src={
-						state.postType === 'Question'
-							? '/images/star.png'
-							: '/images/starblue.png'
-					}
-					onClick={onTrans}
-					isMe={isMe}
+					src={isNotice ? '/images/starblue.png' : '/images/star.png'}
+					onClick={changeType}
+					isMe={isMeTeacher}
 				/>
-				<LineIcon isMe={isMe} />
+				<LineIcon isMe={isMeTeacher} />
 				<TitleInput
 					onChange={onChange}
 					name='title'
 					placeholder='제목을 입력해주세요'
-					value={state.title}
-					isMe={isMe}
+					value={inputs.title}
+					isMe={isMeTeacher}
 				/>
 			</TitleHeader>
-			<ContentInput onChange={onChange} name='content' value={state.content} />
+			<ContentInput onChange={onChange} name='content' value={inputs.content} />
 			<ReturnButton onClick={onBack}>작성취소</ReturnButton>
-			<Button onClick={onPost}>저장하기</Button>
+			<Button onClick={() => addMutate()}>저장하기</Button>
 		</Container>
 	);
 };

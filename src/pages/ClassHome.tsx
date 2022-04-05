@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from '../components/Calendar';
@@ -7,26 +8,14 @@ import Detail from '../components/classhome/Detail';
 import WritePost from '../components/classhome/WritePost';
 
 const ClassHome = () => {
-	const { postid, updateid, page } = useParams();
-
+	const { postid, page } = useParams();
 	return (
 		<Container>
 			<LeftBox>
 				<ClassInfo />
 				<Calendar />
 			</LeftBox>
-
-			{postid ? (
-				updateid ? (
-					<WritePost />
-				) : (
-					<Detail />
-				)
-			) : page ? (
-				<Board />
-			) : (
-				<WritePost />
-			)}
+			{page ? <Board /> : postid ? <Detail /> : <WritePost />}
 		</Container>
 	);
 };
@@ -49,5 +38,3 @@ const LeftBox = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 `;
-
-

@@ -5,7 +5,7 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const uuid = useSelector((state: RootState) => state.modal.data);
+	const uuid = useSelector((state: RootState) => state.modal.data.uuid);
 	const uuidRef = useRef<HTMLInputElement>(null);
 	const [showModal, setShowModal] = useState(false);
 
@@ -114,6 +114,13 @@ const Button = styled.button`
 	font-size: 14px;
 	font-weight: 600;
 	margin: 0 10px;
+	transition: 0.3s;
+	&:hover {
+		filter: brightness(105%);
+	}
+	&:active {
+		filter: brightness(95%);
+	}
 `;
 
 const ModalContainer = styled.div`

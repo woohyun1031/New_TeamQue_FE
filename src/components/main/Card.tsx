@@ -194,7 +194,6 @@ const HomeButton = styled.button`
 	width: 41px;
 	height: 41px;
 	border-radius: 50%;
-	background-color: ${({ theme }) => theme.colors.main};
 	background-image: url('/images/home.png');
 	${({ theme }) => theme.commons.backgroundImage};
 	position: absolute;
@@ -203,10 +202,10 @@ const HomeButton = styled.button`
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
 	&:hover {
-		background-color: ${({ theme }) => theme.colors.brightMain};
+		filter: brightness(110%);
 	}
 	&:active {
-		background-color: ${({ theme }) => theme.colors.darkerMain};
+		filter: brightness(90%);
 	}
 `;
 

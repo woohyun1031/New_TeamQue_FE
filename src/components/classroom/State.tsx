@@ -133,6 +133,7 @@ const StateButtons = styled.div`
 	display: flex;
 	align-items: center;
 	background-color: ${({ theme }) => theme.colors.background};
+	
 `;
 
 const StateButton = styled.button<{ src: string; isActive: boolean }>`
@@ -140,6 +141,13 @@ const StateButton = styled.button<{ src: string; isActive: boolean }>`
 	${({ theme }) => theme.commons.backgroundImage};
 	width: 90px;
 	height: 72px;
+	transition: .3s;
+	&:hover {
+		filter: brightness(120%);
+	}
+	&:active {
+		filter: brightness(70%);
+	}
 `;
 
 const Hr = styled.hr`

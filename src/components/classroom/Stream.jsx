@@ -3,7 +3,7 @@ import ReackHlsPlayer from 'react-hls-player';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Stream = () => {
+const Stream = ({uuid}) => {
 	const navigate = useNavigate()
 	const {classid} = useParams()
 
@@ -13,10 +13,9 @@ const Stream = () => {
 	return (
 		<Container>
 			<Video
-				src={`http://xpecter.shop/live/${classid}/index.m3u8`}
-				width='890'
-				height='500'
+				src={`http://xpecter.shop/live/${uuid}/index.m3u8`}
 				autoPlay
+				controls
 			/>
 			<ClassHoomButton onClick={toClassHome} />
 		</Container>
@@ -38,10 +37,7 @@ const Video = styled(ReackHlsPlayer)`
 `
 
 const ClassHoomButton = styled.button`
-	background: none;
-	border: none;
 	background-image: url('/images/toclasshome.png');
-	background-position: center top;
 	background-repeat: no-repeat;
 	width: 160px;
 	height: 80px;
@@ -49,5 +45,11 @@ const ClassHoomButton = styled.button`
 	top: -80px;
 	right: 80px;
 	z-index: 0;
-	cursor: pointer;
+	transition: .3s;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 	`;
