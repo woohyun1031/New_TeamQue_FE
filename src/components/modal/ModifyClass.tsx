@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const ModifyClass = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const [selectedDays, setSelectedDays] = useState<any>([]);
 	const [inputs, setInputs] = useState({
 		title: '',
@@ -96,7 +97,8 @@ const ModifyClass = () => {
 		} else {
 			const response = changeClass(inputs.imageUrl);
 			alert(response + '수정이 완료되었습니다');
-			navigate('/');
+			queryClient.invalidateQueries('classInfo');
+			dispatch(closeModal());
 		}
 	};
 
@@ -152,9 +154,9 @@ const ModifyClass = () => {
 			reader.readAsDataURL(file);
 		}
 	};
-	const deleteClick = (e: MouseEvent<HTMLButtonElement>, classid: string) => {
-		e.preventDefault();
+	const deleteClick = () => {
 		if (confirm('정말로 삭제하시겠습니까?')) {
+			console.log(classid, 'classid');
 			deleteClass(classid);
 		}
 	};
@@ -162,7 +164,9 @@ const ModifyClass = () => {
 		(classid: string) => api.deleteClass(classid),
 		{
 			onSuccess: () => {
+				console.log('1');
 				dispatch(closeModal());
+				queryClient.invalidateQueries('teachCard');
 				navigate('/');
 			},
 		}
@@ -260,9 +264,7 @@ const ModifyClass = () => {
 				</AddBox>
 			</LowerContainer>
 			<Footer>
-				<DeleteButton onClick={(e) => deleteClick(e, classid)}>
-					삭제하기
-				</DeleteButton>
+				<DeleteButton onClick={deleteClick}>삭제하기</DeleteButton>
 				<UpdateButton onClick={(e) => uploadFile(e, file)}>
 					수정하기
 				</UpdateButton>
@@ -273,7 +275,7 @@ const ModifyClass = () => {
 
 export default ModifyClass;
 
-const Form = styled.form`
+const Form = styled.div`
 	width: 560px;
 	height: 600px;
 	display: flex;
