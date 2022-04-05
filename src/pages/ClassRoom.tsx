@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import styled from 'styled-components';
@@ -27,27 +28,16 @@ type chatType = {
 
 export let socket: Socket;
 const ClassRoom = () => {
-	const [classInfo, setClassInfo] = useState<{
-		title: string;
-		teacher: string;
-	}>();
-	const { classid } = useParams();
-	const loadClassInfo = async () => {
-		const data = await api.loadClassData(classid as string);
-		console.log(data);
-		setClassInfo(data);
-	};
+	const { classid: classId } = useParams();
 
-	useEffect(() => {
-		loadClassInfo();
-	}, []);
 
-	const params = useParams();
-	const [students, setStudents] = useState<studentType[]>([]);
+	const { data: classInfo } = useQuery('classInfo', () =>
+		api.loadClassData(classId as string)
+	);
+
 	const [isConnected, setIsConnected] = useState(false);
+	const [students, setStudents] = useState<studentType[]>([]);
 	const [chatList, setChatList] = useState<chatType[]>([]);
-
-	const classId = params.classid;
 
 	const socketInitiate = () => {
 		socket = io(process.env.REACT_APP_SOCKET_BASE_URL as string, {
@@ -117,7 +107,7 @@ const ClassRoom = () => {
 					<ClassTitle>{classInfo?.title}</ClassTitle>
 					<ClassTeacher>{classInfo?.teacher}</ClassTeacher>
 				</ClassInfo>
-				<Stream />
+				<Stream uuid={classInfo && classInfo?.uuid} />
 				<State students={students} isConnected={isConnected} />
 			</LeftBox>
 			<Chatting chatData={chatList} isConnected={isConnected} />

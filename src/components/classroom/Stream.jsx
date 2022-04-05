@@ -3,7 +3,7 @@ import ReackHlsPlayer from 'react-hls-player';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Stream = () => {
+const Stream = ({uuid}) => {
 	const navigate = useNavigate()
 	const {classid} = useParams()
 
@@ -13,10 +13,9 @@ const Stream = () => {
 	return (
 		<Container>
 			<Video
-				src={`http://xpecter.shop/live/${classid}/index.m3u8`}
-				width='890'
-				height='500'
+				src={`http://xpecter.shop/live/${uuid}/index.m3u8`}
 				autoPlay
+				controls
 			/>
 			<ClassHoomButton onClick={toClassHome} />
 		</Container>
