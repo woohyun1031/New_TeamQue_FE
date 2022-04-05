@@ -48,6 +48,7 @@ export type ClassDataType = {
 	uuid: string;	
 	startDate:string;
 	endDate:string;
+	id:string;
 };
 
 export type StudentType = {

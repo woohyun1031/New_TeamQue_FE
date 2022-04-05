@@ -29,7 +29,7 @@ const ClassInfo = () => {
 	};
 
 	const openModifyModal = () => {
-		dispatch(adddata(classInfo));
+		dispatch(adddata({ classid: classInfo?.id }));
 		dispatch(openModal());
 		dispatch(changeModal('modifyclass'));
 	};
