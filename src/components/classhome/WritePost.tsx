@@ -6,7 +6,7 @@ import api from '../../api';
 
 const WritePost = () => {
 	const navigate = useNavigate();
-	const queryClient = useQueryClient()
+	const queryClient = useQueryClient();
 	const { updateid, classid } = useParams();
 	const [isNotice, setIsNotice] = useState(false);
 	const [inputs, setInputs] = useState({

@@ -30,6 +30,7 @@ export let socket: Socket;
 const ClassRoom = () => {
 	const { classid: classId } = useParams();
 
+
 	const { data: classInfo } = useQuery('classInfo', () =>
 		api.loadClassData(classId as string)
 	);
