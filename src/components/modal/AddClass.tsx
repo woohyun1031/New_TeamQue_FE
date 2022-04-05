@@ -106,6 +106,7 @@ const AddClass = () => {
 		count.current += 1;
 		newArr.sort((a, b) => (a.day > b.day ? 1 : -1));
 		setSelectedDays(newArr);
+		console.log(selectedDays);
 	};
 
 	const deleteDay = (id: number) => {
@@ -420,7 +421,7 @@ const Button = styled.button`
 	font-size: 12px;
 	font-weight: 600;
 	margin: 0 10px;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(110%);
 	}

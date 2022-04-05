@@ -43,12 +43,21 @@ const ModifyClass = () => {
 			endTime: '',
 		};
 		setInputs(newData); //' 월 띄우고 [startDate~(기준)endDate]
-		// setSelectedDays([
-		// 	classInfo.timeTable.map((data: string) => {
-		// 		data;
-		// 	})
-		// ]);
+		const newDay = classInfo.timeTable.map((time: string) => parsingTime(time));
+		console.log(newDay, 'newDay');
+		setSelectedDays(newDay);
 	}, []);
+
+	const parsingTime = (time: string) => {
+		const id = count.current;
+		const day = days.indexOf(time.slice(0, 1)) + 1;
+		const startTime = time.slice(3, 8);
+		const endTime = time.slice(9, 14);
+		const items = { id, day, startTime, endTime };
+		count.current += 1;
+
+		return items;
+	};
 
 	const S3_BUCKET = process.env.REACT_APP_IMAGE_BUCKET;
 	const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
@@ -67,6 +76,7 @@ const ModifyClass = () => {
 
 	const uploadFile = (e: any, file: any) => {
 		e.preventDefault();
+		console.log(isImage);
 		if (isImage) {
 			const params = {
 				ACL: 'public-read',
@@ -90,6 +100,10 @@ const ModifyClass = () => {
 					const newUrl: string =
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 						res.request.httpRequest.path;
+					const response = changeClass(newUrl);
+					alert(response + '수정이 완료되었습니다');
+					queryClient.invalidateQueries('classInfo');
+					dispatch(closeModal());
 				})
 				.send((err) => {
 					if (err) console.log(err, 'err');
@@ -154,6 +168,7 @@ const ModifyClass = () => {
 			reader.readAsDataURL(file);
 		}
 	};
+
 	const deleteClick = () => {
 		if (confirm('정말로 삭제하시겠습니까?')) {
 			console.log(classid, 'classid');
