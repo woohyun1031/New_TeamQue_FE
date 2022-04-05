@@ -29,6 +29,7 @@ const ModifyClass = () => {
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 	const classInfo: any = useSelector((state: RootState) => state.modal.data);
+	//useSelector 로 classid만 가져와서 api 호출
 	const classid = classInfo.id;
 
 	useEffect(() => {
