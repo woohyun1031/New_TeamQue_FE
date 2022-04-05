@@ -80,7 +80,6 @@ const AddClass = () => {
 		}
 	})
 
-
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setInputs({ ...inputs, [name]: value });
