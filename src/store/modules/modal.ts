@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
 	isOpen: false,
 	type: '',
-	data: '',
+	data: {uuid:''},
 };
 
 const ModalSlice = createSlice({
@@ -16,7 +16,7 @@ const ModalSlice = createSlice({
 		closeModal(state) {
 			state.isOpen = false;
 		},
-		adddata(state, action: PayloadAction<string>) {
+		adddata(state, action: any) {
 			state.data = action.payload;
 		},
 		changeModal(

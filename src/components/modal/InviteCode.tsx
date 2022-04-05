@@ -5,7 +5,7 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const uuid = useSelector((state: RootState) => state.modal.data);
+	const uuid = useSelector((state: RootState) => state.modal.data.uuid);
 	const uuidRef = useRef<HTMLInputElement>(null);
 	const [showModal, setShowModal] = useState(false);
 

@@ -4,6 +4,8 @@ import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 import AWS from 'aws-sdk';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/configStore';
 
 const ModifyClass = () => {
 	const [selectedDays, setSelectedDays] = useState<any>([]);
@@ -22,10 +24,10 @@ const ModifyClass = () => {
 	const navigate = useNavigate();
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
-	const { classid } = useParams();
+	const classInfo = useSelector((state: RootState) => state.modal.data);
 
 	useEffect(() => {
-		console.log(classid);
+		console.log(classInfo);
 		//load data
 		// const newData = {
 		//   title: data.title,
