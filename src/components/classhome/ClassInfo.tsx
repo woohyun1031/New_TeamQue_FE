@@ -69,8 +69,9 @@ const ClassInfo = () => {
 		<Container>
 			<ClassRoomButton onClick={toClassRoom} />
 			<Image src={classInfo?.imageUrl} />
+			<FixButton onClick={openModifyModal} />
 			<ThumbnailFilter onClick={toClassRoom} />
-			<Title onClick={openModifyModal}>{classInfo?.title}</Title>
+			<Title>{classInfo?.title}</Title>
 			<Teacher>{classInfo?.teacher} 선생님</Teacher>
 			<Time>
 				{classInfo?.timeTable?.map((time: string, index: number) => (
@@ -170,6 +171,22 @@ const Image = styled.img`
 	object-fit: cover;
 `;
 
+const FixButton = styled.button`
+	background-image: url('/images/fixclassbutton.png');
+	${({ theme }) => theme.commons.backgroundImage};
+	background-size: contain;
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	top: 130px;
+	right: 40px;
+	z-index: 11;
+	transition: 0.5s;
+	&:hover {
+		background-image: url('/images/fixclassbuttondark.png');
+	}
+`;
+
 const ThumbnailFilter = styled.button`
 	background-image: url('/images/play.png');
 	${({ theme }) => theme.commons.backgroundImage};
@@ -183,6 +200,9 @@ const ThumbnailFilter = styled.button`
 	transition: 0.5s;
 	&:hover {
 		opacity: 1;
+	}
+	&:hover FixButton {
+		background-image: none;
 	}
 	background-color: rgba(0, 0, 0, 0.2);
 `;
