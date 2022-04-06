@@ -6,26 +6,25 @@ import api from '../../api';
 import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
-const InviteCode = () => {
+const UuidCode = () => {
 	const classid: any = useSelector((state: RootState) => state.modal.data);
 
-	const inviteCodeRef = useRef<HTMLInputElement>(null);
+	const uuidRef = useRef<HTMLInputElement>(null);
 
-	const { data: invitecode } = useQuery('invitecode', () =>
-		api.getInviteCode(classid as string)
+	const { data: uuid } = useQuery('uuid', () =>
+		api.getStreamCode(classid as string)
 	);
 
 	useEffect(() => {
-		console.log(classid);
-		console.log(invitecode, 'classInfo');
-		if (inviteCodeRef.current) {
-			inviteCodeRef.current.value = invitecode.inviteCode;
+		console.log(uuid);
+		if (uuidRef.current) {
+			uuidRef.current.value = uuid.streamKey;
 		}
 	}, []);
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const content = inviteCodeRef.current;
+		const content = uuidRef.current;
 		if (content) {
 			navigator.clipboard.writeText(content.value).then(() => {
 				alert('코드 복사 완료');
@@ -37,12 +36,12 @@ const InviteCode = () => {
 		<Form>
 			<ModalCloseButton />
 			<UpperContainer>
-				<h2>더 많은 사람과 수업듣기</h2>
-				<p>아래 링크를 복사하여 다른 사람을 초대할 수 있어요.</p>
+				<h2>선생님 UUID</h2>
+				<p>아래 코드를 복사하여 방송에 입력하세요</p>
 				<Input
 					type='text'
-					placeholder='임의의 초대코드가 입력됩니다'
-					ref={inviteCodeRef}
+					placeholder='임의의 방송코드가 입력됩니다'
+					ref={uuidRef}
 				/>
 			</UpperContainer>
 			<Buttons>
@@ -52,7 +51,7 @@ const InviteCode = () => {
 	);
 };
 
-export default InviteCode;
+export default UuidCode;
 
 const Form = styled.form`
 	display: flex;

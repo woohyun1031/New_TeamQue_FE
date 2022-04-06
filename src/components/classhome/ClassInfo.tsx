@@ -21,17 +21,21 @@ const ClassInfo = () => {
 	);
 
 	const openInviteCode = () => {
-		if (classInfo) {
-			dispatch(adddata({ uuid: classInfo?.uuid }));
-			dispatch(openModal());
-			dispatch(changeModal('inviteCode'));
-		}
+		dispatch(adddata(classInfo?.id));
+		dispatch(openModal());
+		dispatch(changeModal('inviteCode'));
 	};
 
 	const openModifyModal = () => {
-		dispatch(adddata({ classid: classInfo?.id }));
+		dispatch(adddata(classInfo?.id));
 		dispatch(openModal());
 		dispatch(changeModal('modifyclass'));
+	};
+
+	const openUuidCode = () => {
+		dispatch(adddata(classInfo?.id));
+		dispatch(openModal());
+		dispatch(changeModal('uuidCode'));
 	};
 
 	const { mutate: acceptStudent } = useMutation(
@@ -74,6 +78,7 @@ const ClassInfo = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classInfo?.title}</Title>
 			<Teacher>{classInfo?.teacher} 선생님</Teacher>
+			{classInfo?.isByMe && <UuidButton onClick={openUuidCode} />}
 			<Time>
 				{classInfo?.timeTable?.map((time: string, index: number) => (
 					<DayNum key={index}>{time}</DayNum>
@@ -170,6 +175,24 @@ const Image = styled.img`
 	height: 155px;
 	border-radius: 7px;
 	object-fit: cover;
+`;
+
+const UuidButton = styled.button`
+	background-image: url('/images/fixclassbutton.png');
+	${({ theme }) => theme.commons.backgroundImage};
+	background-size: contain;
+	width: 32px;
+	height: 32px;
+	top: 130px;
+	right: 40px;
+	z-index: 11;
+	transition: 0.3s;
+	&:hover {
+		filter: brightness(110%);
+	}
+	&:active {
+		filter: brightness(90%);
+	}
 `;
 
 const FixButton = styled.button`
