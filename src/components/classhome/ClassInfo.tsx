@@ -79,7 +79,9 @@ const ClassInfo = () => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classInfo?.title}</Title>
 			<Teacher>{classInfo?.teacher} 선생님</Teacher>
-			{classInfo?.isByMe && <UuidButton onClick={openUuidCode} />}
+			{classInfo?.isByMe && (
+				<UuidButton onClick={openUuidCode}>수업키생성</UuidButton>
+			)}
 			<Time>
 				{classInfo?.timeTable?.map((time: string, index: number) => (
 					<DayNum key={index}>{time}</DayNum>
@@ -179,15 +181,16 @@ const Image = styled.img`
 `;
 
 const UuidButton = styled.button`
-	background-image: url('/images/fixclassbutton.png');
-	${({ theme }) => theme.commons.backgroundImage};
-	background-size: contain;
-	width: 32px;
+	width: 100px;
 	height: 32px;
 	top: 130px;
 	right: 40px;
 	z-index: 11;
 	transition: 0.3s;
+	background-color: ${({ theme }) => theme.colors.main};
+	color: ${({ theme }) => theme.colors.buttonTitle};
+	border-radius: 7px;
+	margin-top: 5px;
 	&:hover {
 		filter: brightness(110%);
 	}
