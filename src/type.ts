@@ -36,6 +36,7 @@ export type CardType = {
 	teacher: string;
 	imageUrl: string;
 	timeTable: string[];
+	isStream: boolean;
 	state: 'wait' | 'accepted' | 'teach';
 };
 
@@ -48,6 +49,7 @@ export type ClassDataType = {
 	uuid: string;	
 	startDate:string;
 	endDate:string;
+	id:string;
 };
 
 export type StudentType = {

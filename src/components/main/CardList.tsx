@@ -19,7 +19,6 @@ const CardList = ({ tabState }: CardListProps) => {
 	const { data: teachCards } = useQuery('teachCard', api.loadTeachCards, {
 		enabled: isLogin,
 	});
-
 	return (
 		<Container>
 			{tabState

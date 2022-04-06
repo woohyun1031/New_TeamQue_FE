@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import api from '../../api';
 import { CardType } from '../../type';
 
-const Card = ({ id, imageUrl, teacher, title, timeTable, state }: CardType) => {
+const Card = ({ id, imageUrl, teacher, title, timeTable, state, isStream }: CardType) => {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const Card = ({ id, imageUrl, teacher, title, timeTable, state }: CardType) => {
 			<ThumbnailFilter onClick={toClassRoom} />
 			<BadgeBox>
 				<SubBadge>진행중</SubBadge>
-				<Badge>방송중</Badge>
+				{isStream ? <Badge>방송중</Badge> : <WaitBadge>대기중</WaitBadge>}
 			</BadgeBox>
 			<Title>{title}</Title>
 			<Teacher>{teacher} 님</Teacher>

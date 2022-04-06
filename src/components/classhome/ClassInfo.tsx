@@ -30,7 +30,7 @@ const ClassInfo = () => {
 	};
 
 	const openModifyModal = () => {
-		dispatch(adddata(classInfo));
+		dispatch(adddata({ classid: classInfo?.id }));
 		dispatch(openModal());
 		dispatch(changeModal('modifyclass'));
 	};
@@ -71,7 +71,7 @@ const ClassInfo = () => {
 		<Container>
 			<ClassRoomButton onClick={toClassRoom} />
 			<Image src={classInfo?.imageUrl} />
-			<FixButton onClick={openModifyModal} />
+			{classInfo?.isByMe && <FixButton onClick={openModifyModal} />}
 			<ThumbnailFilter onClick={toClassRoom} />
 			<Title>{classInfo?.title}</Title>
 			<Teacher>{classInfo?.teacher} 선생님</Teacher>
@@ -313,7 +313,7 @@ const Button = styled.button`
 	& + & {
 		margin-left: 4px;
 	}
-	transition: .2s;
+	transition: 0.2s;
 	&:hover {
 		filter: brightness(103%);
 	}
