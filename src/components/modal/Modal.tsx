@@ -7,6 +7,7 @@ import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Tutorial from './Tutorial';
+import UuidCode from './UuidCode';
 import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
@@ -62,11 +63,15 @@ const Modal = () => {
 		case 'modifyclass':
 			contents = <ModifyClass />;
 			break;
+		case 'uuidCode':
+			contents = <UuidCode />;
+			break;
 		default:
 			contents = null;
 	}
 
 	if (!modal.isOpen) return null;
+
 	return createPortal(
 		<Background
 			onClick={() => {

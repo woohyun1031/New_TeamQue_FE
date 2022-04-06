@@ -76,7 +76,7 @@ const api = {
 	loadMyCalendar: (year: number, month: number) =>
 		requests.get(`/class/date?year=${year}&month=${month}`),
 	createClass: (classInfo: object) => requests.post('/class', classInfo),
-	loadClassData: (classId: string): Promise<ClassDataType> =>
+	loadClassData: (classId: string)=>
 		requests.get(`/class/${classId}`),
 	loadStudents: (classId: string): Promise<StudentType[]> =>
 		requests.get(`/class/student/${classId}`),
@@ -87,6 +87,9 @@ const api = {
 		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
 	deleteClass:(classId : string) => requests.delete(`/class/${classId}`),
+	getInviteCode:(classId : string) => requests.get(`/class/invitecode/${classId}`),
+	//stream
+	getStreamCode:(classId : string) => requests.get(`/stream/key/${classId}`),
 
 	// Post
 	loadPosts: (classId: string, page: string): Promise<PostsType> =>
