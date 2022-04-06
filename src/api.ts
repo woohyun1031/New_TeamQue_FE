@@ -87,9 +87,9 @@ const api = {
 		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
 	deleteClass:(classId : string) => requests.delete(`/class/${classId}`),
-	getInviteCode:(classId : string) => requests.get(`/class/invitecode/${classId}`),
+	getInviteCode:(classId : string): Promise<{inviteCode:string}> => requests.get(`/class/invitecode/${classId}`),
 	//stream
-	getStreamCode:(classId : string) => requests.get(`/stream/key/${classId}`),
+	getStreamCode:(classId : string): Promise<{streamKey:string}> => requests.get(`/stream/key/${classId}`),
 
 	// Post
 	loadPosts: (classId: string, page: string): Promise<PostsType> =>

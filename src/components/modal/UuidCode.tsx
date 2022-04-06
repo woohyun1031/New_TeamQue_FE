@@ -7,42 +7,28 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const UuidCode = () => {
-	const classid: any = useSelector((state: RootState) => state.modal.data);
+	const classid: string = useSelector((state: RootState) => state.modal.data);
 
-	const uuidRef = useRef<HTMLInputElement>(null);
-
-	const { data: uuid } = useQuery('uuid', () =>
+	const { data } = useQuery('streamKey', () =>
 		api.getStreamCode(classid as string)
 	);
 
-	useEffect(() => {
-		console.log(uuid);
-		if (uuidRef.current) {
-			uuidRef.current.value = uuid?.streamKey;
-		}
-	}, []);
-
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const content = uuidRef.current;
-		if (content) {
-			navigator.clipboard.writeText(content.value).then(() => {
+		if (data?.streamKey) {
+			navigator.clipboard.writeText(data?.streamKey).then(() => {
 				alert('코드 복사 완료');
 			});
 		}
 	};
-
+	console.log(data);
 	return (
 		<Form>
 			<ModalCloseButton />
 			<UpperContainer>
 				<h2>선생님 방송 StreamKEY</h2>
 				<p>아래 코드를 복사하여 입력하세요</p>
-				<Input
-					type='text'
-					placeholder='임의의 방송코드가 입력됩니다'
-					ref={uuidRef}
-				/>
+				<Input>{data?.streamKey}</Input>
 			</UpperContainer>
 			<Buttons>
 				<Button onClick={onCopy}>복사하기</Button>
@@ -69,14 +55,15 @@ const UpperContainer = styled.div`
 	justify-content: space-between;
 `;
 
-const Input = styled.input`
+const Input = styled.p`
 	width: 630px;
 	height: 40px;
 	border-radius: 7px;
 	border: none;
 	background-color: ${({ theme }) => theme.colors.base};
 	font-size: 14px;
-	padding-left: 20px;
+	text-align: center;
+	line-height: 40px;
 	outline: none;
 	&::placeholder {
 		color: ${({ theme }) => theme.colors.sub};
@@ -106,20 +93,6 @@ const Button = styled.button`
 	&:active {
 		filter: brightness(95%);
 	}
-`;
-
-const ModalContainer = styled.div`
-	display: flex;
-	position: absolute;
-	left: 350px;
-	top: -60px;
-	transform: translate(-50%, -50%);
-	width: 200px;
-	height: 100px;
-	padding: 16px;
-	background: rgba(113, 138, 255, 0.7);
-	border-radius: 10px;
-	text-align: center;
 `;
 
 const CloseButton = styled.button`

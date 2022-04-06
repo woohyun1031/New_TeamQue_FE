@@ -29,8 +29,6 @@ type chatType = {
 export let socket: Socket;
 const ClassRoom = () => {
 	const { classid: classId } = useParams();
-
-
 	const { data: classInfo } = useQuery('classInfo', () =>
 		api.loadClassData(classId as string)
 	);
@@ -107,7 +105,7 @@ const ClassRoom = () => {
 					<ClassTitle>{classInfo?.title}</ClassTitle>
 					<ClassTeacher>{classInfo?.teacher}</ClassTeacher>
 				</ClassInfo>
-				<Stream uuid={classInfo && classInfo?.uuid} />
+				<Stream />
 				<State students={students} isConnected={isConnected} />
 			</LeftBox>
 			<Chatting chatData={chatList} isConnected={isConnected} />
