@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../api';
@@ -28,24 +28,31 @@ const ModifyClass = () => {
 	const [isImage, setIsImage] = useState(false);
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
-	const classInfo: any = useSelector((state: RootState) => state.modal.data);
-	const classid = classInfo.id;
+	const classid: any = useSelector((state: RootState) => state.modal.data);
+
+	const { data: classInfo } = useQuery('classInfo', () =>
+		api.loadClassData(classid as string)
+	);
 
 	useEffect(() => {
-		console.log(classInfo, 'classInfo');
-		const newData = {
-			title: classInfo.title,
-			imageUrl: classInfo.imageUrl,
-			startDate: classInfo.startDate,
-			endDate: classInfo.endDate,
-			day: '',
-			startTime: '',
-			endTime: '',
-		};
-		setInputs(newData); //' 월 띄우고 [startDate~(기준)endDate]
-		const newDay = classInfo.timeTable.map((time: string) => parsingTime(time));
-		console.log(newDay, 'newDay');
-		setSelectedDays(newDay);
+		console.log(classid, 'classid');
+		if (classInfo) {
+			const newData = {
+				title: classInfo?.title,
+				imageUrl: classInfo?.imageUrl,
+				startDate: classInfo?.startDate,
+				endDate: classInfo?.endDate,
+				day: '',
+				startTime: '',
+				endTime: '',
+			};
+			setInputs(newData); //' 월 띄우고 [startDate~(기준)endDate]
+			const newDay = classInfo.timeTable.map((time: string) =>
+				parsingTime(time)
+			);
+			console.log(newDay, 'newDay');
+			setSelectedDays(newDay);
+		}
 	}, []);
 
 	const parsingTime = (time: string) => {

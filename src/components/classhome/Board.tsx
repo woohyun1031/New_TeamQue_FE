@@ -172,7 +172,7 @@ const PostTitle = styled.td<{ type: string }>`
 	color: ${({ type, theme }) =>
 		type === 'notice' ? theme.colors.main : theme.colors.title};
 	font-weight: ${({ type }) => (type === 'notice' ? 'bold' : '400')};
-	transition: .2s;
+	transition: 0.2s;
 	&:hover {
 		filter: brightness(110%);
 	}
