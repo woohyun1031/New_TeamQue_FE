@@ -19,7 +19,7 @@ const InviteCode = () => {
 		console.log(classid);
 		console.log(invitecode, 'classInfo');
 		if (inviteCodeRef.current) {
-			inviteCodeRef.current.value = invitecode.inviteCode;
+			inviteCodeRef.current.value = invitecode?.inviteCode;
 		}
 	}, []);
 

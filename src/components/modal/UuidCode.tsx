@@ -18,7 +18,7 @@ const UuidCode = () => {
 	useEffect(() => {
 		console.log(uuid);
 		if (uuidRef.current) {
-			uuidRef.current.value = uuid.streamKey;
+			uuidRef.current.value = uuid?.streamKey;
 		}
 	}, []);
 
@@ -36,8 +36,8 @@ const UuidCode = () => {
 		<Form>
 			<ModalCloseButton />
 			<UpperContainer>
-				<h2>선생님 UUID</h2>
-				<p>아래 코드를 복사하여 방송에 입력하세요</p>
+				<h2>선생님 방송 StreamKEY</h2>
+				<p>아래 코드를 복사하여 입력하세요</p>
 				<Input
 					type='text'
 					placeholder='임의의 방송코드가 입력됩니다'
