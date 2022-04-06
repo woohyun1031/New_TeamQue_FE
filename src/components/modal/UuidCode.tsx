@@ -7,14 +7,18 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const UuidCode = () => {
-	const uuid: any = useSelector((state: RootState) => state.modal.data);
+	const classid: any = useSelector((state: RootState) => state.modal.data);
 
 	const uuidRef = useRef<HTMLInputElement>(null);
+
+	const { data: uuid } = useQuery('uuid', () =>
+		api.getStreamCode(classid as string)
+	);
 
 	useEffect(() => {
 		console.log(uuid);
 		if (uuidRef.current) {
-			uuidRef.current.value = uuid;
+			uuidRef.current.value = uuid.streamKey;
 		}
 	}, []);
 

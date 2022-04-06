@@ -11,15 +11,15 @@ const InviteCode = () => {
 
 	const inviteCodeRef = useRef<HTMLInputElement>(null);
 
-	const { data: classInfo } = useQuery('classInfo', () =>
+	const { data: invitecode } = useQuery('invitecode', () =>
 		api.getInviteCode(classid as string)
 	);
 
 	useEffect(() => {
 		console.log(classid);
-		console.log(classInfo, 'classInfo');
+		console.log(invitecode, 'classInfo');
 		if (inviteCodeRef.current) {
-			inviteCodeRef.current.value = classInfo;
+			inviteCodeRef.current.value = invitecode.inviteCode;
 		}
 	}, []);
 

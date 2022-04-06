@@ -33,7 +33,7 @@ const ClassInfo = () => {
 	};
 
 	const openUuidCode = () => {
-		dispatch(adddata(classInfo));
+		dispatch(adddata(classInfo?.id));
 		dispatch(openModal());
 		dispatch(changeModal('uuidCode'));
 	};

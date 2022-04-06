@@ -88,6 +88,9 @@ const api = {
 	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
 	deleteClass:(classId : string) => requests.delete(`/class/${classId}`),
 	getInviteCode:(classId : string) => requests.get(`/class/invitecode/${classId}`),
+	//stream
+	getStreamCode:(classId : string) => requests.get(`/stream/key/${classId}`),
+
 	// Post
 	loadPosts: (classId: string, page: string): Promise<PostsType> =>
 		requests.get(`/post/${classId}?page=${page}`),
