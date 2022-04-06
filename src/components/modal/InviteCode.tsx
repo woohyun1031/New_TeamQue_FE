@@ -1,13 +1,18 @@
 import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import api from '../../api';
 import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const uuid = useSelector((state: RootState) => state.modal.data.uuid);
-	const uuidRef = useRef<HTMLInputElement>(null);
+	const classid: any = useSelector((state: RootState) => state.modal.data);
+	const inviteCodeRef = useRef<HTMLInputElement>(null);
 	const [showModal, setShowModal] = useState(false);
+	const { data: classInviteCode } = useQuery('classInviteCode', () =>
+		api.getInviteCode(classid as string)
+	);
 
 	const onClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -18,8 +23,9 @@ const InviteCode = () => {
 	};
 
 	useEffect(() => {
-		if (uuidRef.current) {
-			uuidRef.current.value = uuid;
+		console.log(classInviteCode);
+		if (inviteCodeRef.current) {
+			inviteCodeRef.current.value = classInviteCode;
 		}
 		const script = document.createElement('script');
 		script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -32,7 +38,7 @@ const InviteCode = () => {
 
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		const content = uuidRef.current;
+		const content = inviteCodeRef.current;
 		if (content) {
 			navigator.clipboard.writeText(content.value).then(() => {
 				alert('코드 복사 완료');
@@ -49,17 +55,17 @@ const InviteCode = () => {
 				<Input
 					type='text'
 					placeholder='임의의 초대코드가 입력됩니다'
-					ref={uuidRef}
+					ref={inviteCodeRef}
 				/>
 			</UpperContainer>
 			<Buttons>
-				{showModal ? (
+				{/* {showModal ? (
 					<ModalContainer>
 						<KakaButton />
 						<CloseButton onClick={closeModal} />
 					</ModalContainer>
 				) : null}
-				<Button onClick={onClick}>공유하기</Button>
+				<Button onClick={onClick}>공유하기</Button> */}
 				<Button onClick={onCopy}>복사하기</Button>
 			</Buttons>
 		</Form>

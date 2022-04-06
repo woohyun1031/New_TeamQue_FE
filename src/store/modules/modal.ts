@@ -5,7 +5,7 @@ const initialState = {
 	type: '',
 	data: {uuid:''},
 };
-
+	
 const ModalSlice = createSlice({
 	name: 'modal',
 	initialState,

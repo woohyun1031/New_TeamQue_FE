@@ -22,7 +22,7 @@ const ClassInfo = () => {
 
 	const openInviteCode = () => {
 		if (classInfo) {
-			dispatch(adddata({ uuid: classInfo?.uuid }));
+			dispatch(adddata({ classid: classInfo?.id }));
 			dispatch(openModal());
 			dispatch(changeModal('inviteCode'));
 		}

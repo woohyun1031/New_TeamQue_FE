@@ -67,6 +67,7 @@ const Modal = () => {
 	}
 
 	if (!modal.isOpen) return null;
+
 	return createPortal(
 		<Background
 			onClick={() => {
