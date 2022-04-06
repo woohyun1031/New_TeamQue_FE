@@ -10,10 +10,14 @@ const Stream = ({uuid}) => {
 	const toClassHome = useCallback(() => {
 		navigate(`/classhome/${classid}/1`)
 	}, [])
+
+
+
+
 	return (
 		<Container>
 			<Video
-				src={`http://xpecter.shop/live/${uuid}/index.m3u8`}
+				src={`http://xpecter.shop/live/9f4b6c02-784a-40d9-96ae-6ed8b2c3a938/index.m3u8`}
 				autoPlay
 				controls
 			/>
