@@ -32,6 +32,7 @@ const ModalSlice = createSlice({
 				| 'deleteaccount'
 				| 'modifyuserinfo'
 				| 'modifyclass'
+				| 'uuidCode'
 			>
 		) {
 			state.type = action.payload;

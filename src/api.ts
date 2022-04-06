@@ -76,7 +76,7 @@ const api = {
 	loadMyCalendar: (year: number, month: number) =>
 		requests.get(`/class/date?year=${year}&month=${month}`),
 	createClass: (classInfo: object) => requests.post('/class', classInfo),
-	loadClassData: (classId: string): Promise<ClassDataType> =>
+	loadClassData: (classId: string)=>
 		requests.get(`/class/${classId}`),
 	loadStudents: (classId: string): Promise<StudentType[]> =>
 		requests.get(`/class/student/${classId}`),
