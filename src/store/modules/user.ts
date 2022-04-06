@@ -35,9 +35,7 @@ export const signIn = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			console.log(process.env.REACT_APP_API_BASE_URL);
 			const data = await api.signIn(loginInfo);
-			console.log(data);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
 			instance.defaults.headers.common[

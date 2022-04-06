@@ -36,6 +36,7 @@ export type CardType = {
 	teacher: string;
 	imageUrl: string;
 	timeTable: string[];
+	isStream: boolean;
 	state: 'wait' | 'accepted' | 'teach';
 };
 
