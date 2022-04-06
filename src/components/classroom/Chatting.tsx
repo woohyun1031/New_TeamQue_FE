@@ -16,9 +16,9 @@ type chatType = {
 };
 
 type ChattingProps = {
-  chatData: chatType[];
+	chatData: chatType[];
 	isConnected: boolean;
-}
+};
 
 const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 	const user = useSelector((state: RootState) => state.user);
@@ -76,15 +76,15 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 			socket.on('receiveLikeUp', ({ chatId, userId }) => {
 				setChatList((prev) =>
 					prev.map((chat) =>
-					  chat.likes && chat.chatId === chatId 
-							? { ...chat, likes: [...chat.likes, {userId}] }
+						chat.likes && chat.chatId === chatId
+							? { ...chat, likes: [...chat.likes, { userId }] }
 							: chat
 					)
 				);
 			});
 
 			socket.on('receiveLikeDown', ({ chatId, userId }) => {
-				console.log(chatId)
+				console.log(chatId);
 				setChatList((prev) =>
 					prev.map((chat) =>
 						chat.likes && chat.chatId === chatId
@@ -103,7 +103,8 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 		}
 	}, [isConnected]);
 
-	const sendChat = () => {
+	const sendChat = (e: any) => {
+		e.preventDefault();
 		if (input) {
 			if (isQuestion) {
 				socket.emit(
@@ -299,7 +300,7 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 						onChange={changeMessage}
 						onKeyPress={(e) => {
 							if (e.key === 'Enter') {
-								sendChat();
+								sendChat(e);
 							}
 						}}
 					/>
@@ -339,7 +340,7 @@ const ToggleButton = styled.label<{ isChecked: boolean }>`
 	}
 	${({ isChecked }) => isChecked && 'color: #c4c4c4;'}
 	cursor: pointer;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(80%);
 	}
@@ -519,7 +520,8 @@ const Input = styled.textarea`
 `;
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
-	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) =>
+		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	${({ theme }) => theme.commons.backgroundImage};
 	width: 30px;
 	height: 30px;

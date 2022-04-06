@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
 	isOpen: false,
 	type: '',
-	data: {uuid:''},
+	data: '',
 };
 	
 const ModalSlice = createSlice({
