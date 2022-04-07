@@ -49,7 +49,7 @@ const Calendar = () => {
 		if (classid) {
 			data = await api.loadClassCalendar(classid, year, month + 1)
 		} else {
-			data = await api.loadMyCalendar(year, month + 1);
+			data = await api.loadTotalCalendar(year, month + 1);
 		}
 
 		for (const event of data) {

@@ -21,7 +21,7 @@ const ModifyUserInfo = () => {
 
 	const ChangeName = async () => {
 		if (confirm(`${input}으로 이름을 변경하시겠습니까?`)) {
-			await api.modifyUserInfo(input);
+			await api.changeName(input);
 			location.reload();
 		}
 	};

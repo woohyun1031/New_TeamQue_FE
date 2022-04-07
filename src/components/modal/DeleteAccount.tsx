@@ -15,45 +15,27 @@ const DeleteAccount = () => {
 		setInput(e.target.value);
 	};
 
-<<<<<<< HEAD
-	const { mutate } = useMutation(
-		() => api.withdrawal(input), {
-			onSuccess: () => {
-				alert('탈퇴가 완료되었습니다.');
-				dispatch(signOut());
-			},
-			onError: (error) => {
-				if (axios.isAxiosError(error)) {
-					alert(error.response?.data.message)
-				}
+	const { mutate } = useMutation(() => api.deleteAccount(input), {
+		onSuccess: () => {
+			alert('탈퇴가 완료되었습니다.');
+			dispatch(signOut());
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
 			}
-		}
-	)
-
+		},
+	});
 
 	const deleteAccount = async () => {
 		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
-			mutate()
-=======
-	const { mutate: deleteAccount } = useMutation(
-		(input: string) => api.deleteClass(input),
-		{
-			onSuccess: () => {
-				alert('탈퇴가 완료되었습니다.');
-				dispatch(signOut());
-				window.location.reload();
-			},
-			onError: (error: Error) => {
-				alert('다시 시도해주세요.');
-				console.log(error);
-			},
->>>>>>> 42e1e32050baa005d5428a05dcd9b9ad5114bb35
+			mutate();
 		}
-	);
+	};
 
 	const hendleCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
 		if (e.key === 'Enter') {
-			deleteAccount(input);
+			deleteAccount();
 		}
 	};
 
