@@ -32,7 +32,7 @@ const ModalSlice = createSlice({
 				| 'deleteaccount'
 				| 'modifyuserinfo'
 				| 'modifyclass'
-				| 'uuidCode'
+				| 'streamkey'
 			>
 		) {
 			state.type = action.payload;

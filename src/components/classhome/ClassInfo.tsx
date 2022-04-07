@@ -35,7 +35,7 @@ const ClassInfo = () => {
 	const openUuidCode = () => {
 		dispatch(adddata(classInfo?.id));
 		dispatch(openModal());
-		dispatch(changeModal('uuidCode'));
+		dispatch(changeModal('streamkey'));
 	};
 
 	const { mutate: acceptStudent } = useMutation(
