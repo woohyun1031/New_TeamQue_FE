@@ -15,6 +15,7 @@ const DeleteAccount = () => {
 		setInput(e.target.value);
 	};
 
+<<<<<<< HEAD
 	const { mutate } = useMutation(
 		() => api.withdrawal(input), {
 			onSuccess: () => {
@@ -33,12 +34,26 @@ const DeleteAccount = () => {
 	const deleteAccount = async () => {
 		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
 			mutate()
+=======
+	const { mutate: deleteAccount } = useMutation(
+		(input: string) => api.deleteClass(input),
+		{
+			onSuccess: () => {
+				alert('탈퇴가 완료되었습니다.');
+				dispatch(signOut());
+				window.location.reload();
+			},
+			onError: (error: Error) => {
+				alert('다시 시도해주세요.');
+				console.log(error);
+			},
+>>>>>>> 42e1e32050baa005d5428a05dcd9b9ad5114bb35
 		}
-	};
+	);
 
 	const hendleCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
 		if (e.key === 'Enter') {
-			deleteAccount();
+			deleteAccount(input);
 		}
 	};
 
@@ -51,7 +66,7 @@ const DeleteAccount = () => {
 			</FormDescription>
 			<Label htmlFor='password'>비밀번호</Label>
 			<Input type='password' id='password' onChange={handleChange} />
-			<Button onClick={deleteAccount}>회원탈퇴</Button>
+			<Button onClick={() => deleteAccount}>회원탈퇴</Button>
 		</Form>
 	);
 };
@@ -96,7 +111,7 @@ const Button = styled.button`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-weight: bold;
 	margin-bottom: 10px;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(105%);
 	}
