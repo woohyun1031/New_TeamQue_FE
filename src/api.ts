@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { CardType, ClassDataType, PostsType, PostType, StudentType, TodoType } from './type';
+import { CardType, PostsType, PostType, StudentType, TodoType } from './type';
 
 export const instance = axios.create({
 	baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -25,6 +25,7 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error)) {
 			const originalRequest = error.config;
 			if (error.response?.status === 401 && error.response?.data.message === 'Unauthorized') {
+				
 				if (!isRefreshing) {
 					const response = await instance.post('/user/refresh', {}, { headers: { Authorization: `Bearer ${sessionStorage.getItem('refreshToken')}` } });
 					const accessToken = response.data.accessToken;
@@ -33,6 +34,7 @@ instance.interceptors.response.use(
 					isRefreshing = false;
 					refreshSubscribers.map((callback) => callback(accessToken));
 				}
+
 				const retryOriginalRequest = new Promise((resolve) => {
 					addRefreshSubscriber((accessToken: string) => {
 						if (originalRequest.headers) {
