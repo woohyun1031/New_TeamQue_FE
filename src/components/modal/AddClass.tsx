@@ -6,6 +6,7 @@ import AWS from 'aws-sdk';
 import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/modules/modal';
+import axios from 'axios';
 
 const AddClass = () => {
 	const queryClient = useQueryClient();
@@ -89,6 +90,11 @@ const AddClass = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('teachCard');
 				dispatch(closeModal());
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
 			},
 		}
 	);

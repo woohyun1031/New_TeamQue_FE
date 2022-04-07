@@ -5,6 +5,7 @@ import { changeClassId, openModal } from '../../store/modules/modal';
 import api from '../../api';
 import { RootState } from '../../store/configStore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
 
 const ClassInfo = () => {
 	const queryClient = useQueryClient();
@@ -41,11 +42,23 @@ const ClassInfo = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('students');
 			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
 		}
 	);
 
-	const { mutate: rejectStudent } = useMutation((studentId: number) =>
-		api.changeState(classid as string, studentId, false)
+	const { mutate: rejectStudent } = useMutation(
+		(studentId: number) => api.changeState(classid as string, studentId, false),
+		{
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
 	);
 
 	const handleClickReject = (studentsId: number) => {
@@ -61,11 +74,24 @@ const ClassInfo = () => {
 	const exitClass = async () => {
 		if (confirm('정말로 수업을 나가시겠습니까?')) {
 			if (classid) {
-				await api.cancelApply(classid);
-				navigate('/');
+				cancelApply(classid);
 			}
 		}
 	};
+
+	const { mutate: cancelApply } = useMutation(
+		(classid: string) => api.cancelApply(classid as string),
+		{
+			onSuccess: () => {
+				navigate('/');
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
+	);
 
 	return (
 		<Container>

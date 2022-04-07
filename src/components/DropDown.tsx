@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../api';
@@ -6,7 +8,7 @@ import { openModal } from '../store/modules/modal';
 
 type DropDownProps = {
 	name: string;
-}
+};
 
 const DropDown = ({ name }: DropDownProps) => {
 	const dispatch = useDispatch();
@@ -19,9 +21,20 @@ const DropDown = ({ name }: DropDownProps) => {
 	const logout = async () => {
 		sessionStorage.removeItem('accessToken');
 		sessionStorage.removeItem('refreshToken');
-		await api.signOut();
-		location.reload()
+		signOut();
+		location.reload();
 	};
+
+	const { mutate: signOut } = useMutation(() => api.signOut(), {
+		onSuccess: () => {
+			location.reload();
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
+			}
+		},
+	});
 
 	const openMypage = () => {
 		dispatch(openModal('modifyuserinfo'));
@@ -69,7 +82,6 @@ const ArrowIcon = styled.div<{ src: string }>`
 	margin-left: 5px;
 	background-image: url(${({ src }) => src});
 	${({ theme }) => theme.commons.backgroundImage};
-
 `;
 
 const Menu = styled.ul`

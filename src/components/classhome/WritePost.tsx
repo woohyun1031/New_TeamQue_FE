@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -44,11 +45,19 @@ const WritePost = () => {
 		setIsNotice((prev) => !prev);
 	};
 
-	const { mutate: updateMutate } = useMutation(() =>
-		api.updatePost({
-			boardInfo: { ...inputs, postType: isNotice ? 'Notice' : 'Question' },
-			updateid: updateid as string,
-		})
+	const { mutate: updateMutate } = useMutation(
+		() =>
+			api.updatePost({
+				boardInfo: { ...inputs, postType: isNotice ? 'Notice' : 'Question' },
+				updateid: updateid as string,
+			}),
+		{
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
 	);
 
 	const { mutate: addMutate } = useMutation(
@@ -61,6 +70,11 @@ const WritePost = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('posts');
 				navigate(`/classhome/${classid}/1`);
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
 			},
 		}
 	);

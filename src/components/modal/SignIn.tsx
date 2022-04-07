@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
@@ -24,18 +25,23 @@ const SignIn = () => {
 
 	const { mutate } = useMutation(() => api.signIn(inputs), {
 		onSuccess: (res) => {
-			console.log(res)
+			console.log(res);
 			sessionStorage.setItem('accessToken', res.accessToken);
 			sessionStorage.setItem('refreshToken', res.refreshToken);
 			instance.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
-		}
-	})
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
+			}
+		},
+	});
 
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		mutate()
+		mutate();
 		dispatch(signIn(inputs));
 	};
 

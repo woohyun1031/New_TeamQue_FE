@@ -2,24 +2,42 @@ import styled, { css } from 'styled-components';
 import { TodoType } from '../../type';
 import { useMutation, useQueryClient } from 'react-query';
 import api from '../../api';
+import axios from 'axios';
 
 const TodoItem = ({ id, content, isComplete }: TodoType) => {
 	const queryClient = useQueryClient();
 
-	const { mutate: toggleCompleteTodo } = useMutation(() => api.completeTodo(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('todo');
-		},
-	});
+	const { mutate: toggleCompleteTodo } = useMutation(
+		() => api.completeTodo(id),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries('todo');
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
+	);
 
 	const { mutate: deleteTodo } = useMutation(() => api.deleteTodo(id), {
 		onSuccess: () => {
 			queryClient.invalidateQueries('todo');
 		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
+			}
+		},
 	});
-  
+
 	return (
-		<Container key={id} isComplete={isComplete} onClick={() => toggleCompleteTodo()}>
+		<Container
+			key={id}
+			isComplete={isComplete}
+			onClick={() => toggleCompleteTodo()}
+		>
 			<p>{content}</p>
 			<DeleteButton
 				src={isComplete ? '/images/closeblue.png' : '/images/closewhite.png'}

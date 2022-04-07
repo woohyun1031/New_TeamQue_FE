@@ -92,7 +92,17 @@ const api = {
 		requests.post(`/class/student`, { inviteCode }),
 	loadClassCalendar: (classId: string, year: number, month: number) =>
 		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
-	changeClass: (classInfo: object, classId: string) =>
+	changeClass: (classInfo: {
+		title: string;
+		imageUrl: string;
+		startDate: string;
+		endDate: string;
+		times: {	
+			id: number;
+			day: number;
+			startTime: string;
+			endTime: string;}[];
+		}, classId: string) =>
 		requests.put(`/class/${classId}`, classInfo),
 	deleteClass: (classId: string) => requests.delete(`/class/${classId}`),
 	getInviteCode: (classId: string): Promise<{ inviteCode: string }> =>
