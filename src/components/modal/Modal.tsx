@@ -7,7 +7,7 @@ import NotSignIn from './NotSignIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Tutorial from './Tutorial';
-import UuidCode from './UuidCode';
+import StreamKey from './UuidCode';
 import InviteCode from './InviteCode';
 import { closeModal } from '../../store/modules/modal';
 import { useEffect } from 'react';
@@ -64,7 +64,7 @@ const Modal = () => {
 			contents = <ModifyClass />;
 			break;
 		case 'uuidCode':
-			contents = <UuidCode />;
+			contents = <StreamKey />;
 			break;
 		default:
 			contents = null;

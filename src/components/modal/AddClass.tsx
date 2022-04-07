@@ -45,35 +45,41 @@ const AddClass = () => {
 	});
 
 	const uploadFile = () => {
-		const params = {
-			ACL: 'public-read',
-			Body: file,
-			Bucket: process.env.REACT_APP_IMAGE_BUCKET as string,
-			Key: 'upload/' + file.name,
-		};
-		console.log(process.env);
-		console.log(inputs);
-		myBucket
-			.putObject(params)
-			.on('httpUploadProgress', (evt: any, res: any) => {
-				console.log(evt, res);
-				console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
-				setInputs({
-					...inputs,
-					imageUrl:
+		if (
+			inputs.title != '' &&
+			inputs.startDate != '' &&
+			inputs.endDate != '' &&
+			selectedDays != []
+		) {
+			const params = {
+				ACL: 'public-read',
+				Body: file,
+				Bucket: process.env.REACT_APP_IMAGE_BUCKET as string,
+				Key: 'upload/' + file.name,
+			};
+			myBucket
+				.putObject(params)
+				.on('httpUploadProgress', (evt: any, res: any) => {
+					console.log('Uploaded : ' + (evt.loaded * 100) / evt.total) + '%';
+					setInputs({
+						...inputs,
+						imageUrl:
+							'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
+							res.request.httpRequest.path,
+					});
+				})
+				.on('httpDone', (res: any) => {
+					const newUrl: string =
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-						res.request.httpRequest.path,
+						res.request.httpRequest.path;
+					createClass(newUrl);
+				})
+				.send((err) => {
+					if (err) console.log(err, 'err');
 				});
-			})
-			.on('httpDone', (res: any) => {
-				const newUrl: string =
-					'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
-					res.request.httpRequest.path;
-				createClass(newUrl);
-			})
-			.send((err) => {
-				if (err) console.log(err, 'err');
-			});
+		} else {
+			alert('입력을 다 하고 오세요');
+		}
 	};
 
 	const { mutate: createClass } = useMutation(
