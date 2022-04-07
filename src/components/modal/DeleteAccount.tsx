@@ -1,4 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
@@ -13,18 +14,24 @@ const DeleteAccount = () => {
 		setInput(e.target.value);
 	};
 
-	const deleteAccount = async () => {
-		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
-			await api.withdrawal(input);
-			alert('탈퇴가 완료되었습니다.');
-			dispatch(signOut());
-			location.reload();
+	const { mutate: deleteAccount } = useMutation(
+		(input: string) => api.deleteClass(input),
+		{
+			onSuccess: () => {
+				alert('탈퇴가 완료되었습니다.');
+				dispatch(signOut());
+				window.location.reload();
+			},
+			onError: (error: Error) => {
+				alert('다시 시도해주세요.');
+				console.log(error);
+			},
 		}
-	};
+	);
 
 	const hendleCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
 		if (e.key === 'Enter') {
-			deleteAccount();
+			deleteAccount(input);
 		}
 	};
 
@@ -37,7 +44,7 @@ const DeleteAccount = () => {
 			</FormDescription>
 			<Label htmlFor='password'>비밀번호</Label>
 			<Input type='password' id='password' onChange={handleChange} />
-			<Button onClick={deleteAccount}>회원탈퇴</Button>
+			<Button onClick={() => deleteAccount}>회원탈퇴</Button>
 		</Form>
 	);
 };
@@ -82,7 +89,7 @@ const Button = styled.button`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-weight: bold;
 	margin-bottom: 10px;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(105%);
 	}
