@@ -90,6 +90,7 @@ const api = {
 	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
 	deleteClass:(classId : string) => requests.delete(`/class/${classId}`),
 	getInviteCode:(classId : string): Promise<{inviteCode:string}> => requests.get(`/class/invitecode/${classId}`),
+	
 	//stream
 	getStreamCode:(classId : string): Promise<{streamKey:string}> => requests.get(`/stream/key/${classId}`),
 
@@ -112,7 +113,7 @@ const api = {
 	// Todo
 	loadTodo: (): Promise<TodoType[]> => requests.get('/post/todo'),
 	addTodo: (content: string) =>
-		requests.post('/post/todo', { content: content }),
+		requests.post('/post/todo', { content }),
 	deleteTodo: (todoId: number) => requests.delete(`/post/todo/${todoId}`),
 	completeTodo: (todoId: number) =>
 		requests.put('/post/todo/complete', { id: todoId }),

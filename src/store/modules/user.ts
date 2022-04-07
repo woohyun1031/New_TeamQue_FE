@@ -44,7 +44,7 @@ export const signIn = createAsyncThunk(
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				alert(`로그인 오류: ${error.message}`);
+				alert(`로그인 오류: ${error.response?.data.message}`);
 				return rejectWithValue(error.message);
 			} else {
 				alert(`알 수 없는 로그인 오류: ${error}`);

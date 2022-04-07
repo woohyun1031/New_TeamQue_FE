@@ -18,7 +18,6 @@ const DropDown = ({ name }: DropDownProps) => {
 
 	const logout = () => {
 		dispatch(signOut());
-		window.location.reload();
 	};
 
 	const openMypage = () => {

@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
@@ -13,13 +15,24 @@ const DeleteAccount = () => {
 		setInput(e.target.value);
 	};
 
+	const { mutate } = useMutation(
+		() => api.withdrawal(input), {
+			onSuccess: () => {
+				alert('탈퇴가 완료되었습니다.');
+				dispatch(signOut());
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message)
+				}
+			}
+		}
+	)
+
 
 	const deleteAccount = async () => {
 		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
-			await api.withdrawal(input);
-			alert('탈퇴가 완료되었습니다.');
-			dispatch(signOut());
-			location.reload();
+			mutate()
 		}
 	};
 
