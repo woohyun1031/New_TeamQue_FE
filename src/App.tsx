@@ -8,7 +8,6 @@ import ClassRoom from './pages/ClassRoom';
 import Main from './pages/Main';
 import { closeModal, openModal } from './store/modules/modal';
 import GlobalStyle from './styles/GlobalStyle';
-import { getUserInfo } from './store/modules/user';
 import { RootState } from './store/configStore';
 import OAuth from './components/OAuth';
 import styled from 'styled-components';
@@ -19,10 +18,10 @@ const App = () => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const isToken = sessionStorage.getItem('accessToken') ? true : false;
 
+
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
-			dispatch(getUserInfo());
 		} else {
 			navigate('/');
 			dispatch(openModal('notSignIn'));

@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store/configStore';
-import { useSelector } from 'react-redux';
 import DropDown from './DropDown';
+import { useQuery } from 'react-query';
+import api from '../api';
 
 const Header = () => {
 	const navigate = useNavigate();
-	const user = useSelector((state: RootState) => state.user);
-
+	const { data: userInfo } = useQuery('userInfo', () => api.getUserInfo());
 	const toMain = () => {
 		navigate('/');
 	};
@@ -16,7 +15,7 @@ const Header = () => {
 		<Container>
 			<Inner>
 				<Logo onClick={toMain} />
-				<DropDown name={user.name} />
+				<DropDown name={userInfo?.name as string} />
 			</Inner>
 		</Container>
 	);
