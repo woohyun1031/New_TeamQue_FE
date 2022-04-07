@@ -12,7 +12,6 @@ const InviteCode = () => {
 	const { data } = useQuery('inviteCode', () =>
 		api.getInviteCode(classid as string)
 	);
-	console.log(data?.inviteCode);
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (data?.inviteCode) {

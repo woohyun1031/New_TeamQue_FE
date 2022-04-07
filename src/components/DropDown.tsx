@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import api from '../api';
 import { openModal } from '../store/modules/modal';
-import { signOut } from '../store/modules/user';
 
 type DropDownProps = {
 	name: string;
@@ -16,8 +16,11 @@ const DropDown = ({ name }: DropDownProps) => {
 		setIsOpen((prevState) => !prevState);
 	};
 
-	const logout = () => {
-		dispatch(signOut());
+	const logout = async () => {
+		sessionStorage.removeItem('accessToken');
+		sessionStorage.removeItem('refreshToken');
+		await api.signOut();
+		location.reload()
 	};
 
 	const openMypage = () => {

@@ -4,7 +4,6 @@ import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
-import { signOut } from '../../store/modules/user';
 import ModalCloseButton from './ModalCloseButton';
 
 const DeleteAccount = () => {
@@ -18,7 +17,8 @@ const DeleteAccount = () => {
 	const { mutate } = useMutation(() => api.deleteAccount(input), {
 		onSuccess: () => {
 			alert('탈퇴가 완료되었습니다.');
-			dispatch(signOut());
+			sessionStorage.removeItem('accessToken');
+			sessionStorage.removeItem('refreshToken');
 		},
 		onError: (error) => {
 			if (axios.isAxiosError(error)) {

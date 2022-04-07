@@ -54,26 +54,6 @@ export const signIn = createAsyncThunk(
 	}
 );
 
-export const signOut = createAsyncThunk(
-	'user/logoutAxios',
-	async (_, { rejectWithValue }) => {
-		try {
-			sessionStorage.removeItem('accessToken');
-			sessionStorage.removeItem('refreshToken');
-			await api.signOut();
-			return true;
-		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				alert(`로그아웃 오류: ${error.response?.data.message}`);
-				return rejectWithValue(error.message);
-			} else {
-				alert(`알 수 없는 로그아웃 오류: ${error}`);
-				return rejectWithValue('An unexpected error occurred');
-			}
-		}
-	}
-);
-
 export const getUserInfo = createAsyncThunk(
 	'user/getUserInfo',
 	async (_, { rejectWithValue }) => {
@@ -121,7 +101,6 @@ export const user = createSlice({
 			state.name = action.payload.name;
 			state.isLogin = true;
 		});
-		builder.addCase(signOut.fulfilled, () => initialState);
 	},
 });
 
