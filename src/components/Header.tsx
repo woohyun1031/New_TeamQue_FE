@@ -3,10 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import DropDown from './DropDown';
 import { useQuery } from 'react-query';
 import api from '../api';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/configStore';
 
 const Header = () => {
 	const navigate = useNavigate();
-	const { data: userInfo } = useQuery('userInfo', () => api.getUserInfo());
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
+	const { data: userInfo } = useQuery('userInfo', () => api.getUserInfo(), {
+		enabled: isLogin,
+	});
 	const toMain = () => {
 		navigate('/');
 	};

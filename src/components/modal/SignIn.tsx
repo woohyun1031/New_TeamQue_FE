@@ -1,6 +1,8 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import api, { instance } from '../../api';
 import { openModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 
@@ -20,8 +22,20 @@ const SignIn = () => {
 		});
 	};
 
+	const { mutate } = useMutation(() => api.signIn(inputs), {
+		onSuccess: (res) => {
+			console.log(res)
+			sessionStorage.setItem('accessToken', res.accessToken);
+			sessionStorage.setItem('refreshToken', res.refreshToken);
+			instance.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
+		}
+	})
+
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		mutate()
 		dispatch(signIn(inputs));
 	};
 
