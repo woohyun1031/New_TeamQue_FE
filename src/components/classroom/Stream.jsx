@@ -10,7 +10,6 @@ const Stream = () => {
 	const { classid } = useParams();
 	const { data } = useQuery('streamKey', () => api.getStreamCode(classid));
 	const toClassHome = useCallback(() => {
-
 		navigate(`/classhome/${classid}/1`);
 	}, []);
 	return (

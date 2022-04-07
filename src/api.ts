@@ -82,7 +82,7 @@ const api = {
 		requests.get(`/class/student/${classId}`),
 	changeState: (classId: string, studentId: number, isAccept: boolean) =>
 		requests.put(`/class/student/${classId}/${studentId}`, { isOk: isAccept }),
-	registClass: (uuid: string) => requests.post(`/class/student`, { uuid }),
+	registClass: (inviteCode: string) => requests.post(`/class/student`, { inviteCode }),
 	loadClassCalendar: (classId: string, year: number, month: number) =>
 		requests.get(`/class/date/${classId}?year=${year}&month=${month}`),
 	changeClass: (classInfo: object, classId : string) => requests.put(`/class/${classId}`, classInfo),
