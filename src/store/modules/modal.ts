@@ -10,8 +10,21 @@ const ModalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		openModal(state) {
+		openModal(state, action: PayloadAction<
+			| 'notSignIn'
+			| 'signIn'
+			| 'signUp'
+			| 'addClass'
+			| 'inviteCode'
+			| 'tutorial'
+			| 'registClass'
+			| 'deleteaccount'
+			| 'modifyuserinfo'
+			| 'modifyclass'
+			| 'streamkey'
+		>) {
 			state.isOpen = true;
+			state.type = action.payload;
 		},
 		closeModal(state) {
 			state.isOpen = false;
@@ -19,27 +32,9 @@ const ModalSlice = createSlice({
 		adddata(state, action: any) {
 			state.data = action.payload;
 		},
-		changeModal(
-			state,
-			action: PayloadAction<
-				| 'notSignIn'
-				| 'signIn'
-				| 'signUp'
-				| 'addClass'
-				| 'inviteCode'
-				| 'tutorial'
-				| 'registClass'
-				| 'deleteaccount'
-				| 'modifyuserinfo'
-				| 'modifyclass'
-				| 'streamkey'
-			>
-		) {
-			state.type = action.payload;
-		},
 	},
 });
 
-export const { openModal, closeModal, adddata,changeModal } = ModalSlice.actions;
+export const { openModal, closeModal, adddata } = ModalSlice.actions;
 
 export default ModalSlice.reducer;

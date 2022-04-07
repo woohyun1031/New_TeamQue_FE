@@ -7,7 +7,7 @@ import {
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 import ModalCloseButton from './ModalCloseButton';
 
 const ModifyUserInfo = () => {
@@ -34,7 +34,7 @@ const ModifyUserInfo = () => {
 
 	const toDeleteAccount = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('deleteaccount'));
+		dispatch(openModal('deleteaccount'));
 	};
 
 	return (

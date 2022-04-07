@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal, openModal } from '../store/modules/modal';
+import { openModal } from '../store/modules/modal';
 import { signOut } from '../store/modules/user';
 
 type DropDownProps = {
@@ -21,8 +21,7 @@ const DropDown = ({ name }: DropDownProps) => {
 	};
 
 	const openMypage = () => {
-		dispatch(changeModal('modifyuserinfo'));
-		dispatch(openModal());
+		dispatch(openModal('modifyuserinfo'));
 	};
 
 	return (

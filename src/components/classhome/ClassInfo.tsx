@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { adddata, changeModal, openModal } from '../../store/modules/modal';
+import { adddata, openModal } from '../../store/modules/modal';
 import api from '../../api';
 import { RootState } from '../../store/configStore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -22,20 +22,17 @@ const ClassInfo = () => {
 
 	const openInviteCode = () => {
 		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('inviteCode'));
+		dispatch(openModal('inviteCode'));
 	};
 
 	const openModifyModal = () => {
 		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('modifyclass'));
+		dispatch(openModal('modifyclass'));
 	};
 
 	const openUuidCode = () => {
 		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('streamkey'));
+		dispatch(openModal('streamkey'));
 	};
 
 	const { mutate: acceptStudent } = useMutation(

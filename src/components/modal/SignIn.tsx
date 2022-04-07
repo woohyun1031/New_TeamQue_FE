@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 
 const SignIn = () => {
@@ -27,12 +27,12 @@ const SignIn = () => {
 
 	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('notSignIn'));
+		dispatch(openModal('notSignIn'));
 	};
 
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('signUp'));
+		dispatch(openModal('signUp'));
 	};
 
 	const kakaoLogin = (e: MouseEvent<HTMLButtonElement>) => {

@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 import { signUp } from '../../store/modules/user';
 
 const SignUp = () => {
@@ -23,14 +23,14 @@ const SignUp = () => {
 
 	const toSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('signIn'));
+		dispatch(openModal('signIn'));
 	};
 
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(signUp(inputs));
 		alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.');
-		dispatch(changeModal('notSignIn'));
+		dispatch(openModal('notSignIn'));
 	};
 
 	return (

@@ -8,7 +8,6 @@ export const instance = axios.create({
 	},
 });
 
-
 let isRefreshing = false;
 const refreshSubscribers: ((arg: string) => void)[] = [];
 const addRefreshSubscriber = (callback: (arg: string) => void) => {

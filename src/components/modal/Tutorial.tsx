@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 
 const Tutorial = () => {
 	const [page, setPage] = useState(0);
@@ -26,7 +26,7 @@ const Tutorial = () => {
 	};
 
 	const toNotSignIn = () => {
-		dispatch(changeModal('notSignIn'));
+		dispatch(openModal('notSignIn'));
 	};
 
 	return (
