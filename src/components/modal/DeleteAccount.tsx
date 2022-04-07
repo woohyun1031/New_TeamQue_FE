@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
 
 const DeleteAccount = () => {
-	const dispatch = useDispatch();
 	const [input, setInput] = useState('');
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

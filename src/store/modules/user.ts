@@ -2,32 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api, { instance } from '../../api';
 import axios from 'axios';
 
-export const signUp = createAsyncThunk(
-	'user/signup',
-	async (
-		userInfo: {
-			email: string;
-			name: string;
-			password: string;
-			confirmPassword: string;
-		},
-		{ rejectWithValue }
-	) => {
-		try {
-			const data = await api.signUp(userInfo);
-			return data;
-		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				alert(`회원가입 오류: ${error.response?.data.message}`);
-				return rejectWithValue(error.message);
-			} else {
-				alert(`알 수 없는 회원가입 오류: ${error}`);
-				return rejectWithValue('An unexpected error occurred');
-			}
-		}
-	}
-);
-
 export const signIn = createAsyncThunk(
 	'user/signin',
 	async (
