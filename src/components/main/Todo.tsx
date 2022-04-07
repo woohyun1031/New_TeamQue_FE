@@ -19,7 +19,7 @@ const Todo = () => {
 	const { mutate: addTodo } = useMutation(() => api.addTodo(input), {
 		onSuccess: () => {
 			queryClient.invalidateQueries('todo');
-		},
+		}
 	});
 
 	const openInput = () => {

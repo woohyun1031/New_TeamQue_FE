@@ -13,6 +13,7 @@ const DeleteAccount = () => {
 		setInput(e.target.value);
 	};
 
+
 	const deleteAccount = async () => {
 		if (confirm('정말로 회원탈퇴 하시겠어요?')) {
 			await api.withdrawal(input);

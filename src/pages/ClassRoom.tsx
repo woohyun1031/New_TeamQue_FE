@@ -28,9 +28,10 @@ type chatType = {
 
 export let socket: Socket;
 const ClassRoom = () => {
-	const { classid: classId } = useParams();
+	const { classid } = useParams();
+	const classId = parseInt(classid as string)
 	const { data: classInfo } = useQuery('classInfo', () =>
-		api.loadClassData(classId as string)
+		api.loadClassData(classid as string)
 	);
 
 	const [isConnected, setIsConnected] = useState(false);

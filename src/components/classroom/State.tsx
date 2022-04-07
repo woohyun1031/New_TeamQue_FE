@@ -22,7 +22,8 @@ const State = ({ students, isConnected }: StateProps) => {
 	const user = useSelector((state: RootState) => state.user);
 	const [myState, setMyState] = useState<stateType>('connect');
 	const [studentState, setStudentState] = useState<studentType[]>(students);
-	const { classid: classId } = useParams();
+	const { classid } = useParams();
+	const classId = parseInt(classid as string)
 
 	useEffect(() => {
 		if (isConnected) {
