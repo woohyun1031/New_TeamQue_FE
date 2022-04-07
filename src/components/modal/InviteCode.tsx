@@ -7,7 +7,7 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const classid: string = useSelector((state: RootState) => state.modal.data);
+	const classid: string = useSelector((state: RootState) => state.modal.classId);
 
 	const { data } = useQuery('inviteCode', () =>
 		api.getInviteCode(classid as string)

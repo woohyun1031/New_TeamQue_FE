@@ -29,7 +29,7 @@ const ModifyClass = () => {
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-	const classid: any = useSelector((state: RootState) => state.modal.data);
+	const classid = useSelector((state: RootState) => state.modal.classId);
 
 	const { data: classInfo } = useQuery('classInfo', () =>
 		api.loadClassData(classid as string)

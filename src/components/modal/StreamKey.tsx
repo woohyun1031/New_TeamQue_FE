@@ -7,7 +7,7 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const StreamKey = () => {
-	const classid: string = useSelector((state: RootState) => state.modal.data);
+	const classid: string = useSelector((state: RootState) => state.modal.classId);
 
 	const { data } = useQuery('streamKey', () =>
 		api.getStreamCode(classid as string)
