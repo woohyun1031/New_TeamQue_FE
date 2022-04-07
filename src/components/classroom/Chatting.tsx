@@ -30,7 +30,8 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 	});
 	const { chatCheck, questionCheck } = check;
 	const [isQuestion, setIsQuestion] = useState(false);
-	const { classid: classId } = useParams();
+	const { classid } = useParams();
+	const classId = parseInt(classid as string)
 
 	const chatEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -520,8 +521,7 @@ const Input = styled.textarea`
 `;
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
-	background-image: url(${({ isQuestion }) =>
-		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	${({ theme }) => theme.commons.backgroundImage};
 	width: 30px;
 	height: 30px;
