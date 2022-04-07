@@ -35,7 +35,6 @@ const Card = ({ id, imageUrl, teacher, title, timeTable, state, isStream }: Card
 				<WaitThumbnail />
 				<BadgeBox>
 					<WaitBadge>대기중</WaitBadge>
-					<Badge>방송중</Badge>
 				</BadgeBox>
 				<Title>{title}</Title>
 				<Teacher>{teacher} 선생님</Teacher>
