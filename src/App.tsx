@@ -26,7 +26,7 @@ const App = () => {
 			navigate('/');
 			dispatch(openModal('notSignIn'));
 		}
-	}, [isLogin, navigate]);
+	}, [isLogin, isToken]);
 
 	return (
 		<Container>

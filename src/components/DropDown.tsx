@@ -19,19 +19,24 @@ const DropDown = ({ name }: DropDownProps) => {
 	};
 
 	const logout = async () => {
+		signOut();
 		sessionStorage.removeItem('accessToken');
 		sessionStorage.removeItem('refreshToken');
-		signOut();
 		location.reload();
 	};
 
 	const { mutate: signOut } = useMutation(() => api.signOut(), {
 		onSuccess: () => {
+			sessionStorage.removeItem('accessToken');
+			sessionStorage.removeItem('refreshToken');
 			location.reload();
 		},
 		onError: (error) => {
 			if (axios.isAxiosError(error)) {
-				alert(error.response?.data.message);
+				console.log(error.response?.data.message);
+				sessionStorage.removeItem('accessToken');
+				sessionStorage.removeItem('refreshToken');
+				location.reload();
 			}
 		},
 	});

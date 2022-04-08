@@ -104,19 +104,19 @@ const commons = {
   mainButton:`
   background-color: ${colors.main};
 	&:hover {
-		background-color: ${colors.brightMain};;
+		background-color: ${colors.brightMain};
 	}
 	&:active {
-		background-color:${colors.darkerMain};;
+		background-color:${colors.darkerMain};
 	}
   `,
   subButton:`
   background-color: ${colors.sub};
 	&:hover {
-		background-color: ${colors.subHover};;
+		background-color: ${colors.subHover};
 	}
 	&:active {
-		background-color:${colors.subActive};;
+		background-color:${colors.subActive};
 	}
   `
 }

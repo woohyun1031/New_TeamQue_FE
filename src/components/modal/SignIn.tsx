@@ -25,7 +25,6 @@ const SignIn = () => {
 
 	const { mutate } = useMutation(() => api.signIn(inputs), {
 		onSuccess: (res) => {
-			console.log(res);
 			sessionStorage.setItem('accessToken', res.accessToken);
 			sessionStorage.setItem('refreshToken', res.refreshToken);
 			instance.defaults.headers.common[

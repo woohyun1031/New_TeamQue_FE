@@ -12,6 +12,7 @@ export const signIn = createAsyncThunk(
 			const data = await api.signIn(loginInfo);
 			sessionStorage.setItem('accessToken', data.accessToken);
 			sessionStorage.setItem('refreshToken', data.refreshToken);
+			console.log(data)
 			instance.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
