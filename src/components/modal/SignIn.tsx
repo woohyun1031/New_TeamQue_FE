@@ -1,7 +1,10 @@
+import axios from 'axios';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
+import api, { instance } from '../../api';
+import { openModal } from '../../store/modules/modal';
 import { signIn } from '../../store/modules/user';
 
 const SignIn = () => {
@@ -20,19 +23,35 @@ const SignIn = () => {
 		});
 	};
 
+	const { mutate } = useMutation(() => api.signIn(inputs), {
+		onSuccess: (res) => {
+			sessionStorage.setItem('accessToken', res.accessToken);
+			sessionStorage.setItem('refreshToken', res.refreshToken);
+			instance.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${sessionStorage.getItem('accessToken')}`;
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
+			}
+		},
+	});
+
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		mutate();
 		dispatch(signIn(inputs));
 	};
 
 	const toNotSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('notSignIn'));
+		dispatch(openModal('notSignIn'));
 	};
 
 	const toSignUp = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('signUp'));
+		dispatch(openModal('signUp'));
 	};
 
 	const kakaoLogin = (e: MouseEvent<HTMLButtonElement>) => {

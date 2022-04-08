@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
@@ -29,7 +29,7 @@ const ModifyClass = () => {
 	const count = useRef(0);
 	const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-	const classid: any = useSelector((state: RootState) => state.modal.data);
+	const classid = useSelector((state: RootState) => state.modal.classId);
 
 	const { data: classInfo } = useQuery('classInfo', () =>
 		api.loadClassData(classid as string)
@@ -108,7 +108,7 @@ const ModifyClass = () => {
 					const newUrl: string =
 						'https://mywoo1031bucket.s3.ap-northeast-2.amazonaws.com' +
 						res.request.httpRequest.path;
-					const response = changeClass(newUrl);
+					const response = changedClass(newUrl);
 					alert(response + '수정이 완료되었습니다');
 					queryClient.invalidateQueries('classInfo');
 					dispatch(closeModal());
@@ -117,14 +117,14 @@ const ModifyClass = () => {
 					if (err) console.log(err, 'err');
 				});
 		} else {
-			const response = changeClass(inputs.imageUrl);
+			const response = changedClass(inputs.imageUrl);
 			alert(response + '수정이 완료되었습니다');
 			queryClient.invalidateQueries('classInfo');
 			dispatch(closeModal());
 		}
 	};
 
-	const changeClass = (url: string) => {
+	const changedClass = (url: string) => {
 		const classData = {
 			title: inputs.title,
 			imageUrl: url,

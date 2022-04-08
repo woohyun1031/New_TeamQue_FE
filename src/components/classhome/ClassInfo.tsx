@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { adddata, changeModal, openModal } from '../../store/modules/modal';
+import { changeClassId, openModal } from '../../store/modules/modal';
 import api from '../../api';
 import { RootState } from '../../store/configStore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
 
 const ClassInfo = () => {
 	const queryClient = useQueryClient();
@@ -22,21 +23,18 @@ const ClassInfo = () => {
 
 
 	const openInviteCode = () => {
-		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('inviteCode'));
+		dispatch(changeClassId(classInfo?.id));
+		dispatch(openModal('inviteCode'));
 	};
 
 	const openModifyModal = () => {
-		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('modifyclass'));
+		dispatch(changeClassId(classInfo?.id));
+		dispatch(openModal('modifyclass'));
 	};
 
 	const openUuidCode = () => {
-		dispatch(adddata(classInfo?.id));
-		dispatch(openModal());
-		dispatch(changeModal('uuidCode'));
+		dispatch(changeClassId(classInfo?.id));
+		dispatch(openModal('streamkey'));
 	};
 
 	const { mutate: acceptStudent } = useMutation(
@@ -45,11 +43,23 @@ const ClassInfo = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('students');
 			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
 		}
 	);
 
-	const { mutate: rejectStudent } = useMutation((studentId: number) =>
-		api.changeState(classid as string, studentId, false)
+	const { mutate: rejectStudent } = useMutation(
+		(studentId: number) => api.changeState(classid as string, studentId, false),
+		{
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
 	);
 
 	const handleClickReject = (studentsId: number) => {
@@ -65,11 +75,24 @@ const ClassInfo = () => {
 	const exitClass = async () => {
 		if (confirm('정말로 수업을 나가시겠습니까?')) {
 			if (classid) {
-				await api.cancelApply(classid);
-				navigate('/');
+				cancelApply(classid);
 			}
 		}
 	};
+
+	const { mutate: cancelApply } = useMutation(
+		(classid: string) => api.cancelApply(classid as string),
+		{
+			onSuccess: () => {
+				navigate('/');
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
+	);
 
 	return (
 		<Container>

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
@@ -20,6 +21,11 @@ const Todo = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries('todo');
 		},
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message)
+			}
+		}
 	});
 
 	const openInput = () => {

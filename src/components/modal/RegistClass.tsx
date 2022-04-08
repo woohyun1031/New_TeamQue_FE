@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import api from '../../api';
 import ModalCloseButton from './ModalCloseButton';
@@ -10,9 +12,23 @@ const RegistClass = () => {
 		setInput(e.target.value);
 	};
 
-	const registClass = (e: FormEvent<HTMLFormElement>) => {
+	const { mutate: registClass } = useMutation(
+		(input: string) => api.registClass(input),
+		{
+			onSuccess: () => {
+				location.reload();
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
+	);
+
+	const registerClass = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		api.registClass(input);
+		registClass(input);
 		alert('수강 신청이 완료되었습니다');
 		location.reload();
 	};
@@ -20,7 +36,7 @@ const RegistClass = () => {
 	return (
 		<>
 			<ModalCloseButton />
-			<Form onSubmit={registClass}>
+			<Form onSubmit={registerClass}>
 				<h1>수업 코드 입력</h1>
 				<Input
 					type='text'

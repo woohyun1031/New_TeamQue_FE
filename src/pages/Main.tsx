@@ -5,20 +5,18 @@ import Calendar from '../components/Calendar';
 import CardList from '../components/main/CardList';
 import Schedule from '../components/main/Todo';
 import Welcome from '../components/main/Welcome';
-import { changeModal, openModal } from '../store/modules/modal';
+import { openModal } from '../store/modules/modal';
 
 const Main = () => {
 	const dispatch = useDispatch();
 	const [tabState, setTabState] = useState(true);
 
 	const openAddLearnClassModal = () => {
-		dispatch(openModal());
-		dispatch(changeModal('registClass'));
+		dispatch(openModal('registClass'));
 	};
 
 	const openAddTeachClassModal = () => {
-		dispatch(openModal());
-		dispatch(changeModal('addClass'));
+		dispatch(openModal('addClass'));
 	};
 
 	const tabLearn = () => {

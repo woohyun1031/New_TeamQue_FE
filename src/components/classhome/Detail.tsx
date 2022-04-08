@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
@@ -20,6 +21,11 @@ const Detail = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('posts');
 			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
 		}
 	);
 
@@ -41,6 +47,11 @@ const Detail = () => {
 				queryClient.invalidateQueries('post');
 				setComment('');
 			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
 		}
 	);
 
@@ -56,8 +67,10 @@ const Detail = () => {
 			onSuccess: () => {
 				queryClient.invalidateQueries('post');
 			},
-			onError: (err) => {
-				console.log(err);
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
 			},
 		}
 	);
@@ -74,7 +87,11 @@ const Detail = () => {
 						<UpdateButton
 							onClick={() => {
 								navigate(`/classhome/${classid}/update/${data.id}`, {
-									state: { title: data?.title, content: data?.content, postType: data?.postType },
+									state: {
+										title: data?.title,
+										content: data?.content,
+										postType: data?.postType,
+									},
 								});
 							}}
 						/>
@@ -252,7 +269,7 @@ const CommentButton = styled.button`
 	right: 30px;
 	bottom: 30px;
 	position: absolute;
-	transition: .2s;
+	transition: 0.2s;
 	&:hover {
 		filter: brightness(105%);
 	}

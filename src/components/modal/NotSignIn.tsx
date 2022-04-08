@@ -1,16 +1,16 @@
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 
 const NotSignIn = () => {
 	const dispatch = useDispatch();
 
 	const toSignIn = () => {
-		dispatch(changeModal('signIn'));
+		dispatch(openModal('signIn'));
 	};
 
 	const toTutorial = () => {
-		dispatch(changeModal('tutorial'));
+		dispatch(openModal('tutorial'));
 	};
 
 	return (

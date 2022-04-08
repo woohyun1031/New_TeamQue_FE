@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { changeModal } from '../../store/modules/modal';
-import { signUp } from '../../store/modules/user';
+import api from '../../api';
+import { openModal } from '../../store/modules/modal';
 
 const SignUp = () => {
 	const dispatch = useDispatch();
@@ -23,14 +24,19 @@ const SignUp = () => {
 
 	const toSignIn = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('signIn'));
+		dispatch(openModal('signIn'));
 	};
+
+	const { mutate } = useMutation(() => api.signUp(inputs), {
+		onSuccess: () => {
+			alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.');
+			dispatch(openModal('notSignIn'));
+		},
+	});
 
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		dispatch(signUp(inputs));
-		alert('이메일이 발송되었습니다. 메일 인증 후 로그인 해주세요.');
-		dispatch(changeModal('notSignIn'));
+		mutate();
 	};
 
 	return (

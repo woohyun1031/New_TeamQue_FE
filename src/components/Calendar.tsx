@@ -47,9 +47,9 @@ const Calendar = () => {
 
 		let data;
 		if (classid) {
-			data = await api.loadClassCalendar(classid, year, month + 1)
+			data = await api.loadClassCalendar(classid, year, month + 1);
 		} else {
-			data = await api.loadMyCalendar(year, month + 1);
+			data = await api.loadTotalCalendar(year, month + 1);
 		}
 
 		for (const event of data) {
@@ -199,7 +199,7 @@ const Button = styled.button`
 	font-weight: 700;
 	font-size: 20px;
 	color: ${({ theme }) => theme.colors.base};
-	transition: .2s;
+	transition: 0.2s;
 	&:hover {
 		filter: brightness(102%);
 	}
@@ -237,7 +237,7 @@ const EventBox = styled.div`
 const Td = styled.td<{ isThisMonth: boolean }>`
 	position: relative;
 	text-align: center;
-	color: ${({ isThisMonth }) => (!isThisMonth && '#ccc !important;')};
+	color: ${({ isThisMonth }) => !isThisMonth && '#ccc !important;'};
 `;
 
 const DateBox = styled.div<{ isToday: boolean }>`

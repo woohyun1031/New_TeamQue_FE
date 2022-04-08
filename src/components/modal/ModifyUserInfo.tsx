@@ -1,13 +1,10 @@
-import {
-	ChangeEvent,
-	KeyboardEvent,
-	MouseEvent,
-	useState,
-} from 'react';
+import axios from 'axios';
+import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+import { QueryClient, useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
-import { changeModal } from '../../store/modules/modal';
+import { openModal } from '../../store/modules/modal';
 import ModalCloseButton from './ModalCloseButton';
 
 const ModifyUserInfo = () => {
@@ -21,10 +18,23 @@ const ModifyUserInfo = () => {
 
 	const ChangeName = async () => {
 		if (confirm(`${input}으로 이름을 변경하시겠습니까?`)) {
-			await api.modifyUserInfo(input);
-			location.reload();
+			changeName(input);
 		}
 	};
+
+	const { mutate: changeName } = useMutation(
+		(input: string) => api.changeName(input),
+		{
+			onSuccess: () => {
+				location.reload();
+			},
+			onError: (error) => {
+				if (axios.isAxiosError(error)) {
+					alert(error.response?.data.message);
+				}
+			},
+		}
+	);
 
 	const onCheckEnter = (e: KeyboardEvent<HTMLFormElement>) => {
 		if (e.key === 'Enter') {
@@ -34,7 +44,7 @@ const ModifyUserInfo = () => {
 
 	const toDeleteAccount = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		dispatch(changeModal('deleteaccount'));
+		dispatch(openModal('deleteaccount'));
 	};
 
 	return (
@@ -94,7 +104,7 @@ const Button = styled.button`
 	color: ${({ theme }) => theme.colors.buttonTitle};
 	font-weight: bold;
 	margin-bottom: 10px;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(105%);
 	}
@@ -112,7 +122,7 @@ const ToWithdrawButton = styled.button`
 	text-decoration: underline;
 	color: ${({ theme }) => theme.colors.signOut};
 	margin-left: 10px;
-	transition: .3s;
+	transition: 0.3s;
 	&:hover {
 		filter: brightness(110%);
 	}

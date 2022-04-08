@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { MouseEvent } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -7,12 +7,11 @@ import { RootState } from '../../store/configStore';
 import ModalCloseButton from './ModalCloseButton';
 
 const InviteCode = () => {
-	const classid: string = useSelector((state: RootState) => state.modal.data);
+	const classid: string = useSelector((state: RootState) => state.modal.classId);
 
 	const { data } = useQuery('inviteCode', () =>
 		api.getInviteCode(classid as string)
 	);
-	console.log(data?.inviteCode);
 	const onCopy = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (data?.inviteCode) {

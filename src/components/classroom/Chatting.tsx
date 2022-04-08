@@ -85,7 +85,6 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 			});
 
 			socket.on('receiveLikeDown', ({ chatId, userId }) => {
-				console.log(chatId);
 				setChatList((prev) =>
 					prev.map((chat) =>
 						chat.likes && chat.chatId === chatId

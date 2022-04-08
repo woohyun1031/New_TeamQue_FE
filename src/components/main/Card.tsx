@@ -1,10 +1,19 @@
+import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../api';
 import { CardType } from '../../type';
 
-const Card = ({ id, imageUrl, teacher, title, timeTable, state, isStream }: CardType) => {
+const Card = ({
+	id,
+	imageUrl,
+	teacher,
+	title,
+	timeTable,
+	state,
+	isStream,
+}: CardType) => {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
@@ -17,8 +26,10 @@ const Card = ({ id, imageUrl, teacher, title, timeTable, state, isStream }: Card
 	};
 
 	const { mutate: cancel } = useMutation(() => api.cancelApply(id.toString()), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('learnCard');
+		onError: (error) => {
+			if (axios.isAxiosError(error)) {
+				alert(error.response?.data.message);
+			}
 		},
 	});
 

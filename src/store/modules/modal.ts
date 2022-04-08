@@ -3,43 +3,38 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
 	isOpen: false,
 	type: '',
-	data: '',
+	classId: '',
 };
 	
 const ModalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		openModal(state) {
+		openModal(state, action: PayloadAction<
+			| 'notSignIn'
+			| 'signIn'
+			| 'signUp'
+			| 'addClass'
+			| 'inviteCode'
+			| 'tutorial'
+			| 'registClass'
+			| 'deleteaccount'
+			| 'modifyuserinfo'
+			| 'modifyclass'
+			| 'streamkey'
+		>) {
 			state.isOpen = true;
+			state.type = action.payload;
 		},
 		closeModal(state) {
 			state.isOpen = false;
 		},
-		adddata(state, action: any) {
-			state.data = action.payload;
-		},
-		changeModal(
-			state,
-			action: PayloadAction<
-				| 'notSignIn'
-				| 'signIn'
-				| 'signUp'
-				| 'addClass'
-				| 'inviteCode'
-				| 'tutorial'
-				| 'registClass'
-				| 'deleteaccount'
-				| 'modifyuserinfo'
-				| 'modifyclass'
-				| 'uuidCode'
-			>
-		) {
-			state.type = action.payload;
+		changeClassId(state, action: PayloadAction<string>) {
+			state.classId = action.payload;
 		},
 	},
 });
 
-export const { openModal, closeModal, adddata,changeModal } = ModalSlice.actions;
+export const { openModal, closeModal, changeClassId } = ModalSlice.actions;
 
 export default ModalSlice.reducer;
