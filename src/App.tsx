@@ -11,6 +11,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { RootState } from './store/configStore';
 import OAuth from './components/OAuth';
 import styled from 'styled-components';
+import { getUserInfo } from './store/modules/user';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -22,6 +23,8 @@ const App = () => {
 	useEffect(() => {
 		if (isToken) {
 			dispatch(closeModal());
+			dispatch(getUserInfo());
+
 		} else {
 			navigate('/');
 			dispatch(openModal('notSignIn'));
