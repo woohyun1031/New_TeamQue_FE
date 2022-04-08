@@ -24,10 +24,7 @@ const State = ({ students, isConnected }: StateProps) => {
 	const [studentState, setStudentState] = useState<studentType[]>(students);
 	const { classid } = useParams();
 	const classId = parseInt(classid as string)
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
+	
 	useEffect(() => {
 		if (isConnected) {
 			socket.on('changeState', ({ userId, state }) => {

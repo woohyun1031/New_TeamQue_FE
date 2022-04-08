@@ -14,7 +14,6 @@ const Card = ({
 	state,
 	isStream,
 }: CardType) => {
-	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
 	const toClassRoom = () => {

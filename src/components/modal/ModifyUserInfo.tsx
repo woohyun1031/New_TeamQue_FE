@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
-import { QueryClient, useMutation } from 'react-query';
+import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import api from '../../api';
