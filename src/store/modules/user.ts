@@ -70,6 +70,11 @@ export const user = createSlice({
 			state.name = action.payload.name;
 			state.isLogin = true;
 		});
+		builder.addCase(getUserInfo.fulfilled, (state, action) => {
+			state.id = action.payload.id;
+			state.name = action.payload.name;
+			state.isLogin = true;
+		});
 	},
 });
 
