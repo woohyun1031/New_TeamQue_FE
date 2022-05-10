@@ -1,3 +1,5 @@
+import { AnyLengthString } from 'aws-sdk/clients/comprehendmedical';
+import { MouseEvent, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -13,14 +15,45 @@ type CardListProps = {
 const CardList = ({ tabState }: CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
+	const slider: any = useRef(null);
+	const [isDown, setIsDown] = useState<boolean>(false);
+	const [startX, setStartX] = useState<number | undefined>();
+	const [scrollLeft, setScrollLeft] = useState<number>();
+
 	const { data: learnCards } = useQuery('learnCard', api.loadLearnCards, {
 		enabled: isLogin,
 	});
 	const { data: teachCards } = useQuery('teachCard', api.loadTeachCards, {
 		enabled: isLogin,
 	});
+
+	const onMouseDown = (e: MouseEvent | undefined) => {
+		setIsDown(true);
+		setStartX(e && e.pageX - slider.current.offsetLeft);
+		setScrollLeft(slider.current.scrollLeft);
+	};
+	const onMouseUp = (e: MouseEvent | undefined) => {
+		setIsDown(false);
+		if (!isDown) return;
+		e && e.preventDefault();
+		const x = e && e.pageX - slider.current.offsetLeft;
+		console.log('mouse x val', x);
+		const walk = x && startX && x - startX;
+		console.log('mouse walk val', walk);
+		slider.current.scrollLeft = walk && scrollLeft && scrollLeft - walk;
+		//slider.current.scrollLeft = 200;
+	};
+	// const onMouseMove = (e: any) => {
+	// 	console.log('mouseMove');
+	// 	if (!isDown) return;
+	// 	e.preventDefault();
+	// 	const x = e.pageX - slider.offsetLeft;
+	// 	const walk = startX && x - startX;
+	// 	slider.scrollLeft = scrollLeft! - walk!;
+	// };
+
 	return (
-		<Container>
+		<Container ref={slider} onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
 			{tabState
 				? learnCards &&
 				  learnCards.map((card: CardType) => <Card key={card.id} {...card} />)

@@ -22,6 +22,7 @@ type ChattingProps = {
 
 const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 	const user = useSelector((state: RootState) => state.user);
+
 	const [chatList, setChatList] = useState<chatType[]>(chatData);
 	const [input, setInput] = useState('');
 	const [check, setChecked] = useState({
@@ -31,17 +32,17 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 	const { chatCheck, questionCheck } = check;
 	const [isQuestion, setIsQuestion] = useState(false);
 	const { classid } = useParams();
-	const classId = parseInt(classid as string)
+	const classId = parseInt(classid as string);
 
 	const chatEndRef = useRef<null | HTMLDivElement>(null);
-
-	useEffect(() => {
-		setChatList(chatData);
-	}, [chatData]);
 
 	const scrollToBottom = () => {
 		chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
+
+	useEffect(() => {
+		setChatList(chatData);
+	}, [chatData]);
 
 	useEffect(() => {
 		scrollToBottom();
@@ -520,7 +521,8 @@ const Input = styled.textarea`
 `;
 
 const QueButton = styled.label<{ isQuestion: boolean }>`
-	background-image: url(${({ isQuestion }) => isQuestion ? '/images/queon.png' : '/images/queoff.png'});
+	background-image: url(${({ isQuestion }) =>
+		isQuestion ? '/images/queon.png' : '/images/queoff.png'});
 	${({ theme }) => theme.commons.backgroundImage};
 	width: 30px;
 	height: 30px;

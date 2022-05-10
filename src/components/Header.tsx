@@ -42,7 +42,7 @@ const Inner = styled.div`
 
 const Logo = styled.button`
 	background-image: url('/images/logo.png');
-	${({theme}) => theme.commons.backgroundImage}
+	${({ theme }) => theme.commons.backgroundImage}
 	width: 130px;
 	height: 60px;
 	background-repeat: no-repeat;

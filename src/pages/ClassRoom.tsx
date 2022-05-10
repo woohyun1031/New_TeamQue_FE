@@ -27,13 +27,14 @@ type chatType = {
 };
 
 export let socket: Socket;
+
 const ClassRoom = () => {
 	const { classid } = useParams();
-	const classId = parseInt(classid as string)
+	const classId = parseInt(classid as string);
+
 	const { data: classInfo } = useQuery('classInfo', () =>
 		api.loadClassData(classid as string)
 	);
-
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [students, setStudents] = useState<studentType[]>([]);
@@ -45,6 +46,7 @@ const ClassRoom = () => {
 				Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
 			},
 		});
+
 		socket.emit(
 			'joinRoom',
 			{ classId },
@@ -60,7 +62,12 @@ const ClassRoom = () => {
 					uuid: string;
 					likes: { userId: number }[];
 				}[];
-				userList: { key: { name: string; state: stateType } };
+				userList: {
+					key: {
+						name: string;
+						state: stateType;
+					};
+				};
 			}) => {
 				setChatList(
 					chatList.map(
@@ -84,6 +91,7 @@ const ClassRoom = () => {
 				);
 			}
 		);
+
 		setIsConnected(true);
 	};
 

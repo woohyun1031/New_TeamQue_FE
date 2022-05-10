@@ -12,6 +12,7 @@ const Stream = () => {
 	const toClassHome = useCallback(() => {
 		navigate(`/classhome/${classid}/1`);
 	}, []);
+
 	return (
 		<Container>
 			<Video
