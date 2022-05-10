@@ -15,10 +15,10 @@ type CardListProps = {
 const CardList = ({ tabState }: CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
-	const slider: any = useRef(null);
+	const slider: React.RefObject<HTMLDivElement> | null = useRef(null);
 	const [isDown, setIsDown] = useState<boolean>(false);
 	const [startX, setStartX] = useState<number | undefined>();
-	const [scrollLeft, setScrollLeft] = useState<number>();
+	const [scrollLeft, setScrollLeft] = useState<number | undefined>();
 
 	const { data: learnCards } = useQuery('learnCard', api.loadLearnCards, {
 		enabled: isLogin,
@@ -29,18 +29,32 @@ const CardList = ({ tabState }: CardListProps) => {
 
 	const onMouseDown = (e: MouseEvent | undefined) => {
 		setIsDown(true);
-		setStartX(e && e.pageX - slider.current.offsetLeft);
-		setScrollLeft(slider.current.scrollLeft);
+		setStartX(
+			e
+				? slider.current
+					? e.pageX - slider.current.offsetLeft
+					: undefined
+				: undefined
+		);
+		setScrollLeft(slider.current?.scrollLeft);
 	};
 	const onMouseUp = (e: MouseEvent | undefined) => {
 		setIsDown(false);
 		if (!isDown) return;
 		e && e.preventDefault();
-		const x = e && e.pageX - slider.current.offsetLeft;
+		const x = e
+			? slider.current
+				? e.pageX - slider.current.offsetLeft
+				: undefined
+			: undefined;
 		console.log('mouse x val', x);
 		const walk = x && startX && x - startX;
 		console.log('mouse walk val', walk);
-		slider.current.scrollLeft = walk && scrollLeft && scrollLeft - walk;
+		if (!slider.current?.scrollLeft) return null;
+		if (!scrollLeft) return null;
+		if (!walk) return null;
+		console.log('slider.current.scrollLeft', slider.current.scrollLeft);
+		slider.current.scrollLeft = scrollLeft - walk;
 		//slider.current.scrollLeft = 200;
 	};
 	// const onMouseMove = (e: any) => {
