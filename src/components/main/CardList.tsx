@@ -40,6 +40,8 @@ const CardList = ({ tabState }: CardListProps) => {
 	};
 	const onMouseUp = (e: MouseEvent | undefined) => {
 		setIsDown(false);
+	};
+	const onMouseMove = (e: MouseEvent | undefined) => {
 		if (!isDown) return;
 		e && e.preventDefault();
 		const x = e
@@ -50,24 +52,18 @@ const CardList = ({ tabState }: CardListProps) => {
 		console.log('mouse x val', x);
 		const walk = x && startX && x - startX;
 		console.log('mouse walk val', walk);
-		if (!slider.current?.scrollLeft) return null;
-		if (!scrollLeft) return null;
-		if (!walk) return null;
+		if (!slider.current?.scrollLeft || !scrollLeft || !walk) return null;
 		console.log('slider.current.scrollLeft', slider.current.scrollLeft);
 		slider.current.scrollLeft = scrollLeft - walk;
-		//slider.current.scrollLeft = 200;
 	};
-	// const onMouseMove = (e: any) => {
-	// 	console.log('mouseMove');
-	// 	if (!isDown) return;
-	// 	e.preventDefault();
-	// 	const x = e.pageX - slider.offsetLeft;
-	// 	const walk = startX && x - startX;
-	// 	slider.scrollLeft = scrollLeft! - walk!;
-	// };
 
 	return (
-		<Container ref={slider} onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+		<Container
+			ref={slider}
+			onMouseDown={onMouseDown}
+			onMouseUp={onMouseUp}
+			onMouseMove={onMouseMove}
+		>
 			{tabState
 				? learnCards &&
 				  learnCards.map((card: CardType) => <Card key={card.id} {...card} />)
