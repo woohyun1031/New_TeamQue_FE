@@ -1,5 +1,6 @@
 import { AnyLengthString } from 'aws-sdk/clients/comprehendmedical';
-import { MouseEvent, useRef, useState } from 'react';
+import { Console } from 'console';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -36,26 +37,31 @@ const CardList = ({ tabState }: CardListProps) => {
 					: undefined
 				: undefined
 		);
-		setScrollLeft(slider.current?.scrollLeft);
+		const leftside =
+			slider.current?.scrollLeft === 0 ? 0.1 : slider.current?.scrollLeft;
+		setScrollLeft(leftside);
 	};
-	const onMouseUp = (e: MouseEvent | undefined) => {
+	const onMouseUp = () => {
 		setIsDown(false);
 	};
 	const onMouseMove = (e: MouseEvent | undefined) => {
 		if (!isDown) return;
 		e && e.preventDefault();
+		console.log(scrollLeft, 'scrollLeft');
 		const x = e
 			? slider.current
 				? e.pageX - slider.current.offsetLeft
 				: undefined
 			: undefined;
-		console.log('mouse x val', x);
 		const walk = x && startX && x - startX;
-		console.log('mouse walk val', walk);
-		if (!slider.current?.scrollLeft || !scrollLeft || !walk) return null;
+		if (!slider.current || !scrollLeft || !walk) return null;
 		console.log('slider.current.scrollLeft', slider.current.scrollLeft);
 		slider.current.scrollLeft = scrollLeft - walk;
 	};
+
+	useEffect(() => {
+		console.log('set');
+	}, [scrollLeft]);
 
 	return (
 		<Container
