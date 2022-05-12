@@ -47,7 +47,6 @@ const CardList = ({ tabState }: CardListProps) => {
 	const onMouseMove = (e: MouseEvent | undefined) => {
 		if (!isDown) return;
 		e && e.preventDefault();
-		console.log(scrollLeft, 'scrollLeft');
 		const x = e
 			? slider.current
 				? e.pageX - slider.current.offsetLeft
@@ -55,13 +54,8 @@ const CardList = ({ tabState }: CardListProps) => {
 			: undefined;
 		const walk = x && startX && x - startX;
 		if (!slider.current || !scrollLeft || !walk) return null;
-		console.log('slider.current.scrollLeft', slider.current.scrollLeft);
 		slider.current.scrollLeft = scrollLeft - walk;
 	};
-
-	useEffect(() => {
-		console.log('set');
-	}, [scrollLeft]);
 
 	return (
 		<Container
