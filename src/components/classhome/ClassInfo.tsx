@@ -21,7 +21,6 @@ const ClassInfo = () => {
 		api.loadStudents(classid as string)
 	);
 
-
 	const openInviteCode = () => {
 		dispatch(changeClassId(classInfo?.id));
 		dispatch(openModal('inviteCode'));
