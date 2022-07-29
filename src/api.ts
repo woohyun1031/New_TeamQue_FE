@@ -30,7 +30,7 @@ instance.interceptors.response.use(
 					const accessToken = response.data.accessToken;
 					sessionStorage.setItem('accessToken', response.data.accessToken);
 					instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
-					isRefreshing = false;
+					isRefreshing = true;
 					refreshSubscribers.map((callback) => callback(accessToken));
 				}
 
@@ -42,6 +42,7 @@ instance.interceptors.response.use(
 						}
 					});
 				});
+				
 				return retryOriginalRequest;
 			}
 			return Promise.reject(error);
@@ -141,3 +142,7 @@ const api = {
 };
 
 export default api;
+
+// - 정적 타이핑 지원 ⇒ JS, 동적 타이핑은 런타임 단계에서 JS엔젠에 의해 자동 해석으로 의도에 따라 받고 전달하는 데이터 타입이 불분명해질 수 있다.
+// - Type을 지정하고 먼저 선언함으로, 프로그래밍 단계, HTTP 통신을 통한 데이터 를 주고 받는 과정에서 데이터 안전하게 주고 받을 수 있다
+// - 또한 타입을 미리 선언으로 타입에 관련된 프로토타입 매서드를 손쉽게 찾아 쓸 수 있다

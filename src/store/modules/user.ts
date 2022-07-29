@@ -57,11 +57,9 @@ export const user = createSlice({
 	initialState,
 	reducers: {
 		authLogin: (_, action) => {
-			sessionStorage.setItem('accessToken', action.payload.accessToken);
-			sessionStorage.setItem('refreshToken', action.payload.refreshToken);
-			instance.defaults.headers.common[
-				'Authorization'
-			] = `Bearer ${action.payload.accessToken}`;
+				sessionStorage.setItem('accessToken', action.payload.accessToken);
+				sessionStorage.setItem('refreshToken', action.payload.refreshToken);
+				instance.defaults.headers.common['Authorization'] = `Bearer ${action.payload.accessToken}`;
 		},
 	},
 	extraReducers: (builder) => {

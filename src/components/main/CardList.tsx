@@ -16,7 +16,7 @@ type CardListProps = {
 const CardList = ({ tabState }: CardListProps) => {
 	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 
-	const slider: React.RefObject<HTMLDivElement> | null = useRef(null);
+	const slider = useRef<HTMLDivElement>(null);
 	const [isDown, setIsDown] = useState<boolean>(false);
 	const [startX, setStartX] = useState<number | undefined>();
 	const [scrollLeft, setScrollLeft] = useState<number | undefined>();
@@ -29,6 +29,7 @@ const CardList = ({ tabState }: CardListProps) => {
 	});
 
 	const onMouseDown = (e: MouseEvent | undefined) => {
+		console.log('onMouseDown');
 		setIsDown(true);
 		setStartX(
 			e
@@ -41,10 +42,14 @@ const CardList = ({ tabState }: CardListProps) => {
 			slider.current?.scrollLeft === 0 ? 0.1 : slider.current?.scrollLeft;
 		setScrollLeft(leftside);
 	};
+
 	const onMouseUp = () => {
+		console.log('onMouseUp');
 		setIsDown(false);
 	};
+
 	const onMouseMove = (e: MouseEvent | undefined) => {
+		console.log('onMouseMove');
 		if (!isDown) return;
 		e && e.preventDefault();
 		const x = e

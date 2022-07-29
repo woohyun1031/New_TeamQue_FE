@@ -106,6 +106,7 @@ const Calendar = () => {
 					{month + 1}
 					<Button onClick={setNextMonth}>{((month + 1) % 12) + 1}</Button>
 				</Caption>
+				
 				<thead>
 					<tr>
 						{['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (

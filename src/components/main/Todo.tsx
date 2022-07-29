@@ -9,9 +9,9 @@ import TodoItem from './TodoItem';
 
 const Todo = () => {
 	const queryClient = useQueryClient();
+	const isLogin = useSelector((state: RootState) => state.user.isLogin);
 	const [isInput, setIsInput] = useState(false);
 	const [input, setInput] = useState('');
-	const isLogin = useSelector((state: RootState) => state.user.isLogin)
 
 	const { data: todos } = useQuery('todo', api.loadTodo, {
 		enabled: isLogin,
@@ -23,9 +23,9 @@ const Todo = () => {
 		},
 		onError: (error) => {
 			if (axios.isAxiosError(error)) {
-				alert(error.response?.data.message)
+				alert(error.response?.data.message);
 			}
-		}
+		},
 	});
 
 	const openInput = () => {
@@ -55,7 +55,17 @@ const Todo = () => {
 				{todos?.map((todo) => (
 					<TodoItem {...todo} key={todo.id} />
 				))}
-				{isInput ? <InputBox type='text' autoFocus onBlur={focusOut} onChange={onChange} onKeyPress={handleKeyPress} /> : <AddButton onClick={openInput}>+</AddButton>}
+				{isInput ? (
+					<InputBox
+						type='text'
+						autoFocus
+						onBlur={focusOut}
+						onChange={onChange}
+						onKeyPress={handleKeyPress}
+					/>
+				) : (
+					<AddButton onClick={openInput}>+</AddButton>
+				)}
 			</ScheduleBox>
 		</Container>
 	);

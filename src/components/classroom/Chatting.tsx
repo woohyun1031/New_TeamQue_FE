@@ -34,7 +34,7 @@ const Chatting = ({ chatData, isConnected }: ChattingProps) => {
 	const { classid } = useParams();
 	const classId = parseInt(classid as string);
 
-	const chatEndRef = useRef<null | HTMLDivElement>(null);
+	const chatEndRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = () => {
 		chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
